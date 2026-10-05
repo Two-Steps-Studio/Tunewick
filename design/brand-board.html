@@ -10,49 +10,49 @@
 <link rel="stylesheet" href="tokens.css">
 <style>
   * { box-sizing: border-box; margin: 0; }
-  body { background: var(--bg); color: var(--text); font-family: var(--tw-font-text); line-height: 1.5; }
-  .wrap { max-width: 1200px; margin: 0 auto; padding: var(--tw-space-12) var(--tw-space-4) var(--tw-space-24); }
-  .note { font-family: var(--tw-font-mono); font-size: var(--tw-text-xs); color: var(--text-muted); letter-spacing: 0.02em; }
-  h1, h2, h3 { font-family: var(--tw-font-display); font-weight: 750; letter-spacing: -0.02em; line-height: 0.95; }
-  h2 { font-size: var(--tw-text-2xl); margin-bottom: var(--tw-space-6); }
-  section { padding-top: var(--tw-space-16); border-top: 1px solid var(--line); margin-top: var(--tw-space-16); }
-  .row { display: grid; gap: var(--tw-space-6); }
+  body { background: var(--bg); color: var(--text); font-family: var(--tk-font-text); line-height: 1.5; }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: var(--tk-space-12) var(--tk-space-4) var(--tk-space-24); }
+  .note { font-family: var(--tk-font-mono); font-size: var(--tk-text-xs); color: var(--text-muted); letter-spacing: 0.02em; }
+  h1, h2, h3 { font-family: var(--tk-font-display); font-weight: 750; letter-spacing: -0.02em; line-height: 0.95; }
+  h2 { font-size: var(--tk-text-2xl); margin-bottom: var(--tk-space-6); }
+  section { padding-top: var(--tk-space-16); border-top: 1px solid var(--line); margin-top: var(--tk-space-16); }
+  .row { display: grid; gap: var(--tk-space-6); }
   @media (min-width: 760px) { .row.c2 { grid-template-columns: 1fr 1fr; } .row.c3 { grid-template-columns: 1.4fr 1fr 1fr; } }
 
   /* Header: asymmetric editorial */
-  .hero { display: grid; gap: var(--tw-space-8); align-items: end; }
+  .hero { display: grid; gap: var(--tk-space-8); align-items: end; }
   @media (min-width: 760px) { .hero { grid-template-columns: 2fr 1fr; } }
-  .hero h1 { font-size: var(--tw-text-display); font-variation-settings: "wdth" 75; }
+  .hero h1 { font-size: var(--tk-text-display); font-variation-settings: "wdth" 75; }
   .hero h1 em { font-style: normal; color: var(--accent); }
 
   /* Logo tiles */
-  .tile { border: 1px solid var(--line); padding: var(--tw-space-8); display: grid; gap: var(--tw-space-4); min-height: 280px; align-content: space-between; }
-  .tile.light { background: var(--tw-ivory); color: var(--tw-graphite); border-color: transparent; }
-  .tile.lime { background: var(--tw-lime); color: var(--tw-graphite); border-color: transparent; }
-  .marks { display: flex; gap: var(--tw-space-8); align-items: end; flex-wrap: wrap; }
+  .tile { border: 1px solid var(--line); padding: var(--tk-space-8); display: grid; gap: var(--tk-space-4); min-height: 280px; align-content: space-between; }
+  .tile.light { background: var(--tk-ivory); color: var(--tk-graphite); border-color: transparent; }
+  .tile.lime { background: var(--tk-lime); color: var(--tk-graphite); border-color: transparent; }
+  .marks { display: flex; gap: var(--tk-space-8); align-items: end; flex-wrap: wrap; }
   .mark { display: block; }
 
   /* Wordmark: dotless i + square spark */
-  .wordmark { font-family: var(--tw-font-display); font-weight: 800; font-size: clamp(3rem, 2rem + 4vw, 5.5rem); letter-spacing: -0.045em; line-height: 1; font-variation-settings: "wdth" 85, "opsz" 96; display: inline-flex; align-items: baseline; }
+  .wordmark { font-family: var(--tk-font-display); font-weight: 800; font-size: clamp(3rem, 2rem + 4vw, 5.5rem); letter-spacing: -0.045em; line-height: 1; font-variation-settings: "wdth" 85, "opsz" 96; display: inline-flex; align-items: baseline; }
   .wordmark .i { position: relative; }
-  .wordmark .i::after { content: ""; position: absolute; left: 50%; top: 0.02em; width: 0.17em; height: 0.17em; transform: translateX(-35%); background: var(--spark, var(--tw-lime)); }
-  .tile.light .wordmark, .tile.lime .wordmark { --spark: var(--tw-graphite); }
-  .tile.light .wordmark { --spark: var(--tw-coral); }
+  .wordmark .i::after { content: ""; position: absolute; left: 50%; top: 0.02em; width: 0.17em; height: 0.17em; transform: translateX(-35%); background: var(--spark, var(--tk-lime)); }
+  .tile.light .wordmark, .tile.lime .wordmark { --spark: var(--tk-graphite); }
+  .tile.light .wordmark { --spark: var(--tk-coral); }
 
   /* Palette */
   .swatches { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0; }
-  .sw { padding: var(--tw-space-4); min-height: 160px; display: flex; flex-direction: column; justify-content: space-between; font-family: var(--tw-font-mono); font-size: var(--tw-text-xs); }
-  .sw b { font-family: var(--tw-font-display); font-size: var(--tw-text-lg); font-weight: 700; }
+  .sw { padding: var(--tk-space-4); min-height: 160px; display: flex; flex-direction: column; justify-content: space-between; font-family: var(--tk-font-mono); font-size: var(--tk-text-xs); }
+  .sw b { font-family: var(--tk-font-display); font-size: var(--tk-text-lg); font-weight: 700; }
 
   /* Type specimen */
-  .spec { display: grid; gap: var(--tw-space-6); }
-  .spec .d { font-family: var(--tw-font-display); font-size: var(--tw-text-3xl); font-weight: 800; line-height: 0.95; letter-spacing: -0.03em; font-variation-settings: "wdth" 75; }
-  .spec .t { font-size: var(--tw-text-lg); max-width: 62ch; }
-  .spec .m { font-family: var(--tw-font-mono); font-size: var(--tw-text-sm); color: var(--scene); }
+  .spec { display: grid; gap: var(--tk-space-6); }
+  .spec .d { font-family: var(--tk-font-display); font-size: var(--tk-text-3xl); font-weight: 800; line-height: 0.95; letter-spacing: -0.03em; font-variation-settings: "wdth" 75; }
+  .spec .t { font-size: var(--tk-text-lg); max-width: 62ch; }
+  .spec .m { font-family: var(--tk-font-mono); font-size: var(--tk-text-sm); color: var(--scene); }
 
   /* Quality indicator: source vs delivered */
-  .q { display: inline-grid; grid-template-columns: auto auto; border: 1px solid var(--line); font-family: var(--tw-font-mono); font-size: var(--tw-text-xs); }
-  .q > div { padding: var(--tw-space-2) var(--tw-space-3); display: grid; gap: 2px; }
+  .q { display: inline-grid; grid-template-columns: auto auto; border: 1px solid var(--line); font-family: var(--tk-font-mono); font-size: var(--tk-text-xs); }
+  .q > div { padding: var(--tk-space-2) var(--tk-space-3); display: grid; gap: 2px; }
   .q .lab { color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.625rem; }
   .q .src { border-right: 1px solid var(--line); }
   .q .del.match { background: var(--accent); color: var(--on-accent); }
@@ -61,25 +61,25 @@
   .q .del.down::before { content: "↓ "; }
 
   /* Event card: not a rounded box */
-  .event { display: grid; grid-template-columns: 88px 1fr; border-top: 3px solid var(--scene); padding-top: var(--tw-space-4); gap: var(--tw-space-4); }
-  .event .date { font-family: var(--tw-font-display); font-weight: 800; font-size: var(--tw-text-3xl); line-height: 0.85; font-variation-settings: "wdth" 75; }
-  .event .date small { display: block; font-family: var(--tw-font-mono); font-size: var(--tw-text-xs); font-weight: 400; color: var(--text-muted); margin-top: var(--tw-space-2); }
-  .event h3 { font-size: var(--tw-text-xl); margin-bottom: var(--tw-space-2); }
-  .event p { color: var(--text-muted); font-size: var(--tw-text-sm); }
+  .event { display: grid; grid-template-columns: 88px 1fr; border-top: 3px solid var(--scene); padding-top: var(--tk-space-4); gap: var(--tk-space-4); }
+  .event .date { font-family: var(--tk-font-display); font-weight: 800; font-size: var(--tk-text-3xl); line-height: 0.85; font-variation-settings: "wdth" 75; }
+  .event .date small { display: block; font-family: var(--tk-font-mono); font-size: var(--tk-text-xs); font-weight: 400; color: var(--text-muted); margin-top: var(--tk-space-2); }
+  .event h3 { font-size: var(--tk-text-xl); margin-bottom: var(--tk-space-2); }
+  .event p { color: var(--text-muted); font-size: var(--tk-text-sm); }
 
   /* Buttons */
-  .btns { display: flex; gap: var(--tw-space-4); flex-wrap: wrap; align-items: center; }
-  .btn { font: 600 var(--tw-text-sm)/1 var(--tw-font-text); padding: 0.85rem 1.2rem; border: 0; cursor: pointer; border-radius: var(--tw-radius-0); transition: transform var(--tw-dur-press) var(--tw-ease-out), background-color var(--tw-dur-fast) ease; }
+  .btns { display: flex; gap: var(--tk-space-4); flex-wrap: wrap; align-items: center; }
+  .btn { font: 600 var(--tk-text-sm)/1 var(--tk-font-text); padding: 0.85rem 1.2rem; border: 0; cursor: pointer; border-radius: var(--tk-radius-0); transition: transform var(--tk-dur-press) var(--tk-ease-out), background-color var(--tk-dur-fast) ease; }
   .btn:active { transform: scale(0.97); }
   .btn:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
   .btn.primary { background: var(--accent); color: var(--on-accent); }
   .btn.ghost { background: transparent; color: var(--text); box-shadow: inset 0 0 0 1px var(--line); }
   @media (hover: hover) and (pointer: fine) { .btn.ghost:hover { box-shadow: inset 0 0 0 1px var(--text); } }
-  .play { width: 56px; height: 56px; border-radius: var(--tw-radius-pill); background: var(--accent); border: 0; display: grid; place-items: center; cursor: pointer; transition: transform var(--tw-dur-press) var(--tw-ease-out); }
+  .play { width: 56px; height: 56px; border-radius: var(--tk-radius-pill); background: var(--accent); border: 0; display: grid; place-items: center; cursor: pointer; transition: transform var(--tk-dur-press) var(--tk-ease-out); }
   .play:active { transform: scale(0.95); }
   .play:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
 
-  .theme-toggle { position: absolute; top: var(--tw-space-4); right: var(--tw-space-4); }
+  .theme-toggle { position: absolute; top: var(--tk-space-4); right: var(--tk-space-4); }
 </style>
 </head>
 <body>
@@ -103,17 +103,17 @@
           <svg class="mark" width="120" height="120" viewBox="0 0 64 64" aria-label="Tunewick symbol, koncepcja A">
             <rect x="4" y="9" width="30" height="9" fill="currentColor"/>
             <path d="M14.5 18 V55 L27 33 L38 55 L51 21" fill="none" stroke="currentColor" stroke-width="9" stroke-linejoin="miter" stroke-miterlimit="10"/>
-            <rect x="48" y="4" width="10" height="10" fill="var(--tw-lime)"/>
+            <rect x="48" y="4" width="10" height="10" fill="var(--tk-lime)"/>
           </svg>
           <svg class="mark" width="32" height="32" viewBox="0 0 64 64" aria-hidden="true">
             <rect x="4" y="9" width="30" height="9" fill="currentColor"/>
             <path d="M14.5 18 V55 L27 33 L38 55 L51 21" fill="none" stroke="currentColor" stroke-width="9" stroke-linejoin="miter" stroke-miterlimit="10"/>
-            <rect x="48" y="4" width="10" height="10" fill="var(--tw-lime)"/>
+            <rect x="48" y="4" width="10" height="10" fill="var(--tk-lime)"/>
           </svg>
           <svg class="mark" width="16" height="16" viewBox="0 0 64 64" aria-hidden="true">
             <rect x="4" y="9" width="30" height="9" fill="currentColor"/>
             <path d="M14.5 18 V55 L27 33 L38 55 L51 21" fill="none" stroke="currentColor" stroke-width="9" stroke-linejoin="miter" stroke-miterlimit="10"/>
-            <rect x="48" y="4" width="10" height="10" fill="var(--tw-lime)"/>
+            <rect x="48" y="4" width="10" height="10" fill="var(--tk-lime)"/>
           </svg>
         </div>
         <div>
@@ -127,17 +127,17 @@
           <svg class="mark" width="120" height="120" viewBox="0 0 64 64" aria-label="Tunewick symbol, koncepcja B">
             <rect x="3" y="6" width="34" height="10" fill="currentColor"/>
             <rect x="14" y="20" width="10" height="38" fill="currentColor"/>
-            <path d="M30.5 20 L36.5 55 L44.5 31 L52.5 55 L59.5 18" fill="none" stroke="var(--tw-coral)" stroke-width="7.5" stroke-miterlimit="10"/>
+            <path d="M30.5 20 L36.5 55 L44.5 31 L52.5 55 L59.5 18" fill="none" stroke="var(--tk-coral)" stroke-width="7.5" stroke-miterlimit="10"/>
           </svg>
           <svg class="mark" width="32" height="32" viewBox="0 0 64 64" aria-hidden="true">
             <rect x="3" y="6" width="34" height="10" fill="currentColor"/>
             <rect x="14" y="20" width="10" height="38" fill="currentColor"/>
-            <path d="M30.5 20 L36.5 55 L44.5 31 L52.5 55 L59.5 18" fill="none" stroke="var(--tw-coral)" stroke-width="7.5" stroke-miterlimit="10"/>
+            <path d="M30.5 20 L36.5 55 L44.5 31 L52.5 55 L59.5 18" fill="none" stroke="var(--tk-coral)" stroke-width="7.5" stroke-miterlimit="10"/>
           </svg>
           <svg class="mark" width="16" height="16" viewBox="0 0 64 64" aria-hidden="true">
             <rect x="3" y="6" width="34" height="10" fill="currentColor"/>
             <rect x="14" y="20" width="10" height="38" fill="currentColor"/>
-            <path d="M30.5 20 L36.5 55 L44.5 31 L52.5 55 L59.5 18" fill="none" stroke="var(--tw-coral)" stroke-width="7.5" stroke-miterlimit="10"/>
+            <path d="M30.5 20 L36.5 55 L44.5 31 L52.5 55 L59.5 18" fill="none" stroke="var(--tk-coral)" stroke-width="7.5" stroke-miterlimit="10"/>
           </svg>
         </div>
         <div>
@@ -153,7 +153,7 @@
         </div>
       </div>
     </div>
-    <div class="row c2" style="margin-top:var(--tw-space-6)">
+    <div class="row c2" style="margin-top:var(--tk-space-6)">
       <div class="tile"><div class="wordmark">tunew<span class="i">ı</span>ck</div><p class="note">Na grafitowym</p></div>
       <div class="tile light"><div class="wordmark">tunew<span class="i">ı</span>ck</div><p class="note">Na kości słoniowej — iskra koralowa</p></div>
     </div>
@@ -168,7 +168,7 @@
       <div class="sw" style="background:#FF5C5C;color:#171515"><b>Coral</b><span>#FF5C5C<br>„teraz / na żywo”<br>tekst: #B83232 na jasnym</span></div>
       <div class="sw" style="background:#7657FF;color:#F2EBDD"><b>Electric Purple</b><span>#7657FF<br>sceny, wydarzenia, graf<br>tekst: #9580FF / #5B3EF0</span></div>
     </div>
-    <p class="note" style="margin-top:var(--tw-space-4)">Purple #7657FF ma 3.96:1 z grafitem — tylko duże elementy / grafika. Do tekstu warianty z tokens.css.</p>
+    <p class="note" style="margin-top:var(--tk-space-4)">Purple #7657FF ma 3.96:1 z grafitem — tylko duże elementy / grafika. Do tekstu warianty z tokens.css.</p>
   </section>
 
   <section>
@@ -204,7 +204,7 @@
         <p class="note">Bez zaokrąglonych kart: fioletowa linia sceny, duża data, typografia robi hierarchię.</p>
       </div>
     </div>
-    <div class="btns" style="margin-top:var(--tw-space-8)">
+    <div class="btns" style="margin-top:var(--tk-space-8)">
       <button class="play" type="button" aria-label="Odtwórz"><svg width="18" height="20" viewBox="0 0 18 20"><path d="M0 0 L18 10 L0 20 Z" fill="var(--on-accent)"/></svg></button>
       <button class="btn primary" type="button">Byłem przy tym</button>
       <button class="btn ghost" type="button">Obserwuj artystę</button>

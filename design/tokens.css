@@ -6,105 +6,105 @@
 
 :root {
   /* ---------- Primitives: brand ---------- */
-  --tw-graphite: #171515;
-  --tw-ivory: #f2ebdd;
-  --tw-lime: #d8ff3e;
-  --tw-coral: #ff5c5c;
-  --tw-purple: #7657ff;
+  --tk-graphite: #171515;
+  --tk-ivory: #f2ebdd;
+  --tk-lime: #d8ff3e;
+  --tk-coral: #ff5c5c;
+  --tk-purple: #7657ff;
 
   /* Accessible text variants */
-  --tw-purple-light: #9580ff; /* on graphite 5.90 */
-  --tw-purple-deep: #5b3ef0; /* on ivory 5.22 */
-  --tw-coral-deep: #b83232; /* on ivory 5.00 */
-  --tw-lime-deep: #4e6600; /* on ivory 5.49 */
+  --tk-purple-light: #9580ff; /* on graphite 5.90 */
+  --tk-purple-deep: #5b3ef0; /* on ivory 5.22 */
+  --tk-coral-deep: #b83232; /* on ivory 5.00 */
+  --tk-lime-deep: #4e6600; /* on ivory 5.49 */
 
   /* Warm neutral ramp (graphite → ivory) */
-  --tw-n-950: #171515;
-  --tw-n-900: #1d1b1a;
-  --tw-n-800: #232020;
-  --tw-n-700: #2e2a2a;
-  --tw-n-600: #4a4542;
-  --tw-n-500: #6e6762; /* on ivory 4.68 */
-  --tw-n-400: #9a928a; /* on graphite 5.94 */
-  --tw-n-300: #c9c1b3; /* on graphite 10.19 */
-  --tw-n-200: #e2dacb;
-  --tw-n-100: #f2ebdd;
+  --tk-n-950: #171515;
+  --tk-n-900: #1d1b1a;
+  --tk-n-800: #232020;
+  --tk-n-700: #2e2a2a;
+  --tk-n-600: #4a4542;
+  --tk-n-500: #6e6762; /* on ivory 4.68 */
+  --tk-n-400: #9a928a; /* on graphite 5.94 */
+  --tk-n-300: #c9c1b3; /* on graphite 10.19 */
+  --tk-n-200: #e2dacb;
+  --tk-n-100: #f2ebdd;
 
   /* ---------- Typography ---------- */
-  --tw-font-display: "Bricolage Grotesque", "Instrument Sans", ui-sans-serif, sans-serif;
-  --tw-font-text: "Instrument Sans", ui-sans-serif, sans-serif;
-  --tw-font-mono: "Martian Mono", ui-monospace, monospace;
+  --tk-font-display: "Bricolage Grotesque", "Instrument Sans", ui-sans-serif, sans-serif;
+  --tk-font-text: "Instrument Sans", ui-sans-serif, sans-serif;
+  --tk-font-mono: "Martian Mono", ui-monospace, monospace;
 
   /* Type scale (fluid, 1.25 ratio at mobile → 1.333 at desktop) */
-  --tw-text-xs: 0.75rem;
-  --tw-text-sm: 0.875rem;
-  --tw-text-base: 1rem;
-  --tw-text-lg: 1.125rem;
-  --tw-text-xl: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
-  --tw-text-2xl: clamp(1.5rem, 1.2rem + 1.2vw, 2.25rem);
-  --tw-text-3xl: clamp(2rem, 1.4rem + 2.4vw, 3.5rem);
-  --tw-text-display: clamp(2.75rem, 1.6rem + 5vw, 6rem);
+  --tk-text-xs: 0.75rem;
+  --tk-text-sm: 0.875rem;
+  --tk-text-base: 1rem;
+  --tk-text-lg: 1.125rem;
+  --tk-text-xl: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+  --tk-text-2xl: clamp(1.5rem, 1.2rem + 1.2vw, 2.25rem);
+  --tk-text-3xl: clamp(2rem, 1.4rem + 2.4vw, 3.5rem);
+  --tk-text-display: clamp(2.75rem, 1.6rem + 5vw, 6rem);
 
   /* ---------- Space (4px base) ---------- */
-  --tw-space-1: 0.25rem;
-  --tw-space-2: 0.5rem;
-  --tw-space-3: 0.75rem;
-  --tw-space-4: 1rem;
-  --tw-space-6: 1.5rem;
-  --tw-space-8: 2rem;
-  --tw-space-12: 3rem;
-  --tw-space-16: 4rem;
-  --tw-space-24: 6rem;
+  --tk-space-1: 0.25rem;
+  --tk-space-2: 0.5rem;
+  --tk-space-3: 0.75rem;
+  --tk-space-4: 1rem;
+  --tk-space-6: 1.5rem;
+  --tk-space-8: 2rem;
+  --tk-space-12: 3rem;
+  --tk-space-16: 4rem;
+  --tk-space-24: 6rem;
 
   /* ---------- Shape: mostly square; radius is the exception ---------- */
-  --tw-radius-0: 0;
-  --tw-radius-1: 2px; /* inputs, chips */
-  --tw-radius-pill: 999px; /* only the play control and toggles */
+  --tk-radius-0: 0;
+  --tk-radius-1: 2px; /* inputs, chips */
+  --tk-radius-pill: 999px; /* only the play control and toggles */
 
   /* ---------- Motion ---------- */
-  --tw-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
-  --tw-ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
-  --tw-ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
-  --tw-dur-press: 140ms;
-  --tw-dur-fast: 180ms;
-  --tw-dur-base: 240ms;
-  --tw-dur-sheet: 380ms;
+  --tk-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --tk-ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --tk-ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+  --tk-dur-press: 140ms;
+  --tk-dur-fast: 180ms;
+  --tk-dur-base: 240ms;
+  --tk-dur-sheet: 380ms;
 }
 
 /* ---------- Semantic: dark (default) ---------- */
 :root,
 [data-theme="dark"] {
-  --bg: var(--tw-n-950);
-  --bg-raised: var(--tw-n-800);
-  --bg-sunken: var(--tw-n-900);
-  --line: var(--tw-n-700);
-  --text: var(--tw-ivory); /* 15.33 */
-  --text-muted: var(--tw-n-400); /* 5.94 */
-  --accent: var(--tw-lime); /* 15.84 */
-  --on-accent: var(--tw-graphite);
-  --signal: var(--tw-coral); /* 6.01 — live, now, alerts */
-  --scene: var(--tw-purple-light); /* 5.90 — events, scenes, graph */
-  --focus: var(--tw-lime);
+  --bg: var(--tk-n-950);
+  --bg-raised: var(--tk-n-800);
+  --bg-sunken: var(--tk-n-900);
+  --line: var(--tk-n-700);
+  --text: var(--tk-ivory); /* 15.33 */
+  --text-muted: var(--tk-n-400); /* 5.94 */
+  --accent: var(--tk-lime); /* 15.84 */
+  --on-accent: var(--tk-graphite);
+  --signal: var(--tk-coral); /* 6.01 — live, now, alerts */
+  --scene: var(--tk-purple-light); /* 5.90 — events, scenes, graph */
+  --focus: var(--tk-lime);
 }
 
 /* ---------- Semantic: light ---------- */
 [data-theme="light"] {
-  --bg: var(--tw-ivory);
+  --bg: var(--tk-ivory);
   --bg-raised: #f8f3e9;
-  --bg-sunken: var(--tw-n-200);
-  --line: var(--tw-n-300);
-  --text: var(--tw-graphite); /* 15.33 */
-  --text-muted: var(--tw-n-500); /* 4.68 */
-  --accent: var(--tw-graphite);
-  --on-accent: var(--tw-lime);
-  --signal: var(--tw-coral-deep); /* 5.00 */
-  --scene: var(--tw-purple-deep); /* 5.22 */
-  --focus: var(--tw-purple-deep);
+  --bg-sunken: var(--tk-n-200);
+  --line: var(--tk-n-300);
+  --text: var(--tk-graphite); /* 15.33 */
+  --text-muted: var(--tk-n-500); /* 4.68 */
+  --accent: var(--tk-graphite);
+  --on-accent: var(--tk-lime);
+  --signal: var(--tk-coral-deep); /* 5.00 */
+  --scene: var(--tk-purple-deep); /* 5.22 */
+  --focus: var(--tk-purple-deep);
 }
 
 @media (prefers-reduced-motion: reduce) {
   :root {
-    --tw-dur-press: 0ms;
-    --tw-dur-sheet: 120ms;
+    --tk-dur-press: 0ms;
+    --tk-dur-sheet: 120ms;
   }
 }

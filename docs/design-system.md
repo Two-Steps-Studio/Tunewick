@@ -36,20 +36,20 @@ performance, Tunewick wins. Examples in the skill are not copied as visual style
 
 | Token | Hex | Role |
 | --- | --- | --- |
-| `--tw-graphite` | `#171515` | base background (dark theme), text (light) |
-| `--tw-ivory` | `#F2EBDD` | text (dark), base background (light) |
-| `--tw-lime` | `#D8FF3E` | **the one action color**: play, primary action, the spark |
-| `--tw-coral` | `#FF5C5C` | "now / live": live events, currently playing marker, destructive |
-| `--tw-purple` | `#7657FF` | scenes, events, graph relations (large areas and graphics) |
+| `--tk-graphite` | `#171515` | base background (dark theme), text (light) |
+| `--tk-ivory` | `#F2EBDD` | text (dark), base background (light) |
+| `--tk-lime` | `#D8FF3E` | **the one action color**: play, primary action, the spark |
+| `--tk-coral` | `#FF5C5C` | "now / live": live events, currently playing marker, destructive |
+| `--tk-purple` | `#7657FF` | scenes, events, graph relations (large areas and graphics) |
 
 ### Accessible text variants
 
 | Token | Hex | Contrast | Use |
 | --- | --- | --- | --- |
-| `--tw-purple-light` | `#9580FF` | 5.90 on graphite | purple text on dark |
-| `--tw-purple-deep` | `#5B3EF0` | 5.22 on ivory | purple text on light |
-| `--tw-coral-deep` | `#B83232` | 5.00 on ivory | coral text on light |
-| `--tw-lime-deep` | `#4E6600` | 5.49 on ivory | lime-meaning text on light |
+| `--tk-purple-light` | `#9580FF` | 5.90 on graphite | purple text on dark |
+| `--tk-purple-deep` | `#5B3EF0` | 5.22 on ivory | purple text on light |
+| `--tk-coral-deep` | `#B83232` | 5.00 on ivory | coral text on light |
+| `--tk-lime-deep` | `#4E6600` | 5.49 on ivory | lime-meaning text on light |
 
 Measured contrast (WCAG 2.x): ivory/graphite 15.33, lime/graphite 15.84, coral/graphite 6.01,
 **purple/graphite 3.96 → not allowed for body text** (≥3:1 OK for large text and UI graphics),
@@ -135,13 +135,13 @@ Motion is subtle, quick and has a reason. Values from `design/tokens.css`:
 
 | Token | Value | Use |
 | --- | --- | --- |
-| `--tw-ease-out` | `cubic-bezier(0.23, 1, 0.32, 1)` | entering elements, press feedback |
-| `--tw-ease-in-out` | `cubic-bezier(0.77, 0, 0.175, 1)` | on-screen movement/morph |
-| `--tw-ease-drawer` | `cubic-bezier(0.32, 0.72, 0, 1)` | full player sheet, drawers |
-| `--tw-dur-press` | 140ms | `:active` scale(0.97) on pressables |
-| `--tw-dur-fast` | 180ms | popovers, menus, hovers |
-| `--tw-dur-base` | 240ms | panels, toasts |
-| `--tw-dur-sheet` | 380ms | full-screen player sheet |
+| `--tk-ease-out` | `cubic-bezier(0.23, 1, 0.32, 1)` | entering elements, press feedback |
+| `--tk-ease-in-out` | `cubic-bezier(0.77, 0, 0.175, 1)` | on-screen movement/morph |
+| `--tk-ease-drawer` | `cubic-bezier(0.32, 0.72, 0, 1)` | full player sheet, drawers |
+| `--tk-dur-press` | 140ms | `:active` scale(0.97) on pressables |
+| `--tk-dur-fast` | 180ms | popovers, menus, hovers |
+| `--tk-dur-base` | 240ms | panels, toasts |
+| `--tk-dur-sheet` | 380ms | full-screen player sheet |
 
 Rules (from `emil-design-eng`, adapted):
 1. **Frequency decides.** Things used hundreds of times (play/pause, next, keyboard shortcuts, queue reorder by keyboard) get no decorative animation — only instant state change and press feedback.
