@@ -16,7 +16,10 @@
     "format:check": "prettier --check ."
   },
   "devDependencies": {
+    "fontkit": "^2.0.4",
     "prettier": "^3.9.9",
-    "supabase": "^2.119.0"
+    "sharp": "^0.35.5",
+    "supabase": "^2.119.0",
+    "wawoff2": "^2.0.1"
   }
 }

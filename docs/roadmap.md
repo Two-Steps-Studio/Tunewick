@@ -10,7 +10,7 @@
 | - | ----- | ------ |
 | 0 | Repository & workflow setup | done except `main` branch protection (owner) |
 | 1 | Product audit & definition — [product.md](product.md) | direction approved; legal review open |
-| 2 | Brand & design system — [design-system.md](design-system.md) | v0.1 — logo A "Wick" chosen; final vector assets pending |
+| 2 | Brand & design system — [design-system.md](design-system.md) | v0.1 — logo A "Wick" final assets done |
 | 3 | Technical architecture — [architecture.md](architecture.md) | v0.1 — review |
 | 4 | Database & security — [database.md](database.md), [security.md](security.md) | v0.1 — review |
 | – | Licensing, audio, promotions, recommendations, API — [licensing.md](licensing.md), [audio.md](audio.md), [promotions.md](promotions.md), [recommendations.md](recommendations.md), [api.md](api.md) | v0.1 — review |

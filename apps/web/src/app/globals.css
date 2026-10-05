@@ -73,37 +73,24 @@ body {
     transform: none;
   }
 
-  .wordmark {
-    font-family: var(--tk-font-display);
-    font-weight: 800;
-    font-size: 1.75rem;
-    letter-spacing: -0.045em;
-    line-height: 1;
-    font-variation-settings:
-      "wdth" 85,
-      "opsz" 96;
-    white-space: nowrap;
+  /* Logo spark color rules: lime on graphite, coral on ivory (design-system.md §5). */
+  :root {
+    --spark: var(--tk-lime);
   }
-  .wordmark-i {
-    position: relative;
-  }
-  .wordmark-i::after {
-    content: "";
-    position: absolute;
-    left: 50%;
-    top: 0.02em;
-    width: 0.17em;
-    height: 0.17em;
-    transform: translateX(-35%);
-    background: var(--tk-lime);
-  }
-  :root[data-theme="light"] .wordmark-i::after {
-    background: var(--tk-coral);
+  :root[data-theme="light"] {
+    --spark: var(--tk-coral);
   }
   @media (prefers-color-scheme: light) {
-    :root:not([data-theme="dark"]) .wordmark-i::after {
-      background: var(--tk-coral);
+    :root:not([data-theme="dark"]) {
+      --spark: var(--tk-coral);
     }
+  }
+
+  .wordmark {
+    display: block;
+    height: 1.6rem;
+    width: auto;
+    color: var(--text);
   }
 
   .site-header {
