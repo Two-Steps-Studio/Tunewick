@@ -62,5 +62,14 @@ jobs:
           version: 2.119.0
       - run: supabase db start
       - run: supabase db reset --local
-      - run: supabase test db
+      - name: pgTAP tests
+        run: |
+          set -o pipefail
+          supabase test db 2>&1 | tee pgtap.log || {
+            # Surface failing assertions as annotations (visible without signing in).
+            grep -E "not ok|^#|ERROR|psql:" pgtap.log | head -40 | while IFS= read -r line; do
+              echo "::error title=pgTAP::$line"
+            done
+            exit 1
+          }
       - run: supabase db lint --local --fail-on error
