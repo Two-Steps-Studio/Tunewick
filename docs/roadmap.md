@@ -4,8 +4,8 @@
 
 | # | Phase | Status |
 | - | ----- | ------ |
-| 0 | Repository & workflow setup | in progress |
-| 1 | Product audit & definition | not started |
+| 0 | Repository & workflow setup | in progress (branch protection pending) |
+| 1 | Product audit & definition | draft — awaiting owner approval |
 | 2 | Brand & design system | not started |
 | 3 | Technical architecture | not started |
 | 4 | Database & security | not started |
