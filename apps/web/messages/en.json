@@ -47,5 +47,73 @@
   },
   "Status": {
     "inDevelopment": "In development"
+  },
+  "Account": {
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "signedInAs": "Signed in as {name}"
+  },
+  "Auth": {
+    "fields": {
+      "email": "Email",
+      "password": "Password",
+      "newPassword": "New password",
+      "confirmPassword": "Repeat password",
+      "displayName": "Display name (optional)",
+      "ageConfirmed": "I am at least 16 years old"
+    },
+    "hints": {
+      "password": "At least 10 characters."
+    },
+    "login": {
+      "title": "Sign in",
+      "lead": "Back to your scene.",
+      "submit": "Sign in",
+      "noAccount": "No account yet?",
+      "toSignup": "Create an account",
+      "forgot": "Forgot your password?"
+    },
+    "signup": {
+      "title": "Create an account",
+      "lead": "Discover independent music and local scenes.",
+      "submit": "Create account",
+      "haveAccount": "Already have an account?",
+      "toLogin": "Sign in"
+    },
+    "reset": {
+      "title": "Forgot your password?",
+      "lead": "Enter your account email. We will send a link to set a new password.",
+      "submit": "Send link",
+      "back": "Back to sign in"
+    },
+    "update": {
+      "title": "Set a new password",
+      "lead": "Choose a new password for your account.",
+      "submit": "Save password",
+      "expired": "The password link has expired or was already used.",
+      "requestNew": "Request a new link"
+    },
+    "checkEmail": {
+      "title": "Check your email",
+      "signup": "If the address is valid, we sent it a link to confirm your account. Click it to finish signing up.",
+      "reset": "If an account with this address exists, we sent it a link to set a new password.",
+      "back": "Back to sign in"
+    },
+    "errors": {
+      "invalidEmail": "Enter a valid email address.",
+      "passwordTooShort": "The password must have at least 10 characters.",
+      "passwordTooLong": "The password can have at most 72 characters.",
+      "passwordRequired": "Enter your password.",
+      "passwordMismatch": "The passwords do not match.",
+      "displayNameTooLong": "The name can have at most 80 characters.",
+      "ageRequired": "You must be at least 16 to create an account.",
+      "invalidCredentials": "Wrong email or password.",
+      "emailNotConfirmed": "Confirm your email first — the link is in our message.",
+      "weakPassword": "This password is too easy to guess. Choose another one.",
+      "samePassword": "The new password must differ from the current one.",
+      "rateLimited": "Too many attempts. Try again in a few minutes.",
+      "linkInvalid": "The link is invalid or has expired.",
+      "unexpected": "Something went wrong. Please try again."
+    }
   }
 }

@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
+import { getOptionalUser, SignOutButton } from "@/modules/auth";
 import { LocaleSwitcher } from "./locale-switcher";
 import { MainNav } from "./main-nav";
 import { PlayerBar } from "./player-bar";
@@ -7,6 +8,8 @@ import { Wordmark } from "./wordmark";
 
 export async function AppShell({ children }: { children: React.ReactNode }) {
   const t = await getTranslations("Shell");
+  const tAccount = await getTranslations("Account");
+  const user = await getOptionalUser();
 
   return (
     <>
@@ -18,7 +21,16 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
           <Wordmark />
         </Link>
         <MainNav variant="top" />
-        <LocaleSwitcher />
+        <div className="site-header__actions">
+          {user ? (
+            <SignOutButton />
+          ) : (
+            <Link href="/login" className="button button--quiet">
+              {tAccount("signIn")}
+            </Link>
+          )}
+          <LocaleSwitcher />
+        </div>
       </header>
       <main id="main" tabIndex={-1} className="site-main">
         {children}

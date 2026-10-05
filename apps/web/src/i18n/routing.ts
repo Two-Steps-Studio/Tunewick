@@ -9,6 +9,11 @@ export const routing = defineRouting({
     "/scene": { pl: "/scena", en: "/scene" },
     "/search": { pl: "/szukaj", en: "/search" },
     "/library": { pl: "/biblioteka", en: "/library" },
+    "/login": { pl: "/logowanie", en: "/login" },
+    "/signup": { pl: "/rejestracja", en: "/signup" },
+    "/reset-password": { pl: "/reset-hasla", en: "/reset-password" },
+    "/update-password": { pl: "/nowe-haslo", en: "/new-password" },
+    "/check-email": { pl: "/sprawdz-poczte", en: "/check-email" },
   },
 });
 

@@ -22,6 +22,9 @@
 - Sessions: HTTP-only, `Secure`, `SameSite=Lax` cookies; refresh token rotation; server validates the session on every request with `getUser()`, not only by decoding the cookie.
 - MFA (TOTP) **required** for `moderator` and `admin` roles; available to artists.
 - Login rate limiting per IP and per account; generic error messages (no account enumeration).
+- **No account enumeration (implemented in M1.2):** sign-up and password-reset requests return the same page for new, existing and unknown addresses. Errors only an existing address can trigger ("already exists", the per-address email resend limit) are treated like success; only IP-wide rate limits are shown. Covered by E2E tests.
+- **Email links** (confirmation, recovery) use `token_hash` links to `/api/auth/confirm` (`verifyOtp`), so they work when opened in another browser. Templates: `supabase/templates/*.html` — the same templates and `secure_password_change` must be configured in the production Supabase project (M0.5). Redirect targets after a link are whitelisted.
+- After a password change all other sessions are signed out.
 
 ## 3. Authorization
 

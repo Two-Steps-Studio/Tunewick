@@ -47,5 +47,73 @@
   },
   "Status": {
     "inDevelopment": "W budowie"
+  },
+  "Account": {
+    "signIn": "Zaloguj się",
+    "signOut": "Wyloguj",
+    "signedInAs": "Zalogowano jako {name}"
+  },
+  "Auth": {
+    "fields": {
+      "email": "E-mail",
+      "password": "Hasło",
+      "newPassword": "Nowe hasło",
+      "confirmPassword": "Powtórz hasło",
+      "displayName": "Nazwa wyświetlana (opcjonalnie)",
+      "ageConfirmed": "Mam co najmniej 16 lat"
+    },
+    "hints": {
+      "password": "Co najmniej 10 znaków."
+    },
+    "login": {
+      "title": "Zaloguj się",
+      "lead": "Wróć do swojej sceny.",
+      "submit": "Zaloguj się",
+      "noAccount": "Nie masz konta?",
+      "toSignup": "Załóż konto",
+      "forgot": "Nie pamiętasz hasła?"
+    },
+    "signup": {
+      "title": "Załóż konto",
+      "lead": "Odkrywaj niezależną muzykę i lokalne sceny.",
+      "submit": "Załóż konto",
+      "haveAccount": "Masz już konto?",
+      "toLogin": "Zaloguj się"
+    },
+    "reset": {
+      "title": "Nie pamiętasz hasła?",
+      "lead": "Podaj e-mail konta. Wyślemy link do ustawienia nowego hasła.",
+      "submit": "Wyślij link",
+      "back": "Wróć do logowania"
+    },
+    "update": {
+      "title": "Ustaw nowe hasło",
+      "lead": "Wybierz nowe hasło do swojego konta.",
+      "submit": "Zapisz hasło",
+      "expired": "Link do zmiany hasła wygasł lub został już użyty.",
+      "requestNew": "Poproś o nowy link"
+    },
+    "checkEmail": {
+      "title": "Sprawdź pocztę",
+      "signup": "Jeśli adres jest poprawny, wysłaliśmy na niego link do potwierdzenia konta. Kliknij go, aby dokończyć rejestrację.",
+      "reset": "Jeśli konto o tym adresie istnieje, wysłaliśmy na nie link do ustawienia nowego hasła.",
+      "back": "Wróć do logowania"
+    },
+    "errors": {
+      "invalidEmail": "Podaj poprawny adres e-mail.",
+      "passwordTooShort": "Hasło musi mieć co najmniej 10 znaków.",
+      "passwordTooLong": "Hasło może mieć najwyżej 72 znaki.",
+      "passwordRequired": "Podaj hasło.",
+      "passwordMismatch": "Hasła nie są takie same.",
+      "displayNameTooLong": "Nazwa może mieć najwyżej 80 znaków.",
+      "ageRequired": "Aby założyć konto, musisz mieć co najmniej 16 lat.",
+      "invalidCredentials": "Nieprawidłowy e-mail lub hasło.",
+      "emailNotConfirmed": "Najpierw potwierdź adres e-mail — link jest w wiadomości od nas.",
+      "weakPassword": "To hasło jest zbyt łatwe do odgadnięcia. Wybierz inne.",
+      "samePassword": "Nowe hasło musi być inne niż obecne.",
+      "rateLimited": "Zbyt wiele prób. Spróbuj ponownie za kilka minut.",
+      "linkInvalid": "Link jest nieprawidłowy lub wygasł.",
+      "unexpected": "Coś poszło nie tak. Spróbuj ponownie."
+    }
   }
 }
