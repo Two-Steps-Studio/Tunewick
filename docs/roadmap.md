@@ -8,7 +8,7 @@
 | 1 | Product audit & definition | direction approved; legal review open |
 | 2 | Brand & design system | v0.1 proposal — logo choice pending |
 | 3 | Technical architecture | v0.1 proposal — review |
-| 4 | Database & security | not started |
+| 4 | Database & security | design v0.1 — review |
 | 5 | Authentication | not started |
 | 6 | Music catalog | not started |
 | 7 | Audio pipeline & streaming | not started |
