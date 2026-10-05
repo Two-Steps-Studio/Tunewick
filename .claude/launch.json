@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "brand-board",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["-y", "serve", "design", "-l", "4173"],
+      "port": 4173
+    }
+  ]
+}

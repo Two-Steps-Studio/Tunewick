@@ -6,7 +6,7 @@
 | - | ----- | ------ |
 | 0 | Repository & workflow setup | in progress (branch protection pending) |
 | 1 | Product audit & definition | direction approved; legal review open |
-| 2 | Brand & design system | not started |
+| 2 | Brand & design system | v0.1 proposal — logo choice pending |
 | 3 | Technical architecture | not started |
 | 4 | Database & security | not started |
 | 5 | Authentication | not started |
