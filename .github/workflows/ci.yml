@@ -87,3 +87,17 @@ jobs:
             exit 1
           }
       - run: supabase db lint --local --fail-on error
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Generated types are up to date
+        run: |
+          supabase gen types typescript --local --schema public > packages/shared/src/database.types.ts
+          pnpm exec prettier --write packages/shared/src/database.types.ts
+          git diff --exit-code -- packages/shared/src/database.types.ts || {
+            echo "::error title=database types::Run pnpm db:types and commit the result."
+            exit 1
+          }

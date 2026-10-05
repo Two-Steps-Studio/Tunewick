@@ -13,7 +13,11 @@
     "test": "pnpm -r --if-present test",
     "e2e": "pnpm --filter @tunewick/web e2e",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "db:start": "supabase start -x storage-api,imgproxy,realtime,edge-runtime,logflare,vector,supavisor",
+    "db:reset": "supabase db reset --local",
+    "db:test": "supabase test db",
+    "db:types": "supabase gen types typescript --local --schema public > packages/shared/src/database.types.ts && prettier --write packages/shared/src/database.types.ts"
   },
   "devDependencies": {
     "fontkit": "^2.0.4",
