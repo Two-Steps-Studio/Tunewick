@@ -43,6 +43,8 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
+      - name: No server secrets in the client bundle
+        run: pnpm check:client-bundle
 
   e2e:
     name: e2e
@@ -55,6 +57,9 @@ jobs:
           node-version-file: .nvmrc
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - name: Start local Supabase (Postgres + Auth)
+        run: pnpm db:start
+      - run: pnpm db:env
       - run: pnpm --filter @tunewick/web build
       - run: pnpm --filter @tunewick/web exec playwright install --with-deps chromium
       - run: pnpm e2e

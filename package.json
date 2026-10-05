@@ -17,7 +17,9 @@
     "db:start": "supabase start -x storage-api,imgproxy,realtime,edge-runtime,logflare,vector,supavisor",
     "db:reset": "supabase db reset --local",
     "db:test": "supabase test db",
-    "db:types": "supabase gen types typescript --local --schema public > packages/shared/src/database.types.ts && prettier --write packages/shared/src/database.types.ts"
+    "db:types": "supabase gen types typescript --local --schema public > packages/shared/src/database.types.ts && prettier --write packages/shared/src/database.types.ts",
+    "db:env": "node scripts/write-local-env.mjs",
+    "check:client-bundle": "node scripts/check-client-bundle.mjs"
   },
   "devDependencies": {
     "fontkit": "^2.0.4",
