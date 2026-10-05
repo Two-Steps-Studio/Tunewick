@@ -102,6 +102,23 @@
   --focus: var(--tk-purple-deep);
 }
 
+/* System preference applies unless the user picked a theme explicitly. */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: var(--tk-ivory);
+    --bg-raised: #f8f3e9;
+    --bg-sunken: var(--tk-n-200);
+    --line: var(--tk-n-300);
+    --text: var(--tk-graphite); /* 15.33 */
+    --text-muted: var(--tk-n-500); /* 4.68 */
+    --accent: var(--tk-graphite);
+    --on-accent: var(--tk-lime);
+    --signal: var(--tk-coral-deep); /* 5.00 */
+    --scene: var(--tk-purple-deep); /* 5.22 */
+    --focus: var(--tk-purple-deep);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   :root {
     --tk-dur-press: 0ms;

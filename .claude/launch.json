@@ -2,6 +2,12 @@
   "version": "0.0.1",
   "configurations": [
     {
+      "name": "web",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "@tunewick/web", "start", "--port", "3000"],
+      "port": 3000
+    },
+    {
       "name": "brand-board",
       "runtimeExecutable": "npx",
       "runtimeArgs": ["-y", "serve", "design", "-l", "4173"],

@@ -1,0 +1,51 @@
+{
+  "Meta": {
+    "title": "Tunewick",
+    "description": "Discover more, listen better, connect deeper."
+  },
+  "Shell": {
+    "skipToContent": "Skip to content",
+    "mainNav": "Main navigation",
+    "home": "Tunewick home",
+    "language": "Language",
+    "switchTo": "Polski"
+  },
+  "Nav": {
+    "discover": "Discover",
+    "scene": "Scene",
+    "search": "Search",
+    "library": "Library"
+  },
+  "Player": {
+    "region": "Player",
+    "idle": "Nothing is playing.",
+    "idleHint": "Playback arrives with the first releases."
+  },
+  "Discover": {
+    "title": "Discover",
+    "lead": "Independent music, local scenes and gigs — with context, not an endless feed.",
+    "empty": "There is nothing to discover yet. The first artists join in the closed beta in Silesia and GZM."
+  },
+  "Scene": {
+    "title": "Scene",
+    "lead": "Gigs, clubs and venues around you.",
+    "empty": "No events yet. We will only show real events added by artists and venues."
+  },
+  "Search": {
+    "title": "Search",
+    "lead": "Artists, releases, tracks, playlists and events.",
+    "empty": "Search goes live once there is music in the catalog."
+  },
+  "Library": {
+    "title": "Library",
+    "lead": "Liked tracks, releases, playlists and listening history.",
+    "empty": "Your library will be available after signing in. Accounts are coming soon."
+  },
+  "NotFound": {
+    "title": "This page does not exist",
+    "back": "Back to home"
+  },
+  "Status": {
+    "inDevelopment": "In development"
+  }
+}

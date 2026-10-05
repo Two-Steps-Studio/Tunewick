@@ -1,15 +1,5 @@
-import type { Metadata } from "next";
-import "./globals.css";
-
-export const metadata: Metadata = {
-  title: "Tunewick",
-  description: "Discover more, listen better, connect deeper.",
-};
-
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return (
-    <html lang="pl" data-theme="dark">
-      <body>{children}</body>
-    </html>
-  );
+// The real root layout lives in [locale]/layout.tsx; this one only passes children through
+// so that app/not-found.tsx can render for requests outside any locale.
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return children;
 }

@@ -1,0 +1,51 @@
+{
+  "Meta": {
+    "title": "Tunewick",
+    "description": "Odkrywaj więcej, słuchaj lepiej, bądź bliżej sceny."
+  },
+  "Shell": {
+    "skipToContent": "Przejdź do treści",
+    "mainNav": "Nawigacja główna",
+    "home": "Strona główna Tunewick",
+    "language": "Język",
+    "switchTo": "English"
+  },
+  "Nav": {
+    "discover": "Odkrywaj",
+    "scene": "Scena",
+    "search": "Szukaj",
+    "library": "Biblioteka"
+  },
+  "Player": {
+    "region": "Odtwarzacz",
+    "idle": "Nic teraz nie gra.",
+    "idleHint": "Odtwarzanie pojawi się razem z pierwszymi wydawnictwami."
+  },
+  "Discover": {
+    "title": "Odkrywaj",
+    "lead": "Muzyka niezależna, lokalne sceny i koncerty — z kontekstem, nie z nieskończonego feedu.",
+    "empty": "Nie ma tu jeszcze nic do odkrycia. Pierwsi artyści dołączą w zamkniętej becie na Śląsku i w GZM."
+  },
+  "Scene": {
+    "title": "Scena",
+    "lead": "Koncerty, kluby i miejsca w Twojej okolicy.",
+    "empty": "Nie ma jeszcze wydarzeń. Pokażemy tylko prawdziwe wydarzenia dodane przez artystów i miejsca."
+  },
+  "Search": {
+    "title": "Szukaj",
+    "lead": "Artyści, wydawnictwa, utwory, playlisty i wydarzenia.",
+    "empty": "Wyszukiwarka ruszy, gdy w katalogu pojawi się muzyka."
+  },
+  "Library": {
+    "title": "Biblioteka",
+    "lead": "Polubione utwory, wydawnictwa, playlisty i historia słuchania.",
+    "empty": "Biblioteka będzie dostępna po zalogowaniu. Konta uruchomimy wkrótce."
+  },
+  "NotFound": {
+    "title": "Nie ma takiej strony",
+    "back": "Wróć na stronę główną"
+  },
+  "Status": {
+    "inDevelopment": "W budowie"
+  }
+}

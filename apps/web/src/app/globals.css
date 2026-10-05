@@ -45,3 +45,283 @@ body {
   outline: 2px solid var(--focus);
   outline-offset: 3px;
 }
+
+/* next/font provides hashed family names; route the design tokens through them. */
+:root {
+  --tk-font-display: var(--font-bricolage), ui-sans-serif, sans-serif;
+  --tk-font-text: var(--font-instrument), ui-sans-serif, sans-serif;
+  --tk-font-mono: var(--font-martian), ui-monospace, monospace;
+  --shell-bar-h: 3.5rem;
+}
+
+/* ------------------------------------------------------------------ */
+/* Shell — docs/design-system.md §6–7                                  */
+/* ------------------------------------------------------------------ */
+@layer components {
+  .skip-link {
+    position: absolute;
+    left: var(--tk-space-4);
+    top: var(--tk-space-2);
+    z-index: 50;
+    padding: var(--tk-space-2) var(--tk-space-4);
+    background: var(--accent);
+    color: var(--on-accent);
+    font-weight: 600;
+    transform: translateY(-200%);
+  }
+  .skip-link:focus-visible {
+    transform: none;
+  }
+
+  .wordmark {
+    font-family: var(--tk-font-display);
+    font-weight: 800;
+    font-size: 1.75rem;
+    letter-spacing: -0.045em;
+    line-height: 1;
+    font-variation-settings:
+      "wdth" 85,
+      "opsz" 96;
+    white-space: nowrap;
+  }
+  .wordmark-i {
+    position: relative;
+  }
+  .wordmark-i::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 0.02em;
+    width: 0.17em;
+    height: 0.17em;
+    transform: translateX(-35%);
+    background: var(--tk-lime);
+  }
+  :root[data-theme="light"] .wordmark-i::after {
+    background: var(--tk-coral);
+  }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) .wordmark-i::after {
+      background: var(--tk-coral);
+    }
+  }
+
+  .site-header {
+    display: flex;
+    align-items: center;
+    gap: var(--tk-space-8);
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: var(--tk-space-4);
+    border-bottom: 1px solid var(--line);
+  }
+  .site-header__home {
+    margin-right: auto;
+  }
+  @media (min-width: 1024px) {
+    .site-header__home {
+      margin-right: 0;
+    }
+    .site-header .locale-switcher {
+      margin-left: auto;
+    }
+  }
+
+  .main-nav ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .main-nav__link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--tk-space-2);
+    color: var(--text-muted);
+    transition:
+      transform var(--tk-dur-press) var(--tk-ease-out),
+      color var(--tk-dur-fast) ease;
+  }
+  .main-nav__link:active {
+    transform: scale(0.97);
+  }
+  .main-nav__link[aria-current="page"] {
+    color: var(--text);
+  }
+  /* The brand spark marks where you are. */
+  .main-nav__link::before {
+    content: "";
+    width: 0.4rem;
+    height: 0.4rem;
+    background: transparent;
+  }
+  .main-nav__link[aria-current="page"]::before {
+    background: var(--accent);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .main-nav__link:hover {
+      color: var(--text);
+    }
+  }
+
+  .main-nav--top {
+    display: none;
+  }
+  @media (min-width: 1024px) {
+    .main-nav--top {
+      display: block;
+    }
+    .main-nav--top ul {
+      gap: var(--tk-space-6);
+    }
+    .main-nav--top .main-nav__link {
+      font-family: var(--tk-font-display);
+      font-weight: 700;
+      font-size: var(--tk-text-lg);
+      letter-spacing: -0.01em;
+      padding-block: var(--tk-space-2);
+    }
+  }
+
+  .main-nav--bottom ul {
+    justify-content: space-between;
+  }
+  .main-nav--bottom li {
+    flex: 1;
+  }
+  .main-nav--bottom .main-nav__link {
+    width: 100%;
+    min-height: 3rem;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--tk-space-1);
+    font-size: var(--tk-text-xs);
+    font-weight: 600;
+  }
+  @media (min-width: 1024px) {
+    .main-nav--bottom {
+      display: none;
+    }
+  }
+
+  .locale-switcher {
+    font-family: var(--tk-font-mono);
+    font-size: var(--tk-text-xs);
+    letter-spacing: 0.08em;
+    padding: var(--tk-space-2) var(--tk-space-3);
+    box-shadow: inset 0 0 0 1px var(--line);
+    transition: transform var(--tk-dur-press) var(--tk-ease-out);
+  }
+  .locale-switcher:active {
+    transform: scale(0.97);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .locale-switcher:hover {
+      box-shadow: inset 0 0 0 1px var(--text);
+    }
+  }
+
+  .site-main {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: var(--tk-space-8) var(--tk-space-4)
+      calc(var(--shell-bar-h) * 2 + var(--tk-space-12) + env(safe-area-inset-bottom));
+    outline: none;
+  }
+  @media (min-width: 1024px) {
+    .site-main {
+      padding-bottom: calc(var(--shell-bar-h) + var(--tk-space-16));
+    }
+  }
+
+  .site-bottom {
+    position: fixed;
+    inset: auto 0 0 0;
+    z-index: 40;
+    background: var(--bg);
+    border-top: 1px solid var(--line);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .player-bar {
+    display: flex;
+    align-items: center;
+    gap: var(--tk-space-3);
+    min-height: var(--shell-bar-h);
+    padding: 0 var(--tk-space-4);
+    border-bottom: 1px solid var(--line);
+  }
+  @media (min-width: 1024px) {
+    .player-bar {
+      border-bottom: 0;
+    }
+  }
+  .player-bar__spark {
+    flex: none;
+    width: 0.5rem;
+    height: 0.5rem;
+    box-shadow: inset 0 0 0 1px var(--text-muted);
+  }
+  .player-bar__text {
+    min-width: 0;
+    font-family: var(--tk-font-mono);
+    font-size: var(--tk-text-xs);
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .player-bar__hint {
+    display: none;
+  }
+  @media (min-width: 768px) {
+    .player-bar__hint {
+      display: inline;
+    }
+  }
+
+  .page-intro {
+    display: grid;
+    gap: var(--tk-space-12);
+  }
+  @media (min-width: 1024px) {
+    .page-intro {
+      grid-template-columns: 2fr 1fr;
+      align-items: end;
+      gap: var(--tk-space-16);
+      padding-top: var(--tk-space-16);
+    }
+  }
+  .page-intro__title {
+    font-family: var(--tk-font-display);
+    font-size: var(--tk-text-display);
+    font-weight: 800;
+    line-height: 0.9;
+    letter-spacing: -0.035em;
+    font-variation-settings:
+      "wdth" 75,
+      "opsz" 96;
+  }
+  .page-intro__lead {
+    margin-top: var(--tk-space-6);
+    max-width: 40ch;
+    font-size: var(--tk-text-xl);
+    line-height: 1.35;
+  }
+  .page-intro__empty {
+    display: grid;
+    gap: var(--tk-space-3);
+    padding-top: var(--tk-space-4);
+    border-top: 3px solid var(--scene);
+    color: var(--text-muted);
+    max-width: 40ch;
+  }
+  .page-intro__status {
+    font-family: var(--tk-font-mono);
+    font-size: var(--tk-text-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--scene);
+  }
+}
