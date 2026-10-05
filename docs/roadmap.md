@@ -1,36 +1,49 @@
 # Roadmap
 
-> Phases are tracked as tasks in Guidon (source of truth). This file is the high-level overview.
+> Phases and milestones are tracked as tasks in Guidon (source of truth). This file is the
+> overview. Detailed implementation tasks for a phase are created in Guidon when the phase
+> starts, so they reflect what was learned before.
+
+## Planning phases
 
 | # | Phase | Status |
 | - | ----- | ------ |
-| 0 | Repository & workflow setup | in progress (branch protection pending) |
-| 1 | Product audit & definition | direction approved; legal review open |
-| 2 | Brand & design system | v0.1 proposal — logo choice pending |
-| 3 | Technical architecture | v0.1 proposal — review |
-| 4 | Database & security | design v0.1 — review |
-| 5 | Authentication | not started |
-| 6 | Music catalog | not started |
-| 7 | Audio pipeline & streaming | not started |
-| 8 | Player & queue | not started |
-| 9 | Library & playlists | not started |
-| 10 | Search & discovery | not started |
-| 11 | Recommendations | not started |
-| 12 | Artists & Music Graph | not started |
-| 13 | Community & events | not started |
-| 14 | Payments & subscriptions | not started |
-| 15 | Promotions & promo codes | not started |
-| 16 | Admin & moderation | not started |
-| 17 | Performance & observability | not started |
-| 18 | Testing, security & launch | not started |
+| 0 | Repository & workflow setup | done except `main` branch protection (owner) |
+| 1 | Product audit & definition — [product.md](product.md) | direction approved; legal review open |
+| 2 | Brand & design system — [design-system.md](design-system.md) | v0.1 — logo choice pending |
+| 3 | Technical architecture — [architecture.md](architecture.md) | v0.1 — review |
+| 4 | Database & security — [database.md](database.md), [security.md](security.md) | v0.1 — review |
+| – | Licensing, audio, promotions, recommendations, API — [licensing.md](licensing.md), [audio.md](audio.md), [promotions.md](promotions.md), [recommendations.md](recommendations.md), [api.md](api.md) | v0.1 — review |
 
-## Decisions so far (2026-10-05)
+## Implementation milestones (MVP → closed GZM beta)
 
-- **MVP content source:** independent artists upload their own music and declare rights.
-  Commercial label catalog is out of MVP scope.
-- **Initial stack to evaluate in Phase 3:** Next.js + TypeScript, Supabase (Postgres/RLS/Auth/Storage), Vercel.
-  Audio storage/CDN and transcoding worker to be decided in Phase 3/7.
-- **Documentation language:** English. Code and commits in English.
-- **Premium in MVP:** Free = full catalog in High (lossy); Premium = Lossless/Hi-Res. No card payments in MVP — Premium via promo codes and beta.
-- **Artist payouts (future paid plans):** user-centric.
-- **Launch:** closed beta in GZM (~30–50 artists, 5–10 venues), then public beta.
+| Milestone | Master Prompt phase | Content | Depends on |
+| --- | --- | --- | --- |
+| **M0 Foundations** | 3 | Monorepo scaffold, CI, Supabase local + migrations + pgTAP, app shell with tokens/fonts/i18n, environments | planning docs |
+| **M1 Auth & profiles** | 5 | Signup/login/logout/reset, profiles, roles, consents, age confirmation, beta invite gate | M0 |
+| **M2 Catalog & artist onboarding** | 6 | Artists, membership, verification request, releases/tracks/credits/genres, rights declaration, artwork | M1 |
+| **M3 Audio pipeline & streaming** | 7 | Playback spike → worker ingest (validate/analyse/loudness/fingerprint/transcode/package), R2 buckets, media edge, playback tokens | M2 |
+| **M4 Player & queue** | 8 | Player engine (MSE/native strategies), queue, shuffle/repeat, volume, quality selection + indicator, gapless, normalization, crossfade, persistence | M3 |
+| **M5 Library & playlists** | 9 | Likes, history, playlists CRUD/reorder/play | M4 |
+| **M6 Search & discovery** | 10–11 | Search (FTS + trigram, PL unaccent), home surfaces with reasons, related artists/tracks, smart shuffle | M5 |
+| **M7 Artists & Music Graph** | 12 | Artist pages/discography/follow, credits graph, `graph_edges` derivation | M2, M6 |
+| **M8 Community & events** | 13 | Cities/venues/events/lineups, "Byłem przy tym", follows, activity, privacy settings | M7 |
+| **M9 Entitlements & promotions** | 15 | Plans/entitlements, Premium gating of tiers, promo redemption, admin campaigns/codes/batches | M1 (can run parallel to M4+) |
+| **M10 Admin & moderation** | 16 | Moderation queues, reports, takedowns, verification review, audit viewer, flags | M2 |
+| **M11 Performance & observability** | 17 | Sentry, telemetry, budgets, query review, caching | ongoing |
+| **M12 Closed beta readiness** | 18 | Security review/pentest, legal items closed, GDPR flows, seeding GZM artists/venues, launch checklist | all |
+
+Payments & subscriptions (Phase 14) are **after** the closed beta (decision D3).
+
+## Decisions log
+
+| Date | Decision |
+| --- | --- |
+| 2026-10-05 | MVP content = independent artists upload and declare rights; no label catalog. |
+| 2026-10-05 | Stack: Next.js + TypeScript, Supabase (EU), Vercel; media on Cloudflare R2 + Worker; Python audio worker (architecture.md). |
+| 2026-10-05 | Docs, Guidon tasks, code and commits in English; owner communication in Polish. |
+| 2026-10-05 | Free = full catalog in High; Premium = Lossless/Hi-Res. No listening restrictions on Free. |
+| 2026-10-05 | No card payments in MVP; Premium via promo codes/beta. |
+| 2026-10-05 | Artist payouts (future): user-centric. |
+| 2026-10-05 | Launch: closed GZM beta (~30–50 artists, 5–10 venues), then public beta. |
+| 2026-10-05 | Proposed (pending owner): reject lossy uploads for releases (audio.md §2.1). |
