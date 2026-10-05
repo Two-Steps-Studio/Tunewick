@@ -10,7 +10,7 @@
 | - | ----- | ------ |
 | 0 | Repository & workflow setup | done except `main` branch protection (owner) |
 | 1 | Product audit & definition — [product.md](product.md) | direction approved; legal review open |
-| 2 | Brand & design system — [design-system.md](design-system.md) | v0.1 — logo choice pending |
+| 2 | Brand & design system — [design-system.md](design-system.md) | v0.1 — logo A "Wick" chosen; final vector assets pending |
 | 3 | Technical architecture — [architecture.md](architecture.md) | v0.1 — review |
 | 4 | Database & security — [database.md](database.md), [security.md](security.md) | v0.1 — review |
 | – | Licensing, audio, promotions, recommendations, API — [licensing.md](licensing.md), [audio.md](audio.md), [promotions.md](promotions.md), [recommendations.md](recommendations.md), [api.md](api.md) | v0.1 — review |
@@ -46,4 +46,7 @@ Payments & subscriptions (Phase 14) are **after** the closed beta (decision D3).
 | 2026-10-05 | No card payments in MVP; Premium via promo codes/beta. |
 | 2026-10-05 | Artist payouts (future): user-centric. |
 | 2026-10-05 | Launch: closed GZM beta (~30–50 artists, 5–10 venues), then public beta. |
-| 2026-10-05 | Proposed (pending owner): reject lossy uploads for releases (audio.md §2.1). |
+| 2026-10-05 | Uploads: lossless masters only (WAV/AIFF/FLAC/ALAC); MP3/AAC/other lossy rejected (audio.md §2.1). |
+| 2026-10-05 | Logo: concept A "Wick" (design-system.md §5). |
+| 2026-10-05 | Branch protection on `main` and service accounts (Vercel, Supabase EU, Cloudflare R2, Fly.io, Sentry EU) approved; set up by owner. |
+| 2026-10-05 | Legal review approved: ZAiKS, copyright and related rights, music licensing, liability for artist uploads, terms of service, takedown/notice policy, GDPR. |

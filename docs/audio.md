@@ -25,7 +25,7 @@ Upload (ingest bucket) → Validate → Analyse → Loudness → Fingerprint/dup
 
 ### 2.1 Accepted uploads
 - Lossless only for full tracks: **WAV/BWF (PCM), AIFF, FLAC, ALAC**. 16/24/32-bit (32-bit float accepted and converted only for variants), 44.1–192 kHz, mono or stereo (multichannel later).
-- Lossy uploads (MP3/AAC/Ogg) are **rejected** for releases in MVP — Tunewick's quality promise depends on lossless masters. ⚠️ Owner may relax this for archival/demo material later; such tracks could then only ever be "High", never "Lossless".
+- Lossy uploads (MP3/AAC/Ogg) are **rejected** for releases in MVP — Tunewick's quality promise depends on lossless masters. **Decided by owner 2026-10-05.** If this is ever relaxed (e.g. archival material), such tracks may only be offered as "High", never "Lossless".
 - Artwork: JPEG/PNG ≥ 3000×3000 recommended, ≥ 1400×1400 required.
 
 ### 2.2 Validation (reject with a clear reason)

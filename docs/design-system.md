@@ -1,6 +1,6 @@
 # Design System
 
-> Status: **v0.1 proposal — awaiting owner choice of logo concept** (Guidon: "Phase 2: Brand & design system").
+> Status: **v0.1 — logo concept A "Wick" chosen by owner (2026-10-05)** (Guidon: "Phase 2: Brand & design system").
 > Tokens: [`design/tokens.css`](../design/tokens.css) · Visual board: [`design/brand-board.html`](../design/brand-board.html)
 > (run `npx serve design` and open `/brand-board.html`).
 
@@ -117,7 +117,7 @@ element, strong at small sizes, no notes/headphones/waveforms/equalizers/play bu
 - Minimum size: symbol 16px, wordmark 72px wide.
 - Never place on busy artwork without a solid field.
 
-**Owner decision needed:** pick A or B (or iterate). Final vector artwork and favicon/app-icon
+**Decision (2026-10-05): concept A "Wick".** Final vector artwork and favicon/app-icon
 set are created after the choice.
 
 ## 6. Layout
@@ -196,7 +196,7 @@ headlines with real Polish strings ("Wydarzenia w ten weekend", "Byłem przy tym
 
 | Item | Status |
 | --- | --- |
-| Logo concept choice (A/B) | owner decision |
+| Logo concept choice | ✅ A "Wick" |
 | Final vector logo, favicon, PWA icons | after choice |
 | Custom k / w in wordmark, outlined SVG | follow-up task |
 | Self-hosted font files + subsetting | implementation (Phase 5+) |
