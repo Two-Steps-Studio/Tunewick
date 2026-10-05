@@ -1,8 +1,8 @@
 import { WORDMARK_PATH, WORDMARK_SPARK, WORDMARK_VIEWBOX } from "./wordmark-data";
 
 /**
- * Tunewick wordmark (logo concept A "Wick"), outlined to paths so it does not depend on
- * font loading. Ink follows currentColor; the spark color follows the theme (--spark).
+ * Tunewick wordmark (logo concept B "Split"), outlined to paths so it does not depend on
+ * font loading. Ink follows currentColor; the i-dot square uses the logo accent (--spark, coral).
  */
 export function Wordmark({ className = "" }: { className?: string }) {
   return (

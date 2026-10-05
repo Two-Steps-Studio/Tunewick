@@ -73,17 +73,9 @@ body {
     transform: none;
   }
 
-  /* Logo spark color rules: lime on graphite, coral on ivory (design-system.md §5). */
+  /* Logo accent (concept B "Split"): coral in both themes (design-system.md §5). */
   :root {
-    --spark: var(--tk-lime);
-  }
-  :root[data-theme="light"] {
     --spark: var(--tk-coral);
-  }
-  @media (prefers-color-scheme: light) {
-    :root:not([data-theme="dark"]) {
-      --spark: var(--tk-coral);
-    }
   }
 
   .wordmark {

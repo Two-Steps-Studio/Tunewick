@@ -1,4 +1,4 @@
-// Builds the Tunewick logo set (concept A "Wick", chosen 2026-10-05).
+// Builds the Tunewick logo set (concept B "Split", chosen 2026-10-05; replaced concept A "Wick").
 // Run: node design/logo/build-logo.mjs
 // Outputs vector SVGs in design/logo/ and app icons in apps/web/src/app + apps/web/public.
 
@@ -23,13 +23,15 @@ const C = {
 };
 
 // ---------------------------------------------------------------------------
-// Symbol: T crossbar + one zigzag stroke (T stem is the first stroke of W) + detached spark.
+// Symbol B "Split": T crossbar and stem separated by a gap (the broken element),
+// W as a coral zigzag set apart from the stem, its last arm rising above the baseline.
+// `accent` colors the W.
 // ---------------------------------------------------------------------------
-function symbolShapes(ink, spark) {
+function symbolShapes(ink, accent) {
   return [
-    `<rect x="4" y="9" width="30" height="9" fill="${ink}"/>`,
-    `<path d="M14.5 18V55L27 33L38 55L51 21" fill="none" stroke="${ink}" stroke-width="9" stroke-miterlimit="10"/>`,
-    `<rect x="48" y="4" width="10" height="10" fill="${spark}"/>`,
+    `<rect x="3" y="6" width="34" height="10" fill="${ink}"/>`,
+    `<rect x="14" y="20" width="10" height="38" fill="${ink}"/>`,
+    `<path d="M30.5 20L36.5 55L44.5 31L52.5 55L59.5 18" fill="none" stroke="${accent}" stroke-width="7.5" stroke-miterlimit="10"/>`,
   ].join("");
 }
 
@@ -131,11 +133,11 @@ function round(n) {
 // Write vector assets
 // ---------------------------------------------------------------------------
 const out = (name, content) => writeFileSync(join(here, name), content);
-out("tunewick-symbol-on-dark.svg", symbolSvg(C.ivory, C.lime));
+out("tunewick-symbol-on-dark.svg", symbolSvg(C.ivory, C.coral));
 out("tunewick-symbol-on-light.svg", symbolSvg(C.graphite, C.coral));
 out("tunewick-symbol-on-lime.svg", symbolSvg(C.graphite, C.graphite, { background: C.lime }));
 out("tunewick-symbol-mono.svg", symbolSvg("#000", "#000"));
-out("tunewick-wordmark-on-dark.svg", wordmarkSvg(C.ivory, C.lime));
+out("tunewick-wordmark-on-dark.svg", wordmarkSvg(C.ivory, C.coral));
 out("tunewick-wordmark-on-light.svg", wordmarkSvg(C.graphite, C.coral));
 out("tunewick-wordmark-mono.svg", wordmarkSvg("#000", "#000"));
 
@@ -153,7 +155,7 @@ writeFileSync(
 // App icons
 // ---------------------------------------------------------------------------
 // Tab icon: symbol on a graphite square so it reads on light and dark browser chrome.
-const iconSvg = symbolSvg(C.ivory, C.lime, { background: C.graphite, padding: 6, size: 32 });
+const iconSvg = symbolSvg(C.ivory, C.coral, { background: C.graphite, padding: 6, size: 32 });
 writeFileSync(join(appDir, "icon.svg"), iconSvg);
 
 const png = (svg, size) =>
@@ -167,26 +169,26 @@ const icoPngs = await Promise.all(icoSizes.map((s) => png(iconSvg, s)));
 writeFileSync(join(appDir, "favicon.ico"), buildIco(icoSizes, icoPngs));
 writeFileSync(
   join(appDir, "apple-icon.png"),
-  await png(symbolSvg(C.ivory, C.lime, { background: C.graphite, padding: 14, size: 180 }), 180),
+  await png(symbolSvg(C.ivory, C.coral, { background: C.graphite, padding: 14, size: 180 }), 180),
 );
 
 mkdirSync(join(publicDir, "icons"), { recursive: true });
 for (const size of [192, 512]) {
   writeFileSync(
     join(publicDir, "icons", `icon-${size}.png`),
-    await png(symbolSvg(C.ivory, C.lime, { background: C.graphite, padding: 8, size }), size),
+    await png(symbolSvg(C.ivory, C.coral, { background: C.graphite, padding: 8, size }), size),
   );
 }
 // Maskable: content within the central 80% safe zone.
 writeFileSync(
   join(publicDir, "icons", "icon-maskable-512.png"),
-  await png(symbolSvg(C.ivory, C.lime, { background: C.graphite, padding: 22, size: 512 }), 512),
+  await png(symbolSvg(C.ivory, C.coral, { background: C.graphite, padding: 22, size: 512 }), 512),
 );
 
 // Preview PNGs for review.
 for (const [name, svg] of [
   ["preview-symbol-16.png", iconSvg],
-  ["preview-wordmark-dark.png", wordmarkSvg(C.ivory, C.lime, 120)],
+  ["preview-wordmark-dark.png", wordmarkSvg(C.ivory, C.coral, 120)],
 ]) {
   const size = name.includes("16") ? 16 : undefined;
   const img = sharp(Buffer.from(svg), { density: 300 });

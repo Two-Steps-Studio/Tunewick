@@ -12,6 +12,8 @@
     "e2e": "playwright test"
   },
   "dependencies": {
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.117.2",
     "@tunewick/shared": "workspace:*",
     "next": "16.3.8",
     "next-intl": "^4.14.9",
