@@ -95,6 +95,7 @@ export type Database = {
         Args: { required: Database["public"]["Enums"]["app_role"] };
         Returns: boolean;
       };
+      is_reserved_handle: { Args: { candidate: string }; Returns: boolean };
     };
     Enums: {
       app_role: "moderator" | "admin";

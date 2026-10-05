@@ -23,7 +23,12 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
         <MainNav variant="top" />
         <div className="site-header__actions">
           {user ? (
-            <SignOutButton />
+            <>
+              <Link href="/settings" className="button button--quiet">
+                {tAccount("settings")}
+              </Link>
+              <SignOutButton />
+            </>
           ) : (
             <Link href="/login" className="button button--quiet">
               {tAccount("signIn")}

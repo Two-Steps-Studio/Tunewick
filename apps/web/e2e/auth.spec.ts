@@ -1,57 +1,5 @@
-import { expect, type Page, test } from "@playwright/test";
-
-// Requires local Supabase (pnpm db:start && pnpm db:env) — emails are read from Mailpit.
-const MAILPIT = process.env.MAILPIT_URL ?? "http://127.0.0.1:54324";
-const PASSWORD = "scena-gzm-2026";
-
-function uniqueEmail(prefix: string) {
-  return `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}@test.tunewick.local`;
-}
-
-/** Waits for the newest email to `to` and returns the path of the link in it. */
-async function emailLinkPath(to: string, subjectIncludes: string): Promise<string> {
-  for (let attempt = 0; attempt < 40; attempt++) {
-    const search = await fetch(
-      `${MAILPIT}/api/v1/search?query=${encodeURIComponent(`to:"${to}"`)}`,
-    );
-    const { messages } = (await search.json()) as { messages: { ID: string; Subject: string }[] };
-    const message = messages.find((m) => m.Subject.includes(subjectIncludes));
-    if (message) {
-      const detail = (await (await fetch(`${MAILPIT}/api/v1/message/${message.ID}`)).json()) as {
-        HTML: string;
-      };
-      const href = detail.HTML.match(/href="([^"]*\/api\/auth\/confirm[^"]*)"/)?.[1];
-      if (!href) throw new Error("No confirmation link in email");
-      const url = new URL(href.replaceAll("&amp;", "&"));
-      return `${url.pathname}${url.search}`;
-    }
-    await new Promise((r) => setTimeout(r, 250));
-  }
-  throw new Error(`No email "${subjectIncludes}" for ${to}`);
-}
-
-async function signUp(page: Page, email: string) {
-  await page.goto("/rejestracja");
-  await page.getByLabel("E-mail").fill(email);
-  await page.getByLabel("Hasło", { exact: true }).fill(PASSWORD);
-  await page.getByLabel("Mam co najmniej 16 lat").check();
-  await page.getByRole("button", { name: "Załóż konto" }).click();
-  await expect(page).toHaveURL(/\/sprawdz-poczte\?reason=signup$/);
-}
-
-/** Signs out through the header and waits until the redirect has finished. */
-async function signOut(page: Page) {
-  const header = page.getByRole("banner");
-  await header.getByRole("button", { name: "Wyloguj" }).click();
-  await expect(header.getByRole("link", { name: "Zaloguj się" })).toBeVisible();
-}
-
-async function signIn(page: Page, email: string, password = PASSWORD) {
-  await page.goto("/logowanie");
-  await page.getByLabel("E-mail").fill(email);
-  await page.getByLabel("Hasło").fill(password);
-  await page.getByRole("button", { name: "Zaloguj się" }).last().click();
-}
+import { expect, test } from "@playwright/test";
+import { emailLinkPath, PASSWORD, signIn, signOut, signUp, uniqueEmail } from "./helpers";
 
 test.describe("authentication", () => {
   test("sign-up validates on the server and keeps the email", async ({ page }) => {

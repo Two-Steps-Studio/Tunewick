@@ -1,17 +1,22 @@
 "use client";
 
+import { useParams } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
-import { Link, usePathname } from "@/i18n/navigation";
+import { type getPathname, Link, usePathname } from "@/i18n/navigation";
+
+type Href = Parameters<typeof getPathname>[0]["href"];
 
 export function LocaleSwitcher() {
   const t = useTranslations("Shell");
   const locale = useLocale();
   const pathname = usePathname();
+  const params = useParams();
   const other = locale === "pl" ? "en" : "pl";
 
   return (
     <Link
-      href={pathname}
+      // The current route params always match the current pathname template.
+      href={{ pathname, params } as Href}
       locale={other}
       lang={other}
       hrefLang={other}

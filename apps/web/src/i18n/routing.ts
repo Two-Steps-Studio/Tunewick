@@ -14,8 +14,12 @@ export const routing = defineRouting({
     "/reset-password": { pl: "/reset-hasla", en: "/reset-password" },
     "/update-password": { pl: "/nowe-haslo", en: "/new-password" },
     "/check-email": { pl: "/sprawdz-poczte", en: "/check-email" },
+    "/settings": { pl: "/ustawienia", en: "/settings" },
+    "/profile/[handle]": { pl: "/profil/[handle]", en: "/profile/[handle]" },
   },
 });
 
 export type Locale = (typeof routing.locales)[number];
 export type AppPathname = keyof typeof routing.pathnames;
+/** Pathnames without dynamic segments (usable as plain redirect targets). */
+export type StaticPathname = Exclude<AppPathname, `${string}[${string}`>;

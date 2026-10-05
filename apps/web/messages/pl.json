@@ -51,7 +51,8 @@
   "Account": {
     "signIn": "Zaloguj się",
     "signOut": "Wyloguj",
-    "signedInAs": "Zalogowano jako {name}"
+    "signedInAs": "Zalogowano jako {name}",
+    "settings": "Konto"
   },
   "Auth": {
     "fields": {
@@ -115,5 +116,50 @@
       "linkInvalid": "Link jest nieprawidłowy lub wygasł.",
       "unexpected": "Coś poszło nie tak. Spróbuj ponownie."
     }
+  },
+  "Settings": {
+    "title": "Konto",
+    "lead": "Twój profil publiczny i ustawienia prywatne.",
+    "publicSection": "Profil publiczny",
+    "publicHint": "Te dane widzi każdy, kto otworzy Twój profil.",
+    "privateSection": "Ustawienia prywatne",
+    "privateHint": "Widzisz je tylko Ty.",
+    "fields": {
+      "handle": "Nazwa profilu (adres)",
+      "displayName": "Nazwa wyświetlana",
+      "bio": "O mnie",
+      "locale": "Język serwisu",
+      "visibility": "Kto widzi Twoją aktywność słuchania"
+    },
+    "hints": {
+      "handle": "Małe litery, cyfry i myślniki, 2–40 znaków. Adres profilu: tunewick.com/profil/nazwa",
+      "bio": "Do 500 znaków.",
+      "visibility": "Aktywność słuchania pojawi się w serwisie razem z funkcjami społecznościowymi. To ustawienie zadziała od ich startu."
+    },
+    "locales": {
+      "pl": "Polski",
+      "en": "English"
+    },
+    "visibility": {
+      "public": "Wszyscy",
+      "followers": "Obserwujący",
+      "private": "Tylko ja"
+    },
+    "submit": "Zapisz zmiany",
+    "saved": "Zapisano.",
+    "viewProfile": "Zobacz profil publiczny",
+    "noHandle": "Ustaw nazwę profilu, aby mieć publiczny adres.",
+    "errors": {
+      "handleInvalid": "Użyj 2–40 znaków: małe litery, cyfry i myślniki.",
+      "handleReserved": "Ta nazwa jest zarezerwowana. Wybierz inną.",
+      "handleTaken": "Ta nazwa jest już zajęta.",
+      "displayNameTooLong": "Nazwa może mieć najwyżej 80 znaków.",
+      "bioTooLong": "Opis może mieć najwyżej 500 znaków.",
+      "unexpected": "Nie udało się zapisać. Spróbuj ponownie."
+    }
+  },
+  "Profile": {
+    "memberSince": "Na Tunewick od {date}",
+    "empty": "Ten profil nie ma jeszcze opisu."
   }
 }

@@ -45,7 +45,7 @@ graph_edges (derived)      feature_flags, access_invites, waitlist      private.
 
 | Table | Key columns | Notes |
 | --- | --- | --- |
-| `profiles` | `id` (= `auth.users.id`), `handle citext unique`, `display_name`, `bio`, `avatar_image_id`, `home_city_id`, `deleted_at` | **Public fields only**, readable by everyone while active. Created by trigger on signup. ✅ implemented (M0.3; avatar/city columns arrive with their tables). |
+| `profiles` | `id` (= `auth.users.id`), `handle citext unique`, `display_name`, `bio`, `avatar_image_id`, `home_city_id`, `deleted_at` | **Public fields only**, readable by everyone while active. Created by trigger on signup. Reserved handles (platform names, route words, `tunewick-*`) rejected by constraint `profiles_handle_not_reserved` (`is_reserved_handle()`). ✅ implemented (M0.3, M1.3; avatar/city columns arrive with their tables). |
 | `profile_settings` | `user_id`, `locale ('pl','en')`, `activity_visibility (public/followers/private)`, `age_confirmed_at` | **Private**, owner-only. Separate table because RLS is row-level, not column-level. No birth date stored (data minimization): only confirmation of minimum age (see security.md §8). ✅ implemented (M0.3). |
 | `user_roles` | `user_id`, `role (moderator, admin)`, `granted_by` | Platform roles. "listener" is implicit. No writes through the Data API; changes audited. ✅ implemented (M0.3). |
 | `consents` | `user_id`, `purpose (analytics, marketing, personalization)`, `granted`, `policy_version`, `created_at` | Append-only history; latest row per purpose wins. |

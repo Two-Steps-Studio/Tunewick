@@ -1,4 +1,5 @@
 -- RLS and privilege tests for profiles, profile_settings, user_roles.
+-- Counts are scoped to the fixtures so the tests also pass on a database with other data.
 begin;
 create extension if not exists pgtap with schema extensions;
 set search_path = public, extensions;
@@ -30,11 +31,11 @@ select ok(
 
 -- 5: metadata cannot grant roles
 select is(
-  (select count(*)::int from user_roles), 0, 'signup metadata never grants platform roles');
+  (select count(*)::int from user_roles where user_id in ('00000000-0000-0000-0000-00000000000a', '00000000-0000-0000-0000-00000000000b')), 0, 'signup metadata never grants platform roles');
 
 -- 6–7: anonymous access
 set local role anon;
-select is((select count(*)::int from profiles), 2, 'anon can read active profiles');
+select is((select count(*)::int from profiles where id in ('00000000-0000-0000-0000-00000000000a', '00000000-0000-0000-0000-00000000000b')), 2, 'anon can read active profiles');
 select throws_ok(
   'select * from profile_settings', '42501', null, 'anon cannot read profile settings');
 reset role;
@@ -88,7 +89,7 @@ reset role;
 -- 17: deleted profiles are hidden
 update profiles set deleted_at = now() where id = '00000000-0000-0000-0000-00000000000b';
 set local role anon;
-select is((select count(*)::int from profiles), 1, 'deleted profiles are not readable');
+select is((select count(*)::int from profiles where id in ('00000000-0000-0000-0000-00000000000a', '00000000-0000-0000-0000-00000000000b')), 1, 'deleted profiles are not readable');
 reset role;
 
 select * from finish();

@@ -459,4 +459,79 @@ body {
     height: 1.25rem;
     accent-color: var(--tk-lime);
   }
+
+  /* Settings ------------------------------------------------------------- */
+  .settings-form {
+    display: grid;
+    gap: var(--tk-space-8);
+  }
+  .settings-form__group {
+    display: grid;
+    gap: var(--tk-space-4);
+    margin: 0;
+    padding: var(--tk-space-4) 0 0;
+    border: 0;
+    border-top: 3px solid var(--scene);
+  }
+  .settings-form__group legend {
+    padding: 0;
+    font-family: var(--tk-font-display);
+    font-size: var(--tk-text-xl);
+    font-weight: 700;
+  }
+  .field__textarea {
+    padding: var(--tk-space-3);
+    min-height: 7rem;
+    resize: vertical;
+  }
+  .form-status {
+    padding: var(--tk-space-3);
+    box-shadow: inset 3px 0 0 var(--accent);
+    background: var(--bg-sunken);
+    font-size: var(--tk-text-sm);
+  }
+  .settings-profile-link {
+    margin-top: var(--tk-space-6);
+    font-size: var(--tk-text-sm);
+    color: var(--text-muted);
+  }
+  .settings-profile-link a {
+    color: var(--text);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  /* Public profile ------------------------------------------------------- */
+  .profile {
+    display: grid;
+    gap: var(--tk-space-4);
+    max-width: 48rem;
+    padding-top: var(--tk-space-12);
+  }
+  .profile__handle {
+    font-family: var(--tk-font-mono);
+    font-size: var(--tk-text-sm);
+    color: var(--scene);
+  }
+  .profile__name {
+    font-family: var(--tk-font-display);
+    font-size: var(--tk-text-display);
+    font-weight: 800;
+    line-height: 0.9;
+    letter-spacing: -0.035em;
+    font-variation-settings:
+      "wdth" 75,
+      "opsz" 96;
+    overflow-wrap: anywhere;
+  }
+  .profile__bio {
+    max-width: 60ch;
+    font-size: var(--tk-text-lg);
+    white-space: pre-line;
+  }
+  .profile__meta {
+    font-family: var(--tk-font-mono);
+    font-size: var(--tk-text-xs);
+    color: var(--text-muted);
+  }
 }

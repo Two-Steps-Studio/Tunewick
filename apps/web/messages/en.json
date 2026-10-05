@@ -51,7 +51,8 @@
   "Account": {
     "signIn": "Sign in",
     "signOut": "Sign out",
-    "signedInAs": "Signed in as {name}"
+    "signedInAs": "Signed in as {name}",
+    "settings": "Account"
   },
   "Auth": {
     "fields": {
@@ -115,5 +116,50 @@
       "linkInvalid": "The link is invalid or has expired.",
       "unexpected": "Something went wrong. Please try again."
     }
+  },
+  "Settings": {
+    "title": "Account",
+    "lead": "Your public profile and private settings.",
+    "publicSection": "Public profile",
+    "publicHint": "Anyone who opens your profile can see this.",
+    "privateSection": "Private settings",
+    "privateHint": "Only you can see these.",
+    "fields": {
+      "handle": "Profile name (address)",
+      "displayName": "Display name",
+      "bio": "About me",
+      "locale": "Language",
+      "visibility": "Who can see your listening activity"
+    },
+    "hints": {
+      "handle": "Lowercase letters, digits and hyphens, 2–40 characters. Profile address: tunewick.com/en/profile/name",
+      "bio": "Up to 500 characters.",
+      "visibility": "Listening activity arrives together with social features. This setting applies from their launch."
+    },
+    "locales": {
+      "pl": "Polski",
+      "en": "English"
+    },
+    "visibility": {
+      "public": "Everyone",
+      "followers": "Followers",
+      "private": "Only me"
+    },
+    "submit": "Save changes",
+    "saved": "Saved.",
+    "viewProfile": "View public profile",
+    "noHandle": "Set a profile name to get a public address.",
+    "errors": {
+      "handleInvalid": "Use 2–40 characters: lowercase letters, digits and hyphens.",
+      "handleReserved": "This name is reserved. Choose another one.",
+      "handleTaken": "This name is already taken.",
+      "displayNameTooLong": "The name can have at most 80 characters.",
+      "bioTooLong": "The description can have at most 500 characters.",
+      "unexpected": "Could not save. Please try again."
+    }
+  },
+  "Profile": {
+    "memberSince": "On Tunewick since {date}",
+    "empty": "This profile has no description yet."
   }
 }

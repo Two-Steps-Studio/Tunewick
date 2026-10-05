@@ -3,7 +3,7 @@
 import { redirect as redirectToPath } from "next/navigation";
 import { getLocale } from "next-intl/server";
 import { redirect } from "@/i18n/navigation";
-import type { AppPathname } from "@/i18n/routing";
+import type { StaticPathname } from "@/i18n/routing";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import {
   type AuthFormState,
@@ -25,7 +25,9 @@ function revealsAccountExistence(error: { code?: string }) {
   return error.code === "user_already_exists" || error.code === "over_email_send_rate_limit";
 }
 
-async function go(href: AppPathname | { pathname: AppPathname; query?: Record<string, string> }) {
+async function go(
+  href: StaticPathname | { pathname: StaticPathname; query?: Record<string, string> },
+) {
   const locale = await getLocale();
   return redirect({ href, locale });
 }
