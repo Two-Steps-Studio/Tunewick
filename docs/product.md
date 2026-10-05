@@ -1,6 +1,6 @@
 # Product Definition
 
-> Status: **draft for owner approval** (Phase 1, Guidon: "Phase 1: Product audit & definition").
+> Status: **approved direction; legal questions L1–L6 open** (Phase 1, Guidon: "Phase 1: Product audit & definition").
 > Last updated: 2026-10-05. Market facts are as of this date and must be re-checked before launch.
 
 ## 1. Vision
@@ -151,7 +151,7 @@ Detailed acceptance criteria per item live in Guidon tasks.
 | Excluded | Why / when |
 | --- | --- |
 | Commercial label/major catalog | Requires licensing agreements; revisit after traction (section 8). |
-| Payments via card (Stripe etc.) | MVP Premium is granted via promo codes/beta. Payment integration is Phase 14; architecture keeps entitlements provider-agnostic. To confirm with owner (D3). |
+| Payments via card (Stripe etc.) | MVP Premium is granted via promo codes/beta (decision D3). Payment integration is Phase 14; architecture keeps entitlements provider-agnostic. |
 | Native mobile/desktop apps | PWA first. Native desktop is the path to true bit-perfect/exclusive mode later. |
 | Offline downloads | Architecture prepared; feature later. |
 | Dolby Atmos / spatial audio | Licensing and tooling cost; later. |
@@ -189,10 +189,16 @@ What this involves:
 | L5 | Minimum age for accounts (GDPR consent in Poland: 16 for information society services without parental consent) and community features. | Lawyer + owner |
 | L6 | Consumer law for subscriptions and promo codes (cancellation, withdrawal right, clear pricing, Omnibus directive for discounts). | Lawyer |
 | D1 | Brand/legal entity operating tunewick.com (Two Steps Studio?). | Owner |
-| D2 | Artist payout model when paid plans exist: pro-rata vs user-centric. Recommendation: **user-centric** (your subscription pays the artists you listen to) — strong differentiator and trust signal. | Owner |
-| D3 | Is card payment required for MVP, or is Premium granted only through promo codes/beta at launch? | Owner |
-| D4 | What does Premium unlock in MVP? Proposal: Free = full catalog in High (lossy) quality; Premium = Lossless/Hi-Res + extras. Must stay fair to artists. | Owner |
-| D5 | Launch region and seeding: how many GZM artists/venues are needed before public beta (cold-start)? Proposal: closed beta with 30–50 local artists and 5–10 venues. | Owner |
+
+
+### Decided by owner (2026-10-05)
+
+| # | Decision |
+| --- | --- |
+| D2 | **User-centric payouts** once paid plans exist: a subscriber's payment goes to the artists that subscriber listens to. Data model must record per-user listening attributable to artists from day one. |
+| D3 | **No card payments in MVP.** Premium is granted via promo codes and beta access. Payment provider integration is Phase 14; entitlements stay provider-agnostic. |
+| D4 | **Free = full catalog in High (lossy) quality. Premium = Lossless and Hi-Res** (where source allows). No artificial listening restrictions on Free. |
+| D5 | **Closed beta in GZM first:** ~30–50 invited local artists and 5–10 venues, invite codes, then public beta. |
 
 ## 10. Key risks
 
