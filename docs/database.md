@@ -159,7 +159,7 @@ graph_edges (derived)      feature_flags, access_invites, waitlist      private.
 | `redeem_promo_code(code text)` | Full redemption algorithm (see promotions.md): hash → lock code row → 9 checks → insert entitlement + redemption + audit in one transaction. |
 | `mark_attended(event_id)` | Time-window and visibility checks for "Byłem przy tym". |
 | `is_artist_member(artist_id, roles[])` | Helper for RLS. |
-| `has_role(role)` | Platform-role helper for RLS. |
+| `has_app_role(role)` | Platform-role helper for RLS (not `has_role`: name collides with pgTAP). |
 
 All `security definer` functions set `search_path = ''` and fully qualify names.
 

@@ -83,7 +83,7 @@ create table public.user_roles (
 -- ---------------------------------------------------------------------------
 -- Helpers
 -- ---------------------------------------------------------------------------
-create function public.has_role(required public.app_role)
+create function public.has_app_role(required public.app_role)
 returns boolean
 language sql
 stable
@@ -98,8 +98,8 @@ as $$
   );
 $$;
 
-revoke execute on function public.has_role(public.app_role) from public, anon;
-grant execute on function public.has_role(public.app_role) to authenticated;
+revoke execute on function public.has_app_role(public.app_role) from public, anon;
+grant execute on function public.has_app_role(public.app_role) to authenticated;
 
 -- Create profile + settings when an auth user is created.
 -- Only whitelisted, validated metadata is used.

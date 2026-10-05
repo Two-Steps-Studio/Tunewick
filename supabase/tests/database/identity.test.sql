@@ -75,14 +75,14 @@ select throws_ok(
   '42501', null, 'user cannot grant themselves a role');
 
 -- 15: has_role false by default
-select is(has_role('admin'), false, 'has_role is false without a grant');
+select is(has_app_role('admin'), false, 'has_app_role is false without a grant');
 reset role;
 
 -- 16: has_role true after a server-side grant
 insert into user_roles (user_id, role) values ('00000000-0000-0000-0000-00000000000a', 'admin');
 set local role authenticated;
 set local request.jwt.claims = '{"sub": "00000000-0000-0000-0000-00000000000a", "role": "authenticated"}';
-select is(has_role('admin'), true, 'has_role is true after grant');
+select is(has_app_role('admin'), true, 'has_app_role is true after grant');
 reset role;
 
 -- 17: deleted profiles are hidden
