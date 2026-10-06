@@ -1,0 +1,74 @@
+import { describe, expect, it } from "vitest";
+import {
+  artistDbError,
+  createArtistSchema,
+  slugify,
+  updateArtistSchema,
+  verificationSchema,
+} from "./validation";
+
+describe("slugify", () => {
+  it("turns Polish names into profile addresses", () => {
+    expect(slugify("Zespół Ćma & Łoś")).toBe("zespol-cma-los");
+    expect(slugify("  --Kolektyw  GZM-- ")).toBe("kolektyw-gzm");
+  });
+});
+
+describe("createArtistSchema", () => {
+  it("normalizes the slug and rejects invalid ones", () => {
+    expect(createArtistSchema.parse({ name: "Ćma", slug: " CMA " }).slug).toBe("cma");
+    expect(createArtistSchema.safeParse({ name: "Ćma", slug: "ćma" }).success).toBe(false);
+    expect(createArtistSchema.safeParse({ name: " ", slug: "cma" }).success).toBe(false);
+  });
+});
+
+describe("updateArtistSchema", () => {
+  it("accepts an empty or a four-digit year", () => {
+    expect(updateArtistSchema.parse({ name: "X", bio: "", formedYear: "" }).formedYear).toBeNull();
+    expect(updateArtistSchema.parse({ name: "X", bio: "", formedYear: "2019" }).formedYear).toBe(
+      2019,
+    );
+    expect(updateArtistSchema.safeParse({ name: "X", bio: "", formedYear: "19" }).success).toBe(
+      false,
+    );
+    expect(updateArtistSchema.safeParse({ name: "X", bio: "", formedYear: "2150" }).success).toBe(
+      false,
+    );
+  });
+});
+
+describe("verificationSchema", () => {
+  it("accepts 1–5 https links, one per line", () => {
+    const parsed = verificationSchema.parse({
+      evidence: "https://zespol.example\n\n https://bandcamp.example/zespol ",
+      note: "",
+    });
+    expect(parsed.evidence).toEqual(["https://zespol.example", "https://bandcamp.example/zespol"]);
+    expect(parsed.note).toBeNull();
+  });
+
+  it("rejects missing, non-https or too many links", () => {
+    expect(verificationSchema.safeParse({ evidence: "", note: "" }).success).toBe(false);
+    expect(verificationSchema.safeParse({ evidence: "http://x.example", note: "" }).success).toBe(
+      false,
+    );
+    const six = Array.from({ length: 6 }, (_, i) => `https://x${i}.example`).join("\n");
+    expect(verificationSchema.safeParse({ evidence: six, note: "" }).success).toBe(false);
+  });
+});
+
+describe("artistDbError", () => {
+  it("maps constraint violations", () => {
+    expect(artistDbError({ code: "23505", message: "artists_slug_key" })).toEqual({
+      field: "slug",
+      code: "slugTaken",
+    });
+    expect(
+      artistDbError({ code: "23505", message: "a verification request is already pending" }),
+    ).toEqual({ code: "alreadyPending" });
+    expect(artistDbError({ code: "P0002" })).toEqual({ field: "handle", code: "handleNotFound" });
+    expect(
+      artistDbError({ code: "23514", message: "an artist must keep at least one owner" }),
+    ).toEqual({ code: "lastOwner" });
+  });
+});

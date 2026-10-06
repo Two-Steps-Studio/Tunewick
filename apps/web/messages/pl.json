@@ -192,5 +192,83 @@
       "rateLimited": "Zbyt wiele prób. Spróbuj ponownie za chwilę.",
       "unexpected": "Coś poszło nie tak. Spróbuj ponownie."
     }
+  },
+  "Artists": {
+    "my": {
+      "title": "Twoje projekty artystyczne",
+      "empty": "Nie należysz jeszcze do żadnego projektu.",
+      "create": "Załóż profil artysty",
+      "invitedAs": "Zaproszenie jako: {role}",
+      "accept": "Przyjmij zaproszenie",
+      "manage": "Zarządzaj"
+    },
+    "create": {
+      "title": "Nowy profil artysty",
+      "lead": "Zespół, projekt solowy albo kolektyw. Po założeniu możesz zaprosić pozostałych członków.",
+      "submit": "Załóż profil"
+    },
+    "fields": {
+      "name": "Nazwa artysty",
+      "slug": "Adres profilu",
+      "bio": "Opis",
+      "formedYear": "Rok powstania",
+      "handle": "Nazwa profilu osoby (adres)",
+      "role": "Rola",
+      "evidence": "Linki potwierdzające (jeden na linię)",
+      "note": "Wiadomość dla moderacji (opcjonalnie)"
+    },
+    "hints": {
+      "slug": "Małe litery, cyfry i myślniki. Adres: tunewick.com/artysci/adres",
+      "evidence": "Np. oficjalna strona, Bandcamp, profil w mediach społecznościowych zespołu. Do 5 linków.",
+      "handle": "Osoba musi mieć konto i ustawioną nazwę profilu."
+    },
+    "roles": {
+      "owner": "Właściciel",
+      "manager": "Menedżer",
+      "member": "Członek"
+    },
+    "verification": {
+      "unverified": "Profil niezweryfikowany",
+      "pending": "Weryfikacja w toku",
+      "verified": "Zweryfikowany artysta",
+      "rejected": "Weryfikacja odrzucona"
+    },
+    "profile": {
+      "since": "Od {year}",
+      "manage": "Zarządzaj profilem",
+      "noBio": "Ten artysta nie dodał jeszcze opisu.",
+      "noReleases": "Brak opublikowanych wydawnictw."
+    },
+    "manage": {
+      "title": "Zarządzaj: {name}",
+      "info": "Informacje",
+      "members": "Członkowie",
+      "invited": "zaproszenie wysłane",
+      "remove": "Usuń",
+      "leave": "Opuść projekt",
+      "invite": "Zaproś",
+      "verification": "Weryfikacja",
+      "verificationLead": "Weryfikacja potwierdza, że profil należy do prawdziwego artysty. Decyzję podejmuje moderacja Tunewick.",
+      "requestVerification": "Wyślij prośbę o weryfikację",
+      "save": "Zapisz",
+      "saved": "Zapisano.",
+      "viewPublic": "Zobacz profil publiczny"
+    },
+    "errors": {
+      "nameRequired": "Podaj nazwę artysty.",
+      "nameTooLong": "Nazwa może mieć najwyżej 120 znaków.",
+      "slugInvalid": "Użyj 2–60 znaków: małe litery, cyfry i myślniki.",
+      "slugTaken": "Ten adres jest już zajęty.",
+      "slugReserved": "Ten adres jest zarezerwowany.",
+      "bioTooLong": "Opis może mieć najwyżej 2000 znaków.",
+      "yearInvalid": "Podaj rok między 1900 a 2100.",
+      "handleNotFound": "Nie ma profilu o takiej nazwie.",
+      "evidenceRequired": "Dodaj co najmniej jeden link (https://).",
+      "evidenceInvalid": "Każdy link musi zaczynać się od https:// (najwyżej 5).",
+      "alreadyPending": "Prośba o weryfikację już czeka na decyzję.",
+      "lastOwner": "Projekt musi mieć co najmniej jednego właściciela.",
+      "forbidden": "Nie masz uprawnień do tej operacji.",
+      "unexpected": "Nie udało się zapisać. Spróbuj ponownie."
+    }
   }
 }

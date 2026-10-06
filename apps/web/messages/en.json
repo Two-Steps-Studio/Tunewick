@@ -192,5 +192,83 @@
       "rateLimited": "Too many attempts. Try again shortly.",
       "unexpected": "Something went wrong. Please try again."
     }
+  },
+  "Artists": {
+    "my": {
+      "title": "Your artist projects",
+      "empty": "You are not part of any project yet.",
+      "create": "Create an artist profile",
+      "invitedAs": "Invited as: {role}",
+      "accept": "Accept invitation",
+      "manage": "Manage"
+    },
+    "create": {
+      "title": "New artist profile",
+      "lead": "A band, solo project or collective. After creating it you can invite the other members.",
+      "submit": "Create profile"
+    },
+    "fields": {
+      "name": "Artist name",
+      "slug": "Profile address",
+      "bio": "Description",
+      "formedYear": "Year formed",
+      "handle": "Person profile name (address)",
+      "role": "Role",
+      "evidence": "Links that confirm the artist (one per line)",
+      "note": "Message for moderators (optional)"
+    },
+    "hints": {
+      "slug": "Lowercase letters, digits and hyphens. Address: tunewick.com/en/artists/address",
+      "evidence": "E.g. official website, Bandcamp, the band social media profile. Up to 5 links.",
+      "handle": "The person needs an account with a profile name."
+    },
+    "roles": {
+      "owner": "Owner",
+      "manager": "Manager",
+      "member": "Member"
+    },
+    "verification": {
+      "unverified": "Unverified profile",
+      "pending": "Verification in progress",
+      "verified": "Verified artist",
+      "rejected": "Verification rejected"
+    },
+    "profile": {
+      "since": "Since {year}",
+      "manage": "Manage profile",
+      "noBio": "This artist has not added a description yet.",
+      "noReleases": "No published releases."
+    },
+    "manage": {
+      "title": "Manage: {name}",
+      "info": "Details",
+      "members": "Members",
+      "invited": "invitation sent",
+      "remove": "Remove",
+      "leave": "Leave project",
+      "invite": "Invite",
+      "verification": "Verification",
+      "verificationLead": "Verification confirms that the profile belongs to the real artist. Tunewick moderators decide.",
+      "requestVerification": "Request verification",
+      "save": "Save",
+      "saved": "Saved.",
+      "viewPublic": "View public profile"
+    },
+    "errors": {
+      "nameRequired": "Enter the artist name.",
+      "nameTooLong": "The name can have at most 120 characters.",
+      "slugInvalid": "Use 2–60 characters: lowercase letters, digits and hyphens.",
+      "slugTaken": "This address is already taken.",
+      "slugReserved": "This address is reserved.",
+      "bioTooLong": "The description can have at most 2000 characters.",
+      "yearInvalid": "Enter a year between 1900 and 2100.",
+      "handleNotFound": "There is no profile with this name.",
+      "evidenceRequired": "Add at least one link (https://).",
+      "evidenceInvalid": "Every link must start with https:// (at most 5).",
+      "alreadyPending": "A verification request is already waiting for a decision.",
+      "lastOwner": "The project must keep at least one owner.",
+      "forbidden": "You are not allowed to do this.",
+      "unexpected": "Could not save. Please try again."
+    }
   }
 }
