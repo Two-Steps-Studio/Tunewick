@@ -702,6 +702,105 @@ body {
     white-space: nowrap;
   }
 
+  /* Discover ---------------------------------------------------------------- */
+  .discover {
+    display: grid;
+    gap: var(--tk-space-8);
+  }
+  .discover__head {
+    display: grid;
+    gap: var(--tk-space-3);
+    max-width: 44rem;
+  }
+  .discover__title {
+    font-family: var(--tk-font-display);
+    font-size: var(--tk-text-display);
+    line-height: 0.95;
+  }
+  .discover__lead,
+  .discover__empty {
+    color: var(--text-muted);
+  }
+  .discover__section {
+    display: grid;
+    gap: var(--tk-space-4);
+  }
+  .region-filter {
+    display: flex;
+    gap: var(--tk-space-2);
+    overflow-x: auto;
+    padding-bottom: var(--tk-space-2);
+    scrollbar-width: thin;
+    overscroll-behavior-x: contain;
+  }
+  .region-filter__chip {
+    flex: none;
+    padding: var(--tk-space-1) var(--tk-space-3);
+    font-size: var(--tk-text-sm);
+    white-space: nowrap;
+    text-decoration: none;
+    color: var(--text);
+    box-shadow: inset 0 0 0 1px var(--line);
+    border-radius: var(--tk-radius-pill);
+  }
+  .region-filter__chip[aria-current="page"] {
+    background: var(--accent);
+    color: var(--on-accent);
+    box-shadow: none;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .region-filter__chip:not([aria-current="page"]):hover {
+      box-shadow: inset 0 0 0 1px var(--text-muted);
+    }
+  }
+  .release-grid,
+  .artist-grid {
+    display: grid;
+    gap: var(--tk-space-6) var(--tk-space-4);
+    list-style: none;
+    padding: 0;
+  }
+  .release-grid {
+    grid-template-columns: repeat(auto-fill, minmax(min(10rem, 45%), 1fr));
+  }
+  .artist-grid {
+    grid-template-columns: repeat(auto-fill, minmax(min(8rem, 40%), 1fr));
+  }
+  .release-card,
+  .artist-card {
+    display: grid;
+    gap: var(--tk-space-1);
+    align-content: start;
+    min-width: 0;
+  }
+  .release-card__link,
+  .artist-card__link {
+    display: grid;
+    gap: var(--tk-space-2);
+    text-decoration: none;
+    color: inherit;
+  }
+  .release-card__title,
+  .artist-card__name {
+    font-weight: 600;
+    overflow-wrap: anywhere;
+  }
+  .release-card__artist {
+    font-size: var(--tk-text-sm);
+  }
+  .release-card__reason {
+    font-family: var(--tk-font-mono);
+    font-size: 0.6875rem;
+    color: var(--accent);
+  }
+  :root[data-theme="light"] .release-card__reason {
+    color: var(--text);
+  }
+  .release-card__place {
+    font-size: var(--tk-text-xs);
+    color: var(--text-muted);
+  }
+
   /* Developer pages ------------------------------------------------------ */
   .dev-player {
     display: grid;

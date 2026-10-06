@@ -1075,6 +1075,36 @@ export type Database = {
       };
       create_artist: { Args: { name: string; slug: string }; Returns: string };
       delete_track: { Args: { track: string }; Returns: undefined };
+      discover_artists: {
+        Args: { max_results?: number; region?: Database["public"]["Enums"]["voivodeship"] };
+        Returns: {
+          artist_id: string;
+          artist_slug: string;
+          city: string;
+          first_release_at: string;
+          image_id: string;
+          name: string;
+          release_count: number;
+          verification_status: Database["public"]["Enums"]["artist_verification"];
+          voivodeship: Database["public"]["Enums"]["voivodeship"];
+        }[];
+      };
+      discover_releases: {
+        Args: { max_results?: number; region?: Database["public"]["Enums"]["voivodeship"] };
+        Returns: {
+          artist_name: string;
+          artist_slug: string;
+          artwork_image_id: string;
+          city: string;
+          is_debut: boolean;
+          publish_at: string;
+          release_id: string;
+          release_slug: string;
+          release_type: Database["public"]["Enums"]["release_type"];
+          title: string;
+          voivodeship: Database["public"]["Enums"]["voivodeship"];
+        }[];
+      };
       enforce_mfa: { Args: Record<PropertyKey, never>; Returns: undefined };
       fail_audio_upload: {
         Args: { upload: string };

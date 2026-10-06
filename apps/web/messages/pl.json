@@ -56,7 +56,19 @@
   "Discover": {
     "title": "Odkrywaj",
     "lead": "Muzyka niezależna, lokalne sceny i koncerty — z kontekstem, nie z nieskończonego feedu.",
-    "empty": "Nie ma tu jeszcze nic do odkrycia. Pierwsi artyści — niezależni twórcy z całej Polski — dołączą w zamkniętej becie."
+    "empty": "Nie ma tu jeszcze nic do odkrycia. Pierwsi artyści — niezależni twórcy z całej Polski — dołączą w zamkniętej becie.",
+    "leadPoland": "Nowa muzyka małych, niezależnych artystów z całej Polski — od najnowszej. Bez algorytmu popularności: wszystko tu ma podany powód.",
+    "regionLabel": "Region",
+    "allPoland": "Cała Polska",
+    "emptyRegion": "Z województwa {region} nie ma jeszcze opublikowanej muzyki.",
+    "newReleases": "Nowe wydawnictwa",
+    "newArtists": "Nowi artyści",
+    "reason": {
+      "debut": "Debiut · {when}",
+      "new": "Nowość · {when}",
+      "released": "Wydane {when}",
+      "firstRelease": "Pierwsze wydawnictwo {when} · {count, plural, one {# wydawnictwo} few {# wydawnictwa} many {# wydawnictw} other {# wydawnictwa}}"
+    }
   },
   "Scene": {
     "title": "Scena",

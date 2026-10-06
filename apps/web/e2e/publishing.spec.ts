@@ -153,6 +153,12 @@ test.describe("review and publishing", () => {
     await expect(bar.locator(".quality-chip")).toContainText("High");
     await expect(bar.getByRole("button", { name: "Pauza" })).toBeVisible();
 
+    // Discover lists it with the reason it is there: the artist's first release.
+    await listener.goto("/");
+    const card = listener.locator(".release-card", { hasText: `Familok ${slug}` });
+    await expect(card.getByRole("link", { name: "Szychta" })).toBeVisible();
+    await expect(card.getByText(/^Debiut · /)).toBeVisible();
+
     // Search finds the newly published music — no Polish characters needed.
     await listener.goto(`/szukaj?q=${encodeURIComponent(`familok ${slug}`)}`);
     await expect(

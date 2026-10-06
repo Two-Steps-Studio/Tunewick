@@ -56,7 +56,19 @@
   "Discover": {
     "title": "Discover",
     "lead": "Independent music, local scenes and gigs — with context, not an endless feed.",
-    "empty": "There is nothing to discover yet. The first artists — independent musicians from all over Poland — join in the closed beta."
+    "empty": "There is nothing to discover yet. The first artists — independent musicians from all over Poland — join in the closed beta.",
+    "leadPoland": "New music from small independent artists across Poland — newest first. No popularity algorithm: everything here says why it is shown.",
+    "regionLabel": "Region",
+    "allPoland": "All of Poland",
+    "emptyRegion": "No published music from {region} Voivodeship yet.",
+    "newReleases": "New releases",
+    "newArtists": "New artists",
+    "reason": {
+      "debut": "Debut · {when}",
+      "new": "New · {when}",
+      "released": "Released {when}",
+      "firstRelease": "First release {when} · {count, plural, one {# release} other {# releases}}"
+    }
   },
   "Scene": {
     "title": "Scene",
