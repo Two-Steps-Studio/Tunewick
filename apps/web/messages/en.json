@@ -489,6 +489,27 @@
       "incomplete": "The file didn't arrive completely. Please try again.",
       "transfer": "The upload was interrupted. Check your connection and try again.",
       "failed": "Something went wrong. Please try again."
+    },
+    "listen": "Listen",
+    "versions": "Playback versions: {list}.",
+    "note": {
+      "lossy": "The file looks converted from a lossy format (e.g. MP3), so it will only be available in High and Data Saver quality. If you have the original master, please upload it.",
+      "upsampled": "The file looks upsampled from {rate} kHz — the Hi-Res versions use the real resolution, without inflating it.",
+      "padded": "The file is 24-bit but holds a 16-bit recording — we treat it as 16-bit."
+    },
+    "rejection": {
+      "unreadable": "The file could not be read as audio.",
+      "unsupported_container": "Only WAV/BWF, AIFF, FLAC and ALAC (.m4a) files are accepted.",
+      "unsupported_codec": "The file contains lossy audio — please upload the original lossless master.",
+      "audio_streams": "The file must contain exactly one audio stream.",
+      "bit_depth": "Bit depth must be 16, 24 or 32 bits.",
+      "sample_rate": "The sample rate must be standard: 44.1–192 kHz.",
+      "channels": "Only mono and stereo recordings are accepted for now.",
+      "duration": "A track must be between 10 seconds and 4 hours long.",
+      "decode_error": "The file is damaged and doesn’t play to the end. Please export the master again.",
+      "empty": "The file contains no audio.",
+      "integrity": "The FLAC checksum doesn’t match its audio — the file is damaged.",
+      "processing_failed": "We couldn’t process the file after several attempts. Please upload it again or contact us."
     }
   }
 }

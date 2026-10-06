@@ -543,9 +543,13 @@ export type Database = {
       };
       track_audio_uploads: {
         Row: {
+          attempts: number;
+          claimed_at: string | null;
           created_at: string;
+          duration_ms: number | null;
           file_name: string;
           id: string;
+          integrated_lufs: number | null;
           object_key: string;
           processed_at: string | null;
           rejection_code: string | null;
@@ -554,14 +558,19 @@ export type Database = {
           size_bytes: number;
           status: Database["public"]["Enums"]["audio_upload_status"];
           track_id: string;
+          true_peak_dbtp: number | null;
           updated_at: string;
           uploaded_at: string | null;
           uploaded_by: string | null;
         };
         Insert: {
+          attempts?: number;
+          claimed_at?: string | null;
           created_at?: string;
+          duration_ms?: number | null;
           file_name: string;
           id?: string;
+          integrated_lufs?: number | null;
           object_key: string;
           processed_at?: string | null;
           rejection_code?: string | null;
@@ -570,14 +579,19 @@ export type Database = {
           size_bytes: number;
           status?: Database["public"]["Enums"]["audio_upload_status"];
           track_id: string;
+          true_peak_dbtp?: number | null;
           updated_at?: string;
           uploaded_at?: string | null;
           uploaded_by?: string | null;
         };
         Update: {
+          attempts?: number;
+          claimed_at?: string | null;
           created_at?: string;
+          duration_ms?: number | null;
           file_name?: string;
           id?: string;
+          integrated_lufs?: number | null;
           object_key?: string;
           processed_at?: string | null;
           rejection_code?: string | null;
@@ -586,6 +600,7 @@ export type Database = {
           size_bytes?: number;
           status?: Database["public"]["Enums"]["audio_upload_status"];
           track_id?: string;
+          true_peak_dbtp?: number | null;
           updated_at?: string;
           uploaded_at?: string | null;
           uploaded_by?: string | null;
@@ -596,6 +611,65 @@ export type Database = {
             columns: ["track_id"];
             isOneToOne: false;
             referencedRelation: "tracks";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      track_audio_variants: {
+        Row: {
+          bit_depth: number | null;
+          bitrate_kbps: number;
+          bytes: number;
+          codec: string;
+          container: string;
+          encoder_delay_samples: number;
+          nominal_kbps: number | null;
+          object_key: string;
+          padding_samples: number;
+          sample_rate: number;
+          samples: number;
+          sha256: string;
+          tier: Database["public"]["Enums"]["quality_tier"];
+          upload_id: string;
+        };
+        Insert: {
+          bit_depth?: number | null;
+          bitrate_kbps: number;
+          bytes: number;
+          codec: string;
+          container: string;
+          encoder_delay_samples?: number;
+          nominal_kbps?: number | null;
+          object_key: string;
+          padding_samples?: number;
+          sample_rate: number;
+          samples: number;
+          sha256: string;
+          tier: Database["public"]["Enums"]["quality_tier"];
+          upload_id: string;
+        };
+        Update: {
+          bit_depth?: number | null;
+          bitrate_kbps?: number;
+          bytes?: number;
+          codec?: string;
+          container?: string;
+          encoder_delay_samples?: number;
+          nominal_kbps?: number | null;
+          object_key?: string;
+          padding_samples?: number;
+          sample_rate?: number;
+          samples?: number;
+          sha256?: string;
+          tier?: Database["public"]["Enums"]["quality_tier"];
+          upload_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "track_audio_variants_upload_id_fkey";
+            columns: ["upload_id"];
+            isOneToOne: false;
+            referencedRelation: "track_audio_uploads";
             referencedColumns: ["id"];
           },
         ];
@@ -701,9 +775,13 @@ export type Database = {
       begin_audio_upload: {
         Args: { file_name: string; size_bytes: number; track: string };
         Returns: {
+          attempts: number;
+          claimed_at: string | null;
           created_at: string;
+          duration_ms: number | null;
           file_name: string;
           id: string;
+          integrated_lufs: number | null;
           object_key: string;
           processed_at: string | null;
           rejection_code: string | null;
@@ -712,6 +790,7 @@ export type Database = {
           size_bytes: number;
           status: Database["public"]["Enums"]["audio_upload_status"];
           track_id: string;
+          true_peak_dbtp: number | null;
           updated_at: string;
           uploaded_at: string | null;
           uploaded_by: string | null;
@@ -724,13 +803,27 @@ export type Database = {
         };
       };
       can_edit_release: { Args: { release: string }; Returns: boolean };
+      can_view_audio_upload: { Args: { upload: string }; Returns: boolean };
       can_view_release: { Args: { release: string }; Returns: boolean };
+      claim_audio_upload: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          attempts: number;
+          id: string;
+          object_key: string;
+          track_id: string;
+        }[];
+      };
       complete_audio_upload: {
         Args: { upload: string };
         Returns: {
+          attempts: number;
+          claimed_at: string | null;
           created_at: string;
+          duration_ms: number | null;
           file_name: string;
           id: string;
+          integrated_lufs: number | null;
           object_key: string;
           processed_at: string | null;
           rejection_code: string | null;
@@ -739,6 +832,7 @@ export type Database = {
           size_bytes: number;
           status: Database["public"]["Enums"]["audio_upload_status"];
           track_id: string;
+          true_peak_dbtp: number | null;
           updated_at: string;
           uploaded_at: string | null;
           uploaded_by: string | null;
@@ -756,6 +850,14 @@ export type Database = {
       };
       create_artist: { Args: { name: string; slug: string }; Returns: string };
       delete_track: { Args: { track: string }; Returns: undefined };
+      fail_audio_upload: {
+        Args: { upload: string };
+        Returns: Database["public"]["Enums"]["audio_upload_status"];
+      };
+      finish_audio_upload: {
+        Args: { report: Json; upload: string; variants?: Json };
+        Returns: Database["public"]["Enums"]["audio_upload_status"];
+      };
       has_app_role: {
         Args: { required: Database["public"]["Enums"]["app_role"] };
         Returns: boolean;
@@ -809,6 +911,7 @@ export type Database = {
         | "mixing_engineer"
         | "mastering_engineer"
         | "other";
+      quality_tier: "data_saver" | "high" | "lossless" | "hires";
       release_artist_role: "primary" | "featured";
       release_status:
         "draft" | "processing" | "in_review" | "approved" | "published" | "rejected" | "taken_down";
@@ -942,6 +1045,7 @@ export const Constants = {
         "mastering_engineer",
         "other",
       ],
+      quality_tier: ["data_saver", "high", "lossless", "hires"],
       release_artist_role: ["primary", "featured"],
       release_status: [
         "draft",

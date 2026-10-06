@@ -6,6 +6,7 @@ import type { Locale } from "@/i18n/routing";
 import {
   audioReadiness,
   getLatestTrackAudio,
+  getPreviewTracks,
   isAudioUploadAvailable,
   TrackAudioUpload,
 } from "@/modules/audio";
@@ -54,6 +55,11 @@ export default async function ReleaseEditorPage({
     getLatestTrackAudio(trackIds),
   ]);
   const uploadAvailable = isAudioUploadAvailable();
+  const previewTracks = await getPreviewTracks(tracks, artist.name, audio);
+  const previewFor = (trackId: string) => {
+    const index = previewTracks.findIndex((p) => p.id === trackId);
+    return index === -1 ? undefined : { tracks: previewTracks, index };
+  };
   const territory = (["WORLD", "EU", "PL"] as const).find((v) => release.territories.includes(v));
   const territoryLabel = territory ? t(`territories.${territory}`) : release.territories.join(", ");
 
@@ -106,6 +112,7 @@ export default async function ReleaseEditorPage({
                     trackTitle={track.title}
                     audio={audio.get(track.id) ?? null}
                     available={uploadAvailable}
+                    preview={previewFor(track.id)}
                   />
                 ) : null}
               </TrackItem>

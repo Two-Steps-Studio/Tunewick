@@ -33,6 +33,7 @@ const media = mediaRunning
       `MEDIA_S3_ACCESS_KEY_ID=${LOCAL_MEDIA.accessKeyId}`,
       `MEDIA_S3_SECRET_ACCESS_KEY=${LOCAL_MEDIA.secretAccessKey}`,
       `MEDIA_INGEST_BUCKET=${LOCAL_MEDIA.ingestBucket}`,
+      `MEDIA_BUCKET=${LOCAL_MEDIA.mediaBucket}`,
     ]
   : ["# Audio upload disabled: run `pnpm media:start` for local S3, then `pnpm db:env`."];
 

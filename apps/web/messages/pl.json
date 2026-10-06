@@ -489,6 +489,27 @@
       "incomplete": "Plik nie dotarł w całości. Spróbuj ponownie.",
       "transfer": "Przesyłanie zostało przerwane. Sprawdź połączenie i spróbuj ponownie.",
       "failed": "Coś poszło nie tak. Spróbuj ponownie."
+    },
+    "listen": "Odsłuchaj",
+    "versions": "Wersje do odtwarzania: {list}.",
+    "note": {
+      "lossy": "Plik wygląda na przekonwertowany z formatu stratnego (np. MP3), więc będzie dostępny tylko w jakości High i Data Saver. Jeśli masz oryginalny master, prześlij go.",
+      "upsampled": "Plik wygląda na przekonwertowany w górę z {rate} kHz — wersje Hi-Res powstały w prawdziwej rozdzielczości, bez zawyżania.",
+      "padded": "Plik ma 24 bity, ale zawiera 16-bitowe nagranie — traktujemy go jako 16-bitowy."
+    },
+    "rejection": {
+      "unreadable": "Nie udało się odczytać pliku jako audio.",
+      "unsupported_container": "Akceptujemy tylko pliki WAV/BWF, AIFF, FLAC i ALAC (.m4a).",
+      "unsupported_codec": "Plik zawiera nagranie stratne — prześlij oryginalny, bezstratny master.",
+      "audio_streams": "Plik musi zawierać dokładnie jedną ścieżkę audio.",
+      "bit_depth": "Głębia bitowa musi wynosić 16, 24 lub 32 bity.",
+      "sample_rate": "Częstotliwość próbkowania musi być standardowa: 44,1–192 kHz.",
+      "channels": "Na razie przyjmujemy nagrania mono i stereo.",
+      "duration": "Utwór musi trwać od 10 sekund do 4 godzin.",
+      "decode_error": "Plik jest uszkodzony i nie da się go odtworzyć do końca. Wyeksportuj master ponownie.",
+      "empty": "Plik nie zawiera dźwięku.",
+      "integrity": "Suma kontrolna pliku FLAC nie zgadza się z zawartością — plik jest uszkodzony.",
+      "processing_failed": "Nie udało się przetworzyć pliku mimo kilku prób. Prześlij go ponownie albo napisz do nas."
     }
   }
 }

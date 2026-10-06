@@ -433,6 +433,15 @@ body {
   .track-audio__status--pending {
     color: var(--signal);
   }
+  .track-audio__facts {
+    font-family: var(--tk-font-mono);
+    font-size: var(--tk-text-xs);
+    color: var(--text-muted);
+  }
+  .track-audio__note {
+    font-size: var(--tk-text-sm);
+    color: var(--signal);
+  }
   .track-audio__row {
     display: flex;
     flex-wrap: wrap;

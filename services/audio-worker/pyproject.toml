@@ -3,7 +3,7 @@ name = "tunewick-audio"
 version = "0.1.0"
 description = "Tunewick audio worker: validate, analyse, transcode, package and verify masters"
 requires-python = ">=3.12"
-dependencies = ["numpy>=2.1"]
+dependencies = ["numpy>=2.1", "httpx>=0.28", "boto3>=1.40"]
 
 [project.optional-dependencies]
 dev = ["pytest>=8.3", "ruff>=0.8"]

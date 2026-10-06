@@ -14,6 +14,8 @@ interface MediaConfig {
   accessKeyId: string;
   secretAccessKey: string;
   ingestBucket: string;
+  /** Delivery variants written by the audio worker. */
+  mediaBucket: string | null;
 }
 
 function config(): MediaConfig | null {
@@ -28,6 +30,7 @@ function config(): MediaConfig | null {
     accessKeyId,
     secretAccessKey,
     ingestBucket,
+    mediaBucket: process.env.MEDIA_BUCKET || null,
   };
 }
 
@@ -44,9 +47,9 @@ function client(cfg: MediaConfig) {
   });
 }
 
-function objectUrl(cfg: MediaConfig, key: string) {
+function objectUrl(cfg: MediaConfig, key: string, bucket = cfg.ingestBucket) {
   const path = key.split("/").map(encodeURIComponent).join("/");
-  return `${cfg.endpoint}/${cfg.ingestBucket}/${path}`;
+  return `${cfg.endpoint}/${bucket}/${path}`;
 }
 
 const UPLOAD_URL_TTL_S = 60 * 60; // large masters on slow connections
@@ -72,4 +75,22 @@ export async function masterSize(key: string): Promise<number | null> {
   if (response.status === 404) return null;
   if (!response.ok) throw new Error(`Storage HEAD failed: ${response.status}`);
   return Number(response.headers.get("content-length"));
+}
+
+const PREVIEW_URL_TTL_S = 2 * 60 * 60;
+
+/**
+ * Short-lived GET URL for a delivery variant — members' preview of their own processed tracks.
+ * Public playback will go through the media edge with playback tokens (docs/architecture.md §6.4).
+ */
+export async function presignVariantGet(key: string): Promise<string | null> {
+  const cfg = config();
+  if (!cfg?.mediaBucket) return null;
+  const url = new URL(objectUrl(cfg, key, cfg.mediaBucket));
+  url.searchParams.set("X-Amz-Expires", String(PREVIEW_URL_TTL_S));
+  const signed = await client(cfg).sign(url.toString(), {
+    method: "GET",
+    aws: { signQuery: true },
+  });
+  return signed.url;
 }

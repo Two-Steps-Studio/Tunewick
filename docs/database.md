@@ -242,3 +242,16 @@ after the server has checked the object's size in storage; `abandon_audio_upload
 `processing`/`accepted`/`rejected` and the worker `report` are written only by the audio worker
 (service role, M3.2b). Objects of deleted tracks stay in the ingest bucket until the cleanup job
 (backlog).
+
+## Audio processing (implemented, M3.2b)
+
+`track_audio_uploads` gains `attempts`, `claimed_at`, `duration_ms`, `integrated_lufs`,
+`true_peak_dbtp`. `public.track_audio_variants` (one row per delivered file: tier, codec,
+container, rate, depth, nominal/real bitrate, samples, AAC delay/padding, object key, size,
+SHA-256) is readable by members/staff, and by everyone once the release is public
+(`can_view_audio_upload`, security definer because anonymous users cannot read uploads).
+Service-role-only queue functions: `claim_audio_upload()` (oldest `uploaded`, or `processing`
+stuck > 30 min; `FOR UPDATE SKIP LOCKED`; at most 3 attempts), `finish_audio_upload(upload,
+report, variants)` (accepted → variants, duration/loudness, `tracks.duration_ms` from the audio;
+rejected → code + message), `fail_audio_upload(upload)` (crash → back to the queue, failed after
+the third attempt).

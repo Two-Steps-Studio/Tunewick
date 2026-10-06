@@ -62,6 +62,8 @@ jobs:
       - run: pnpm db:env
       - name: Local S3 for master uploads (rewrites .env.local with its settings)
         run: pnpm media:start
+      - name: Audio worker polling the local queue
+        run: pnpm worker:start
       - run: pnpm --filter @tunewick/web build
       - run: pnpm --filter @tunewick/web exec playwright install --with-deps chromium firefox
       - name: Virtual sound server (Firefox on Linux does not start playback without one)

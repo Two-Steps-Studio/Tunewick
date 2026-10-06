@@ -21,3 +21,6 @@ RUN chown -R worker /app
 USER worker
 ENTRYPOINT []
 CMD ["sh", "-c", "ruff check src tests && ruff format --check src tests && pytest -q"]
+
+# Default build target: the production image.
+FROM base AS production

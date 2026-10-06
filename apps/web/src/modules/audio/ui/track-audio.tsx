@@ -1,8 +1,10 @@
 "use client";
 
+import { formatSampleRate } from "@tunewick/shared";
 import { useFormatter, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
-import { useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
+import { getPlayer, type PlayerTrack } from "@/modules/player";
 import { abandonAudioUpload, finishAudioUpload, startAudioUpload } from "../actions";
 import type { TrackAudio } from "../queries";
 import { checkMasterFile, MASTER_ACCEPT, type UploadError } from "../validation";
@@ -28,16 +30,66 @@ function put(url: string, file: File, onProgress: (percent: number) => void): Pr
   });
 }
 
+const TIER_NAMES: Record<string, string> = {
+  data_saver: "Data Saver",
+  high: "High",
+  lossless: "Lossless",
+  hires: "Hi-Res",
+};
+
+function formatDuration(ms: number) {
+  const seconds = Math.round(ms / 1000);
+  return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
+}
+
+function sourceName(source: NonNullable<TrackAudio["source"]>) {
+  const name = ["wav", "aiff"].includes(source.container) ? source.container : source.codec;
+  return `${name.toUpperCase()} ${source.bits}/${formatSampleRate(source.sampleRate)}`;
+}
+
+/** What the worker found, in plain words: source format, length, loudness, versions, caveats. */
+function AcceptedDetails({ audio }: { audio: TrackAudio }) {
+  const t = useTranslations("Audio");
+  const format = useFormatter();
+  const facts = [
+    audio.source ? sourceName(audio.source) : null,
+    audio.durationMs ? formatDuration(audio.durationMs) : null,
+    audio.integratedLufs !== null
+      ? `${format.number(audio.integratedLufs, { maximumFractionDigits: 1 })} LUFS`
+      : null,
+  ].filter(Boolean);
+  return (
+    <>
+      <p className="track-audio__facts">{facts.join(" · ")}</p>
+      {audio.tiers.length ? (
+        <p className="field__hint">
+          {t("versions", { list: audio.tiers.map((tier) => TIER_NAMES[tier] ?? tier).join(", ") })}
+        </p>
+      ) : null}
+      {audio.lossyOrigin ? <p className="track-audio__note">{t("note.lossy")}</p> : null}
+      {audio.upsampledFrom ? (
+        <p className="track-audio__note">
+          {t("note.upsampled", { rate: formatSampleRate(audio.upsampledFrom) })}
+        </p>
+      ) : null}
+      {audio.bitPadded ? <p className="track-audio__note">{t("note.padded")}</p> : null}
+    </>
+  );
+}
+
 export function TrackAudioUpload({
   trackId,
   trackTitle,
   audio,
   available,
+  preview,
 }: {
   trackId: string;
   trackTitle: string;
   audio: TrackAudio | null;
   available: boolean;
+  /** Processed tracks of this release and this track's position among them. */
+  preview?: { tracks: PlayerTrack[]; index: number };
 }) {
   const t = useTranslations("Audio");
   const format = useFormatter();
@@ -46,6 +98,14 @@ export function TrackAudioUpload({
   const input = useRef<HTMLInputElement>(null);
   const [phase, setPhase] = useState<Phase>({ kind: "idle" });
   const busy = phase.kind === "uploading" || phase.kind === "finishing";
+  const waiting = audio?.status === "uploaded" || audio?.status === "processing";
+
+  // While the worker has the file, refresh so "ready"/"rejected" appears without a reload.
+  useEffect(() => {
+    if (!waiting) return;
+    const timer = setInterval(() => router.refresh(), 4000);
+    return () => clearInterval(timer);
+  }, [waiting, router]);
 
   async function upload(file: File) {
     const problem = checkMasterFile(file.name, file.size);
@@ -75,6 +135,13 @@ export function TrackAudioUpload({
     return <p className="track-audio__status field__hint">{t("unavailable")}</p>;
   }
 
+  function rejectionText(rejected: TrackAudio) {
+    // Codes come from the worker; unknown ones fall back to its (English) message.
+    const key = `rejection.${rejected.rejectionCode}` as "rejection.duration";
+    if (rejected.rejectionCode && t.has(key)) return t(key);
+    return rejected.rejectionMessage ?? "";
+  }
+
   const size = audio
     ? format.number(audio.sizeBytes / 1024 ** 2, { maximumFractionDigits: 1 })
     : "";
@@ -84,15 +151,29 @@ export function TrackAudioUpload({
       {audio ? (
         <p className={`track-audio__status track-audio__status--${audio.status}`} role="status">
           {t(`status.${audio.status}`, { file: audio.fileName, size })}
-          {audio.status === "rejected" && audio.rejectionMessage
-            ? ` ${audio.rejectionMessage}`
-            : ""}
+          {audio.status === "rejected" ? ` ${rejectionText(audio)}` : ""}
         </p>
       ) : (
         <p className="track-audio__status field__hint">{t("none")}</p>
       )}
 
+      {audio?.status === "accepted" ? <AcceptedDetails audio={audio} /> : null}
+
       <div className="track-audio__row">
+        {preview && audio?.status === "accepted" ? (
+          <button
+            type="button"
+            className="button button--quiet"
+            aria-label={`${t("listen")}: ${trackTitle}`}
+            onClick={() => {
+              const player = getPlayer();
+              player.configure({ setting: "auto", entitlement: "hires" });
+              void player.playQueue(preview.tracks, preview.index);
+            }}
+          >
+            {t("listen")}
+          </button>
+        ) : null}
         <label htmlFor={inputId} className={`button button--quiet${busy ? " is-disabled" : ""}`}>
           {audio ? t("replace") : t("choose")}
           <span className="visually-hidden">{`: ${trackTitle}`}</span>

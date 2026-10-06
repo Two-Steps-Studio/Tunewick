@@ -95,6 +95,29 @@ Until these variables exist the editor says "audio upload is coming soon" — no
 
    Redeploy. Locally the same variables point at `pnpm media:start` (SeaweedFS).
 
+## 3b. Audio worker (Fly.io, EU)
+
+1. R2: second bucket **`tunewick-media`** for the delivery variants (private). Add a CORS rule
+   with `"AllowedMethods": ["GET", "HEAD"]` and `"AllowedHeaders": ["range"]` for the same origins
+   (members preview their processed tracks through short-lived presigned URLs). Extend the API
+   token (or create a second one) to *Object Read & Write* on both buckets.
+2. Vercel: add `MEDIA_BUCKET=tunewick-media` (server-only) and redeploy.
+3. Fly.io: `fly launch --no-deploy` in `services/audio-worker` (region `waw` or `fra`), then
+   `fly secrets set` for:
+
+   | Name | Value |
+   | --- | --- |
+   | `TUNEWICK_SUPABASE_URL` | Supabase project URL |
+   | `TUNEWICK_SUPABASE_SECRET_KEY` | Supabase **secret** key (`sb_secret_…`) — server only |
+   | `MEDIA_S3_ENDPOINT`, `MEDIA_S3_REGION`, `MEDIA_S3_ACCESS_KEY_ID`, `MEDIA_S3_SECRET_ACCESS_KEY` | as in §3a |
+   | `MEDIA_INGEST_BUCKET` / `MEDIA_BUCKET` | `tunewick-ingest` / `tunewick-media` |
+
+   Process command: `worker --poll 5` (the image entrypoint is `python -m tunewick_audio`).
+   One shared-cpu machine with 2 GB RAM is enough for the beta; more machines can run side by side
+   (jobs are claimed with `FOR UPDATE SKIP LOCKED`).
+4. Check: upload a master in the editor → within a minute the track shows "Gotowe" (ready) and
+   the *Listen* button plays it. Worker logs: `fly logs` (one JSON line per job).
+
 ## 4. Bootstrap (once)
 
 Run locally with the secret key in the shell environment only (Settings → API → secret key):

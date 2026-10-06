@@ -77,6 +77,17 @@ Known limitations (advisory flags; moderator override with audit entry per §2.3
 - AAC encoder is ffmpeg's native encoder as an interim choice; the final encoder follows the ABX
   and licensing check (§3).
 
+### 2.5 Job loop (M3.2b)
+
+`python -m tunewick_audio worker` polls the Supabase queue (service-role RPCs through PostgREST),
+downloads the master from the ingest bucket, runs the pipeline above, uploads the variants to the
+media bucket as `tracks/<track>/<upload>/<file>` (immutable, `Cache-Control: immutable`) and
+records the report. The stored report has no worker paths and no non-finite numbers (the true peak
+of silence becomes `null`). The editor refreshes while a file is waiting, shows the result in
+plain words (source format, length, loudness, versions, caveats such as a suspected lossy origin)
+and lets the team listen to the processed versions through the player. Locally:
+`pnpm worker:start` (Docker); production: Fly.io (docs/deployment.md §3b).
+
 ## 3. Delivery tiers
 
 | Tier | Variant 🔬 | Generated when | Plan |

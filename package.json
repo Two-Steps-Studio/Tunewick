@@ -26,7 +26,9 @@
     "worker:test": "docker build -t tunewick-audio-worker:test --target test services/audio-worker && docker run --rm tunewick-audio-worker:test",
     "dev:media": "node scripts/generate-dev-media.mjs",
     "media:start": "node scripts/media-start.mjs && node scripts/write-local-env.mjs",
-    "media:stop": "docker compose -f docker/media/compose.yml down"
+    "media:stop": "docker compose -f docker/media/compose.yml down",
+    "worker:start": "node scripts/worker-start.mjs",
+    "worker:stop": "docker rm -f tunewick-audio-worker-dev"
   },
   "devDependencies": {
     "@playwright/test": "1.63.0",
