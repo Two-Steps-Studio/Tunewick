@@ -38,6 +38,7 @@ export default async function ModerationPage({ params }: PageProps<"/[locale]/mo
   ]);
   const tReports = await getTranslations("Reports");
   const tPromo = await getTranslations("PromoAdmin");
+  const tAdmin = await getTranslations("Admin");
 
   return (
     <section className="auth-page">
@@ -46,6 +47,7 @@ export default async function ModerationPage({ params }: PageProps<"/[locale]/mo
         <p className="auth-page__lead">{t("lead")}</p>
         {admin ? (
           <p className="settings-profile-link">
+            <Link href="/admin">{tAdmin("link")}</Link> ·{" "}
             <Link href="/admin/promo">{tPromo("link")}</Link>
           </p>
         ) : null}

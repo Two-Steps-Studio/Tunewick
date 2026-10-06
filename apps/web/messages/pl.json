@@ -1007,5 +1007,53 @@
         "failed": "Nie udało się wysłać odwołania. Spróbuj ponownie."
       }
     }
+  },
+  "Admin": {
+    "link": "Administracja",
+    "title": "Administracja",
+    "lead": "Role personelu, Premium dla wsparcia, flagi funkcji i dziennik zmian. Każda zmiana trafia do dziennika.",
+    "toModeration": "Moderacja",
+    "toPromo": "Promocje",
+    "staff": "Personel",
+    "roles": {
+      "moderator": "moderator",
+      "admin": "administrator"
+    },
+    "you": "to Ty — swojej roli administratora nie odbierzesz",
+    "revoke": "Odbierz rolę",
+    "revokeLabel": "Odbierz rolę {role}: {who}",
+    "grantRole": "Nadaj rolę",
+    "roleGranted": "Rola nadana. Osoba musi włączyć logowanie dwuskładnikowe, żeby z niej korzystać.",
+    "premium": "Premium dla wsparcia",
+    "premiumLead": "Np. rekompensata za błąd albo tester. Dla kampanii używaj kodów promocyjnych.",
+    "grantPremium": "Przyznaj Premium",
+    "premiumGranted": "Premium przyznane.",
+    "flags": "Flagi funkcji",
+    "on": "włączona",
+    "off": "wyłączona",
+    "turnOn": "Włącz",
+    "turnOff": "Wyłącz",
+    "audit": "Dziennik zmian",
+    "auditFilter": "Rodzaj zmian",
+    "auditAll": "wszystko",
+    "system": "system",
+    "unknownActor": "konto bez nazwy",
+    "fields": {
+      "handle": "Nazwa profilu osoby",
+      "handleHint": "Adres profilu, np. kasia-k (bez @).",
+      "role": "Rola",
+      "days": "Na ile dni",
+      "daysHint": "Puste = na zawsze.",
+      "note": "Notatka (powód)",
+      "noteHint": "Widoczna w dzienniku zmian i jako źródło planu."
+    },
+    "errors": {
+      "notFound": "Nie ma konta z taką nazwą profilu.",
+      "invalid": "Sprawdź pola formularza.",
+      "mfa_required": "To wymaga logowania dwuskładnikowego w tej sesji.",
+      "not_allowed": "Nie masz uprawnień do tej zmiany.",
+      "already_lifetime": "Ta osoba ma już Premium na zawsze.",
+      "failed": "Nie udało się. Spróbuj ponownie."
+    }
   }
 }

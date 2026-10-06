@@ -1392,6 +1392,32 @@ body {
     font-size: var(--tk-text-sm);
     overflow-wrap: anywhere;
   }
+  .admin-staff {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+  }
+  .audit-log {
+    display: grid;
+    list-style: none;
+    padding: 0;
+    font-size: var(--tk-text-sm);
+  }
+  .audit-log__entry {
+    display: grid;
+    gap: var(--tk-space-1);
+    padding: var(--tk-space-2) 0;
+    border-bottom: 1px solid var(--line);
+    overflow-wrap: anywhere;
+  }
+  .audit-log__when {
+    font-family: var(--tk-font-mono);
+    font-size: var(--tk-text-xs);
+    color: var(--text-muted);
+  }
+  .audit-log__data {
+    font-size: var(--tk-text-xs);
+    color: var(--text-muted);
+  }
   .revoke-form {
     display: flex;
     flex-wrap: wrap;

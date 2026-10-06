@@ -1007,5 +1007,53 @@
         "failed": "Could not send the appeal. Please try again."
       }
     }
+  },
+  "Admin": {
+    "link": "Administration",
+    "title": "Administration",
+    "lead": "Staff roles, Premium for support, feature flags and the audit log. Every change is logged.",
+    "toModeration": "Moderation",
+    "toPromo": "Promotions",
+    "staff": "Staff",
+    "roles": {
+      "moderator": "moderator",
+      "admin": "administrator"
+    },
+    "you": "that is you — you cannot remove your own admin role",
+    "revoke": "Revoke role",
+    "revokeLabel": "Revoke {role} role: {who}",
+    "grantRole": "Grant role",
+    "roleGranted": "Role granted. The person must turn on two-factor sign-in to use it.",
+    "premium": "Premium for support",
+    "premiumLead": "E.g. compensation for a bug or a tester. Use promo codes for campaigns.",
+    "grantPremium": "Grant Premium",
+    "premiumGranted": "Premium granted.",
+    "flags": "Feature flags",
+    "on": "on",
+    "off": "off",
+    "turnOn": "Turn on",
+    "turnOff": "Turn off",
+    "audit": "Audit log",
+    "auditFilter": "Kind of change",
+    "auditAll": "everything",
+    "system": "system",
+    "unknownActor": "unnamed account",
+    "fields": {
+      "handle": "Profile handle",
+      "handleHint": "The profile address, e.g. kasia-k (no @).",
+      "role": "Role",
+      "days": "For how many days",
+      "daysHint": "Empty = for life.",
+      "note": "Note (reason)",
+      "noteHint": "Shown in the audit log and as the plan's source."
+    },
+    "errors": {
+      "notFound": "No account has this profile handle.",
+      "invalid": "Check the form fields.",
+      "mfa_required": "This needs two-factor sign-in in this session.",
+      "not_allowed": "You are not allowed to make this change.",
+      "already_lifetime": "This person already has Premium for life.",
+      "failed": "That did not work. Please try again."
+    }
   }
 }

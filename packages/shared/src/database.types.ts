@@ -1438,6 +1438,20 @@ export type Database = {
       access_invite_is_valid: { Args: { code: string }; Returns: boolean };
       add_playlist_track: { Args: { playlist: string; track: string }; Returns: string };
       add_track: { Args: { release: string; title: string }; Returns: string };
+      admin_audit_log: {
+        Args: { action_prefix?: string; max_results?: number };
+        Returns: {
+          action: string;
+          actor_handle: string;
+          actor_kind: string;
+          after: Json;
+          before: Json;
+          created_at: string;
+          id: number;
+          subject_id: string;
+          subject_type: string;
+        }[];
+      };
       admin_create_promo_campaign: {
         Args: {
           description?: string;
@@ -1462,6 +1476,7 @@ export type Database = {
         };
         Returns: string;
       };
+      admin_find_user: { Args: { handle: string }; Returns: string };
       admin_generate_promo_codes: {
         Args: {
           benefit_type: Database["public"]["Enums"]["promo_benefit"];
@@ -1480,6 +1495,15 @@ export type Database = {
       admin_grant_role: {
         Args: { role: Database["public"]["Enums"]["app_role"]; target_user: string };
         Returns: undefined;
+      };
+      admin_list_feature_flags: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          description: string;
+          enabled: boolean;
+          key: string;
+          updated_at: string;
+        }[];
       };
       admin_list_promo_codes: {
         Args: { campaign: string; hint?: string };
@@ -1510,6 +1534,16 @@ export type Database = {
           redeemed_at: string;
           revoked_at: string;
           status: string;
+          user_id: string;
+        }[];
+      };
+      admin_list_staff: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          display_name: string;
+          granted_at: string;
+          handle: string;
+          role: Database["public"]["Enums"]["app_role"];
           user_id: string;
         }[];
       };

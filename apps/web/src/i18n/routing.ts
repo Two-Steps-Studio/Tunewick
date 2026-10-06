@@ -37,6 +37,7 @@ export const routing = defineRouting({
     "/profile/[handle]": { pl: "/profil/[handle]", en: "/profile/[handle]" },
     "/moderation": { pl: "/moderacja", en: "/moderation" },
     "/moderation/[release]": { pl: "/moderacja/[release]", en: "/moderation/[release]" },
+    "/admin": "/admin",
     "/admin/promo": { pl: "/admin/promocje", en: "/admin/promotions" },
     "/admin/promo/[campaign]": {
       pl: "/admin/promocje/[campaign]",

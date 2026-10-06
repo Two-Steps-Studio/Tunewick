@@ -299,6 +299,14 @@ life; audited). Wrappers: `admin_grant_entitlement(user, plan, days | null, note
 plan, days, source, note)` (service role, `scripts/grant-plan.mjs`). The web app's
 `listenerEntitlement()` is `my_plan().max_quality_tier`.
 
+## Admin panel (implemented, M10.3)
+
+`/admin` (admin + aal2): staff list (`admin_list_staff`, handles only), grant/revoke roles by
+profile handle (`admin_find_user` → `admin_grant_role` / `admin_revoke_role`), Premium for support
+cases (`admin_grant_entitlement`), feature flags (`admin_list_feature_flags`,
+`admin_set_feature_flag`) and a read-only audit log viewer (`admin_audit_log(max, prefix)`, newest
+first, actor handle). Every change goes through the existing audited functions.
+
 ## Reports, takedowns and appeals (implemented, M10.2)
 
 `reports` (artist / release / playlist; reason copyright, illegal, hate, impersonation, spam, other;
