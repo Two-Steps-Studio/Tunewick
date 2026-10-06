@@ -60,7 +60,7 @@ labels and the people who were there.
 Each differentiator states how it differs from the competitor equivalent (anti-clone rule).
 
 ### 4.1 Scene-first discovery
-- **What:** Discovery organized around scenes (city/region + genre + venues + collectives), starting with GZM/Silesia.
+- **What:** Discovery organized around scenes (city/region + genre + venues + collectives) across all of Poland — small, independent artists from any city or town, not one region (decision D6).
 - **Differs from Spotify:** Spotify's location signals are about where *listeners* are ("Top 50 Poland"). Tunewick models where *music comes from* and where it is *played live*.
 
 ### 4.2 Transparent discovery
@@ -108,7 +108,7 @@ Zespół from Gliwice, self-releases via a distributor, plays local clubs, has s
 **Needs:** upload in original quality, a profile that connects music with gigs, reach listeners in their region, understand who listens, keep rights and control.
 
 ### P4 — Venue / organizer / collective
-A club or promoter in GZM running 10–20 events a month.
+A club or promoter in a Polish city running 10–20 events a month.
 **Needs:** publish events with lineups, reach people who like those artists, show the venue's musical identity over time.
 
 ### P5 — Admin / moderator (internal)
@@ -198,13 +198,14 @@ What this involves:
 | D2 | **User-centric payouts** once paid plans exist: a subscriber's payment goes to the artists that subscriber listens to. Data model must record per-user listening attributable to artists from day one. |
 | D3 | **No card payments in MVP.** Premium is granted via promo codes and beta access. Payment provider integration is Phase 14; entitlements stay provider-agnostic. |
 | D4 | **Free = full catalog in High (lossy) quality. Premium = Lossless and Hi-Res** (where source allows). No artificial listening restrictions on Free. |
-| D5 | **Closed beta in GZM first:** ~30–50 invited local artists and 5–10 venues, invite codes, then public beta. |
+| D5 | **Closed beta first:** ~30–50 invited artists and 5–10 venues, invite codes, then public beta. (Originally GZM-only; widened by D6.) |
+| D6 | **All of Poland, small independent artists** (owner, 2026-10-06): no regional limit — artists from any city or town in Poland; scenes are a way to explore, not a gate. Small/independent first: no label catalog (see MVP content decision). |
 
 ## 10. Key risks
 
 | Risk | Impact | Mitigation |
 | --- | --- | --- |
-| **Cold start** — few artists, empty catalog | Product feels empty; no listeners | Seed the GZM scene manually before public beta; artist invite codes; venue partnerships. |
+| **Cold start** — few artists, empty catalog | Product feels empty; no listeners | Invite small independent artists from across Poland before public beta (several cities/scenes, not one); artist invite codes; venue partnerships. |
 | Listeners won't use a second app | Low retention | Narrow, sharp value: "what's on + what it sounds like + I was there". Events and soundchecks give reasons to return. |
 | Collective-licensing cost/complexity | Legal exposure or blocked launch | Resolve L1 before public launch; ask membership on upload. |
 | False rights declarations / infringing uploads | Legal exposure | Moderation queue, artist verification, duplicate/fingerprint checks, takedown process, indemnity in terms. |

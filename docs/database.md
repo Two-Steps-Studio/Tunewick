@@ -117,7 +117,7 @@ graph_edges (derived)      feature_flags, access_invites, waitlist      private.
 
 | Table | Key columns | Notes |
 | --- | --- | --- |
-| `cities` | `slug`, `name_pl`, `name_en`, `region` (e.g. `GZM`), `country_code`, `lat`, `lng` | Seeded for GZM first. |
+| `cities` | `slug`, `name_pl`, `name_en`, `region` (voivodeship or metro area, e.g. `śląskie`, `GZM`), `country_code`, `lat`, `lng` | Seeded with Polish cities and towns (all voivodeships). |
 | `venues` | `slug`, `name`, `city_id`, `address`, `lat`, `lng`, `website`, `verified` | |
 | `venue_members` | `venue_id`, `user_id`, `role` | Organizers (post-MVP self-service). |
 | `events` | `slug`, `title`, `venue_id`, `starts_at`, `ends_at`, `status (scheduled, cancelled, postponed)`, `ticket_url`, `description`, `source (artist, venue, admin)`, `published` | Only real, moderated events are published. |
@@ -229,3 +229,135 @@ Every policy is covered by pgTAP tests in `supabase/tests/` (a policy without a 
 | Admin, audit | `user_roles`, `private.audit_log`, `feature_flags` |
 | Beta | `access_invites`, `waitlist` |
 | GDPR | `consents`, `data_requests` |
+
+## Master audio uploads (implemented, M3.2a)
+
+`public.track_audio_uploads` — one row per upload attempt of a track's master; the newest row is
+the track's current audio. Status `pending → uploaded → processing → accepted | rejected | failed`.
+Members of the release's artist (and staff) can read rows; clients have **no** write grants:
+`begin_audio_upload(track, file_name, size_bytes)` (editable release, lossless extensions,
+1 KiB–4 GiB, ≤ 10 attempts per track per hour) returns the object key
+`masters/<artist>/<track>/<upload>.<ext>` that the server presigns; `complete_audio_upload(upload)`
+after the server has checked the object's size in storage; `abandon_audio_upload(upload, reason)`.
+`processing`/`accepted`/`rejected` and the worker `report` are written only by the audio worker
+(service role, M3.2b). Objects of deleted tracks stay in the ingest bucket until the cleanup job
+(backlog).
+
+## Audio processing (implemented, M3.2b)
+
+`track_audio_uploads` gains `attempts`, `claimed_at`, `duration_ms`, `integrated_lufs`,
+`true_peak_dbtp`. `public.track_audio_variants` (one row per delivered file: tier, codec,
+container, rate, depth, nominal/real bitrate, samples, AAC delay/padding, object key, size,
+SHA-256) is readable by members/staff, and by everyone once the release is public
+(`can_view_audio_upload`, security definer because anonymous users cannot read uploads).
+Service-role-only queue functions: `claim_audio_upload()` (oldest `uploaded`, or `processing`
+stuck > 30 min; `FOR UPDATE SKIP LOCKED`; at most 3 attempts), `finish_audio_upload(upload,
+report, variants)` (accepted → variants, duration/loudness, `tracks.duration_ms` from the audio;
+rejected → code + message), `fail_audio_upload(upload)` (crash → back to the queue, failed after
+the third attempt).
+
+## Release review and publishing (implemented, M5.0)
+
+`releases` gains `submitted_at`, `reviewed_at`, `review_note` (why it was returned; cleared on
+approval). `public.release_review_events` (submitted / withdrawn / approved / returned + note) is
+the history members and staff see; the moderator's identity is only in the private audit log.
+Functions: `release_readiness(release)` (tracks, AI declared, rights declared, every track's newest
+master accepted — the same rules as the editor checklist), `submit_release` and
+`withdraw_release_submission` (members), `review_release(release, 'approve' | 'return', note)`
+(moderator or admin **and** aal2; approve → `published` with `publish_at` = release date at
+midnight Europe/Warsaw if in the future, else now; return → `rejected` with a ≥ 10-character note;
+both audit-logged). `release_playback(release)` returns, for releases the caller may see, each
+track's newest accepted master (source description) and its variants — the only way anonymous
+listeners reach playback data. The web app signs URLs only for tiers within the listener's plan
+(everyone is on Free = High until Premium codes exist).
+
+## Images (implemented, M2.5)
+
+`public.images` — one row per uploaded cover (`release_artwork`, owner `release_id`) or artist photo
+(`artist_image`, owner `artist_id`); no file names are stored. Status reuses
+`audio_upload_status`. The worker writes `width`/`height`, `dominant_color` and `variants`
+(`[{width, key, bytes}]`, WebP, smallest first) and attaches the image: `releases.artwork_image_id`
+(only while the release is editable — a cover finishing during review never changes what
+moderators see) or `artists.image_id`. Readable by members/staff; by everyone only when attached
+and public (`can_view_image`). Member functions: `begin_image_upload(kind, owner, extension,
+size)` (JPEG/PNG/WebP, ≤ 25 MB, 10 per owner per hour), `complete_image_upload`,
+`abandon_image_upload`; worker: `claim_image_upload`, `finish_image_upload`, `fail_image_upload`.
+`release_readiness` now also requires an accepted cover (`artwork`).
+
+## Plans and entitlements (implemented, M9.1)
+
+`public.plans` (`free` rank 0 → `high`; `premium` rank 1 → `hires`) and `public.entitlements`
+(`source` enum promo/beta/admin/referral/subscription, `source_ref`, `starts_at`, `ends_at` null =
+for life, `revoked_at`/`revoked_reason`/`revoked_by`; never deleted). Users read their own rows;
+admins with aal2 read all. Nobody writes the table directly.
+`private.effective_plan(user)` picks the highest-ranked active plan and follows back-to-back
+entitlements for the end date; `public.my_plan()` exposes it to the caller (anonymous → free).
+`private.grant_entitlement(...)` is the single grant path (per-user advisory lock; time-limited
+grants start where the current run ends; `already_lifetime` hint when the plan is already for
+life; audited). Wrappers: `admin_grant_entitlement(user, plan, days | null, note)` and
+`admin_revoke_entitlement(id, reason)` (admin + aal2, audited), `system_grant_entitlement(email,
+plan, days, source, note)` (service role, `scripts/grant-plan.mjs`). The web app's
+`listenerEntitlement()` is `my_plan().max_quality_tier`.
+
+## Likes and follows (implemented, M5.1)
+
+`track_likes`, `release_likes`, `artist_follows` (PK `(user_id, subject)`, `user_id` defaults to
+`auth.uid()` and is not insertable). RLS: owners read/insert/delete their own rows; inserts only for
+public music (`release_is_public`) and active artists. Who follows whom is private;
+`artist_follower_count(artist)` is the one public number (a real count). The library page lists
+liked tracks (played as one queue in like order), liked releases and followed artists; music that
+stops being public drops out through RLS.
+
+## Playlists (implemented, M5.2)
+
+`playlists` (`owner_id` from the session, `title` 1–100, `description` ≤ 500, `visibility`
+public/unlisted/private — private by default, `kind` manual, `updated_at` touched by item changes;
+≤ 200 per owner via `private.playlist_count`) and `playlist_tracks` (fractional `position`,
+duplicates allowed). Read: owner, or anyone for public/unlisted (`can_view_playlist`); owners update
+title/description/visibility and delete. Items are added and moved only through
+`add_playlist_track(playlist, track)` (public tracks only, ≤ 1000, row lock per playlist) and
+`move_playlist_track(item, to_index)` (midpoint of the new neighbours, renumbered when gaps fall
+below 1e-9); owners delete items directly. Tracks that stop being public stay in the playlist and
+are hidden by the catalog RLS (the page says how many are unavailable).
+
+## Listening history (implemented, M5.3)
+
+`listening_events` is range-partitioned by `started_at` (monthly partitions and a default one live in
+the `private` schema; `private.create_listening_partition(day)` adds a month and should run monthly,
+ahead of time). Rows: `user_id`, `track_id`, `release_id`, `artist_id`, `started_at`,
+`ms_played` (time actually heard — seeks and pauses excluded by the player's `ListeningTracker`),
+`completed`, `tier`. Written only by `record_listen(...)` (signed-in, public track, ≤ duration + 30 s,
+start within the last day, ≤ 120 a minute) via `POST /api/listen` (sent on track change, stop and
+page hide with `keepalive`). Private to the listener (`my_recent_tracks`), who can clear it in the
+library. A play qualifies for payouts at ≥ 30 s (D2) when aggregation arrives.
+
+## Promo codes (implemented, M9.2)
+
+`public.promo_campaigns` (dates, `active`, `max_redemptions_total`, `per_user_limit` per
+campaign; admins with aal2 read), `private.promo_codes` (HMAC-SHA256 `code_hash` with the
+`promo_code_pepper` Vault secret — generated inside each database by the migration, never in the
+repo — `code_hint` = last 4 characters, `shared`, `benefit_type` enum, `benefit_value`,
+`target_plan`, dates, `max_uses`/`uses_count`, `per_user_limit`, `eligibility`
+`{"new_accounts_days": n, "min_account_age_days": n}`), `public.promo_redemptions` (own rows;
+admins) and `private.promo_attempts`. Generated codes: 16 characters from
+`ABCDEFGHJKMNPQRSTUVWXYZ23456789` (rejection-sampled, ~79 bits), `XXXX-XXXX-XXXX-XXXX`.
+`redeem_promo_code(code)` implements promotions.md §4 and returns `{status, plan, ends_at}` —
+failures are results (recorded attempts), not exceptions; 10 failed attempts per 15 minutes →
+`rate_limited`; a refused code is never consumed; the code row lock serializes concurrent
+redemptions (E2E: six accounts, one single-use code, exactly one grant). Admin (M9.3, admin + aal2,
+audited): `admin_create_promo_campaign`, `admin_set_promo_campaign_active`, `admin_list_promo_codes`
+(hints only, lookup by hint), `admin_generate_promo_codes` (plaintext returned once → CSV in the
+panel), `admin_create_shared_promo_code` (max uses required), `admin_set_promo_code_active`,
+`admin_list_promo_redemptions` (public handle, no email), `admin_revoke_promo_redemption` (revokes
+the entitlement, keeps the row). Panel: `/admin/promocje`, linked from the moderation page for
+admins. Server-side bootstrap: `system_create_promo_codes(...)` via `scripts/create-promo-codes.mjs`.
+
+## Search (implemented, M6.2)
+
+`public.search_normalize(text)` = lower(unaccent(text)) (immutable wrapper; "Łódź" → "lodz") with
+trigram GIN indexes on artist names, release titles and track titles.
+`public.search_catalog(query, max_results)` (security invoker + explicit public filters: active
+artists, released releases and their tracks — members never see their drafts in search) ranks:
+exact name 1.0, prefix 0.9, word prefix 0.8, substring 0.6, trigram similarity (> 0.3) × 0.7;
+up to `max_results` (≤ 20) per kind; LIKE wildcards in the query are literal; < 2 characters
+returns nothing. Playlists, events and venues join when they exist.

@@ -1,5 +1,6 @@
 "use client";
 
+import { VOIVODESHIPS } from "@tunewick/shared";
 import { useTranslations } from "next-intl";
 import { useActionState, useState } from "react";
 import {
@@ -70,9 +71,16 @@ export function ArtistInfoForm({
   values,
 }: {
   artistId: string;
-  values: { name: string; bio: string | null; formedYear: number | null };
+  values: {
+    name: string;
+    bio: string | null;
+    formedYear: number | null;
+    voivodeship: string | null;
+    city: string | null;
+  };
 }) {
   const t = useTranslations("Artists");
+  const tPlaces = useTranslations("Places");
   const err = useErrors();
   const [state, action] = useActionState(updateArtist.bind(null, artistId), initial);
   return (
@@ -97,6 +105,24 @@ export function ArtistInfoForm({
         inputMode="numeric"
         defaultValue={state.values?.formedYear ?? values.formedYear?.toString() ?? ""}
         error={err(state.fieldErrors?.formedYear)}
+      />
+      <InputField
+        name="city"
+        label={t("fields.city")}
+        hint={t("hints.city")}
+        autoComplete="address-level2"
+        defaultValue={state.values?.city ?? values.city ?? ""}
+        error={err(state.fieldErrors?.city)}
+      />
+      <SelectField
+        name="voivodeship"
+        label={t("fields.voivodeship")}
+        defaultValue={state.values?.voivodeship ?? values.voivodeship ?? ""}
+        error={err(state.fieldErrors?.voivodeship)}
+        options={[
+          { value: "", label: t("fields.voivodeshipNone") },
+          ...VOIVODESHIPS.map((v) => ({ value: v, label: tPlaces(`voivodeship.${v}`) })),
+        ]}
       />
       <Submit>{t("manage.save")}</Submit>
     </form>

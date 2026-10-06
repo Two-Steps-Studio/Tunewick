@@ -63,7 +63,7 @@ Debian ffmpeg with libsoxr), CI job `worker`.
 | Integrity | Full decode in one streaming pass; any ffmpeg error → `decode_error`. FLAC STREAMINFO MD5 compared with the MD5 of the decoded samples → `integrity` |
 | Hashes | File SHA-256; PCM SHA-256 of the decode (s32le for integer, f32le for float masters) — the duplicate key of §6 |
 | Effective bit depth | OR of all samples → lowest bit ever used; float masters checked for exact 16/24-bit integer values |
-| Spectral cliff | Averaged power spectrum (Hann, ≈ 5.5 Hz bins, all channels), smoothed over 100 Hz; the strongest drop between the median level 0.2–1.5 kHz below a frequency and the 95th percentile of everything above it up to Nyquist. Drop ≥ 25 dB = cliff. Cliff at 10–19.5 kHz → `suspected_lossy_origin`; in a > 48 kHz file within −2.5/+1.5 kHz of a lower standard rate's Nyquist → `suspected_upsampled` (either rate family) |
+| Spectral cliff | Averaged power spectrum (Hann, ≈ 5.5 Hz bins, all channels), smoothed over 100 Hz; the strongest drop between the median level 0.2–1.5 kHz below a frequency and the 95th percentile of everything above it up to Nyquist. Drop ≥ 25 dB = cliff. It counts as evidence only when the band above it is empty: within 15 dB of the quantization floor of the effective bit depth, or a drop ≥ 60 dB (quiet 16-bit MP3s drop only ~30–40 dB, while band-limited music over real noise also drops ~45 dB — the floor test separates them). Cliff at 10–19.5 kHz → `suspected_lossy_origin`; in a > 48 kHz file within −2.5/+1.5 kHz of a lower standard rate's Nyquist → `suspected_upsampled` (either rate family) |
 | Levels | Peak, clipping events (≥ 3 consecutive samples at ≥ −0.001 dBFS), DC offset (> −40 dBFS flagged), L/R correlation (< −0.3 flagged), digital silence |
 | Loudness | ffmpeg `ebur128` (integrated LUFS, LRA, true peak dBTP); true peak > 0 dBTP also flags `clipping` |
 | Variants | AAC-LC 96/256 kbps fMP4 (2 s fragments) at 44.1/48 kHz; FLAC 16-bit Lossless; FLAC Hi-Res at effective depth (24 if > 16) and rate. Resampling `soxr` precision 28; TPDF dither only when reducing to 16 bits loses information (resampling or effective depth > 16). 24-bit targets are truncated from 32-bit intermediates (error ≈ −144 dBFS). Tags stripped (metadata comes from the catalog) |
@@ -76,6 +76,17 @@ Known limitations (advisory flags; moderator override with audit entry per §2.3
 - A deliberate steep low-pass on a genuine master (10–19.5 kHz) is a false positive.
 - AAC encoder is ffmpeg's native encoder as an interim choice; the final encoder follows the ABX
   and licensing check (§3).
+
+### 2.5 Job loop (M3.2b)
+
+`python -m tunewick_audio worker` polls the Supabase queue (service-role RPCs through PostgREST),
+downloads the master from the ingest bucket, runs the pipeline above, uploads the variants to the
+media bucket as `tracks/<track>/<upload>/<file>` (immutable, `Cache-Control: immutable`) and
+records the report. The stored report has no worker paths and no non-finite numbers (the true peak
+of silence becomes `null`). The editor refreshes while a file is waiting, shows the result in
+plain words (source format, length, loudness, versions, caveats such as a suspected lossy origin)
+and lets the team listen to the processed versions through the player. Locally:
+`pnpm worker:start` (Docker); production: Fly.io (docs/deployment.md §3b).
 
 ## 3. Delivery tiers
 
@@ -105,6 +116,16 @@ Implemented as pure functions in `packages/shared/src/playback` (M4.0): `resolve
 `planGaplessAppends` / `applyAppendPlan` (sample-exact MSE timeline with AAC priming/padding trim
 from the worker report), `chooseTier` / `tierAfterStall` (§4.1, with the reasons that limited the
 tier). The real-decode capability probe ships with the player engine (M4).
+
+The engine (M4.1) lives in `apps/web/src/modules/player`: a real-decode capability probe
+(`public/player-probe/`, cached per tab session), one `<audio>` element, MSE sessions that stream
+each fMP4 with `fetch` and stay ≈ 30 s ahead of the playhead (played data evicted, so the ~12 MB
+SourceBuffer quota is never hit), native playback otherwise, step-down after a 4 s stall, Media
+Session controls. Known limitation: seeking outside the buffered range restarts the stream at the
+track start and drops data before the target with the append window (no byte-range seeking until
+the worker publishes a fragment index). Developer test page `/dev/player` with the worker-made
+sweep album (`pnpm dev:media`); E2E in Chromium and Firefox verify one continuous buffer of
+exactly 30.000 s for FLAC and AAC.
 
 ### 4.1 Auto quality
 Auto selects a tier at track start from: user setting/cap, plan entitlement, network type and measured throughput, Save-Data hint, battery saver (where exposed), and variant availability. It may step down at the next track, and mid-track only on a stall. It never steps up mid-track. The indicator reflects every change.

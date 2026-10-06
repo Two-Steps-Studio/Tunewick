@@ -7,7 +7,7 @@
 
 ## 1. Czym jest Tunewick
 
-- Serwis streamingowy i platforma odkrywania muzyki (tunewick.com), start: Polska, region GZM / Śląsk.
+- Serwis streamingowy i platforma odkrywania muzyki (tunewick.com), start: cała Polska — mali, niezależni artyści z dowolnego miasta (bez ograniczenia regionalnego).
 - **Treści w MVP: wyłącznie muzyka wgrywana przez niezależnych artystów** (lub ich własne mikro-wytwórnie), którzy deklarują posiadanie praw. Brak katalogu dużych wytwórni.
 - Przyjmujemy tylko pliki bezstratne (WAV/AIFF/FLAC/ALAC). Streaming bez możliwości pobierania, bez DRM.
 - Funkcje społecznościowe: obserwowanie artystów i użytkowników, aktywność, oznaczanie obecności na koncertach („Byłem przy tym”), wydarzenia i miejsca.

@@ -3,6 +3,32 @@ export type Json = string | number | boolean | null | { [key: string]: Json | un
 export type Database = {
   public: {
     Tables: {
+      artist_follows: {
+        Row: {
+          artist_id: string;
+          created_at: string;
+          user_id: string;
+        };
+        Insert: {
+          artist_id: string;
+          created_at?: string;
+          user_id?: string;
+        };
+        Update: {
+          artist_id?: string;
+          created_at?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "artist_follows_artist_id_fkey";
+            columns: ["artist_id"];
+            isOneToOne: false;
+            referencedRelation: "artists";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       artist_members: {
         Row: {
           accepted_at: string | null;
@@ -88,44 +114,61 @@ export type Database = {
       artists: {
         Row: {
           bio: string | null;
+          city: string | null;
           created_at: string;
           created_by: string | null;
           formed_year: number | null;
           id: string;
+          image_id: string | null;
           name: string;
           slug: string;
           status: Database["public"]["Enums"]["artist_status"];
           updated_at: string;
           verification_status: Database["public"]["Enums"]["artist_verification"];
           verified_at: string | null;
+          voivodeship: Database["public"]["Enums"]["voivodeship"] | null;
         };
         Insert: {
           bio?: string | null;
+          city?: string | null;
           created_at?: string;
           created_by?: string | null;
           formed_year?: number | null;
           id?: string;
+          image_id?: string | null;
           name: string;
           slug: string;
           status?: Database["public"]["Enums"]["artist_status"];
           updated_at?: string;
           verification_status?: Database["public"]["Enums"]["artist_verification"];
           verified_at?: string | null;
+          voivodeship?: Database["public"]["Enums"]["voivodeship"] | null;
         };
         Update: {
           bio?: string | null;
+          city?: string | null;
           created_at?: string;
           created_by?: string | null;
           formed_year?: number | null;
           id?: string;
+          image_id?: string | null;
           name?: string;
           slug?: string;
           status?: Database["public"]["Enums"]["artist_status"];
           updated_at?: string;
           verification_status?: Database["public"]["Enums"]["artist_verification"];
           verified_at?: string | null;
+          voivodeship?: Database["public"]["Enums"]["voivodeship"] | null;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "artists_image_id_fkey";
+            columns: ["image_id"];
+            isOneToOne: false;
+            referencedRelation: "images";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       credits: {
         Row: {
@@ -169,6 +212,59 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "tracks";
             referencedColumns: ["id"];
+          },
+        ];
+      };
+      entitlements: {
+        Row: {
+          created_at: string;
+          ends_at: string | null;
+          granted_by: string | null;
+          id: string;
+          plan_code: string;
+          revoked_at: string | null;
+          revoked_by: string | null;
+          revoked_reason: string | null;
+          source: Database["public"]["Enums"]["entitlement_source"];
+          source_ref: string | null;
+          starts_at: string;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          ends_at?: string | null;
+          granted_by?: string | null;
+          id?: string;
+          plan_code: string;
+          revoked_at?: string | null;
+          revoked_by?: string | null;
+          revoked_reason?: string | null;
+          source: Database["public"]["Enums"]["entitlement_source"];
+          source_ref?: string | null;
+          starts_at?: string;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string;
+          ends_at?: string | null;
+          granted_by?: string | null;
+          id?: string;
+          plan_code?: string;
+          revoked_at?: string | null;
+          revoked_by?: string | null;
+          revoked_reason?: string | null;
+          source?: Database["public"]["Enums"]["entitlement_source"];
+          source_ref?: string | null;
+          starts_at?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "entitlements_plan_code_fkey";
+            columns: ["plan_code"];
+            isOneToOne: false;
+            referencedRelation: "plans";
+            referencedColumns: ["code"];
           },
         ];
       };
@@ -228,6 +324,87 @@ export type Database = {
           },
         ];
       };
+      images: {
+        Row: {
+          artist_id: string | null;
+          attempts: number;
+          claimed_at: string | null;
+          created_at: string;
+          dominant_color: string | null;
+          height: number | null;
+          id: string;
+          kind: Database["public"]["Enums"]["image_kind"];
+          object_key: string;
+          processed_at: string | null;
+          rejection_code: string | null;
+          release_id: string | null;
+          size_bytes: number;
+          status: Database["public"]["Enums"]["audio_upload_status"];
+          updated_at: string;
+          uploaded_at: string | null;
+          uploaded_by: string | null;
+          variants: NonNullable<Json>;
+          width: number | null;
+        };
+        Insert: {
+          artist_id?: string | null;
+          attempts?: number;
+          claimed_at?: string | null;
+          created_at?: string;
+          dominant_color?: string | null;
+          height?: number | null;
+          id?: string;
+          kind: Database["public"]["Enums"]["image_kind"];
+          object_key: string;
+          processed_at?: string | null;
+          rejection_code?: string | null;
+          release_id?: string | null;
+          size_bytes: number;
+          status?: Database["public"]["Enums"]["audio_upload_status"];
+          updated_at?: string;
+          uploaded_at?: string | null;
+          uploaded_by?: string | null;
+          variants?: NonNullable<Json>;
+          width?: number | null;
+        };
+        Update: {
+          artist_id?: string | null;
+          attempts?: number;
+          claimed_at?: string | null;
+          created_at?: string;
+          dominant_color?: string | null;
+          height?: number | null;
+          id?: string;
+          kind?: Database["public"]["Enums"]["image_kind"];
+          object_key?: string;
+          processed_at?: string | null;
+          rejection_code?: string | null;
+          release_id?: string | null;
+          size_bytes?: number;
+          status?: Database["public"]["Enums"]["audio_upload_status"];
+          updated_at?: string;
+          uploaded_at?: string | null;
+          uploaded_by?: string | null;
+          variants?: NonNullable<Json>;
+          width?: number | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "images_artist_id_fkey";
+            columns: ["artist_id"];
+            isOneToOne: false;
+            referencedRelation: "artists";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "images_release_id_fkey";
+            columns: ["release_id"];
+            isOneToOne: false;
+            referencedRelation: "releases";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       labels: {
         Row: {
           created_at: string;
@@ -246,6 +423,152 @@ export type Database = {
           id?: string;
           name?: string;
           slug?: string;
+        };
+        Relationships: [];
+      };
+      listening_events: {
+        Row: {
+          artist_id: string;
+          completed: boolean;
+          created_at: string;
+          id: string;
+          ms_played: number;
+          release_id: string;
+          started_at: string;
+          tier: Database["public"]["Enums"]["quality_tier"] | null;
+          track_id: string;
+          user_id: string;
+        };
+        Insert: {
+          artist_id: string;
+          completed?: boolean;
+          created_at?: string;
+          id?: string;
+          ms_played: number;
+          release_id: string;
+          started_at: string;
+          tier?: Database["public"]["Enums"]["quality_tier"] | null;
+          track_id: string;
+          user_id: string;
+        };
+        Update: {
+          artist_id?: string;
+          completed?: boolean;
+          created_at?: string;
+          id?: string;
+          ms_played?: number;
+          release_id?: string;
+          started_at?: string;
+          tier?: Database["public"]["Enums"]["quality_tier"] | null;
+          track_id?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "listening_events_track_id_fkey";
+            columns: ["track_id"];
+            isOneToOne: false;
+            referencedRelation: "tracks";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      plans: {
+        Row: {
+          code: string;
+          features: NonNullable<Json>;
+          max_quality_tier: Database["public"]["Enums"]["quality_tier"];
+          name: string;
+          rank: number;
+        };
+        Insert: {
+          code: string;
+          features?: NonNullable<Json>;
+          max_quality_tier: Database["public"]["Enums"]["quality_tier"];
+          name: string;
+          rank: number;
+        };
+        Update: {
+          code?: string;
+          features?: NonNullable<Json>;
+          max_quality_tier?: Database["public"]["Enums"]["quality_tier"];
+          name?: string;
+          rank?: number;
+        };
+        Relationships: [];
+      };
+      playlist_tracks: {
+        Row: {
+          added_at: string;
+          added_by: string | null;
+          id: string;
+          playlist_id: string;
+          position: number;
+          track_id: string;
+        };
+        Insert: {
+          added_at?: string;
+          added_by?: string | null;
+          id?: string;
+          playlist_id: string;
+          position: number;
+          track_id: string;
+        };
+        Update: {
+          added_at?: string;
+          added_by?: string | null;
+          id?: string;
+          playlist_id?: string;
+          position?: number;
+          track_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "playlist_tracks_playlist_id_fkey";
+            columns: ["playlist_id"];
+            isOneToOne: false;
+            referencedRelation: "playlists";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "playlist_tracks_track_id_fkey";
+            columns: ["track_id"];
+            isOneToOne: false;
+            referencedRelation: "tracks";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      playlists: {
+        Row: {
+          created_at: string;
+          description: string | null;
+          id: string;
+          kind: string;
+          owner_id: string;
+          title: string;
+          updated_at: string;
+          visibility: Database["public"]["Enums"]["playlist_visibility"];
+        };
+        Insert: {
+          created_at?: string;
+          description?: string | null;
+          id?: string;
+          kind?: string;
+          owner_id?: string;
+          title: string;
+          updated_at?: string;
+          visibility?: Database["public"]["Enums"]["playlist_visibility"];
+        };
+        Update: {
+          created_at?: string;
+          description?: string | null;
+          id?: string;
+          kind?: string;
+          owner_id?: string;
+          title?: string;
+          updated_at?: string;
+          visibility?: Database["public"]["Enums"]["playlist_visibility"];
         };
         Relationships: [];
       };
@@ -310,6 +633,96 @@ export type Database = {
           updated_at?: string;
         };
         Relationships: [];
+      };
+      promo_campaigns: {
+        Row: {
+          active: boolean;
+          created_at: string;
+          created_by: string | null;
+          description: string | null;
+          ends_at: string | null;
+          id: string;
+          max_redemptions_total: number | null;
+          name: string;
+          partner: string | null;
+          per_user_limit: number;
+          redemptions_count: number;
+          starts_at: string | null;
+        };
+        Insert: {
+          active?: boolean;
+          created_at?: string;
+          created_by?: string | null;
+          description?: string | null;
+          ends_at?: string | null;
+          id?: string;
+          max_redemptions_total?: number | null;
+          name: string;
+          partner?: string | null;
+          per_user_limit?: number;
+          redemptions_count?: number;
+          starts_at?: string | null;
+        };
+        Update: {
+          active?: boolean;
+          created_at?: string;
+          created_by?: string | null;
+          description?: string | null;
+          ends_at?: string | null;
+          id?: string;
+          max_redemptions_total?: number | null;
+          name?: string;
+          partner?: string | null;
+          per_user_limit?: number;
+          redemptions_count?: number;
+          starts_at?: string | null;
+        };
+        Relationships: [];
+      };
+      promo_redemptions: {
+        Row: {
+          campaign_id: string;
+          code_id: string;
+          entitlement_id: string | null;
+          id: string;
+          redeemed_at: string;
+          status: string;
+          user_id: string;
+        };
+        Insert: {
+          campaign_id: string;
+          code_id: string;
+          entitlement_id?: string | null;
+          id?: string;
+          redeemed_at?: string;
+          status?: string;
+          user_id: string;
+        };
+        Update: {
+          campaign_id?: string;
+          code_id?: string;
+          entitlement_id?: string | null;
+          id?: string;
+          redeemed_at?: string;
+          status?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "promo_redemptions_campaign_id_fkey";
+            columns: ["campaign_id"];
+            isOneToOne: false;
+            referencedRelation: "promo_campaigns";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "promo_redemptions_entitlement_id_fkey";
+            columns: ["entitlement_id"];
+            isOneToOne: false;
+            referencedRelation: "entitlements";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       release_artists: {
         Row: {
@@ -377,10 +790,69 @@ export type Database = {
           },
         ];
       };
+      release_likes: {
+        Row: {
+          created_at: string;
+          release_id: string;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          release_id: string;
+          user_id?: string;
+        };
+        Update: {
+          created_at?: string;
+          release_id?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "release_likes_release_id_fkey";
+            columns: ["release_id"];
+            isOneToOne: false;
+            referencedRelation: "releases";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      release_review_events: {
+        Row: {
+          created_at: string;
+          id: number;
+          kind: Database["public"]["Enums"]["release_review_kind"];
+          note: string | null;
+          release_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: never;
+          kind: Database["public"]["Enums"]["release_review_kind"];
+          note?: string | null;
+          release_id: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: never;
+          kind?: Database["public"]["Enums"]["release_review_kind"];
+          note?: string | null;
+          release_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "release_review_events_release_id_fkey";
+            columns: ["release_id"];
+            isOneToOne: false;
+            referencedRelation: "releases";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       releases: {
         Row: {
           ai_content: Database["public"]["Enums"]["ai_content"];
           artist_id: string;
+          artwork_image_id: string | null;
           c_line: string | null;
           created_at: string;
           created_by: string | null;
@@ -390,8 +862,11 @@ export type Database = {
           p_line: string | null;
           publish_at: string | null;
           release_date: string | null;
+          review_note: string | null;
+          reviewed_at: string | null;
           slug: string;
           status: Database["public"]["Enums"]["release_status"];
+          submitted_at: string | null;
           territories: string[];
           title: string;
           type: Database["public"]["Enums"]["release_type"];
@@ -401,6 +876,7 @@ export type Database = {
         Insert: {
           ai_content?: Database["public"]["Enums"]["ai_content"];
           artist_id: string;
+          artwork_image_id?: string | null;
           c_line?: string | null;
           created_at?: string;
           created_by?: string | null;
@@ -410,8 +886,11 @@ export type Database = {
           p_line?: string | null;
           publish_at?: string | null;
           release_date?: string | null;
+          review_note?: string | null;
+          reviewed_at?: string | null;
           slug: string;
           status?: Database["public"]["Enums"]["release_status"];
+          submitted_at?: string | null;
           territories?: string[];
           title: string;
           type: Database["public"]["Enums"]["release_type"];
@@ -421,6 +900,7 @@ export type Database = {
         Update: {
           ai_content?: Database["public"]["Enums"]["ai_content"];
           artist_id?: string;
+          artwork_image_id?: string | null;
           c_line?: string | null;
           created_at?: string;
           created_by?: string | null;
@@ -430,8 +910,11 @@ export type Database = {
           p_line?: string | null;
           publish_at?: string | null;
           release_date?: string | null;
+          review_note?: string | null;
+          reviewed_at?: string | null;
           slug?: string;
           status?: Database["public"]["Enums"]["release_status"];
+          submitted_at?: string | null;
           territories?: string[];
           title?: string;
           type?: Database["public"]["Enums"]["release_type"];
@@ -444,6 +927,13 @@ export type Database = {
             columns: ["artist_id"];
             isOneToOne: false;
             referencedRelation: "artists";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "releases_artwork_image_id_fkey";
+            columns: ["artwork_image_id"];
+            isOneToOne: false;
+            referencedRelation: "images";
             referencedColumns: ["id"];
           },
           {
@@ -541,6 +1031,165 @@ export type Database = {
           },
         ];
       };
+      track_audio_uploads: {
+        Row: {
+          attempts: number;
+          claimed_at: string | null;
+          created_at: string;
+          duration_ms: number | null;
+          file_name: string;
+          id: string;
+          integrated_lufs: number | null;
+          object_key: string;
+          processed_at: string | null;
+          rejection_code: string | null;
+          rejection_message: string | null;
+          report: Json | null;
+          size_bytes: number;
+          status: Database["public"]["Enums"]["audio_upload_status"];
+          track_id: string;
+          true_peak_dbtp: number | null;
+          updated_at: string;
+          uploaded_at: string | null;
+          uploaded_by: string | null;
+        };
+        Insert: {
+          attempts?: number;
+          claimed_at?: string | null;
+          created_at?: string;
+          duration_ms?: number | null;
+          file_name: string;
+          id?: string;
+          integrated_lufs?: number | null;
+          object_key: string;
+          processed_at?: string | null;
+          rejection_code?: string | null;
+          rejection_message?: string | null;
+          report?: Json | null;
+          size_bytes: number;
+          status?: Database["public"]["Enums"]["audio_upload_status"];
+          track_id: string;
+          true_peak_dbtp?: number | null;
+          updated_at?: string;
+          uploaded_at?: string | null;
+          uploaded_by?: string | null;
+        };
+        Update: {
+          attempts?: number;
+          claimed_at?: string | null;
+          created_at?: string;
+          duration_ms?: number | null;
+          file_name?: string;
+          id?: string;
+          integrated_lufs?: number | null;
+          object_key?: string;
+          processed_at?: string | null;
+          rejection_code?: string | null;
+          rejection_message?: string | null;
+          report?: Json | null;
+          size_bytes?: number;
+          status?: Database["public"]["Enums"]["audio_upload_status"];
+          track_id?: string;
+          true_peak_dbtp?: number | null;
+          updated_at?: string;
+          uploaded_at?: string | null;
+          uploaded_by?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "track_audio_uploads_track_id_fkey";
+            columns: ["track_id"];
+            isOneToOne: false;
+            referencedRelation: "tracks";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      track_audio_variants: {
+        Row: {
+          bit_depth: number | null;
+          bitrate_kbps: number;
+          bytes: number;
+          codec: string;
+          container: string;
+          encoder_delay_samples: number;
+          nominal_kbps: number | null;
+          object_key: string;
+          padding_samples: number;
+          sample_rate: number;
+          samples: number;
+          sha256: string;
+          tier: Database["public"]["Enums"]["quality_tier"];
+          upload_id: string;
+        };
+        Insert: {
+          bit_depth?: number | null;
+          bitrate_kbps: number;
+          bytes: number;
+          codec: string;
+          container: string;
+          encoder_delay_samples?: number;
+          nominal_kbps?: number | null;
+          object_key: string;
+          padding_samples?: number;
+          sample_rate: number;
+          samples: number;
+          sha256: string;
+          tier: Database["public"]["Enums"]["quality_tier"];
+          upload_id: string;
+        };
+        Update: {
+          bit_depth?: number | null;
+          bitrate_kbps?: number;
+          bytes?: number;
+          codec?: string;
+          container?: string;
+          encoder_delay_samples?: number;
+          nominal_kbps?: number | null;
+          object_key?: string;
+          padding_samples?: number;
+          sample_rate?: number;
+          samples?: number;
+          sha256?: string;
+          tier?: Database["public"]["Enums"]["quality_tier"];
+          upload_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "track_audio_variants_upload_id_fkey";
+            columns: ["upload_id"];
+            isOneToOne: false;
+            referencedRelation: "track_audio_uploads";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      track_likes: {
+        Row: {
+          created_at: string;
+          track_id: string;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          track_id: string;
+          user_id?: string;
+        };
+        Update: {
+          created_at?: string;
+          track_id?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "track_likes_track_id_fkey";
+            columns: ["track_id"];
+            isOneToOne: false;
+            referencedRelation: "tracks";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       tracks: {
         Row: {
           ai_content: Database["public"]["Enums"]["ai_content"];
@@ -626,11 +1275,93 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
+      abandon_audio_upload: { Args: { reason?: string; upload: string }; Returns: undefined };
+      abandon_image_upload: { Args: { image: string }; Returns: undefined };
       accept_artist_membership: { Args: { artist: string }; Returns: undefined };
       access_invite_is_valid: { Args: { code: string }; Returns: boolean };
+      add_playlist_track: { Args: { playlist: string; track: string }; Returns: string };
       add_track: { Args: { release: string; title: string }; Returns: string };
+      admin_create_promo_campaign: {
+        Args: {
+          description?: string;
+          ends_at?: string;
+          max_redemptions_total?: number;
+          name: string;
+          partner?: string;
+          per_user_limit?: number;
+          starts_at?: string;
+        };
+        Returns: string;
+      };
+      admin_create_shared_promo_code: {
+        Args: {
+          benefit_type: Database["public"]["Enums"]["promo_benefit"];
+          benefit_value: number;
+          campaign: string;
+          code: string;
+          expires_at?: string;
+          max_uses: number;
+          new_accounts_days?: number;
+        };
+        Returns: string;
+      };
+      admin_generate_promo_codes: {
+        Args: {
+          benefit_type: Database["public"]["Enums"]["promo_benefit"];
+          benefit_value: number;
+          campaign: string;
+          expires_at?: string;
+          how_many: number;
+          new_accounts_days?: number;
+        };
+        Returns: string[];
+      };
+      admin_grant_entitlement: {
+        Args: { days: number; note: string; plan: string; target_user: string };
+        Returns: string;
+      };
       admin_grant_role: {
         Args: { role: Database["public"]["Enums"]["app_role"]; target_user: string };
+        Returns: undefined;
+      };
+      admin_list_promo_codes: {
+        Args: { campaign: string; hint?: string };
+        Returns: {
+          active: boolean;
+          benefit_type: Database["public"]["Enums"]["promo_benefit"];
+          benefit_value: number;
+          code_hint: string;
+          created_at: string;
+          eligibility: Json;
+          expires_at: string;
+          id: string;
+          max_uses: number;
+          shared: boolean;
+          starts_at: string;
+          uses_count: number;
+        }[];
+      };
+      admin_list_promo_redemptions: {
+        Args: { campaign: string };
+        Returns: {
+          code_hint: string;
+          display_name: string;
+          ends_at: string;
+          entitlement_id: string;
+          handle: string;
+          id: string;
+          redeemed_at: string;
+          revoked_at: string;
+          status: string;
+          user_id: string;
+        }[];
+      };
+      admin_revoke_entitlement: {
+        Args: { entitlement: string; reason: string };
+        Returns: undefined;
+      };
+      admin_revoke_promo_redemption: {
+        Args: { reason: string; redemption: string };
         Returns: undefined;
       };
       admin_revoke_role: {
@@ -638,14 +1369,213 @@ export type Database = {
         Returns: undefined;
       };
       admin_set_feature_flag: { Args: { enabled: boolean; flag: string }; Returns: undefined };
+      admin_set_promo_campaign_active: {
+        Args: { active: boolean; campaign: string };
+        Returns: undefined;
+      };
+      admin_set_promo_code_active: { Args: { active: boolean; code: string }; Returns: undefined };
+      artist_follower_count: { Args: { artist: string }; Returns: number };
+      begin_audio_upload: {
+        Args: { file_name: string; size_bytes: number; track: string };
+        Returns: {
+          attempts: number;
+          claimed_at: string | null;
+          created_at: string;
+          duration_ms: number | null;
+          file_name: string;
+          id: string;
+          integrated_lufs: number | null;
+          object_key: string;
+          processed_at: string | null;
+          rejection_code: string | null;
+          rejection_message: string | null;
+          report: Json | null;
+          size_bytes: number;
+          status: Database["public"]["Enums"]["audio_upload_status"];
+          track_id: string;
+          true_peak_dbtp: number | null;
+          updated_at: string;
+          uploaded_at: string | null;
+          uploaded_by: string | null;
+        };
+        SetofOptions: {
+          from: "*";
+          to: "track_audio_uploads";
+          isOneToOne: true;
+          isSetofReturn: false;
+        };
+      };
+      begin_image_upload: {
+        Args: {
+          extension: string;
+          kind: Database["public"]["Enums"]["image_kind"];
+          owner: string;
+          size_bytes: number;
+        };
+        Returns: {
+          artist_id: string | null;
+          attempts: number;
+          claimed_at: string | null;
+          created_at: string;
+          dominant_color: string | null;
+          height: number | null;
+          id: string;
+          kind: Database["public"]["Enums"]["image_kind"];
+          object_key: string;
+          processed_at: string | null;
+          rejection_code: string | null;
+          release_id: string | null;
+          size_bytes: number;
+          status: Database["public"]["Enums"]["audio_upload_status"];
+          updated_at: string;
+          uploaded_at: string | null;
+          uploaded_by: string | null;
+          variants: NonNullable<Json>;
+          width: number | null;
+        };
+        SetofOptions: {
+          from: "*";
+          to: "images";
+          isOneToOne: true;
+          isSetofReturn: false;
+        };
+      };
       can_edit_release: { Args: { release: string }; Returns: boolean };
+      can_view_audio_upload: { Args: { upload: string }; Returns: boolean };
+      can_view_image: { Args: { image: string }; Returns: boolean };
+      can_view_playlist: { Args: { playlist: string }; Returns: boolean };
       can_view_release: { Args: { release: string }; Returns: boolean };
+      claim_audio_upload: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          attempts: number;
+          id: string;
+          object_key: string;
+          track_id: string;
+        }[];
+      };
+      claim_image_upload: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          attempts: number;
+          id: string;
+          kind: Database["public"]["Enums"]["image_kind"];
+          object_key: string;
+        }[];
+      };
+      complete_audio_upload: {
+        Args: { upload: string };
+        Returns: {
+          attempts: number;
+          claimed_at: string | null;
+          created_at: string;
+          duration_ms: number | null;
+          file_name: string;
+          id: string;
+          integrated_lufs: number | null;
+          object_key: string;
+          processed_at: string | null;
+          rejection_code: string | null;
+          rejection_message: string | null;
+          report: Json | null;
+          size_bytes: number;
+          status: Database["public"]["Enums"]["audio_upload_status"];
+          track_id: string;
+          true_peak_dbtp: number | null;
+          updated_at: string;
+          uploaded_at: string | null;
+          uploaded_by: string | null;
+        };
+        SetofOptions: {
+          from: "*";
+          to: "track_audio_uploads";
+          isOneToOne: true;
+          isSetofReturn: false;
+        };
+      };
+      complete_image_upload: {
+        Args: { image: string };
+        Returns: {
+          artist_id: string | null;
+          attempts: number;
+          claimed_at: string | null;
+          created_at: string;
+          dominant_color: string | null;
+          height: number | null;
+          id: string;
+          kind: Database["public"]["Enums"]["image_kind"];
+          object_key: string;
+          processed_at: string | null;
+          rejection_code: string | null;
+          release_id: string | null;
+          size_bytes: number;
+          status: Database["public"]["Enums"]["audio_upload_status"];
+          updated_at: string;
+          uploaded_at: string | null;
+          uploaded_by: string | null;
+          variants: NonNullable<Json>;
+          width: number | null;
+        };
+        SetofOptions: {
+          from: "*";
+          to: "images";
+          isOneToOne: true;
+          isSetofReturn: false;
+        };
+      };
       create_access_invites: {
         Args: { codes: string[]; expires_at?: string; label?: string; max_uses?: number };
         Returns: number;
       };
       create_artist: { Args: { name: string; slug: string }; Returns: string };
       delete_track: { Args: { track: string }; Returns: undefined };
+      discover_artists: {
+        Args: { max_results?: number; region?: Database["public"]["Enums"]["voivodeship"] };
+        Returns: {
+          artist_id: string;
+          artist_slug: string;
+          city: string;
+          first_release_at: string;
+          image_id: string;
+          name: string;
+          release_count: number;
+          verification_status: Database["public"]["Enums"]["artist_verification"];
+          voivodeship: Database["public"]["Enums"]["voivodeship"];
+        }[];
+      };
+      discover_releases: {
+        Args: { max_results?: number; region?: Database["public"]["Enums"]["voivodeship"] };
+        Returns: {
+          artist_name: string;
+          artist_slug: string;
+          artwork_image_id: string;
+          city: string;
+          is_debut: boolean;
+          publish_at: string;
+          release_id: string;
+          release_slug: string;
+          release_type: Database["public"]["Enums"]["release_type"];
+          title: string;
+          voivodeship: Database["public"]["Enums"]["voivodeship"];
+        }[];
+      };
+      enforce_mfa: { Args: Record<PropertyKey, never>; Returns: undefined };
+      fail_audio_upload: {
+        Args: { upload: string };
+        Returns: Database["public"]["Enums"]["audio_upload_status"];
+      };
+      fail_image_upload: {
+        Args: { image: string };
+        Returns: Database["public"]["Enums"]["audio_upload_status"];
+      };
+      finish_audio_upload: {
+        Args: { report: Json; upload: string; variants?: Json };
+        Returns: Database["public"]["Enums"]["audio_upload_status"];
+      };
+      finish_image_upload: {
+        Args: { image: string; result: Json };
+        Returns: Database["public"]["Enums"]["audio_upload_status"];
+      };
       has_app_role: {
         Args: { required: Database["public"]["Enums"]["app_role"] };
         Returns: boolean;
@@ -665,8 +1595,49 @@ export type Database = {
       is_feature_enabled: { Args: { flag: string }; Returns: boolean };
       is_reserved_handle: { Args: { candidate: string }; Returns: boolean };
       is_staff: { Args: Record<PropertyKey, never>; Returns: boolean };
+      move_playlist_track: { Args: { item: string; to_index: number }; Returns: undefined };
       move_track: { Args: { direction: number; track: string }; Returns: undefined };
+      my_plan: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          ends_at: string;
+          max_quality_tier: Database["public"]["Enums"]["quality_tier"];
+          plan_code: string;
+          plan_name: string;
+          source: Database["public"]["Enums"]["entitlement_source"];
+          source_ref: string;
+        }[];
+      };
+      my_recent_tracks: {
+        Args: { max_results?: number };
+        Returns: {
+          last_played_at: string;
+          plays: number;
+          track_id: string;
+        }[];
+      };
+      record_listen: {
+        Args: {
+          completed?: boolean;
+          ms_played: number;
+          started_at: string;
+          tier?: Database["public"]["Enums"]["quality_tier"];
+          track: string;
+        };
+        Returns: undefined;
+      };
+      redeem_promo_code: { Args: { code: string }; Returns: Json };
       release_is_public: { Args: { release: string }; Returns: boolean };
+      release_playback: {
+        Args: { release: string };
+        Returns: {
+          source: Json;
+          track_id: string;
+          upload_id: string;
+          variants: Json;
+        }[];
+      };
+      release_readiness: { Args: { release: string }; Returns: Json };
       remove_artist_member: { Args: { artist: string; member: string }; Returns: undefined };
       request_artist_verification: {
         Args: { artist: string; evidence: Json; note?: string };
@@ -676,11 +1647,57 @@ export type Database = {
         Args: { required: Database["public"]["Enums"]["app_role"] };
         Returns: undefined;
       };
+      review_release: {
+        Args: { decision: string; note?: string; release: string };
+        Returns: Database["public"]["Enums"]["release_status"];
+      };
+      search_catalog: {
+        Args: { max_results?: number; query: string };
+        Returns: {
+          artist_name: string;
+          artist_slug: string;
+          id: string;
+          image_id: string;
+          kind: string;
+          release_id: string;
+          release_slug: string;
+          release_title: string;
+          release_type: Database["public"]["Enums"]["release_type"];
+          score: number;
+          title: string;
+        }[];
+      };
+      search_normalize: { Args: { value: string }; Returns: string };
       set_release_genres: { Args: { genre_ids: number[]; release: string }; Returns: undefined };
+      submit_release: { Args: { release: string }; Returns: undefined };
+      system_create_promo_codes: {
+        Args: {
+          benefit_type: Database["public"]["Enums"]["promo_benefit"];
+          benefit_value: number;
+          campaign_name: string;
+          eligibility?: Json;
+          expires_at?: string;
+          how_many?: number;
+          max_uses?: number;
+          shared_code?: string;
+        };
+        Returns: string[];
+      };
+      system_grant_entitlement: {
+        Args: {
+          days: number;
+          note: string;
+          plan: string;
+          source: Database["public"]["Enums"]["entitlement_source"];
+          target_email: string;
+        };
+        Returns: string;
+      };
       system_grant_role: {
         Args: { role: Database["public"]["Enums"]["app_role"]; target_email: string };
         Returns: string;
       };
+      withdraw_release_submission: { Args: { release: string }; Returns: undefined };
     };
     Enums: {
       ai_content: "human" | "ai_assisted" | "ai_generated" | "unknown";
@@ -688,6 +1705,8 @@ export type Database = {
       artist_member_role: "owner" | "manager" | "member";
       artist_status: "active" | "suspended";
       artist_verification: "unverified" | "pending" | "verified" | "rejected";
+      audio_upload_status:
+        "pending" | "uploaded" | "processing" | "accepted" | "rejected" | "failed";
       credit_role:
         | "producer"
         | "songwriter"
@@ -697,12 +1716,41 @@ export type Database = {
         | "mixing_engineer"
         | "mastering_engineer"
         | "other";
+      entitlement_source: "promo" | "beta" | "admin" | "referral" | "subscription";
+      image_kind: "release_artwork" | "artist_image";
+      playlist_visibility: "public" | "unlisted" | "private";
+      promo_benefit:
+        | "premium_days"
+        | "premium_months"
+        | "premium_lifetime"
+        | "feature_access"
+        | "percent_discount"
+        | "fixed_discount";
+      quality_tier: "data_saver" | "high" | "lossless" | "hires";
       release_artist_role: "primary" | "featured";
+      release_review_kind: "submitted" | "withdrawn" | "approved" | "returned";
       release_status:
         "draft" | "processing" | "in_review" | "approved" | "published" | "rejected" | "taken_down";
       release_type: "single" | "ep" | "album" | "compilation" | "live";
       track_artist_role: "main" | "featured" | "remixer";
       visibility_level: "public" | "followers" | "private";
+      voivodeship:
+        | "dolnoslaskie"
+        | "kujawsko_pomorskie"
+        | "lubelskie"
+        | "lubuskie"
+        | "lodzkie"
+        | "malopolskie"
+        | "mazowieckie"
+        | "opolskie"
+        | "podkarpackie"
+        | "podlaskie"
+        | "pomorskie"
+        | "slaskie"
+        | "swietokrzyskie"
+        | "warminsko_mazurskie"
+        | "wielkopolskie"
+        | "zachodniopomorskie";
     };
     CompositeTypes: {
       [_ in never]: never;
@@ -819,6 +1867,7 @@ export const Constants = {
       artist_member_role: ["owner", "manager", "member"],
       artist_status: ["active", "suspended"],
       artist_verification: ["unverified", "pending", "verified", "rejected"],
+      audio_upload_status: ["pending", "uploaded", "processing", "accepted", "rejected", "failed"],
       credit_role: [
         "producer",
         "songwriter",
@@ -829,7 +1878,20 @@ export const Constants = {
         "mastering_engineer",
         "other",
       ],
+      entitlement_source: ["promo", "beta", "admin", "referral", "subscription"],
+      image_kind: ["release_artwork", "artist_image"],
+      playlist_visibility: ["public", "unlisted", "private"],
+      promo_benefit: [
+        "premium_days",
+        "premium_months",
+        "premium_lifetime",
+        "feature_access",
+        "percent_discount",
+        "fixed_discount",
+      ],
+      quality_tier: ["data_saver", "high", "lossless", "hires"],
       release_artist_role: ["primary", "featured"],
+      release_review_kind: ["submitted", "withdrawn", "approved", "returned"],
       release_status: [
         "draft",
         "processing",
@@ -842,6 +1904,24 @@ export const Constants = {
       release_type: ["single", "ep", "album", "compilation", "live"],
       track_artist_role: ["main", "featured", "remixer"],
       visibility_level: ["public", "followers", "private"],
+      voivodeship: [
+        "dolnoslaskie",
+        "kujawsko_pomorskie",
+        "lubelskie",
+        "lubuskie",
+        "lodzkie",
+        "malopolskie",
+        "mazowieckie",
+        "opolskie",
+        "podkarpackie",
+        "podlaskie",
+        "pomorskie",
+        "slaskie",
+        "swietokrzyskie",
+        "warminsko_mazurskie",
+        "wielkopolskie",
+        "zachodniopomorskie",
+      ],
     },
   },
 } as const;

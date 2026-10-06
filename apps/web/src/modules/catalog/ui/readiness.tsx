@@ -47,22 +47,36 @@ export async function DeclarationSummary({ declaration }: { declaration: Declara
   );
 }
 
-/** What is still missing before a release can be submitted. Honest about audio not existing yet. */
+/** What is still missing before a release can be submitted. */
 export async function ReadinessChecklist({
   hasTracks,
   aiDeclared,
   rightsDeclared,
+  artwork,
+  audio,
 }: {
   hasTracks: boolean;
   aiDeclared: boolean;
   rightsDeclared: boolean;
+  artwork: boolean;
+  /** Every track has an accepted master / some are waiting for the worker / something missing. */
+  audio: "ready" | "processing" | "missing";
 }) {
   const t = await getTranslations("Releases.readiness");
   const items = [
     { done: hasTracks, label: t("tracks") },
     { done: aiDeclared, label: t("ai") },
     { done: rightsDeclared, label: t("rights") },
-    { done: false, label: t("audio") },
+    { done: artwork, label: t("artwork") },
+    {
+      done: audio === "ready",
+      label:
+        audio === "ready"
+          ? t("audio")
+          : audio === "processing"
+            ? t("audioProcessing")
+            : t("audioMissing"),
+    },
   ];
   return (
     <section className="settings-form__group" aria-labelledby="readiness">

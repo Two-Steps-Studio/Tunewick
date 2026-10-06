@@ -76,5 +76,5 @@ optimized for raw time-on-app.
 ## 8. Later
 
 Collaborative filtering and embeddings (audio similarity), natural-language discovery
-("nowi artyści z GZM podobni do X"), AI-assisted playlists — all must output a reason and
+("nowi artyści z Twojego miasta podobni do X"), AI-assisted playlists — all must output a reason and
 respect the same diversity and anti-payola rules.

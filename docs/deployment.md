@@ -63,6 +63,61 @@ Settings → Environment Variables (Production **and** Preview):
 (Deployments → latest → Redeploy). No secret key is needed by the web app today; if one is added
 later it must not use the `NEXT_PUBLIC_` prefix (`pnpm check:client-bundle` guards this).
 
+## 3a. Cloudflare R2 (audio masters)
+
+Until these variables exist the editor says "audio upload is coming soon" — nothing breaks.
+
+1. Cloudflare → R2 → create bucket **`tunewick-ingest`** (location hint: Eastern Europe / EU
+   jurisdiction). It holds the masters artists upload; never public.
+2. Bucket → Settings → **CORS policy** (the browser uploads straight to R2 with a presigned URL):
+
+   ```json
+   [
+     {
+       "AllowedOrigins": ["https://<production-domain>", "https://*-<vercel-team-slug>.vercel.app"],
+       "AllowedMethods": ["PUT"],
+       "AllowedHeaders": ["content-type"],
+       "MaxAgeSeconds": 3600
+     }
+   ]
+   ```
+3. R2 → Manage API tokens → **Create API token**: permission *Object Read & Write*, scoped to the
+   `tunewick-ingest` bucket only. Store the access key and secret in the password manager.
+4. Vercel → Environment Variables (Production and Preview), **server-only, never `NEXT_PUBLIC_`**:
+
+   | Name | Value |
+   | --- | --- |
+   | `MEDIA_S3_ENDPOINT` | `https://<account-id>.r2.cloudflarestorage.com` (EU jurisdiction: `https://<account-id>.eu.r2.cloudflarestorage.com`) |
+   | `MEDIA_S3_REGION` | `auto` |
+   | `MEDIA_S3_ACCESS_KEY_ID` | token access key |
+   | `MEDIA_S3_SECRET_ACCESS_KEY` | token secret (mark *Sensitive*) |
+   | `MEDIA_INGEST_BUCKET` | `tunewick-ingest` |
+
+   Redeploy. Locally the same variables point at `pnpm media:start` (SeaweedFS).
+
+## 3b. Audio worker (Fly.io, EU)
+
+1. R2: second bucket **`tunewick-media`** for the delivery variants (private). Add a CORS rule
+   with `"AllowedMethods": ["GET", "HEAD"]` and `"AllowedHeaders": ["range"]` for the same origins
+   (members preview their processed tracks through short-lived presigned URLs). Extend the API
+   token (or create a second one) to *Object Read & Write* on both buckets.
+2. Vercel: add `MEDIA_BUCKET=tunewick-media` (server-only) and redeploy.
+3. Fly.io: `fly launch --no-deploy` in `services/audio-worker` (region `waw` or `fra`), then
+   `fly secrets set` for:
+
+   | Name | Value |
+   | --- | --- |
+   | `TUNEWICK_SUPABASE_URL` | Supabase project URL |
+   | `TUNEWICK_SUPABASE_SECRET_KEY` | Supabase **secret** key (`sb_secret_…`) — server only |
+   | `MEDIA_S3_ENDPOINT`, `MEDIA_S3_REGION`, `MEDIA_S3_ACCESS_KEY_ID`, `MEDIA_S3_SECRET_ACCESS_KEY` | as in §3a |
+   | `MEDIA_INGEST_BUCKET` / `MEDIA_BUCKET` | `tunewick-ingest` / `tunewick-media` |
+
+   Process command: `worker --poll 5` (the image entrypoint is `python -m tunewick_audio`).
+   One shared-cpu machine with 2 GB RAM is enough for the beta; more machines can run side by side
+   (jobs are claimed with `FOR UPDATE SKIP LOCKED`).
+4. Check: upload a master in the editor → within a minute the track shows "Gotowe" (ready) and
+   the *Listen* button plays it. Worker logs: `fly logs` (one JSON line per job).
+
 ## 4. Bootstrap (once)
 
 Run locally with the secret key in the shell environment only (Settings → API → secret key):
@@ -80,8 +135,19 @@ then run `node scripts/create-invites.mjs ...` in the same window.
    ```bash
    SUPABASE_URL=... SUPABASE_SECRET_KEY=... node scripts/grant-role.mjs --email <owner-email> --role admin
    ```
-3. Create beta invites in batches (`--count 50 --max-uses 1 --expires-days 30 --label "GZM artists"`).
+3. Create beta invites in batches (`--count 50 --max-uses 1 --expires-days 30 --label "beta artists"`).
    Codes are printed once; only hashes are stored.
+4. Optional Premium for beta testers (Lossless/Hi-Res), audited:
+
+   ```bash
+   SUPABASE_URL=... SUPABASE_SECRET_KEY=... node scripts/grant-plan.mjs --email <tester> --days 90 --source beta --note "beta 2026"
+   ```
+5. Promo codes (until the admin panel exists). Codes are printed once — use `--csv` and keep the
+   file in the password manager / hand it to the partner; only hashes stay in the database:
+
+   ```bash
+   SUPABASE_URL=... SUPABASE_SECRET_KEY=... node scripts/create-promo-codes.mjs --campaign "Beta 2026" --count 50 --days 90 --csv beta-codes.csv
+   ```
 
 ## 5. Checklist after each deploy
 

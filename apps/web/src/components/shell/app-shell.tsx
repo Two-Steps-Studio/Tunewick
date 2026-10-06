@@ -1,15 +1,16 @@
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
-import { getOptionalUser, SignOutButton } from "@/modules/auth";
+import { getOptionalUser, isStaff, SignOutButton } from "@/modules/auth";
 import { LocaleSwitcher } from "./locale-switcher";
 import { MainNav } from "./main-nav";
-import { PlayerBar } from "./player-bar";
+import { PlayerBar } from "@/modules/player";
 import { Wordmark } from "./wordmark";
 
 export async function AppShell({ children }: { children: React.ReactNode }) {
   const t = await getTranslations("Shell");
   const tAccount = await getTranslations("Account");
   const user = await getOptionalUser();
+  const staff = user ? await isStaff() : false;
 
   return (
     <>
@@ -24,6 +25,11 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
         <div className="site-header__actions">
           {user ? (
             <>
+              {staff ? (
+                <Link href="/moderation" className="button button--quiet">
+                  {t("moderation")}
+                </Link>
+              ) : null}
               <Link href="/settings" className="button button--quiet">
                 {tAccount("settings")}
               </Link>
@@ -41,7 +47,7 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
         {children}
       </main>
       <div className="site-bottom">
-        <PlayerBar />
+        <PlayerBar reportListens={user !== null} />
         <MainNav variant="bottom" />
       </div>
     </>

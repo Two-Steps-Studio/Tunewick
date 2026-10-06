@@ -33,7 +33,7 @@ function refresh() {
 async function goToEditor(artistSlug: string, releaseSlug: string) {
   return redirect({
     href: {
-      pathname: "/artists/[slug]/releases/[release]",
+      pathname: "/artists/[slug]/releases/[release]/edit",
       params: { slug: artistSlug, release: releaseSlug },
     },
     locale: await getLocale(),
@@ -263,4 +263,24 @@ export async function declareRights(
   if (error) return { ...releaseDbError(error), values };
   refresh();
   return { saved: true };
+}
+
+export type SubmissionState = { error?: "not_ready" | "not_allowed" | "failed" };
+
+/** Sends a ready release to moderation (the database re-checks readiness). */
+export async function submitRelease(releaseId: string): Promise<SubmissionState> {
+  const supabase = await createSupabaseServerClient();
+  const { error } = await supabase.rpc("submit_release", { release: releaseId });
+  refresh();
+  if (!error) return {};
+  return {
+    error: error.code === "55000" ? "not_ready" : error.code === "42501" ? "not_allowed" : "failed",
+  };
+}
+
+export async function withdrawSubmission(releaseId: string): Promise<SubmissionState> {
+  const supabase = await createSupabaseServerClient();
+  const { error } = await supabase.rpc("withdraw_release_submission", { release: releaseId });
+  refresh();
+  return error ? { error: "failed" } : {};
 }

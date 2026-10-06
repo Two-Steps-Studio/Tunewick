@@ -257,11 +257,14 @@ export function TrackItem({
   isFirst,
   isLast,
   editable,
+  children,
 }: {
   track: TrackValues;
   isFirst: boolean;
   isLast: boolean;
   editable: boolean;
+  /** Extra per-track content composed by the page (e.g. the master upload from the audio module). */
+  children?: React.ReactNode;
 }) {
   const { t, err } = useText();
   const [state, action] = useActionState(updateTrack.bind(null, track.id), initial);
@@ -289,6 +292,8 @@ export function TrackItem({
           </span>
         ) : null}
       </div>
+
+      {children}
 
       {editable ? (
         <details className="track-item__details">

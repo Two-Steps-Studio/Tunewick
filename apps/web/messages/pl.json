@@ -8,7 +8,8 @@
     "mainNav": "Nawigacja główna",
     "home": "Strona główna Tunewick",
     "language": "Język",
-    "switchTo": "English"
+    "switchTo": "English",
+    "moderation": "Moderacja"
   },
   "Nav": {
     "discover": "Odkrywaj",
@@ -19,12 +20,55 @@
   "Player": {
     "region": "Odtwarzacz",
     "idle": "Nic teraz nie gra.",
-    "idleHint": "Odtwarzanie pojawi się razem z pierwszymi wydawnictwami."
+    "idleHint": "Wybierz wydawnictwo lub utwór, żeby zacząć słuchać.",
+    "play": "Odtwarzaj",
+    "pause": "Pauza",
+    "next": "Następny utwór",
+    "previous": "Poprzedni utwór",
+    "seek": "Pozycja w utworze",
+    "seekValue": "{position} z {duration}",
+    "volume": "Głośność",
+    "quality": {
+      "hires": "Hi-Res",
+      "lossless": "Lossless",
+      "high": "High",
+      "dataSaver": "Oszczędzanie danych",
+      "full": "Źródło {source}, odtwarzane {delivered} ({label})",
+      "output": "wyjście {rate} (system)"
+    },
+    "reason": {
+      "plan": "Lossless i Hi-Res w Premium",
+      "setting": "Twoje ustawienie jakości",
+      "save_data": "Tryb oszczędzania danych",
+      "battery": "Oszczędzanie baterii",
+      "network": "Ograniczone przez sieć",
+      "throughput": "Ograniczone przez prędkość łącza",
+      "stall": "Obniżone po zacięciu",
+      "unplayable": "Ta przeglądarka nie odtwarza wyższej jakości"
+    },
+    "error": {
+      "media_error": "Nie udało się odtworzyć utworu.",
+      "playback_blocked": "Przeglądarka zablokowała odtwarzanie — naciśnij Odtwarzaj.",
+      "unplayable": "Ta przeglądarka nie odtwarza żadnej wersji tego utworu.",
+      "stream_error": "Połączenie z serwerem audio zostało przerwane."
+    }
   },
   "Discover": {
     "title": "Odkrywaj",
     "lead": "Muzyka niezależna, lokalne sceny i koncerty — z kontekstem, nie z nieskończonego feedu.",
-    "empty": "Nie ma tu jeszcze nic do odkrycia. Pierwsi artyści dołączą w zamkniętej becie na Śląsku i w GZM."
+    "empty": "Nie ma tu jeszcze nic do odkrycia. Pierwsi artyści — niezależni twórcy z całej Polski — dołączą w zamkniętej becie.",
+    "leadPoland": "Nowa muzyka małych, niezależnych artystów z całej Polski — od najnowszej. Bez algorytmu popularności: wszystko tu ma podany powód.",
+    "regionLabel": "Region",
+    "allPoland": "Cała Polska",
+    "emptyRegion": "Z województwa {region} nie ma jeszcze opublikowanej muzyki.",
+    "newReleases": "Nowe wydawnictwa",
+    "newArtists": "Nowi artyści",
+    "reason": {
+      "debut": "Debiut · {when}",
+      "new": "Nowość · {when}",
+      "released": "Wydane {when}",
+      "firstRelease": "Pierwsze wydawnictwo {when} · {count, plural, one {# wydawnictwo} few {# wydawnictwa} many {# wydawnictw} other {# wydawnictwa}}"
+    }
   },
   "Scene": {
     "title": "Scena",
@@ -33,13 +77,52 @@
   },
   "Search": {
     "title": "Szukaj",
-    "lead": "Artyści, wydawnictwa, utwory, playlisty i wydarzenia.",
-    "empty": "Wyszukiwarka ruszy, gdy w katalogu pojawi się muzyka."
+    "lead": "Niezależni artyści z całej Polski — wpisz nazwę, tytuł albo fragment. Polskie znaki nie są potrzebne.",
+    "empty": "Wyszukiwarka ruszy, gdy w katalogu pojawi się muzyka.",
+    "titleFor": "„{query}” — szukaj",
+    "label": "Szukaj artystów, wydawnictw i utworów",
+    "placeholder": "Artysta, wydawnictwo albo utwór",
+    "submit": "Szukaj",
+    "tooShort": "Wpisz co najmniej 2 znaki.",
+    "noResults": "Nic nie znaleźliśmy dla „{query}”. Sprawdź pisownię albo wpisz krótszy fragment.",
+    "artists": "Artyści",
+    "releases": "Wydawnictwa",
+    "tracks": "Utwory",
+    "play": "Odtwórz: {title}"
   },
   "Library": {
     "title": "Biblioteka",
-    "lead": "Polubione utwory, wydawnictwa, playlisty i historia słuchania.",
-    "empty": "Biblioteka będzie dostępna po zalogowaniu. Konta uruchomimy wkrótce."
+    "lead": "Twoja muzyka: polubione utwory i wydawnictwa oraz artyści, których obserwujesz.",
+    "empty": "Nic tu jeszcze nie ma. Polub utwór albo wydawnictwo i zacznij obserwować artystów — pojawią się tutaj.",
+    "signedOut": "Zaloguj się, żeby zapisywać utwory, wydawnictwa i artystów.",
+    "signIn": "Zaloguj się",
+    "likedTracks": "Polubione utwory ({count})",
+    "likedReleases": "Polubione wydawnictwa",
+    "followedArtists": "Obserwowani artyści",
+    "play": "Odtwórz polubione",
+    "playLiked": "Odtwórz polubione utwory",
+    "playTrack": "Odtwórz: {title}",
+    "actions": {
+      "like": "Polub: {name}",
+      "unlike": "Usuń z polubionych: {name}",
+      "likeShort": "Polub",
+      "liked": "Polubione",
+      "follow": "Obserwuj: {name}",
+      "unfollow": "Przestań obserwować: {name}",
+      "followShort": "Obserwuj",
+      "following": "Obserwujesz",
+      "failed": "Nie udało się zapisać. Spróbuj ponownie."
+    },
+    "playlists": "Twoje playlisty",
+    "history": {
+      "title": "Ostatnio słuchane",
+      "lead": "Twoja historia z ostatnich 90 dni. Widzisz ją tylko Ty.",
+      "when": "{when} · {count, plural, one {# raz} other {# razy}}",
+      "clear": "Wyczyść historię",
+      "clearConfirm": "Usunąć całą historię słuchania? Tego nie da się cofnąć.",
+      "clearYes": "Tak, wyczyść",
+      "clearNo": "Anuluj"
+    }
   },
   "NotFound": {
     "title": "Nie ma takiej strony",
@@ -215,12 +298,16 @@
       "handle": "Nazwa profilu osoby (adres)",
       "role": "Rola",
       "evidence": "Linki potwierdzające (jeden na linię)",
-      "note": "Wiadomość dla moderacji (opcjonalnie)"
+      "note": "Wiadomość dla moderacji (opcjonalnie)",
+      "city": "Miasto lub miejscowość",
+      "voivodeship": "Województwo",
+      "voivodeshipNone": "— nie podano —"
     },
     "hints": {
       "slug": "Małe litery, cyfry i myślniki. Adres: tunewick.com/artysci/adres",
       "evidence": "Np. oficjalna strona, Bandcamp, profil w mediach społecznościowych zespołu. Do 5 linków.",
-      "handle": "Osoba musi mieć konto i ustawioną nazwę profilu."
+      "handle": "Osoba musi mieć konto i ustawioną nazwę profilu.",
+      "city": "Skąd jesteście — np. Rzeszów, Gliwice, Suwałki. Pomaga słuchaczom znaleźć muzykę z ich okolicy."
     },
     "roles": {
       "owner": "Właściciel",
@@ -237,7 +324,8 @@
       "since": "Od {year}",
       "manage": "Zarządzaj profilem",
       "noBio": "Ten artysta nie dodał jeszcze opisu.",
-      "noReleases": "Brak opublikowanych wydawnictw."
+      "noReleases": "Brak opublikowanych wydawnictw.",
+      "followers": "{count, plural, =0 {Nikt jeszcze nie obserwuje} one {# osoba obserwuje} few {# osoby obserwują} many {# osób obserwuje} other {# osoby obserwuje}}"
     },
     "manage": {
       "title": "Zarządzaj: {name}",
@@ -254,7 +342,8 @@
       "saved": "Zapisano.",
       "viewPublic": "Zobacz profil publiczny",
       "you": "Ty",
-      "noName": "Konto bez nazwy profilu"
+      "noName": "Konto bez nazwy profilu",
+      "photo": "Zdjęcie artysty"
     },
     "errors": {
       "nameRequired": "Podaj nazwę artysty.",
@@ -270,7 +359,9 @@
       "alreadyPending": "Prośba o weryfikację już czeka na decyzję.",
       "lastOwner": "Projekt musi mieć co najmniej jednego właściciela.",
       "forbidden": "Nie masz uprawnień do tej operacji.",
-      "unexpected": "Nie udało się zapisać. Spróbuj ponownie."
+      "unexpected": "Nie udało się zapisać. Spróbuj ponownie.",
+      "voivodeshipInvalid": "Wybierz województwo z listy.",
+      "cityTooLong": "Nazwa miejscowości może mieć do 80 znaków."
     }
   },
   "Releases": {
@@ -305,7 +396,9 @@
       "readOnly": "To wydawnictwo nie jest już szkicem — edycja jest zablokowana.",
       "deleteDraft": "Usuń szkic",
       "back": "Wróć do profilu artysty",
-      "aiMissing": "Określ udział AI przed wysłaniem do weryfikacji."
+      "aiMissing": "Określ udział AI przed wysłaniem do weryfikacji.",
+      "cover": "Okładka",
+      "coverAlt": "Okładka wydawnictwa {title}"
     },
     "fields": {
       "title": "Tytuł",
@@ -425,8 +518,359 @@
       "tracks": "Co najmniej jeden utwór",
       "ai": "Określony udział AI",
       "rights": "Złożone oświadczenie o prawach",
-      "audio": "Nagrania — przesyłanie plików pojawi się w kolejnym etapie",
-      "note": "Wysyłka do weryfikacji będzie możliwa, gdy uruchomimy przesyłanie nagrań."
+      "audio": "Pliki master wszystkich utworów — sprawdzone",
+      "note": "Gdy wszystko będzie gotowe, wyślij wydawnictwo do weryfikacji. Przed publikacją sprawdzamy prawa, metadane i nagrania.",
+      "audioMissing": "Pliki master wszystkich utworów",
+      "audioProcessing": "Pliki master przesłane — czekają na sprawdzenie i przetworzenie",
+      "artwork": "Okładka (kwadrat, min. 1400 × 1400 px)"
+    },
+    "review": {
+      "submit": "Wyślij do weryfikacji",
+      "submitHint": "Sprawdzimy oświadczenie o prawach, metadane i nagrania. Do czasu decyzji wydawnictwa nie można edytować.",
+      "inReview": "Wysłane do weryfikacji {date}. Do czasu decyzji wydawnictwa nie można edytować.",
+      "withdraw": "Wycofaj zgłoszenie",
+      "returned": "Wydawnictwo wróciło do poprawy:",
+      "returnedHint": "Wprowadź poprawki i wyślij je ponownie.",
+      "published": "Opublikowane {date}.",
+      "scheduled": "Zatwierdzone — premiera {date}.",
+      "viewPublic": "Zobacz stronę wydawnictwa",
+      "error": {
+        "not_ready": "Wydawnictwo nie jest jeszcze gotowe — sprawdź listę powyżej.",
+        "not_allowed": "Nie możesz wysłać tego wydawnictwa.",
+        "failed": "Coś poszło nie tak. Spróbuj ponownie."
+      }
+    }
+  },
+  "Audio": {
+    "none": "Brak pliku master.",
+    "choose": "Wybierz plik master",
+    "replace": "Prześlij nowy plik",
+    "hint": "Tylko pliki bezstratne: WAV, AIFF, FLAC lub ALAC, do 4 GB. Sprawdzimy jakość pliku i przygotujemy wersje do odtwarzania.",
+    "unavailable": "Przesyłanie audio będzie dostępne wkrótce — magazyn plików nie jest jeszcze podłączony.",
+    "uploading": "Przesyłanie… {percent}%",
+    "progressLabel": "Postęp przesyłania",
+    "finishing": "Sprawdzanie przesłanego pliku…",
+    "status": {
+      "pending": "Przesyłanie pliku {file} nie zostało dokończone.",
+      "uploaded": "Przesłano {file} ({size} MB) — czeka na sprawdzenie i przetworzenie.",
+      "processing": "Sprawdzamy i przetwarzamy {file}…",
+      "accepted": "Gotowe: {file} ({size} MB).",
+      "rejected": "Plik {file} został odrzucony.",
+      "failed": "Przesyłanie pliku {file} nie powiodło się — spróbuj ponownie."
+    },
+    "error": {
+      "unsupported_type": "Ten typ pliku nie jest obsługiwany. Prześlij bezstratny master: WAV, AIFF, FLAC lub ALAC.",
+      "too_large": "Plik jest większy niż 4 GB.",
+      "too_small": "Plik jest pusty lub uszkodzony.",
+      "too_many": "Zbyt wiele prób w ciągu godziny. Spróbuj później.",
+      "not_allowed": "Nie możesz przesyłać plików do tego wydawnictwa.",
+      "unavailable": "Magazyn plików jest chwilowo niedostępny. Spróbuj ponownie za chwilę.",
+      "incomplete": "Plik nie dotarł w całości. Spróbuj ponownie.",
+      "transfer": "Przesyłanie zostało przerwane. Sprawdź połączenie i spróbuj ponownie.",
+      "failed": "Coś poszło nie tak. Spróbuj ponownie."
+    },
+    "listen": "Odsłuchaj",
+    "versions": "Wersje do odtwarzania: {list}.",
+    "note": {
+      "lossy": "Plik wygląda na przekonwertowany z formatu stratnego (np. MP3), więc będzie dostępny tylko w jakości High i Data Saver. Jeśli masz oryginalny master, prześlij go.",
+      "upsampled": "Plik wygląda na przekonwertowany w górę z {rate} kHz — wersje Hi-Res powstały w prawdziwej rozdzielczości, bez zawyżania.",
+      "padded": "Plik ma 24 bity, ale zawiera 16-bitowe nagranie — traktujemy go jako 16-bitowy."
+    },
+    "rejection": {
+      "unreadable": "Nie udało się odczytać pliku jako audio.",
+      "unsupported_container": "Akceptujemy tylko pliki WAV/BWF, AIFF, FLAC i ALAC (.m4a).",
+      "unsupported_codec": "Plik zawiera nagranie stratne — prześlij oryginalny, bezstratny master.",
+      "audio_streams": "Plik musi zawierać dokładnie jedną ścieżkę audio.",
+      "bit_depth": "Głębia bitowa musi wynosić 16, 24 lub 32 bity.",
+      "sample_rate": "Częstotliwość próbkowania musi być standardowa: 44,1–192 kHz.",
+      "channels": "Na razie przyjmujemy nagrania mono i stereo.",
+      "duration": "Utwór musi trwać od 10 sekund do 4 godzin.",
+      "decode_error": "Plik jest uszkodzony i nie da się go odtworzyć do końca. Wyeksportuj master ponownie.",
+      "empty": "Plik nie zawiera dźwięku.",
+      "integrity": "Suma kontrolna pliku FLAC nie zgadza się z zawartością — plik jest uszkodzony.",
+      "processing_failed": "Nie udało się przetworzyć pliku mimo kilku prób. Prześlij go ponownie albo napisz do nas."
+    }
+  },
+  "Release": {
+    "trackCount": "{count, plural, one {# utwór} few {# utwory} many {# utworów} other {# utworu}}",
+    "explicit": "Treści dla dorosłych",
+    "play": "Odtwórz",
+    "playAll": "Odtwórz wydawnictwo {title}",
+    "playTrack": "Odtwórz: {title}",
+    "notPlayable": "Nagrania tego wydawnictwa nie są jeszcze dostępne do odtwarzania.",
+    "qualityNote": "Słuchasz w jakości do High (AAC 256 kb/s). Lossless i Hi-Res będą częścią planu Premium.",
+    "ai": {
+      "unknown": "Udział AI nie został określony.",
+      "human": "Bez AI — utworzone przez ludzi.",
+      "ai_assisted": "Utworzone z pomocą AI.",
+      "ai_generated": "Wygenerowane przez AI."
+    },
+    "coverAlt": "Okładka: {title} — {artist}"
+  },
+  "Moderation": {
+    "title": "Moderacja",
+    "lead": "Wydawnictwa czekające na weryfikację — najstarsze na górze.",
+    "empty": "Nic nie czeka na weryfikację.",
+    "trackCount": "{count, plural, one {# utwór} few {# utwory} many {# utworów} other {# utworu}}",
+    "submitted": "wysłane {date}",
+    "back": "← Wszystkie zgłoszenia",
+    "metadata": "Metadane",
+    "fields": {
+      "releaseDate": "Data wydania",
+      "ai": "Udział AI",
+      "explicit": "Treści dla dorosłych",
+      "territories": "Dostępność",
+      "lines": "Linie ℗ / ©"
+    },
+    "none": "brak",
+    "yes": "tak",
+    "no": "nie",
+    "listen": "Odsłuchaj: {title}",
+    "listenShort": "Odsłuchaj",
+    "noAudio": "Brak sprawdzonego pliku master.",
+    "history": "Historia zgłoszenia",
+    "events": {
+      "submitted": "wysłane do weryfikacji",
+      "withdrawn": "wycofane przez artystę",
+      "approved": "zatwierdzone",
+      "returned": "zwrócone do poprawy"
+    },
+    "decided": "To wydawnictwo nie czeka już na decyzję.",
+    "decision": {
+      "title": "Decyzja",
+      "note": "Uwagi dla artysty",
+      "noteHint": "Wymagane przy zwrocie (min. 10 znaków) — artysta zobaczy je w edytorze. Przy zatwierdzeniu pole jest pomijane.",
+      "approve": "Zatwierdź i opublikuj",
+      "return": "Zwróć do poprawy",
+      "error": {
+        "note_required": "Napisz artyście, co trzeba poprawić (co najmniej 10 znaków).",
+        "mfa_required": "Potwierdź logowanie drugim składnikiem, aby podejmować decyzje.",
+        "not_allowed": "Nie masz uprawnień moderatora.",
+        "not_waiting": "To wydawnictwo nie czeka już na decyzję.",
+        "failed": "Coś poszło nie tak. Spróbuj ponownie."
+      }
+    },
+    "cover": "Okładka"
+  },
+  "Images": {
+    "uploading": "Przesyłanie… {percent}%",
+    "progressLabel": "Postęp przesyłania",
+    "finishing": "Sprawdzanie przesłanego pliku…",
+    "cover": {
+      "choose": "Dodaj okładkę",
+      "replace": "Zmień okładkę",
+      "processing": "Przygotowujemy okładkę…",
+      "rejected": "Okładka została odrzucona.",
+      "failed": "Przesyłanie okładki nie powiodło się — spróbuj ponownie.",
+      "hint": "Kwadrat, co najmniej 1400 × 1400 px (najlepiej 3000 × 3000), JPEG, PNG lub WebP do 25 MB. Usuwamy z pliku metadane (np. lokalizację z aparatu)."
+    },
+    "photo": {
+      "choose": "Dodaj zdjęcie",
+      "replace": "Zmień zdjęcie",
+      "processing": "Przygotowujemy zdjęcie…",
+      "rejected": "Zdjęcie zostało odrzucone.",
+      "failed": "Przesyłanie zdjęcia nie powiodło się — spróbuj ponownie.",
+      "hint": "Co najmniej 400 × 400 px, JPEG, PNG lub WebP do 25 MB. Przytniemy je do kwadratu od środka i usuniemy metadane."
+    },
+    "rejection": {
+      "unsupported_format": "Akceptujemy tylko obrazy JPEG, PNG i WebP.",
+      "too_many_pixels": "Obraz ma zbyt dużo pikseli.",
+      "animated": "Animowane obrazy nie są akceptowane.",
+      "unreadable": "Nie udało się odczytać pliku jako obrazu.",
+      "not_square": "Okładka musi być kwadratowa.",
+      "too_small": "Obraz jest za mały (okładka: min. 1400 × 1400 px, zdjęcie: min. 400 px).",
+      "processing_failed": "Nie udało się przetworzyć obrazu. Spróbuj ponownie."
+    },
+    "error": {
+      "unsupported_type": "Ten typ pliku nie jest obsługiwany. Wybierz JPEG, PNG lub WebP.",
+      "too_large": "Plik jest większy niż 25 MB.",
+      "too_small": "Plik jest pusty lub uszkodzony.",
+      "too_many": "Zbyt wiele prób w ciągu godziny. Spróbuj później.",
+      "not_allowed": "Nie możesz tego zmienić.",
+      "unavailable": "Magazyn plików jest chwilowo niedostępny. Spróbuj ponownie za chwilę.",
+      "incomplete": "Plik nie dotarł w całości. Spróbuj ponownie.",
+      "transfer": "Przesyłanie zostało przerwane. Sprawdź połączenie i spróbuj ponownie.",
+      "failed": "Coś poszło nie tak. Spróbuj ponownie."
+    }
+  },
+  "Places": {
+    "voivodeshipShort": "woj. {name}",
+    "voivodeship": {
+      "dolnoslaskie": "dolnośląskie",
+      "kujawsko_pomorskie": "kujawsko-pomorskie",
+      "lubelskie": "lubelskie",
+      "lubuskie": "lubuskie",
+      "lodzkie": "łódzkie",
+      "malopolskie": "małopolskie",
+      "mazowieckie": "mazowieckie",
+      "opolskie": "opolskie",
+      "podkarpackie": "podkarpackie",
+      "podlaskie": "podlaskie",
+      "pomorskie": "pomorskie",
+      "slaskie": "śląskie",
+      "swietokrzyskie": "świętokrzyskie",
+      "warminsko_mazurskie": "warmińsko-mazurskie",
+      "wielkopolskie": "wielkopolskie",
+      "zachodniopomorskie": "zachodniopomorskie"
+    }
+  },
+  "Plan": {
+    "title": "Plan",
+    "free": "Free — słuchasz w jakości High.",
+    "until": "{plan} do {date}",
+    "lifetime": "{plan} na zawsze",
+    "freeQuality": "Cały katalog, bez reklam i bez limitów pomijania. Lossless i Hi-Res są w Premium — w becie dostępne z kodów promocyjnych.",
+    "premiumQuality": "Odtwarzacz wybiera Lossless lub Hi-Res, jeśli utwór ma taką wersję i Twoje urządzenie ją obsłuży.",
+    "source": {
+      "promo": "Z kodu: {ref}",
+      "beta": "Dla testerów bety: {ref}",
+      "admin": "Przyznane przez zespół Tunewick: {ref}",
+      "referral": "Za polecenie: {ref}",
+      "subscription": "Subskrypcja"
+    },
+    "redeem": {
+      "label": "Masz kod promocyjny?",
+      "submit": "Użyj kodu",
+      "granted": "Kod przyjęty. Premium działa od teraz.",
+      "errors": {
+        "empty": "Wpisz kod.",
+        "invalid": "Ten kod nie działa. Sprawdź, czy jest wpisany dokładnie.",
+        "inactive": "Ta promocja jest wyłączona.",
+        "expired": "Ten kod już wygasł.",
+        "not_yet_valid": "Ten kod jeszcze nie działa — sprawdź datę startu promocji.",
+        "not_eligible": "Ten kod nie jest przeznaczony dla Twojego konta (np. tylko dla nowych kont albo wymaga potwierdzonego e-maila).",
+        "exhausted": "Ten kod został już wykorzystany przez maksymalną liczbę osób.",
+        "already_redeemed": "Ten kod (albo kod z tej samej promocji) jest już użyty na Twoim koncie.",
+        "already_lifetime": "Masz już Premium na zawsze — zachowaj kod dla kogoś innego, nie został zużyty.",
+        "unavailable": "Tego rodzaju kod zadziała dopiero, gdy wprowadzimy płatności.",
+        "rate_limited": "Za dużo prób. Spróbuj ponownie za 15 minut.",
+        "unexpected": "Coś poszło nie tak. Spróbuj ponownie."
+      }
+    }
+  },
+  "PromoAdmin": {
+    "title": "Promocje",
+    "lead": "Kampanie i kody Premium. Kody są przechowywane tylko jako skróty — treść kodu widać raz, przy tworzeniu.",
+    "link": "Promocje",
+    "campaigns": "Kampanie",
+    "noCampaigns": "Nie ma jeszcze żadnej kampanii.",
+    "newCampaign": "Nowa kampania",
+    "createCampaign": "Utwórz kampanię",
+    "back": "← Wszystkie kampanie",
+    "active": "aktywna",
+    "inactive": "wyłączona",
+    "campaignActive": "Kampania jest aktywna — jej kody działają.",
+    "campaignInactive": "Kampania jest wyłączona — żaden jej kod nie działa.",
+    "activate": "Włącz",
+    "deactivate": "Wyłącz",
+    "redemptions": "{count, plural, one {# użycie} few {# użycia} many {# użyć} other {# użycia}} z {max}",
+    "endsOn": "do {date}",
+    "generateTitle": "Kody jednorazowe",
+    "generateHint": "Unikalne kody dla jednej osoby każdy (np. dla partnera albo zaproszonych artystów).",
+    "generate": "Wygeneruj kody",
+    "generated": "{count, plural, one {Wygenerowano # kod} few {Wygenerowano # kody} many {Wygenerowano # kodów} other {Wygenerowano # kodu}}. Zapisz je teraz — po opuszczeniu strony nie da się ich pokazać ponownie.",
+    "generatedList": "Wygenerowane kody",
+    "downloadCsv": "Pobierz CSV",
+    "sharedTitle": "Kod wspólny",
+    "sharedHint": "Czytelny kod na plakat lub ulotkę. Każde konto użyje go raz; limit użyć jest obowiązkowy.",
+    "createShared": "Utwórz kod wspólny",
+    "sharedCreated": "Kod wspólny utworzony.",
+    "sharedLabel": "wspólny …",
+    "codesTitle": "Kody ({count})",
+    "noCodes": "Ta kampania nie ma jeszcze kodów.",
+    "uses": "użyto {count} z {max}",
+    "expires": "ważny do {date}",
+    "newAccountsOnly": "tylko nowe konta",
+    "redemptionsTitle": "Użycia ({count})",
+    "noRedemptions": "Nikt jeszcze nie użył kodu z tej kampanii.",
+    "revoked": "cofnięte",
+    "premiumUntil": "Premium do {date}",
+    "premiumLifetime": "Premium na zawsze",
+    "revoke": "Cofnij Premium",
+    "benefit": {
+      "premium_days": "Premium na {value, plural, one {# dzień} other {# dni}}",
+      "premium_months": "Premium na {value, plural, one {# miesiąc} few {# miesiące} many {# miesięcy} other {# miesiąca}}",
+      "premium_lifetime": "Premium na zawsze",
+      "feature_access": "Dostęp do funkcji",
+      "percent_discount": "Zniżka {value}%",
+      "fixed_discount": "Zniżka kwotowa"
+    },
+    "fields": {
+      "name": "Nazwa kampanii",
+      "partner": "Partner (opcjonalnie)",
+      "description": "Opis (opcjonalnie)",
+      "endsOn": "Koniec kampanii (opcjonalnie)",
+      "maxTotal": "Limit użyć w całej kampanii",
+      "maxTotalHint": "Puste = bez limitu.",
+      "count": "Liczba kodów (1–5000)",
+      "benefit": "Co daje kod",
+      "benefits": {
+        "premium_days": "Premium na dni",
+        "premium_months": "Premium na miesiące",
+        "premium_lifetime": "Premium na zawsze"
+      },
+      "value": "Ile dni lub miesięcy",
+      "valueHint": "Pomijane dla „na zawsze”.",
+      "expiresOn": "Ważny do (opcjonalnie)",
+      "newAccountsDays": "Tylko konta młodsze niż (dni)",
+      "newAccountsDaysHint": "Puste = dla każdego konta.",
+      "code": "Kod",
+      "codeHint": "6–32 znaki: litery, cyfry, myślniki. Wielkość liter nie ma znaczenia.",
+      "maxUses": "Limit użyć",
+      "reason": "Powód (widoczny w dzienniku zmian)"
+    },
+    "errors": {
+      "invalid": "Sprawdź pola — któreś ma niepoprawną wartość.",
+      "duplicate": "Taki kod albo taka nazwa kampanii już istnieje.",
+      "mfa_required": "Ta czynność wymaga logowania dwuskładnikowego w tej sesji.",
+      "not_allowed": "Nie masz uprawnień do zarządzania promocjami.",
+      "not_found": "Nie znaleziono — może zostało usunięte.",
+      "failed": "Nie udało się. Spróbuj ponownie."
+    }
+  },
+  "Playlists": {
+    "badge": "Playlista",
+    "visibility": {
+      "public": "publiczna",
+      "unlisted": "dla osób z linkiem",
+      "private": "prywatna"
+    },
+    "visibilityHint": "Publiczna: widoczna dla wszystkich. Dla osób z linkiem: nie pojawia się nigdzie, ale otworzy ją każdy, kto ma adres. Prywatna: tylko Ty.",
+    "trackCount": "{count, plural, =0 {brak utworów} one {# utwór} few {# utwory} many {# utworów} other {# utworu}}",
+    "hidden": "{count, plural, one {# utwór jest teraz niedostępny} few {# utwory są teraz niedostępne} many {# utworów jest teraz niedostępnych} other {# utworu jest teraz niedostępne}}",
+    "play": "Odtwórz",
+    "playAll": "Odtwórz playlistę {title}",
+    "playTrack": "Odtwórz: {title}",
+    "empty": "Ta playlista jest pusta.",
+    "emptyMine": "Playlista jest pusta. Dodaj utwory przyciskiem + przy utworze na stronie wydawnictwa.",
+    "moveUp": "Przesuń wyżej: {title} (pozycja {position})",
+    "moveDown": "Przesuń niżej: {title} (pozycja {position})",
+    "remove": "Usuń z playlisty: {title} (pozycja {position})",
+    "settings": "Ustawienia playlisty",
+    "fields": {
+      "title": "Nazwa",
+      "description": "Opis (opcjonalnie)",
+      "visibility": "Kto ją widzi"
+    },
+    "save": "Zapisz",
+    "saved": "Zapisano.",
+    "delete": "Usuń playlistę",
+    "deleteHint": "Usunięcia nie da się cofnąć. Utwory zostają w serwisie.",
+    "deleteConfirm": "Na pewno usunąć tę playlistę?",
+    "deleteYes": "Tak, usuń",
+    "deleteNo": "Anuluj",
+    "newTitle": "Nowa playlista",
+    "create": "Utwórz",
+    "addTrack": "Dodaj do playlisty: {title}",
+    "addTo": "Dodaj do playlisty",
+    "add": "Dodaj",
+    "added": "Dodano do: {playlist}",
+    "addFailed": "Nie udało się dodać. Spróbuj ponownie.",
+    "noPlaylists": "Nie masz jeszcze playlist — utwórz pierwszą w Bibliotece.",
+    "errors": {
+      "title": "Nazwa musi mieć od 1 do 100 znaków.",
+      "limit": "Masz już 200 playlist — to maksimum.",
+      "failed": "Nie udało się zapisać. Spróbuj ponownie."
     }
   }
 }

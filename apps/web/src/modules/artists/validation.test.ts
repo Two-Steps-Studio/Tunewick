@@ -72,3 +72,22 @@ describe("artistDbError", () => {
     ).toEqual({ code: "lastOwner" });
   });
 });
+
+describe("artist location", () => {
+  it("accepts a voivodeship and a city, or nothing", () => {
+    const base = { name: "X", bio: "", formedYear: "" };
+    expect(
+      updateArtistSchema.parse({ ...base, voivodeship: "podlaskie", city: " Suwałki " }),
+    ).toMatchObject({
+      voivodeship: "podlaskie",
+      city: "Suwałki",
+    });
+    expect(updateArtistSchema.parse(base)).toMatchObject({ voivodeship: null, city: null });
+  });
+
+  it("refuses an unknown voivodeship and a too long city", () => {
+    const base = { name: "X", bio: "", formedYear: "" };
+    expect(updateArtistSchema.safeParse({ ...base, voivodeship: "gzm" }).success).toBe(false);
+    expect(updateArtistSchema.safeParse({ ...base, city: "a".repeat(81) }).success).toBe(false);
+  });
+});

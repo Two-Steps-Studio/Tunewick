@@ -60,8 +60,19 @@ jobs:
       - name: Start local Supabase (Postgres + Auth)
         run: pnpm db:start
       - run: pnpm db:env
+      - name: Local S3 for master uploads (rewrites .env.local with its settings)
+        run: pnpm media:start
+      - name: Audio worker polling the local queue
+        run: pnpm worker:start
       - run: pnpm --filter @tunewick/web build
-      - run: pnpm --filter @tunewick/web exec playwright install --with-deps chromium
+      - run: pnpm --filter @tunewick/web exec playwright install --with-deps chromium firefox
+      - name: Virtual sound server (Firefox on Linux does not start playback without one)
+        run: |
+          sudo apt-get install -y --no-install-recommends pulseaudio
+          pulseaudio --start --exit-idle-time=-1
+          pactl load-module module-null-sink sink_name=ci
+      - name: Test album for the player (audio worker in Docker)
+        run: pnpm dev:media
       - run: pnpm e2e
       - uses: actions/upload-artifact@v4
         if: failure()

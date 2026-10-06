@@ -22,7 +22,7 @@ export async function ArtistReleaseList({ artist }: { artist: { id: string; slug
             </span>
             <Link
               href={{
-                pathname: "/artists/[slug]/releases/[release]",
+                pathname: "/artists/[slug]/releases/[release]/edit",
                 params: { slug: artist.slug, release: r.slug },
               }}
               className="button button--quiet"

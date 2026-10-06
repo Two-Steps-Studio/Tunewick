@@ -63,3 +63,22 @@ test.describe("locale detection", () => {
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("Discover");
   });
 });
+
+test("discover narrows to a voivodeship and says when it has nothing yet", async ({ page }) => {
+  await page.goto("/");
+  const regions = page.getByRole("navigation", { name: "Region" });
+  await expect(regions.getByRole("link", { name: "Cała Polska" })).toHaveAttribute(
+    "aria-current",
+    "page",
+  );
+  // No E2E fixture ever uses Lubuskie.
+  await regions.getByRole("link", { name: "Lubuskie" }).click();
+  await expect(page).toHaveURL(/\/\?woj=lubuskie$/);
+  await expect(regions.getByRole("link", { name: "Lubuskie" })).toHaveAttribute(
+    "aria-current",
+    "page",
+  );
+  await expect(
+    page.getByText("Z województwa lubuskie nie ma jeszcze opublikowanej muzyki."),
+  ).toBeVisible();
+});

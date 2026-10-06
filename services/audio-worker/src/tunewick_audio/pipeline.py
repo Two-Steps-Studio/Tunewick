@@ -8,10 +8,10 @@ import os
 
 from . import REPORT_VERSION
 from .loudness import measure
-from .pcm import analyse
+from .pcm import analyse, fft_size
 from .policy import classify, plan
 from .probe import MAX_DURATION_S, MIN_DURATION_S, Rejected, probe, read_flac_md5
-from .spectrum import find_cliff
+from .spectrum import find_cliff, quantization_floor_db
 from .variants import Master, build
 
 DC_OFFSET_LIMIT = 0.01  # −40 dBFS
@@ -70,7 +70,12 @@ def process(path: str, out_dir: str) -> dict:
             )
 
         cliff = find_cliff(stats.spectrum, stats.freqs, source.sample_rate)
-        authenticity = classify(source.sample_rate, cliff.frequency_hz)
+        floor = quantization_floor_db(
+            stats.effective_bits, source.channels, fft_size(source.sample_rate)
+        )
+        authenticity = classify(
+            source.sample_rate, cliff.frequency_hz, empty_above=cliff.empty_above(floor)
+        )
         loudness = measure(path)
 
         flags = []
@@ -105,6 +110,8 @@ def process(path: str, out_dir: str) -> dict:
             "upsampled_from": authenticity.upsampled_from,
             "spectral_cliff_hz": cliff.frequency_hz,
             "spectral_cliff_drop_db": cliff.drop_db,
+            "spectral_above_cliff_db": cliff.above_db,
+            "quantization_floor_db": round(floor, 1),
             "peak_dbfs": _dbfs(stats.peak),
             "clipped_runs": stats.clipped_runs,
             "dc_offset": [round(v, 6) for v in stats.dc_offset],

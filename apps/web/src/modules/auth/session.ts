@@ -31,13 +31,15 @@ export interface MfaStatus {
 
 export async function getMfaStatus(): Promise<MfaStatus> {
   const supabase = await createSupabaseServerClient();
-  const [{ data: factors }, { data: aal }] = await Promise.all([
+  // Both from verified sources: listFactors reads the user from the Auth server, the level comes
+  // from the signed access token (never from the unsigned user object in the cookie).
+  const [{ data: factors }, { data: claims }] = await Promise.all([
     supabase.auth.mfa.listFactors(),
-    supabase.auth.mfa.getAuthenticatorAssuranceLevel(),
+    supabase.auth.getClaims(),
   ]);
   return {
     enabled: (factors?.totp.length ?? 0) > 0,
-    verified: aal?.currentLevel === "aal2",
+    verified: claims?.claims?.aal === "aal2",
   };
 }
 
@@ -52,9 +54,27 @@ export async function requireStaff(
 ): Promise<User> {
   const user = await requireUser(paths.signIn);
   const supabase = await createSupabaseServerClient();
-  const { data: hasRole } = await supabase.rpc("has_app_role", { required: role });
+  // Admins can do everything moderators can (same rule as public.is_staff()).
+  const { data: hasRole } =
+    role === "moderator"
+      ? await supabase.rpc("is_staff")
+      : await supabase.rpc("has_app_role", { required: role });
   if (!hasRole) redirect(paths.forbidden);
   const mfa = await getMfaStatus();
   if (!mfa.enabled || !mfa.verified) redirect(paths.security);
   return user;
+}
+
+/** Whether the signed-in user has a staff role (moderator or admin). Not an authorization check. */
+export async function isStaff(): Promise<boolean> {
+  const supabase = await createSupabaseServerClient();
+  const { data } = await supabase.rpc("is_staff");
+  return data === true;
+}
+
+/** Whether the signed-in user is an admin. Not an authorization check (the database decides). */
+export async function isAdmin(): Promise<boolean> {
+  const supabase = await createSupabaseServerClient();
+  const { data } = await supabase.rpc("has_app_role", { required: "admin" });
+  return data === true;
 }

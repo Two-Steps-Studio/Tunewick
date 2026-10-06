@@ -97,3 +97,24 @@ test.describe("artist onboarding", () => {
     await outsiderContext.close();
   });
 });
+
+test("an artist from anywhere in Poland sets the city and voivodeship", async ({ page }) => {
+  await createConfirmedUser(page, "location");
+  const slug = unique("miejsce");
+  await page.goto("/artysci/nowy");
+  await page.getByLabel("Nazwa artysty").fill("Suwalska Fala");
+  await page.getByLabel("Adres profilu").fill(slug);
+  await page.getByRole("button", { name: "Załóż profil" }).click();
+  await expect(page).toHaveURL(new RegExp(`/artysci/${slug}/zarzadzaj$`));
+
+  await page.getByLabel("Miasto lub miejscowość").fill("Suwałki");
+  await page.getByLabel("Województwo").selectOption("podlaskie");
+  await page.getByRole("button", { name: "Zapisz" }).first().click();
+  await expect(page.getByText("Zapisano.")).toBeVisible();
+  await expect(page.getByLabel("Województwo")).toHaveValue("podlaskie");
+
+  await page.goto(`/artysci/${slug}`);
+  await expect(page.getByText("Suwałki · woj. podlaskie")).toBeVisible();
+  await page.goto(`/en/artists/${slug}`);
+  await expect(page.getByText("Suwałki · Podlaskie Voivodeship")).toBeVisible();
+});

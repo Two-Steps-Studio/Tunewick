@@ -31,7 +31,9 @@ test.describe("release editor", () => {
     await expect(page.getByLabel("Adres wydawnictwa")).toHaveValue("pierwsza-epka");
     await page.getByLabel("Rodzaj").selectOption("ep");
     await page.getByRole("button", { name: "Utwórz szkic" }).click();
-    await expect(page).toHaveURL(new RegExp(`/artysci/${artistSlug}/wydawnictwa/pierwsza-epka$`));
+    await expect(page).toHaveURL(
+      new RegExp(`/artysci/${artistSlug}/wydawnictwa/pierwsza-epka/edytuj$`),
+    );
     await expect(page.getByText("EP · Szkic")).toBeVisible();
     await expect(page.getByText("Określ udział AI przed wysłaniem do weryfikacji.")).toBeVisible();
 
@@ -96,11 +98,14 @@ test.describe("release editor", () => {
     const otherContext = await browser.newContext({ locale: "pl-PL" });
     const outsider = await otherContext.newPage();
     // Anonymous visitors are sent to sign in…
-    await outsider.goto(`/artysci/${artistSlug}/wydawnictwa/pierwsza-epka`);
+    await outsider.goto(`/artysci/${artistSlug}/wydawnictwa/pierwsza-epka/edytuj`);
     await expect(outsider).toHaveURL(/\/logowanie\?next=/);
+    // The public address of an unpublished release does not exist for them.
+    const draftPage = await outsider.goto(`/artysci/${artistSlug}/wydawnictwa/pierwsza-epka`);
+    expect(draftPage?.status()).toBe(404);
     // …and signed-in non-members get a 404 without any draft content.
     await createConfirmedUser(outsider, "release-outsider");
-    const response = await outsider.goto(`/artysci/${artistSlug}/wydawnictwa/pierwsza-epka`);
+    const response = await outsider.goto(`/artysci/${artistSlug}/wydawnictwa/pierwsza-epka/edytuj`);
     expect(response?.status()).toBe(404);
     expect(await outsider.content()).not.toContain("Pierwsza EPka");
     await outsider.goto(`/artysci/${artistSlug}`);
@@ -115,7 +120,7 @@ test.describe("release editor", () => {
     await page.getByRole("link", { name: "Nowe wydawnictwo" }).click();
     await page.getByLabel("Tytuł").fill("Do usunięcia");
     await page.getByRole("button", { name: "Utwórz szkic" }).click();
-    await expect(page).toHaveURL(/wydawnictwa\/do-usuniecia$/);
+    await expect(page).toHaveURL(/wydawnictwa\/do-usuniecia\/edytuj$/);
 
     for (const title of ["A", "B"]) {
       await page.getByLabel("Tytuł utworu").fill(title);

@@ -1,6 +1,6 @@
 # Promotions, Entitlements & Payments
 
-> Status: **v0.1 specification.** MVP grants Premium **only** through promo codes, beta access
+> Status: **implemented in M9** (entitlements, redemption, admin panel; reports and referrals later). MVP grants Premium **only** through promo codes, beta access
 > and admin grants (decision D3). Card payments arrive in Phase 14 on top of the same
 > entitlement model.
 
@@ -72,7 +72,7 @@ Permission-controlled (`admin` role, MFA), every action audited.
 
 ## 6. Campaigns (examples)
 
-Launch/beta, artist onboarding (Premium for artists' members), festivals and clubs (GZM venues),
+Launch/beta, artist onboarding (Premium for artists' members), festivals and clubs (venues across Poland),
 universities, community rewards (e.g. after N verified "Byłem przy tym"), partners/labels,
 referrals (§7).
 

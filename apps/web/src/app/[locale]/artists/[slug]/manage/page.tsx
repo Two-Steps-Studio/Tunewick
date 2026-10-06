@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { Artwork, getImageSources, getLatestImageUpload, ImageUpload } from "@/modules/images";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getPathname, Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
@@ -37,6 +38,10 @@ export default async function ManageArtistPage({
   const t = await getTranslations("Artists");
   const { artist, myRole, members } = data;
   const isOwner = myRole === "owner";
+  const [photo, photoUpload] = await Promise.all([
+    getImageSources(artist.image_id),
+    myRole !== "member" ? getLatestImageUpload("artist_image", artist.id) : null,
+  ]);
   const canRequest =
     myRole !== "member" &&
     (artist.verification_status === "unverified" || artist.verification_status === "rejected");
@@ -63,8 +68,31 @@ export default async function ManageArtistPage({
             </h2>
             <ArtistInfoForm
               artistId={artist.id}
-              values={{ name: artist.name, bio: artist.bio, formedYear: artist.formed_year }}
+              values={{
+                name: artist.name,
+                bio: artist.bio,
+                formedYear: artist.formed_year,
+                voivodeship: artist.voivodeship,
+                city: artist.city,
+              }}
             />
+          </section>
+        ) : null}
+
+        {myRole !== "member" ? (
+          <section className="settings-form__group" aria-labelledby="photo">
+            <h2 id="photo" className="section-title">
+              {t("manage.photo")}
+            </h2>
+            <div className="cover-editor">
+              <Artwork image={photo} alt={artist.name} sizes="10rem" className="artwork--round" />
+              <ImageUpload
+                kind="artist_image"
+                ownerId={artist.id}
+                hasImage={Boolean(photo)}
+                latest={photoUpload}
+              />
+            </div>
           </section>
         ) : null}
 

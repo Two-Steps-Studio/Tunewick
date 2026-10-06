@@ -8,7 +8,8 @@
     "mainNav": "Main navigation",
     "home": "Tunewick home",
     "language": "Language",
-    "switchTo": "Polski"
+    "switchTo": "Polski",
+    "moderation": "Moderation"
   },
   "Nav": {
     "discover": "Discover",
@@ -19,12 +20,55 @@
   "Player": {
     "region": "Player",
     "idle": "Nothing is playing.",
-    "idleHint": "Playback arrives with the first releases."
+    "idleHint": "Pick a release or a track to start listening.",
+    "play": "Play",
+    "pause": "Pause",
+    "next": "Next track",
+    "previous": "Previous track",
+    "seek": "Position in track",
+    "seekValue": "{position} of {duration}",
+    "volume": "Volume",
+    "quality": {
+      "hires": "Hi-Res",
+      "lossless": "Lossless",
+      "high": "High",
+      "dataSaver": "Data Saver",
+      "full": "Source {source}, playing {delivered} ({label})",
+      "output": "output {rate} (system)"
+    },
+    "reason": {
+      "plan": "Lossless and Hi-Res with Premium",
+      "setting": "Your quality setting",
+      "save_data": "Data saver mode",
+      "battery": "Battery saver",
+      "network": "Limited by network",
+      "throughput": "Limited by connection speed",
+      "stall": "Lowered after a stall",
+      "unplayable": "This browser can't play higher quality"
+    },
+    "error": {
+      "media_error": "This track couldn't be played.",
+      "playback_blocked": "The browser blocked playback — press Play.",
+      "unplayable": "This browser can't play any version of this track.",
+      "stream_error": "The audio stream was interrupted."
+    }
   },
   "Discover": {
     "title": "Discover",
     "lead": "Independent music, local scenes and gigs — with context, not an endless feed.",
-    "empty": "There is nothing to discover yet. The first artists join in the closed beta in Silesia and GZM."
+    "empty": "There is nothing to discover yet. The first artists — independent musicians from all over Poland — join in the closed beta.",
+    "leadPoland": "New music from small independent artists across Poland — newest first. No popularity algorithm: everything here says why it is shown.",
+    "regionLabel": "Region",
+    "allPoland": "All of Poland",
+    "emptyRegion": "No published music from {region} Voivodeship yet.",
+    "newReleases": "New releases",
+    "newArtists": "New artists",
+    "reason": {
+      "debut": "Debut · {when}",
+      "new": "New · {when}",
+      "released": "Released {when}",
+      "firstRelease": "First release {when} · {count, plural, one {# release} other {# releases}}"
+    }
   },
   "Scene": {
     "title": "Scene",
@@ -33,13 +77,52 @@
   },
   "Search": {
     "title": "Search",
-    "lead": "Artists, releases, tracks, playlists and events.",
-    "empty": "Search goes live once there is music in the catalog."
+    "lead": "Independent artists from all over Poland — type a name, a title or part of it. Polish characters are optional.",
+    "empty": "Search goes live once there is music in the catalog.",
+    "titleFor": "“{query}” — search",
+    "label": "Search artists, releases and tracks",
+    "placeholder": "Artist, release or track",
+    "submit": "Search",
+    "tooShort": "Type at least 2 characters.",
+    "noResults": "Nothing found for “{query}”. Check the spelling or try a shorter part.",
+    "artists": "Artists",
+    "releases": "Releases",
+    "tracks": "Tracks",
+    "play": "Play: {title}"
   },
   "Library": {
     "title": "Library",
-    "lead": "Liked tracks, releases, playlists and listening history.",
-    "empty": "Your library will be available after signing in. Accounts are coming soon."
+    "lead": "Your music: liked tracks and releases, and the artists you follow.",
+    "empty": "Nothing here yet. Like a track or a release and follow artists — they will show up here.",
+    "signedOut": "Sign in to save tracks, releases and artists.",
+    "signIn": "Sign in",
+    "likedTracks": "Liked tracks ({count})",
+    "likedReleases": "Liked releases",
+    "followedArtists": "Followed artists",
+    "play": "Play liked",
+    "playLiked": "Play liked tracks",
+    "playTrack": "Play: {title}",
+    "actions": {
+      "like": "Like: {name}",
+      "unlike": "Remove from liked: {name}",
+      "likeShort": "Like",
+      "liked": "Liked",
+      "follow": "Follow: {name}",
+      "unfollow": "Unfollow: {name}",
+      "followShort": "Follow",
+      "following": "Following",
+      "failed": "Could not save. Please try again."
+    },
+    "playlists": "Your playlists",
+    "history": {
+      "title": "Recently played",
+      "lead": "Your history from the last 90 days. Only you can see it.",
+      "when": "{when} · {count, plural, one {# time} other {# times}}",
+      "clear": "Clear history",
+      "clearConfirm": "Delete your whole listening history? This cannot be undone.",
+      "clearYes": "Yes, clear it",
+      "clearNo": "Cancel"
+    }
   },
   "NotFound": {
     "title": "This page does not exist",
@@ -215,12 +298,16 @@
       "handle": "Person profile name (address)",
       "role": "Role",
       "evidence": "Links that confirm the artist (one per line)",
-      "note": "Message for moderators (optional)"
+      "note": "Message for moderators (optional)",
+      "city": "City or town",
+      "voivodeship": "Voivodeship (region)",
+      "voivodeshipNone": "— not given —"
     },
     "hints": {
       "slug": "Lowercase letters, digits and hyphens. Address: tunewick.com/en/artists/address",
       "evidence": "E.g. official website, Bandcamp, the band social media profile. Up to 5 links.",
-      "handle": "The person needs an account with a profile name."
+      "handle": "The person needs an account with a profile name.",
+      "city": "Where you're from — e.g. Rzeszów, Gliwice, Suwałki. Helps listeners find music from their area."
     },
     "roles": {
       "owner": "Owner",
@@ -237,7 +324,8 @@
       "since": "Since {year}",
       "manage": "Manage profile",
       "noBio": "This artist has not added a description yet.",
-      "noReleases": "No published releases."
+      "noReleases": "No published releases.",
+      "followers": "{count, plural, =0 {No followers yet} one {# follower} other {# followers}}"
     },
     "manage": {
       "title": "Manage: {name}",
@@ -254,7 +342,8 @@
       "saved": "Saved.",
       "viewPublic": "View public profile",
       "you": "You",
-      "noName": "Account without a profile name"
+      "noName": "Account without a profile name",
+      "photo": "Artist photo"
     },
     "errors": {
       "nameRequired": "Enter the artist name.",
@@ -270,7 +359,9 @@
       "alreadyPending": "A verification request is already waiting for a decision.",
       "lastOwner": "The project must keep at least one owner.",
       "forbidden": "You are not allowed to do this.",
-      "unexpected": "Could not save. Please try again."
+      "unexpected": "Could not save. Please try again.",
+      "voivodeshipInvalid": "Choose a voivodeship from the list.",
+      "cityTooLong": "A place name can have up to 80 characters."
     }
   },
   "Releases": {
@@ -305,7 +396,9 @@
       "readOnly": "This release is no longer a draft — editing is locked.",
       "deleteDraft": "Delete draft",
       "back": "Back to the artist profile",
-      "aiMissing": "Declare AI involvement before submitting for review."
+      "aiMissing": "Declare AI involvement before submitting for review.",
+      "cover": "Cover",
+      "coverAlt": "Cover of the release {title}"
     },
     "fields": {
       "title": "Title",
@@ -425,8 +518,359 @@
       "tracks": "At least one track",
       "ai": "AI involvement declared",
       "rights": "Rights declaration submitted",
-      "audio": "Recordings — file upload arrives in the next stage",
-      "note": "Submitting for review becomes possible once recording upload launches."
+      "audio": "Master files for every track — checked",
+      "note": "When everything is ready, send the release for review. Before publishing we check the rights, metadata and recordings.",
+      "audioMissing": "Master files for every track",
+      "audioProcessing": "Master files uploaded — waiting to be checked and processed",
+      "artwork": "Cover (square, at least 1400 × 1400 px)"
+    },
+    "review": {
+      "submit": "Send for review",
+      "submitHint": "We'll check the rights declaration, metadata and recordings. The release can't be edited until we decide.",
+      "inReview": "Sent for review on {date}. The release can't be edited until we decide.",
+      "withdraw": "Withdraw submission",
+      "returned": "The release was returned for changes:",
+      "returnedHint": "Make the changes and send it again.",
+      "published": "Published on {date}.",
+      "scheduled": "Approved — release on {date}.",
+      "viewPublic": "View the release page",
+      "error": {
+        "not_ready": "The release isn't ready yet — check the list above.",
+        "not_allowed": "You can't submit this release.",
+        "failed": "Something went wrong. Please try again."
+      }
+    }
+  },
+  "Audio": {
+    "none": "No master file yet.",
+    "choose": "Choose master file",
+    "replace": "Upload a new file",
+    "hint": "Lossless files only: WAV, AIFF, FLAC or ALAC, up to 4 GB. We check the file's quality and prepare the playback versions.",
+    "unavailable": "Audio upload is coming soon — file storage is not connected yet.",
+    "uploading": "Uploading… {percent}%",
+    "progressLabel": "Upload progress",
+    "finishing": "Checking the uploaded file…",
+    "status": {
+      "pending": "The upload of {file} was not finished.",
+      "uploaded": "Uploaded {file} ({size} MB) — waiting to be checked and processed.",
+      "processing": "Checking and processing {file}…",
+      "accepted": "Ready: {file} ({size} MB).",
+      "rejected": "{file} was rejected.",
+      "failed": "Uploading {file} failed — please try again."
+    },
+    "error": {
+      "unsupported_type": "This file type isn't supported. Upload a lossless master: WAV, AIFF, FLAC or ALAC.",
+      "too_large": "The file is larger than 4 GB.",
+      "too_small": "The file is empty or damaged.",
+      "too_many": "Too many attempts within an hour. Please try later.",
+      "not_allowed": "You can't upload files to this release.",
+      "unavailable": "File storage is temporarily unavailable. Please try again shortly.",
+      "incomplete": "The file didn't arrive completely. Please try again.",
+      "transfer": "The upload was interrupted. Check your connection and try again.",
+      "failed": "Something went wrong. Please try again."
+    },
+    "listen": "Listen",
+    "versions": "Playback versions: {list}.",
+    "note": {
+      "lossy": "The file looks converted from a lossy format (e.g. MP3), so it will only be available in High and Data Saver quality. If you have the original master, please upload it.",
+      "upsampled": "The file looks upsampled from {rate} kHz — the Hi-Res versions use the real resolution, without inflating it.",
+      "padded": "The file is 24-bit but holds a 16-bit recording — we treat it as 16-bit."
+    },
+    "rejection": {
+      "unreadable": "The file could not be read as audio.",
+      "unsupported_container": "Only WAV/BWF, AIFF, FLAC and ALAC (.m4a) files are accepted.",
+      "unsupported_codec": "The file contains lossy audio — please upload the original lossless master.",
+      "audio_streams": "The file must contain exactly one audio stream.",
+      "bit_depth": "Bit depth must be 16, 24 or 32 bits.",
+      "sample_rate": "The sample rate must be standard: 44.1–192 kHz.",
+      "channels": "Only mono and stereo recordings are accepted for now.",
+      "duration": "A track must be between 10 seconds and 4 hours long.",
+      "decode_error": "The file is damaged and doesn’t play to the end. Please export the master again.",
+      "empty": "The file contains no audio.",
+      "integrity": "The FLAC checksum doesn’t match its audio — the file is damaged.",
+      "processing_failed": "We couldn’t process the file after several attempts. Please upload it again or contact us."
+    }
+  },
+  "Release": {
+    "trackCount": "{count, plural, one {# track} other {# tracks}}",
+    "explicit": "Explicit content",
+    "play": "Play",
+    "playAll": "Play the release {title}",
+    "playTrack": "Play: {title}",
+    "notPlayable": "The recordings of this release are not available for playback yet.",
+    "qualityNote": "You are listening in up to High quality (AAC 256 kbps). Lossless and Hi-Res will be part of the Premium plan.",
+    "ai": {
+      "unknown": "AI involvement has not been declared.",
+      "human": "No AI — made by people.",
+      "ai_assisted": "Made with AI assistance.",
+      "ai_generated": "Generated by AI."
+    },
+    "coverAlt": "Cover: {title} — {artist}"
+  },
+  "Moderation": {
+    "title": "Moderation",
+    "lead": "Releases waiting for review — oldest first.",
+    "empty": "Nothing is waiting for review.",
+    "trackCount": "{count, plural, one {# track} other {# tracks}}",
+    "submitted": "submitted {date}",
+    "back": "← All submissions",
+    "metadata": "Metadata",
+    "fields": {
+      "releaseDate": "Release date",
+      "ai": "AI involvement",
+      "explicit": "Explicit content",
+      "territories": "Availability",
+      "lines": "℗ / © lines"
+    },
+    "none": "none",
+    "yes": "yes",
+    "no": "no",
+    "listen": "Listen: {title}",
+    "listenShort": "Listen",
+    "noAudio": "No checked master file.",
+    "history": "Submission history",
+    "events": {
+      "submitted": "submitted for review",
+      "withdrawn": "withdrawn by the artist",
+      "approved": "approved",
+      "returned": "returned for changes"
+    },
+    "decided": "This release is no longer waiting for a decision.",
+    "decision": {
+      "title": "Decision",
+      "note": "Notes for the artist",
+      "noteHint": "Required when returning (at least 10 characters) — the artist sees them in the editor. Ignored on approval.",
+      "approve": "Approve and publish",
+      "return": "Return for changes",
+      "error": {
+        "note_required": "Tell the artist what to change (at least 10 characters).",
+        "mfa_required": "Confirm your sign-in with the second factor to make decisions.",
+        "not_allowed": "You don't have the moderator role.",
+        "not_waiting": "This release is no longer waiting for a decision.",
+        "failed": "Something went wrong. Please try again."
+      }
+    },
+    "cover": "Cover"
+  },
+  "Images": {
+    "uploading": "Uploading… {percent}%",
+    "progressLabel": "Upload progress",
+    "finishing": "Checking the uploaded file…",
+    "cover": {
+      "choose": "Add cover",
+      "replace": "Change cover",
+      "processing": "Preparing the cover…",
+      "rejected": "The cover was rejected.",
+      "failed": "Uploading the cover failed — please try again.",
+      "hint": "Square, at least 1400 × 1400 px (ideally 3000 × 3000), JPEG, PNG or WebP up to 25 MB. We remove metadata (e.g. camera location) from the file."
+    },
+    "photo": {
+      "choose": "Add photo",
+      "replace": "Change photo",
+      "processing": "Preparing the photo…",
+      "rejected": "The photo was rejected.",
+      "failed": "Uploading the photo failed — please try again.",
+      "hint": "At least 400 × 400 px, JPEG, PNG or WebP up to 25 MB. We crop it to a square from the centre and remove metadata."
+    },
+    "rejection": {
+      "unsupported_format": "Only JPEG, PNG and WebP images are accepted.",
+      "too_many_pixels": "The image has too many pixels.",
+      "animated": "Animated images are not accepted.",
+      "unreadable": "The file could not be read as an image.",
+      "not_square": "The cover must be square.",
+      "too_small": "The image is too small (cover: at least 1400 × 1400 px, photo: at least 400 px).",
+      "processing_failed": "The image could not be processed. Please try again."
+    },
+    "error": {
+      "unsupported_type": "This file type isn't supported. Choose JPEG, PNG or WebP.",
+      "too_large": "The file is larger than 25 MB.",
+      "too_small": "The file is empty or damaged.",
+      "too_many": "Too many attempts within an hour. Please try later.",
+      "not_allowed": "You can't change this.",
+      "unavailable": "File storage is temporarily unavailable. Please try again shortly.",
+      "incomplete": "The file didn't arrive completely. Please try again.",
+      "transfer": "The upload was interrupted. Check your connection and try again.",
+      "failed": "Something went wrong. Please try again."
+    }
+  },
+  "Places": {
+    "voivodeshipShort": "{name} Voivodeship",
+    "voivodeship": {
+      "dolnoslaskie": "Lower Silesian",
+      "kujawsko_pomorskie": "Kuyavian-Pomeranian",
+      "lubelskie": "Lublin",
+      "lubuskie": "Lubusz",
+      "lodzkie": "Łódź",
+      "malopolskie": "Lesser Poland",
+      "mazowieckie": "Masovian",
+      "opolskie": "Opole",
+      "podkarpackie": "Subcarpathian",
+      "podlaskie": "Podlaskie",
+      "pomorskie": "Pomeranian",
+      "slaskie": "Silesian",
+      "swietokrzyskie": "Holy Cross",
+      "warminsko_mazurskie": "Warmian-Masurian",
+      "wielkopolskie": "Greater Poland",
+      "zachodniopomorskie": "West Pomeranian"
+    }
+  },
+  "Plan": {
+    "title": "Plan",
+    "free": "Free — you listen in High quality.",
+    "until": "{plan} until {date}",
+    "lifetime": "{plan} for life",
+    "freeQuality": "The whole catalog, no ads and no skip limits. Lossless and Hi-Res are in Premium — during the beta through promo codes.",
+    "premiumQuality": "The player picks Lossless or Hi-Res when a track has it and your device can play it.",
+    "source": {
+      "promo": "From code: {ref}",
+      "beta": "For beta testers: {ref}",
+      "admin": "Granted by the Tunewick team: {ref}",
+      "referral": "For a referral: {ref}",
+      "subscription": "Subscription"
+    },
+    "redeem": {
+      "label": "Have a promo code?",
+      "submit": "Redeem",
+      "granted": "Code accepted. Premium is on from now.",
+      "errors": {
+        "empty": "Enter a code.",
+        "invalid": "This code does not work. Check that you typed it exactly.",
+        "inactive": "This promotion is switched off.",
+        "expired": "This code has expired.",
+        "not_yet_valid": "This code does not work yet — check when the promotion starts.",
+        "not_eligible": "This code is not meant for your account (e.g. new accounts only, or it needs a confirmed email).",
+        "exhausted": "This code has been used by the maximum number of people.",
+        "already_redeemed": "This code (or a code from the same promotion) is already used on your account.",
+        "already_lifetime": "You already have Premium for life — keep the code for someone else, it was not used.",
+        "unavailable": "This kind of code will work once we introduce payments.",
+        "rate_limited": "Too many attempts. Try again in 15 minutes.",
+        "unexpected": "Something went wrong. Please try again."
+      }
+    }
+  },
+  "PromoAdmin": {
+    "title": "Promotions",
+    "lead": "Premium campaigns and codes. Codes are stored as hashes only — a code is visible once, when it is created.",
+    "link": "Promotions",
+    "campaigns": "Campaigns",
+    "noCampaigns": "No campaigns yet.",
+    "newCampaign": "New campaign",
+    "createCampaign": "Create campaign",
+    "back": "← All campaigns",
+    "active": "active",
+    "inactive": "off",
+    "campaignActive": "The campaign is active — its codes work.",
+    "campaignInactive": "The campaign is off — none of its codes work.",
+    "activate": "Turn on",
+    "deactivate": "Turn off",
+    "redemptions": "{count, plural, one {# use} other {# uses}} of {max}",
+    "endsOn": "until {date}",
+    "generateTitle": "Single-use codes",
+    "generateHint": "Unique codes, one person each (e.g. for a partner or invited artists).",
+    "generate": "Generate codes",
+    "generated": "{count, plural, one {# code generated} other {# codes generated}}. Save them now — they cannot be shown again after you leave this page.",
+    "generatedList": "Generated codes",
+    "downloadCsv": "Download CSV",
+    "sharedTitle": "Shared code",
+    "sharedHint": "A readable code for a poster or flyer. Each account uses it once; a use limit is required.",
+    "createShared": "Create shared code",
+    "sharedCreated": "Shared code created.",
+    "sharedLabel": "shared …",
+    "codesTitle": "Codes ({count})",
+    "noCodes": "This campaign has no codes yet.",
+    "uses": "{count} of {max} used",
+    "expires": "valid until {date}",
+    "newAccountsOnly": "new accounts only",
+    "redemptionsTitle": "Redemptions ({count})",
+    "noRedemptions": "Nobody has used a code from this campaign yet.",
+    "revoked": "revoked",
+    "premiumUntil": "Premium until {date}",
+    "premiumLifetime": "Premium for life",
+    "revoke": "Revoke Premium",
+    "benefit": {
+      "premium_days": "Premium for {value, plural, one {# day} other {# days}}",
+      "premium_months": "Premium for {value, plural, one {# month} other {# months}}",
+      "premium_lifetime": "Premium for life",
+      "feature_access": "Feature access",
+      "percent_discount": "{value}% discount",
+      "fixed_discount": "Fixed discount"
+    },
+    "fields": {
+      "name": "Campaign name",
+      "partner": "Partner (optional)",
+      "description": "Description (optional)",
+      "endsOn": "Campaign ends (optional)",
+      "maxTotal": "Use limit for the whole campaign",
+      "maxTotalHint": "Empty = no limit.",
+      "count": "Number of codes (1–5000)",
+      "benefit": "What the code gives",
+      "benefits": {
+        "premium_days": "Premium for days",
+        "premium_months": "Premium for months",
+        "premium_lifetime": "Premium for life"
+      },
+      "value": "How many days or months",
+      "valueHint": "Ignored for “for life”.",
+      "expiresOn": "Valid until (optional)",
+      "newAccountsDays": "Only accounts younger than (days)",
+      "newAccountsDaysHint": "Empty = any account.",
+      "code": "Code",
+      "codeHint": "6–32 characters: letters, digits, dashes. Case does not matter.",
+      "maxUses": "Use limit",
+      "reason": "Reason (kept in the audit log)"
+    },
+    "errors": {
+      "invalid": "Check the fields — one of them has an invalid value.",
+      "duplicate": "This code or campaign name already exists.",
+      "mfa_required": "This needs two-factor sign-in in this session.",
+      "not_allowed": "You are not allowed to manage promotions.",
+      "not_found": "Not found — it may have been removed.",
+      "failed": "That did not work. Please try again."
+    }
+  },
+  "Playlists": {
+    "badge": "Playlist",
+    "visibility": {
+      "public": "public",
+      "unlisted": "anyone with the link",
+      "private": "private"
+    },
+    "visibilityHint": "Public: visible to everyone. Anyone with the link: not listed anywhere, but opens for whoever has the address. Private: only you.",
+    "trackCount": "{count, plural, =0 {no tracks} one {# track} other {# tracks}}",
+    "hidden": "{count, plural, one {# track is unavailable right now} other {# tracks are unavailable right now}}",
+    "play": "Play",
+    "playAll": "Play playlist {title}",
+    "playTrack": "Play: {title}",
+    "empty": "This playlist is empty.",
+    "emptyMine": "The playlist is empty. Add tracks with the + button next to a track on a release page.",
+    "moveUp": "Move up: {title} (position {position})",
+    "moveDown": "Move down: {title} (position {position})",
+    "remove": "Remove from playlist: {title} (position {position})",
+    "settings": "Playlist settings",
+    "fields": {
+      "title": "Name",
+      "description": "Description (optional)",
+      "visibility": "Who can see it"
+    },
+    "save": "Save",
+    "saved": "Saved.",
+    "delete": "Delete playlist",
+    "deleteHint": "Deleting cannot be undone. The tracks stay on Tunewick.",
+    "deleteConfirm": "Delete this playlist?",
+    "deleteYes": "Yes, delete",
+    "deleteNo": "Cancel",
+    "newTitle": "New playlist",
+    "create": "Create",
+    "addTrack": "Add to playlist: {title}",
+    "addTo": "Add to playlist",
+    "add": "Add",
+    "added": "Added to: {playlist}",
+    "addFailed": "Could not add. Please try again.",
+    "noPlaylists": "You have no playlists yet — create one in your Library.",
+    "errors": {
+      "title": "The name needs 1 to 100 characters.",
+      "limit": "You already have 200 playlists — that is the maximum.",
+      "failed": "Could not save. Please try again."
     }
   }
 }

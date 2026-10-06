@@ -15,6 +15,7 @@
     "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.117.2",
     "@tunewick/shared": "workspace:*",
+    "aws4fetch": "^1.0.20",
     "next": "16.3.8",
     "next-intl": "^4.14.9",
     "react": "19.2.8",

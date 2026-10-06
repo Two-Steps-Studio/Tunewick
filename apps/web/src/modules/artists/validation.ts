@@ -1,3 +1,4 @@
+import { isVoivodeship, type Voivodeship } from "@tunewick/shared";
 import { z } from "zod";
 
 export type ArtistErrorCode =
@@ -8,6 +9,8 @@ export type ArtistErrorCode =
   | "slugReserved"
   | "bioTooLong"
   | "yearInvalid"
+  | "voivodeshipInvalid"
+  | "cityTooLong"
   | "handleNotFound"
   | "evidenceRequired"
   | "evidenceInvalid"
@@ -50,6 +53,17 @@ export const updateArtistSchema = z.object({
       error: "yearInvalid",
     })
     .transform((v) => (v === "" ? null : Number(v))),
+  voivodeship: z
+    .string()
+    .optional()
+    .refine((v) => !v || isVoivodeship(v), { error: "voivodeshipInvalid" })
+    .transform((v) => (v ? (v as Voivodeship) : null)),
+  city: z
+    .string()
+    .trim()
+    .max(80, { error: "cityTooLong" })
+    .optional()
+    .transform((v) => (v ? v : null)),
 });
 
 export const inviteSchema = z.object({

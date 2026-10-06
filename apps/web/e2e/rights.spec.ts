@@ -19,7 +19,7 @@ test.describe("rights declaration", () => {
     await page.waitForURL(/wydawnictwa/);
 
     const readiness = page.locator(".readiness");
-    await expect(readiness.locator(".readiness__todo")).toHaveCount(4);
+    await expect(readiness.locator(".readiness__todo")).toHaveCount(5);
     await expect(
       page.getByText("Treść oświadczenia i warunków dla artystów jest wersją roboczą"),
     ).toBeVisible();
@@ -74,6 +74,6 @@ test.describe("rights declaration", () => {
       /Określony udział AI/,
       /Złożone oświadczenie o prawach/,
     ]);
-    await expect(readiness).toContainText("przesyłanie plików pojawi się w kolejnym etapie");
+    await expect(readiness).toContainText("✗ Pliki master wszystkich utworów");
   });
 });

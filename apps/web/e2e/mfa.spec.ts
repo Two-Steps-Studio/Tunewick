@@ -1,28 +1,14 @@
-import { expect, type Page, test } from "@playwright/test";
-import { createConfirmedUser, signIn, signOut } from "./helpers";
-import { totp } from "./totp";
-
-const SECURITY = "/ustawienia/bezpieczenstwo";
-
-/** Waits for a fresh 30-second window so a code is never reused (servers may reject reuse). */
-async function freshCode(secret: string, lastCode?: string) {
-  let code = totp(secret);
-  while (code === lastCode) {
-    await new Promise((r) => setTimeout(r, 1000));
-    code = totp(secret);
-  }
-  return code;
-}
-
-async function enableTotp(page: Page) {
-  await page.goto(SECURITY);
-  await expect(page.getByRole("status")).toHaveText("Logowanie dwuskładnikowe jest wyłączone.");
-  await page.getByRole("button", { name: "Włącz aplikację uwierzytelniającą" }).click();
-  const secret = (await page.getByTestId("totp-secret").textContent())?.trim() ?? "";
-  expect(secret).toMatch(/^[A-Z2-7]{16,}$/);
-  await expect(page.getByRole("img", { name: /Kod QR/ })).toBeVisible();
-  return secret;
-}
+import { expect, test } from "@playwright/test";
+import {
+  accessToken,
+  createConfirmedUser,
+  dataApi,
+  enableTotp,
+  freshCode,
+  SECURITY,
+  signIn,
+  signOut,
+} from "./helpers";
 
 test.describe("two-factor sign-in (TOTP)", () => {
   test.setTimeout(120_000);
@@ -44,6 +30,11 @@ test.describe("two-factor sign-in (TOTP)", () => {
     await signOut(page);
     await signIn(page, email);
     await expect(page).toHaveURL(/\/weryfikacja$/);
+
+    // The password alone does not open the data either — not even straight through the API.
+    const aal1 = await dataApi(await accessToken(page), "profiles?select=handle");
+    expect(aal1.status).toBe(403);
+    expect(((await aal1.json()) as { hint?: string }).hint).toBe("mfa_required");
     await page.goto("/ustawienia");
     await expect(page).toHaveURL(/\/weryfikacja\?next=%2Fustawienia$/);
 
@@ -54,6 +45,8 @@ test.describe("two-factor sign-in (TOTP)", () => {
     await page.getByLabel("Kod z aplikacji (6 cyfr)").fill(await freshCode(secret, enrollCode));
     await page.getByRole("button", { name: "Potwierdź" }).click();
     await expect(page).toHaveURL(/\/ustawienia$/);
+    const aal2 = await dataApi(await accessToken(page), "profiles?select=handle");
+    expect(aal2.status).toBe(200);
 
     await page.goto(SECURITY);
     await page.getByRole("button", { name: "Wyłącz logowanie dwuskładnikowe" }).click();

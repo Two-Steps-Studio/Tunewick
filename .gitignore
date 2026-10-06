@@ -28,7 +28,7 @@ supabase/.branches/
 *.mp3
 *.m4a
 *.opus
-media/
+tools/playback-spike/media/
 
 # OS / editors
 .DS_Store
@@ -63,3 +63,8 @@ __pycache__/
 .pytest_cache/
 .ruff_cache/
 .venv/
+
+# Tiny capability-probe files are part of the app (scripts/generate-probe-media.mjs)
+!apps/web/public/player-probe/*
+# Dev/test album produced by the audio worker (pnpm dev:media)
+apps/web/public/dev-media/

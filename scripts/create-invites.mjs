@@ -3,7 +3,7 @@
 //
 // Local:      node scripts/create-invites.mjs --local --count 10
 // Production: SUPABASE_URL=... SUPABASE_SECRET_KEY=... node scripts/create-invites.mjs --count 50 \
-//               --max-uses 1 --expires-days 30 --label "GZM artists"
+//               --max-uses 1 --expires-days 30 --label "beta artists"
 import { execSync } from "node:child_process";
 import { randomInt } from "node:crypto";
 import { createClient } from "@supabase/supabase-js";
