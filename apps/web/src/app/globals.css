@@ -576,6 +576,12 @@ body {
     gap: var(--tk-space-3);
   }
 
+  .profile__place {
+    font-family: var(--tk-font-mono);
+    font-size: var(--tk-text-xs);
+    color: var(--text-muted);
+  }
+
   /* Images ------------------------------------------------------------------ */
   .artwork {
     position: relative;

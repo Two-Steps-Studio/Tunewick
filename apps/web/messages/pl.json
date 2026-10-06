@@ -247,12 +247,16 @@
       "handle": "Nazwa profilu osoby (adres)",
       "role": "Rola",
       "evidence": "Linki potwierdzające (jeden na linię)",
-      "note": "Wiadomość dla moderacji (opcjonalnie)"
+      "note": "Wiadomość dla moderacji (opcjonalnie)",
+      "city": "Miasto lub miejscowość",
+      "voivodeship": "Województwo",
+      "voivodeshipNone": "— nie podano —"
     },
     "hints": {
       "slug": "Małe litery, cyfry i myślniki. Adres: tunewick.com/artysci/adres",
       "evidence": "Np. oficjalna strona, Bandcamp, profil w mediach społecznościowych zespołu. Do 5 linków.",
-      "handle": "Osoba musi mieć konto i ustawioną nazwę profilu."
+      "handle": "Osoba musi mieć konto i ustawioną nazwę profilu.",
+      "city": "Skąd jesteście — np. Rzeszów, Gliwice, Suwałki. Pomaga słuchaczom znaleźć muzykę z ich okolicy."
     },
     "roles": {
       "owner": "Właściciel",
@@ -303,7 +307,9 @@
       "alreadyPending": "Prośba o weryfikację już czeka na decyzję.",
       "lastOwner": "Projekt musi mieć co najmniej jednego właściciela.",
       "forbidden": "Nie masz uprawnień do tej operacji.",
-      "unexpected": "Nie udało się zapisać. Spróbuj ponownie."
+      "unexpected": "Nie udało się zapisać. Spróbuj ponownie.",
+      "voivodeshipInvalid": "Wybierz województwo z listy.",
+      "cityTooLong": "Nazwa miejscowości może mieć do 80 znaków."
     }
   },
   "Releases": {
@@ -633,6 +639,27 @@
       "incomplete": "Plik nie dotarł w całości. Spróbuj ponownie.",
       "transfer": "Przesyłanie zostało przerwane. Sprawdź połączenie i spróbuj ponownie.",
       "failed": "Coś poszło nie tak. Spróbuj ponownie."
+    }
+  },
+  "Places": {
+    "voivodeshipShort": "woj. {name}",
+    "voivodeship": {
+      "dolnoslaskie": "dolnośląskie",
+      "kujawsko_pomorskie": "kujawsko-pomorskie",
+      "lubelskie": "lubelskie",
+      "lubuskie": "lubuskie",
+      "lodzkie": "łódzkie",
+      "malopolskie": "małopolskie",
+      "mazowieckie": "mazowieckie",
+      "opolskie": "opolskie",
+      "podkarpackie": "podkarpackie",
+      "podlaskie": "podlaskie",
+      "pomorskie": "pomorskie",
+      "slaskie": "śląskie",
+      "swietokrzyskie": "świętokrzyskie",
+      "warminsko_mazurskie": "warmińsko-mazurskie",
+      "wielkopolskie": "wielkopolskie",
+      "zachodniopomorskie": "zachodniopomorskie"
     }
   }
 }

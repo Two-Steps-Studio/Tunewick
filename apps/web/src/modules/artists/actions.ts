@@ -56,14 +56,20 @@ export async function updateArtist(
   _prev: ArtistFormState,
   formData: FormData,
 ): Promise<ArtistFormState> {
-  const values = fields(formData, ["name", "bio", "formedYear"]);
+  const values = fields(formData, ["name", "bio", "formedYear", "voivodeship", "city"]);
   const parsed = updateArtistSchema.safeParse(values);
   if (!parsed.success) return { fieldErrors: firstErrors(parsed.error.issues), values };
 
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase
     .from("artists")
-    .update({ name: parsed.data.name, bio: parsed.data.bio, formed_year: parsed.data.formedYear })
+    .update({
+      name: parsed.data.name,
+      bio: parsed.data.bio,
+      formed_year: parsed.data.formedYear,
+      voivodeship: parsed.data.voivodeship,
+      city: parsed.data.city,
+    })
     .eq("id", artistId)
     .select("id");
   if (error) return failure(error, values);

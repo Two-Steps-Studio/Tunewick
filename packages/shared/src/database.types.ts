@@ -88,6 +88,7 @@ export type Database = {
       artists: {
         Row: {
           bio: string | null;
+          city: string | null;
           created_at: string;
           created_by: string | null;
           formed_year: number | null;
@@ -99,9 +100,11 @@ export type Database = {
           updated_at: string;
           verification_status: Database["public"]["Enums"]["artist_verification"];
           verified_at: string | null;
+          voivodeship: Database["public"]["Enums"]["voivodeship"] | null;
         };
         Insert: {
           bio?: string | null;
+          city?: string | null;
           created_at?: string;
           created_by?: string | null;
           formed_year?: number | null;
@@ -113,9 +116,11 @@ export type Database = {
           updated_at?: string;
           verification_status?: Database["public"]["Enums"]["artist_verification"];
           verified_at?: string | null;
+          voivodeship?: Database["public"]["Enums"]["voivodeship"] | null;
         };
         Update: {
           bio?: string | null;
+          city?: string | null;
           created_at?: string;
           created_by?: string | null;
           formed_year?: number | null;
@@ -127,6 +132,7 @@ export type Database = {
           updated_at?: string;
           verification_status?: Database["public"]["Enums"]["artist_verification"];
           verified_at?: string | null;
+          voivodeship?: Database["public"]["Enums"]["voivodeship"] | null;
         };
         Relationships: [
           {
@@ -1164,6 +1170,23 @@ export type Database = {
       release_type: "single" | "ep" | "album" | "compilation" | "live";
       track_artist_role: "main" | "featured" | "remixer";
       visibility_level: "public" | "followers" | "private";
+      voivodeship:
+        | "dolnoslaskie"
+        | "kujawsko_pomorskie"
+        | "lubelskie"
+        | "lubuskie"
+        | "lodzkie"
+        | "malopolskie"
+        | "mazowieckie"
+        | "opolskie"
+        | "podkarpackie"
+        | "podlaskie"
+        | "pomorskie"
+        | "slaskie"
+        | "swietokrzyskie"
+        | "warminsko_mazurskie"
+        | "wielkopolskie"
+        | "zachodniopomorskie";
     };
     CompositeTypes: {
       [_ in never]: never;
@@ -1307,6 +1330,24 @@ export const Constants = {
       release_type: ["single", "ep", "album", "compilation", "live"],
       track_artist_role: ["main", "featured", "remixer"],
       visibility_level: ["public", "followers", "private"],
+      voivodeship: [
+        "dolnoslaskie",
+        "kujawsko_pomorskie",
+        "lubelskie",
+        "lubuskie",
+        "lodzkie",
+        "malopolskie",
+        "mazowieckie",
+        "opolskie",
+        "podkarpackie",
+        "podlaskie",
+        "pomorskie",
+        "slaskie",
+        "swietokrzyskie",
+        "warminsko_mazurskie",
+        "wielkopolskie",
+        "zachodniopomorskie",
+      ],
     },
   },
 } as const;

@@ -25,6 +25,7 @@ export default async function ArtistPage({ params }: PageProps<"/[locale]/artist
 
   const t = await getTranslations("Artists");
   const tReleases = await getTranslations("Releases");
+  const tPlaces = await getTranslations("Places");
   const user = await getOptionalUser();
   const [published, photo] = await Promise.all([
     getPublishedReleases(artist.id),
@@ -46,6 +47,18 @@ export default async function ArtistPage({ params }: PageProps<"/[locale]/artist
         />
       ) : null}
       <h1 className="profile__name">{artist.name}</h1>
+      {artist.city || artist.voivodeship ? (
+        <p className="profile__place">
+          {[
+            artist.city,
+            artist.voivodeship
+              ? tPlaces("voivodeshipShort", { name: tPlaces(`voivodeship.${artist.voivodeship}`) })
+              : null,
+          ]
+            .filter(Boolean)
+            .join(" · ")}
+        </p>
+      ) : null}
       {artist.formed_year ? (
         <p className="profile__meta">{t("profile.since", { year: artist.formed_year })}</p>
       ) : null}

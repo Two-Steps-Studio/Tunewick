@@ -247,12 +247,16 @@
       "handle": "Person profile name (address)",
       "role": "Role",
       "evidence": "Links that confirm the artist (one per line)",
-      "note": "Message for moderators (optional)"
+      "note": "Message for moderators (optional)",
+      "city": "City or town",
+      "voivodeship": "Voivodeship (region)",
+      "voivodeshipNone": "— not given —"
     },
     "hints": {
       "slug": "Lowercase letters, digits and hyphens. Address: tunewick.com/en/artists/address",
       "evidence": "E.g. official website, Bandcamp, the band social media profile. Up to 5 links.",
-      "handle": "The person needs an account with a profile name."
+      "handle": "The person needs an account with a profile name.",
+      "city": "Where you're from — e.g. Rzeszów, Gliwice, Suwałki. Helps listeners find music from their area."
     },
     "roles": {
       "owner": "Owner",
@@ -303,7 +307,9 @@
       "alreadyPending": "A verification request is already waiting for a decision.",
       "lastOwner": "The project must keep at least one owner.",
       "forbidden": "You are not allowed to do this.",
-      "unexpected": "Could not save. Please try again."
+      "unexpected": "Could not save. Please try again.",
+      "voivodeshipInvalid": "Choose a voivodeship from the list.",
+      "cityTooLong": "A place name can have up to 80 characters."
     }
   },
   "Releases": {
@@ -633,6 +639,27 @@
       "incomplete": "The file didn't arrive completely. Please try again.",
       "transfer": "The upload was interrupted. Check your connection and try again.",
       "failed": "Something went wrong. Please try again."
+    }
+  },
+  "Places": {
+    "voivodeshipShort": "{name} Voivodeship",
+    "voivodeship": {
+      "dolnoslaskie": "Lower Silesian",
+      "kujawsko_pomorskie": "Kuyavian-Pomeranian",
+      "lubelskie": "Lublin",
+      "lubuskie": "Lubusz",
+      "lodzkie": "Łódź",
+      "malopolskie": "Lesser Poland",
+      "mazowieckie": "Masovian",
+      "opolskie": "Opole",
+      "podkarpackie": "Subcarpathian",
+      "podlaskie": "Podlaskie",
+      "pomorskie": "Pomeranian",
+      "slaskie": "Silesian",
+      "swietokrzyskie": "Holy Cross",
+      "warminsko_mazurskie": "Warmian-Masurian",
+      "wielkopolskie": "Greater Poland",
+      "zachodniopomorskie": "West Pomeranian"
     }
   }
 }

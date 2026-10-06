@@ -68,7 +68,13 @@ export default async function ManageArtistPage({
             </h2>
             <ArtistInfoForm
               artistId={artist.id}
-              values={{ name: artist.name, bio: artist.bio, formedYear: artist.formed_year }}
+              values={{
+                name: artist.name,
+                bio: artist.bio,
+                formedYear: artist.formed_year,
+                voivodeship: artist.voivodeship,
+                city: artist.city,
+              }}
             />
           </section>
         ) : null}
