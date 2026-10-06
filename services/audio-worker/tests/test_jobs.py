@@ -100,3 +100,57 @@ def test_crash_puts_the_job_back(tmp_path):
 def test_public_report_drops_infinities():
     report = {"analysis": {"loudness": {"true_peak_dbtp": float("-inf")}}, "variants": []}
     assert public_report(report)["analysis"]["loudness"]["true_peak_dbtp"] is None
+
+
+class FakeImageQueue:
+    def __init__(self, jobs):
+        self.jobs = jobs
+        self.finished: list[tuple[str, dict]] = []
+        self.failed: list[str] = []
+
+    def claim_image(self):
+        return self.jobs.pop(0) if self.jobs else None
+
+    def finish_image(self, image_id, result):
+        self.finished.append((image_id, result))
+        return result["status"]
+
+    def fail_image(self, image_id):
+        self.failed.append(image_id)
+        return "uploaded"
+
+
+def test_image_job_stores_webp_variants(tmp_path):
+    from PIL import Image
+
+    from tunewick_audio.image_jobs import ImageJob, run_image_once
+
+    source = tmp_path / "cover.png"
+    Image.new("RGB", (1500, 1500), (10, 120, 200)).save(source, "PNG")
+    key = "images/release_artwork/img-1.png"
+    queue = FakeImageQueue([ImageJob("img-1", "release_artwork", key, 1)])
+    storage = FakeStorage({key: str(source)}, str(tmp_path))
+
+    assert run_image_once(queue, storage) is True
+    image_id, result = queue.finished[0]
+    assert image_id == "img-1" and result["status"] == "accepted"
+    assert [v["key"] for v in result["variants"]] == [
+        f"images/img-1/{w}.webp" for w in (160, 320, 640, 1280, 1500)
+    ]
+    assert set(storage.uploaded.values()) == {"image/webp"}
+    assert result["dominant_color"].startswith("#")
+
+
+def test_image_job_rejection_uploads_nothing(tmp_path):
+    from PIL import Image
+
+    from tunewick_audio.image_jobs import ImageJob, run_image_once
+
+    source = tmp_path / "small.jpg"
+    Image.new("RGB", (500, 500)).save(source, "JPEG")
+    key = "images/release_artwork/img-2.jpg"
+    queue = FakeImageQueue([ImageJob("img-2", "release_artwork", key, 1)])
+    storage = FakeStorage({key: str(source)}, str(tmp_path))
+    run_image_once(queue, storage)
+    assert queue.finished[0][1]["rejection"]["code"] == "too_small"
+    assert storage.uploaded == {}

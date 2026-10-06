@@ -52,11 +52,13 @@ export async function ReadinessChecklist({
   hasTracks,
   aiDeclared,
   rightsDeclared,
+  artwork,
   audio,
 }: {
   hasTracks: boolean;
   aiDeclared: boolean;
   rightsDeclared: boolean;
+  artwork: boolean;
   /** Every track has an accepted master / some are waiting for the worker / something missing. */
   audio: "ready" | "processing" | "missing";
 }) {
@@ -65,6 +67,7 @@ export async function ReadinessChecklist({
     { done: hasTracks, label: t("tracks") },
     { done: aiDeclared, label: t("ai") },
     { done: rightsDeclared, label: t("rights") },
+    { done: artwork, label: t("artwork") },
     {
       done: audio === "ready",
       label:

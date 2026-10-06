@@ -20,7 +20,7 @@
   "Player": {
     "region": "Odtwarzacz",
     "idle": "Nic teraz nie gra.",
-    "idleHint": "Odtwarzanie pojawi się razem z pierwszymi wydawnictwami.",
+    "idleHint": "Wybierz wydawnictwo lub utwór, żeby zacząć słuchać.",
     "play": "Odtwarzaj",
     "pause": "Pauza",
     "next": "Następny utwór",
@@ -286,7 +286,8 @@
       "saved": "Zapisano.",
       "viewPublic": "Zobacz profil publiczny",
       "you": "Ty",
-      "noName": "Konto bez nazwy profilu"
+      "noName": "Konto bez nazwy profilu",
+      "photo": "Zdjęcie artysty"
     },
     "errors": {
       "nameRequired": "Podaj nazwę artysty.",
@@ -337,7 +338,9 @@
       "readOnly": "To wydawnictwo nie jest już szkicem — edycja jest zablokowana.",
       "deleteDraft": "Usuń szkic",
       "back": "Wróć do profilu artysty",
-      "aiMissing": "Określ udział AI przed wysłaniem do weryfikacji."
+      "aiMissing": "Określ udział AI przed wysłaniem do weryfikacji.",
+      "cover": "Okładka",
+      "coverAlt": "Okładka wydawnictwa {title}"
     },
     "fields": {
       "title": "Tytuł",
@@ -460,7 +463,8 @@
       "audio": "Pliki master wszystkich utworów — sprawdzone",
       "note": "Gdy wszystko będzie gotowe, wyślij wydawnictwo do weryfikacji. Przed publikacją sprawdzamy prawa, metadane i nagrania.",
       "audioMissing": "Pliki master wszystkich utworów",
-      "audioProcessing": "Pliki master przesłane — czekają na sprawdzenie i przetworzenie"
+      "audioProcessing": "Pliki master przesłane — czekają na sprawdzenie i przetworzenie",
+      "artwork": "Okładka (kwadrat, min. 1400 × 1400 px)"
     },
     "review": {
       "submit": "Wyślij do weryfikacji",
@@ -542,7 +546,8 @@
       "human": "Bez AI — utworzone przez ludzi.",
       "ai_assisted": "Utworzone z pomocą AI.",
       "ai_generated": "Wygenerowane przez AI."
-    }
+    },
+    "coverAlt": "Okładka: {title} — {artist}"
   },
   "Moderation": {
     "title": "Moderacja",
@@ -586,6 +591,48 @@
         "not_waiting": "To wydawnictwo nie czeka już na decyzję.",
         "failed": "Coś poszło nie tak. Spróbuj ponownie."
       }
+    },
+    "cover": "Okładka"
+  },
+  "Images": {
+    "uploading": "Przesyłanie… {percent}%",
+    "progressLabel": "Postęp przesyłania",
+    "finishing": "Sprawdzanie przesłanego pliku…",
+    "cover": {
+      "choose": "Dodaj okładkę",
+      "replace": "Zmień okładkę",
+      "processing": "Przygotowujemy okładkę…",
+      "rejected": "Okładka została odrzucona.",
+      "failed": "Przesyłanie okładki nie powiodło się — spróbuj ponownie.",
+      "hint": "Kwadrat, co najmniej 1400 × 1400 px (najlepiej 3000 × 3000), JPEG, PNG lub WebP do 25 MB. Usuwamy z pliku metadane (np. lokalizację z aparatu)."
+    },
+    "photo": {
+      "choose": "Dodaj zdjęcie",
+      "replace": "Zmień zdjęcie",
+      "processing": "Przygotowujemy zdjęcie…",
+      "rejected": "Zdjęcie zostało odrzucone.",
+      "failed": "Przesyłanie zdjęcia nie powiodło się — spróbuj ponownie.",
+      "hint": "Co najmniej 400 × 400 px, JPEG, PNG lub WebP do 25 MB. Przytniemy je do kwadratu od środka i usuniemy metadane."
+    },
+    "rejection": {
+      "unsupported_format": "Akceptujemy tylko obrazy JPEG, PNG i WebP.",
+      "too_many_pixels": "Obraz ma zbyt dużo pikseli.",
+      "animated": "Animowane obrazy nie są akceptowane.",
+      "unreadable": "Nie udało się odczytać pliku jako obrazu.",
+      "not_square": "Okładka musi być kwadratowa.",
+      "too_small": "Obraz jest za mały (okładka: min. 1400 × 1400 px, zdjęcie: min. 400 px).",
+      "processing_failed": "Nie udało się przetworzyć obrazu. Spróbuj ponownie."
+    },
+    "error": {
+      "unsupported_type": "Ten typ pliku nie jest obsługiwany. Wybierz JPEG, PNG lub WebP.",
+      "too_large": "Plik jest większy niż 25 MB.",
+      "too_small": "Plik jest pusty lub uszkodzony.",
+      "too_many": "Zbyt wiele prób w ciągu godziny. Spróbuj później.",
+      "not_allowed": "Nie możesz tego zmienić.",
+      "unavailable": "Magazyn plików jest chwilowo niedostępny. Spróbuj ponownie za chwilę.",
+      "incomplete": "Plik nie dotarł w całości. Spróbuj ponownie.",
+      "transfer": "Przesyłanie zostało przerwane. Sprawdź połączenie i spróbuj ponownie.",
+      "failed": "Coś poszło nie tak. Spróbuj ponownie."
     }
   }
 }

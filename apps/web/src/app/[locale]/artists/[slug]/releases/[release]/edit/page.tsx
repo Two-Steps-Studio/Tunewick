@@ -11,6 +11,7 @@ import {
   TrackAudioUpload,
 } from "@/modules/audio";
 import { requireUser } from "@/modules/auth";
+import { Artwork, getImageSources, getLatestImageUpload, ImageUpload } from "@/modules/images";
 import {
   AddTrackForm,
   DeclarationSummary,
@@ -52,9 +53,11 @@ export default async function ReleaseEditorPage({
   const t = await getTranslations("Releases");
   const { artist, release, editable, tracks, genreIds, allGenres } = data;
   const trackIds = tracks.map((track) => track.id);
-  const [declaration, audio] = await Promise.all([
+  const [declaration, audio, cover, coverUpload] = await Promise.all([
     getLatestDeclaration(release.id),
     getLatestTrackAudio(trackIds),
+    getImageSources(release.artwork_image_id),
+    getLatestImageUpload("release_artwork", release.id),
   ]);
   const uploadAvailable = isAudioUploadAvailable();
   // Members hear every version of their own tracks.
@@ -64,6 +67,7 @@ export default async function ReleaseEditorPage({
     tracks.length > 0 &&
     release.ai_content !== "unknown" &&
     Boolean(declaration) &&
+    Boolean(cover) &&
     audioState === "ready";
   const previewFor = (trackId: string) => {
     const index = previewTracks.findIndex((p) => p.id === trackId);
@@ -103,6 +107,27 @@ export default async function ReleaseEditorPage({
             <ReleaseDetailsForm release={release} artistSlug={artist.slug} />
           </section>
         ) : null}
+
+        <section className="settings-form__group" aria-labelledby="cover">
+          <h2 id="cover" className="section-title">
+            {t("editor.cover")}
+          </h2>
+          <div className="cover-editor">
+            <Artwork
+              image={cover}
+              alt={t("editor.coverAlt", { title: release.title })}
+              sizes="10rem"
+            />
+            {editable ? (
+              <ImageUpload
+                kind="release_artwork"
+                ownerId={release.id}
+                hasImage={Boolean(cover)}
+                latest={coverUpload}
+              />
+            ) : null}
+          </div>
+        </section>
 
         <section className="settings-form__group" aria-labelledby="tracks">
           <h2 id="tracks" className="section-title">
@@ -171,6 +196,7 @@ export default async function ReleaseEditorPage({
             hasTracks={tracks.length > 0}
             aiDeclared={release.ai_content !== "unknown"}
             rightsDeclared={Boolean(declaration)}
+            artwork={Boolean(cover)}
             audio={audioState}
           />
         ) : null}

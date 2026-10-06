@@ -576,6 +576,64 @@ body {
     gap: var(--tk-space-3);
   }
 
+  /* Images ------------------------------------------------------------------ */
+  .artwork {
+    position: relative;
+    aspect-ratio: 1;
+    width: 100%;
+    overflow: hidden;
+    background: var(--bg-sunken);
+    box-shadow: inset 0 0 0 1px var(--line);
+  }
+  .artwork img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .artwork--round {
+    border-radius: var(--tk-radius-pill);
+  }
+  .cover-editor {
+    display: grid;
+    grid-template-columns: 10rem minmax(0, 1fr);
+    gap: var(--tk-space-4);
+    align-items: start;
+  }
+  @media (max-width: 479px) {
+    .cover-editor {
+      grid-template-columns: 6rem minmax(0, 1fr);
+    }
+  }
+  .image-upload {
+    display: grid;
+    gap: var(--tk-space-2);
+  }
+  .profile__photo {
+    width: 8rem;
+  }
+  .moderation-cover {
+    width: 16rem;
+    max-width: 100%;
+    margin-bottom: var(--tk-space-4);
+  }
+  .release-page__cover {
+    max-width: 22rem;
+  }
+  @media (min-width: 768px) {
+    .release-page__head {
+      grid-template-columns: 20rem minmax(0, 1fr);
+      align-items: end;
+      gap: var(--tk-space-8);
+    }
+  }
+  .release-page__info {
+    display: grid;
+    gap: var(--tk-space-3);
+    justify-items: start;
+    min-width: 0;
+  }
+
   /* Developer pages ------------------------------------------------------ */
   .dev-player {
     display: grid;

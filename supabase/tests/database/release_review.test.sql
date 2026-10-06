@@ -5,8 +5,9 @@ set search_path = public, extensions;
 
 select plan(22);
 
--- Isolate the audio queue from uploads left by local E2E runs (rolled back with the test).
+-- Isolate the queues from rows left by local E2E runs (rolled back with the test).
 update track_audio_uploads set status = 'failed' where status in ('uploaded', 'processing');
+update images set status = 'failed' where status in ('uploaded', 'processing');
 
 insert into auth.users (id, email, raw_app_meta_data, aud, role) values
   ('00000000-0000-0000-0000-0000000000e1', 'e1@test.local', '{"beta_bypass": "true"}', 'authenticated', 'authenticated'),
@@ -49,9 +50,19 @@ select finish_audio_upload((select id from ids where name = 'upload'),
     'encoder_delay_samples', 1024, 'padding_samples', 200, 'object_key', 'tracks/review/high.m4a',
     'bytes', 975000, 'sha256', repeat('c', 64))));
 
+-- A processed cover (required since M2.5).
+set local role authenticated;
+insert into ids values ('cover',
+  (select id from begin_image_upload('release_artwork', (select id from ids where name = 'release'), 'jpg', 900000)));
+select complete_image_upload((select id from ids where name = 'cover'));
+set local role service_role;
+select claim_image_upload();
+select finish_image_upload((select id from ids where name = 'cover'),
+  '{"status": "accepted", "width": 1400, "height": 1400, "dominant_color": "#123456", "variants": []}');
+
 set local role authenticated;
 select is(release_readiness((select id from ids where name = 'release')),
-  '{"ai": true, "audio": true, "rights": true, "tracks": true}'::jsonb, 'everything is ready');
+  '{"ai": true, "audio": true, "rights": true, "tracks": true, "artwork": true}'::jsonb, 'everything is ready');
 
 select lives_ok($$select submit_release((select id from ids where name = 'release'))$$,
   'a ready release is submitted');

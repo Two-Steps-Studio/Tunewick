@@ -7,7 +7,7 @@ export async function getArtistBySlug(slug: string) {
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase
     .from("artists")
-    .select("id, slug, name, bio, formed_year, verification_status, status")
+    .select("id, slug, name, bio, formed_year, verification_status, status, image_id")
     .eq("slug", slug.toLowerCase())
     .maybeSingle();
   if (error) throw error;

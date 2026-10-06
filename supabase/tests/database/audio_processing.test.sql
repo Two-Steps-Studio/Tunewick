@@ -34,6 +34,11 @@ select complete_audio_upload((select id from ids where name = 'up1'));
 insert into ids values ('up2', (select id from begin_audio_upload((select id from ids where name = 'track2'), 'dwa.flac', 2000000)));
 select complete_audio_upload((select id from ids where name = 'up2'));
 
+-- Inside one transaction both uploads share now(); give them a real order, as in production.
+set local role postgres;
+update track_audio_uploads set uploaded_at = now() - interval '1 minute' where id = (select id from ids where name = 'up1');
+set local role authenticated;
+
 -- Clients cannot drive the queue.
 select throws_ok($$select * from claim_audio_upload()$$, '42501', null,
   'members cannot claim jobs');

@@ -5,6 +5,7 @@ import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { getPlayableTracks, listenerEntitlement } from "@/modules/audio";
 import { getPublicRelease } from "@/modules/catalog";
+import { Artwork, getImageSources } from "@/modules/images";
 import { PlayButton } from "@/modules/player";
 
 type Params = PageProps<"/[locale]/artists/[slug]/releases/[release]">["params"];
@@ -40,7 +41,10 @@ export default async function ReleasePage({
   const t = await getTranslations("Release");
   const tReleases = await getTranslations("Releases");
   const entitlement = await listenerEntitlement();
-  const playable = await getPlayableTracks(release.id, tracks, artist.name, entitlement);
+  const [playable, cover] = await Promise.all([
+    getPlayableTracks(release.id, tracks, artist.name, entitlement),
+    getImageSources(release.artwork_image_id, 1280),
+  ]);
   const indexOf = (trackId: string) => playable.findIndex((p) => p.id === trackId);
   const total = tracks.reduce((sum, track) => sum + (track.duration_ms ?? 0), 0);
   const year = (release.release_date ?? release.publish_at ?? "").slice(0, 4);
@@ -48,35 +52,44 @@ export default async function ReleasePage({
   return (
     <article className="release-page">
       <header className="release-page__head">
-        <p className="artist-badge">
-          {tReleases(`types.${release.type}`)}
-          {year ? ` · ${year}` : ""}
-        </p>
-        <h1 className="release-page__title">{release.title}</h1>
-        <p className="release-page__artist">
-          <Link href={{ pathname: "/artists/[slug]", params: { slug: artist.slug } }}>
-            {artist.name}
-          </Link>
-        </p>
-        <p className="release-page__meta">
-          {t("trackCount", { count: tracks.length })}
-          {total ? ` · ${formatDuration(total)}` : ""}
-          {release.explicit ? ` · ${t("explicit")}` : ""}
-        </p>
-        <p className="release-page__ai">{t(`ai.${release.ai_content}`)}</p>
-        {playable.length ? (
-          <PlayButton
-            tracks={playable}
-            index={0}
-            entitlement={entitlement}
-            label={t("playAll", { title: release.title })}
-            className="button button--primary"
-          >
-            {t("play")}
-          </PlayButton>
-        ) : (
-          <p className="field__hint">{t("notPlayable")}</p>
-        )}
+        <Artwork
+          image={cover}
+          alt={t("coverAlt", { title: release.title, artist: artist.name })}
+          sizes="(min-width: 768px) 20rem, 100vw"
+          className="release-page__cover"
+          priority
+        />
+        <div className="release-page__info">
+          <p className="artist-badge">
+            {tReleases(`types.${release.type}`)}
+            {year ? ` · ${year}` : ""}
+          </p>
+          <h1 className="release-page__title">{release.title}</h1>
+          <p className="release-page__artist">
+            <Link href={{ pathname: "/artists/[slug]", params: { slug: artist.slug } }}>
+              {artist.name}
+            </Link>
+          </p>
+          <p className="release-page__meta">
+            {t("trackCount", { count: tracks.length })}
+            {total ? ` · ${formatDuration(total)}` : ""}
+            {release.explicit ? ` · ${t("explicit")}` : ""}
+          </p>
+          <p className="release-page__ai">{t(`ai.${release.ai_content}`)}</p>
+          {playable.length ? (
+            <PlayButton
+              tracks={playable}
+              index={0}
+              entitlement={entitlement}
+              label={t("playAll", { title: release.title })}
+              className="button button--primary"
+            >
+              {t("play")}
+            </PlayButton>
+          ) : (
+            <p className="field__hint">{t("notPlayable")}</p>
+          )}
+        </div>
       </header>
 
       <ol className="release-tracks">

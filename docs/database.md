@@ -270,3 +270,16 @@ both audit-logged). `release_playback(release)` returns, for releases the caller
 track's newest accepted master (source description) and its variants — the only way anonymous
 listeners reach playback data. The web app signs URLs only for tiers within the listener's plan
 (everyone is on Free = High until Premium codes exist).
+
+## Images (implemented, M2.5)
+
+`public.images` — one row per uploaded cover (`release_artwork`, owner `release_id`) or artist photo
+(`artist_image`, owner `artist_id`); no file names are stored. Status reuses
+`audio_upload_status`. The worker writes `width`/`height`, `dominant_color` and `variants`
+(`[{width, key, bytes}]`, WebP, smallest first) and attaches the image: `releases.artwork_image_id`
+(only while the release is editable — a cover finishing during review never changes what
+moderators see) or `artists.image_id`. Readable by members/staff; by everyone only when attached
+and public (`can_view_image`). Member functions: `begin_image_upload(kind, owner, extension,
+size)` (JPEG/PNG/WebP, ≤ 25 MB, 10 per owner per hour), `complete_image_upload`,
+`abandon_image_upload`; worker: `claim_image_upload`, `finish_image_upload`, `fail_image_upload`.
+`release_readiness` now also requires an accepted cover (`artwork`).

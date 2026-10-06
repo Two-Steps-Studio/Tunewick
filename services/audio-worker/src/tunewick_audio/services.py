@@ -8,6 +8,7 @@ import boto3
 import httpx
 from botocore.config import Config
 
+from .image_jobs import ImageJob
 from .jobs import Job
 
 
@@ -51,6 +52,19 @@ class SupabaseQueue:
 
     def fail(self, upload_id: str) -> str:
         return self._call("fail_audio_upload", {"upload": upload_id})
+
+    def claim_image(self) -> ImageJob | None:
+        rows = self._call("claim_image_upload", {})
+        if not rows:
+            return None
+        row = rows[0]
+        return ImageJob(row["id"], row["kind"], row["object_key"], row["attempts"])
+
+    def finish_image(self, image_id: str, result: dict) -> str:
+        return self._call("finish_image_upload", {"image": image_id, "result": result})
+
+    def fail_image(self, image_id: str) -> str:
+        return self._call("fail_image_upload", {"image": image_id})
 
 
 class S3Storage:

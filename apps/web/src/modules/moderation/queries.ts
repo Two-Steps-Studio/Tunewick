@@ -22,7 +22,7 @@ export async function getSubmission(releaseId: string) {
   const { data: release } = await supabase
     .from("releases")
     .select(
-      "id, slug, title, type, status, release_date, submitted_at, explicit, ai_content, territories, upc, p_line, c_line, artist:artists!releases_artist_id_fkey (id, slug, name, verification_status)",
+      "id, slug, title, type, status, release_date, submitted_at, explicit, ai_content, territories, upc, p_line, c_line, artwork_image_id, artist:artists!releases_artist_id_fkey (id, slug, name, verification_status)",
     )
     .eq("id", releaseId)
     .maybeSingle();

@@ -6,6 +6,7 @@ import type { Locale } from "@/i18n/routing";
 import { AudioReport, getLatestTrackAudio, getPlayableTracks } from "@/modules/audio";
 import { requireStaff } from "@/modules/auth";
 import { DeclarationSummary, getLatestDeclaration } from "@/modules/catalog";
+import { Artwork, getImageSources } from "@/modules/images";
 import { DecisionForm, getSubmission } from "@/modules/moderation";
 import { PlayButton } from "@/modules/player";
 
@@ -31,10 +32,11 @@ export default async function SubmissionPage({
   const tReleases = await getTranslations("Releases");
   const tArtists = await getTranslations("Artists");
   const format = await getFormatter();
-  const [declaration, audio, playable] = await Promise.all([
+  const [declaration, audio, playable, cover] = await Promise.all([
     getLatestDeclaration(release.id),
     getLatestTrackAudio(tracks.map((track) => track.id)),
     getPlayableTracks(release.id, tracks, artist.name, "hires"),
+    getImageSources(release.artwork_image_id, 1280),
   ]);
 
   return (
@@ -60,6 +62,7 @@ export default async function SubmissionPage({
           <h2 id="meta" className="section-title">
             {t("metadata")}
           </h2>
+          <Artwork image={cover} alt={t("cover")} sizes="16rem" className="moderation-cover" />
           <dl className="moderation-meta">
             <dt>{t("fields.releaseDate")}</dt>
             <dd>{release.release_date ?? t("none")}</dd>

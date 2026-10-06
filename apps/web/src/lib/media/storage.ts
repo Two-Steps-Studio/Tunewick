@@ -54,8 +54,8 @@ function objectUrl(cfg: MediaConfig, key: string, bucket = cfg.ingestBucket) {
 
 const UPLOAD_URL_TTL_S = 60 * 60; // large masters on slow connections
 
-/** Presigned PUT for a master in the ingest bucket. */
-export async function presignMasterUpload(key: string): Promise<string> {
+/** Presigned PUT into the ingest (quarantine) bucket — masters and original images. */
+export async function presignIngestUpload(key: string): Promise<string> {
   const cfg = config();
   if (!cfg) throw new Error("Media storage is not configured");
   const url = new URL(objectUrl(cfg, key));
@@ -67,8 +67,8 @@ export async function presignMasterUpload(key: string): Promise<string> {
   return signed.url;
 }
 
-/** Size of an uploaded master, or null when the object does not exist. */
-export async function masterSize(key: string): Promise<number | null> {
+/** Size of an uploaded object in the ingest bucket, or null when it does not exist. */
+export async function ingestObjectSize(key: string): Promise<number | null> {
   const cfg = config();
   if (!cfg) throw new Error("Media storage is not configured");
   const response = await client(cfg).fetch(objectUrl(cfg, key), { method: "HEAD" });
@@ -78,6 +78,7 @@ export async function masterSize(key: string): Promise<number | null> {
 }
 
 const PREVIEW_URL_TTL_S = 2 * 60 * 60;
+const DAY_MS = 24 * 60 * 60 * 1000;
 
 /**
  * Short-lived GET URL for a delivery variant — members' preview of their own processed tracks.
@@ -91,6 +92,23 @@ export async function presignVariantGet(key: string): Promise<string | null> {
   const signed = await client(cfg).sign(url.toString(), {
     method: "GET",
     aws: { signQuery: true },
+  });
+  return signed.url;
+}
+
+/**
+ * GET URL for a processed image. Signed with the start of the current UTC day and valid for two
+ * days, so the same URL is reused all day and browsers can cache the (immutable) file.
+ */
+export async function presignImageGet(key: string): Promise<string | null> {
+  const cfg = config();
+  if (!cfg?.mediaBucket) return null;
+  const day = new Date(Math.floor(Date.now() / DAY_MS) * DAY_MS);
+  const url = new URL(objectUrl(cfg, key, cfg.mediaBucket));
+  url.searchParams.set("X-Amz-Expires", String(2 * 24 * 60 * 60));
+  const signed = await client(cfg).sign(url.toString(), {
+    method: "GET",
+    aws: { signQuery: true, datetime: day.toISOString().replace(/[:-]|\.\d{3}/g, "") },
   });
   return signed.url;
 }

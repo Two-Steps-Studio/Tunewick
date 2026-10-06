@@ -92,6 +92,7 @@ export type Database = {
           created_by: string | null;
           formed_year: number | null;
           id: string;
+          image_id: string | null;
           name: string;
           slug: string;
           status: Database["public"]["Enums"]["artist_status"];
@@ -105,6 +106,7 @@ export type Database = {
           created_by?: string | null;
           formed_year?: number | null;
           id?: string;
+          image_id?: string | null;
           name: string;
           slug: string;
           status?: Database["public"]["Enums"]["artist_status"];
@@ -118,6 +120,7 @@ export type Database = {
           created_by?: string | null;
           formed_year?: number | null;
           id?: string;
+          image_id?: string | null;
           name?: string;
           slug?: string;
           status?: Database["public"]["Enums"]["artist_status"];
@@ -125,7 +128,15 @@ export type Database = {
           verification_status?: Database["public"]["Enums"]["artist_verification"];
           verified_at?: string | null;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "artists_image_id_fkey";
+            columns: ["image_id"];
+            isOneToOne: false;
+            referencedRelation: "images";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       credits: {
         Row: {
@@ -224,6 +235,87 @@ export type Database = {
             columns: ["parent_id"];
             isOneToOne: false;
             referencedRelation: "genres";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      images: {
+        Row: {
+          artist_id: string | null;
+          attempts: number;
+          claimed_at: string | null;
+          created_at: string;
+          dominant_color: string | null;
+          height: number | null;
+          id: string;
+          kind: Database["public"]["Enums"]["image_kind"];
+          object_key: string;
+          processed_at: string | null;
+          rejection_code: string | null;
+          release_id: string | null;
+          size_bytes: number;
+          status: Database["public"]["Enums"]["audio_upload_status"];
+          updated_at: string;
+          uploaded_at: string | null;
+          uploaded_by: string | null;
+          variants: NonNullable<Json>;
+          width: number | null;
+        };
+        Insert: {
+          artist_id?: string | null;
+          attempts?: number;
+          claimed_at?: string | null;
+          created_at?: string;
+          dominant_color?: string | null;
+          height?: number | null;
+          id?: string;
+          kind: Database["public"]["Enums"]["image_kind"];
+          object_key: string;
+          processed_at?: string | null;
+          rejection_code?: string | null;
+          release_id?: string | null;
+          size_bytes: number;
+          status?: Database["public"]["Enums"]["audio_upload_status"];
+          updated_at?: string;
+          uploaded_at?: string | null;
+          uploaded_by?: string | null;
+          variants?: NonNullable<Json>;
+          width?: number | null;
+        };
+        Update: {
+          artist_id?: string | null;
+          attempts?: number;
+          claimed_at?: string | null;
+          created_at?: string;
+          dominant_color?: string | null;
+          height?: number | null;
+          id?: string;
+          kind?: Database["public"]["Enums"]["image_kind"];
+          object_key?: string;
+          processed_at?: string | null;
+          rejection_code?: string | null;
+          release_id?: string | null;
+          size_bytes?: number;
+          status?: Database["public"]["Enums"]["audio_upload_status"];
+          updated_at?: string;
+          uploaded_at?: string | null;
+          uploaded_by?: string | null;
+          variants?: NonNullable<Json>;
+          width?: number | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "images_artist_id_fkey";
+            columns: ["artist_id"];
+            isOneToOne: false;
+            referencedRelation: "artists";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "images_release_id_fkey";
+            columns: ["release_id"];
+            isOneToOne: false;
+            referencedRelation: "releases";
             referencedColumns: ["id"];
           },
         ];
@@ -413,6 +505,7 @@ export type Database = {
         Row: {
           ai_content: Database["public"]["Enums"]["ai_content"];
           artist_id: string;
+          artwork_image_id: string | null;
           c_line: string | null;
           created_at: string;
           created_by: string | null;
@@ -436,6 +529,7 @@ export type Database = {
         Insert: {
           ai_content?: Database["public"]["Enums"]["ai_content"];
           artist_id: string;
+          artwork_image_id?: string | null;
           c_line?: string | null;
           created_at?: string;
           created_by?: string | null;
@@ -459,6 +553,7 @@ export type Database = {
         Update: {
           ai_content?: Database["public"]["Enums"]["ai_content"];
           artist_id?: string;
+          artwork_image_id?: string | null;
           c_line?: string | null;
           created_at?: string;
           created_by?: string | null;
@@ -485,6 +580,13 @@ export type Database = {
             columns: ["artist_id"];
             isOneToOne: false;
             referencedRelation: "artists";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "releases_artwork_image_id_fkey";
+            columns: ["artwork_image_id"];
+            isOneToOne: false;
+            referencedRelation: "images";
             referencedColumns: ["id"];
           },
           {
@@ -801,6 +903,7 @@ export type Database = {
     };
     Functions: {
       abandon_audio_upload: { Args: { reason?: string; upload: string }; Returns: undefined };
+      abandon_image_upload: { Args: { image: string }; Returns: undefined };
       accept_artist_membership: { Args: { artist: string }; Returns: undefined };
       access_invite_is_valid: { Args: { code: string }; Returns: boolean };
       add_track: { Args: { release: string; title: string }; Returns: string };
@@ -843,8 +946,44 @@ export type Database = {
           isSetofReturn: false;
         };
       };
+      begin_image_upload: {
+        Args: {
+          extension: string;
+          kind: Database["public"]["Enums"]["image_kind"];
+          owner: string;
+          size_bytes: number;
+        };
+        Returns: {
+          artist_id: string | null;
+          attempts: number;
+          claimed_at: string | null;
+          created_at: string;
+          dominant_color: string | null;
+          height: number | null;
+          id: string;
+          kind: Database["public"]["Enums"]["image_kind"];
+          object_key: string;
+          processed_at: string | null;
+          rejection_code: string | null;
+          release_id: string | null;
+          size_bytes: number;
+          status: Database["public"]["Enums"]["audio_upload_status"];
+          updated_at: string;
+          uploaded_at: string | null;
+          uploaded_by: string | null;
+          variants: NonNullable<Json>;
+          width: number | null;
+        };
+        SetofOptions: {
+          from: "*";
+          to: "images";
+          isOneToOne: true;
+          isSetofReturn: false;
+        };
+      };
       can_edit_release: { Args: { release: string }; Returns: boolean };
       can_view_audio_upload: { Args: { upload: string }; Returns: boolean };
+      can_view_image: { Args: { image: string }; Returns: boolean };
       can_view_release: { Args: { release: string }; Returns: boolean };
       claim_audio_upload: {
         Args: Record<PropertyKey, never>;
@@ -853,6 +992,15 @@ export type Database = {
           id: string;
           object_key: string;
           track_id: string;
+        }[];
+      };
+      claim_image_upload: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          attempts: number;
+          id: string;
+          kind: Database["public"]["Enums"]["image_kind"];
+          object_key: string;
         }[];
       };
       complete_audio_upload: {
@@ -885,6 +1033,36 @@ export type Database = {
           isSetofReturn: false;
         };
       };
+      complete_image_upload: {
+        Args: { image: string };
+        Returns: {
+          artist_id: string | null;
+          attempts: number;
+          claimed_at: string | null;
+          created_at: string;
+          dominant_color: string | null;
+          height: number | null;
+          id: string;
+          kind: Database["public"]["Enums"]["image_kind"];
+          object_key: string;
+          processed_at: string | null;
+          rejection_code: string | null;
+          release_id: string | null;
+          size_bytes: number;
+          status: Database["public"]["Enums"]["audio_upload_status"];
+          updated_at: string;
+          uploaded_at: string | null;
+          uploaded_by: string | null;
+          variants: NonNullable<Json>;
+          width: number | null;
+        };
+        SetofOptions: {
+          from: "*";
+          to: "images";
+          isOneToOne: true;
+          isSetofReturn: false;
+        };
+      };
       create_access_invites: {
         Args: { codes: string[]; expires_at?: string; label?: string; max_uses?: number };
         Returns: number;
@@ -895,8 +1073,16 @@ export type Database = {
         Args: { upload: string };
         Returns: Database["public"]["Enums"]["audio_upload_status"];
       };
+      fail_image_upload: {
+        Args: { image: string };
+        Returns: Database["public"]["Enums"]["audio_upload_status"];
+      };
       finish_audio_upload: {
         Args: { report: Json; upload: string; variants?: Json };
+        Returns: Database["public"]["Enums"]["audio_upload_status"];
+      };
+      finish_image_upload: {
+        Args: { image: string; result: Json };
         Returns: Database["public"]["Enums"]["audio_upload_status"];
       };
       has_app_role: {
@@ -968,6 +1154,7 @@ export type Database = {
         | "mixing_engineer"
         | "mastering_engineer"
         | "other";
+      image_kind: "release_artwork" | "artist_image";
       quality_tier: "data_saver" | "high" | "lossless" | "hires";
       release_artist_role: "primary" | "featured";
       release_review_kind: "submitted" | "withdrawn" | "approved" | "returned";
@@ -1103,6 +1290,7 @@ export const Constants = {
         "mastering_engineer",
         "other",
       ],
+      image_kind: ["release_artwork", "artist_image"],
       quality_tier: ["data_saver", "high", "lossless", "hires"],
       release_artist_role: ["primary", "featured"],
       release_review_kind: ["submitted", "withdrawn", "approved", "returned"],

@@ -133,13 +133,17 @@ def run_once(queue: Queue, storage: Storage) -> bool:
 
 
 def run_forever(queue: Queue, storage: Storage, poll_seconds: float) -> None:
+    """Audio first, then images; sleeps only when both queues are empty."""
+    from .image_jobs import run_image_once
+
     log.info(json.dumps({"event": "worker_started", "poll_seconds": poll_seconds}))
     while True:
-        try:
-            busy = run_once(queue, storage)
-        except Exception:
-            # Queue unreachable (network, Supabase restart): wait and try again.
-            log.exception(json.dumps({"event": "queue_error"}))
-            busy = False
+        busy = False
+        for step in (run_once, run_image_once):
+            try:
+                busy = step(queue, storage) or busy  # type: ignore[arg-type]
+            except Exception:
+                # Queue unreachable (network, Supabase restart): wait and try again.
+                log.exception(json.dumps({"event": "queue_error", "step": step.__name__}))
         if not busy:
             time.sleep(poll_seconds)

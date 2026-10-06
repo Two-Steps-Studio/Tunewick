@@ -33,7 +33,7 @@ export async function getReleaseForEditing(artistSlug: string, releaseSlug: stri
   const { data: release } = await supabase
     .from("releases")
     .select(
-      "id, slug, title, type, status, release_date, publish_at, submitted_at, review_note, explicit, ai_content, territories, upc, p_line, c_line",
+      "id, slug, title, type, status, release_date, publish_at, submitted_at, review_note, explicit, ai_content, territories, upc, p_line, c_line, artwork_image_id",
     )
     .eq("artist_id", artist.id)
     .eq("slug", releaseSlug.toLowerCase())
@@ -108,7 +108,9 @@ export async function getPublicRelease(artistSlug: string, releaseSlug: string) 
   // Members can read their drafts through RLS; the public page shows released ones only.
   const { data: release } = await supabase
     .from("releases")
-    .select("id, slug, title, type, release_date, publish_at, explicit, ai_content, p_line, c_line")
+    .select(
+      "id, slug, title, type, release_date, publish_at, explicit, ai_content, p_line, c_line, artwork_image_id",
+    )
     .eq("artist_id", artist.id)
     .eq("slug", releaseSlug.toLowerCase())
     .eq("status", "published")

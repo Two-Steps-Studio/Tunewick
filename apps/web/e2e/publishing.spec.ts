@@ -1,5 +1,5 @@
 import { expect, type Page, test } from "@playwright/test";
-import { createConfirmedUser, enableMfa, grantRole } from "./helpers";
+import { createConfirmedUser, enableMfa, grantRole, solidPng } from "./helpers";
 
 // The whole path to listeners: artist → moderator (role + MFA) → anonymous listener.
 // Needs local S3 and the audio worker (pnpm media:start, pnpm worker:start).
@@ -55,6 +55,13 @@ async function readyRelease(page: Page) {
   await rights.getByLabel(/Akceptuję warunki dla artystów/).check();
   await rights.getByRole("button", { name: "Złóż oświadczenie" }).click();
   await expect(page.locator(".declaration")).toContainText("Złożone oświadczenie");
+
+  await page.getByLabel("Dodaj okładkę").setInputFiles({
+    name: "szychta.png",
+    mimeType: "image/png",
+    buffer: solidPng(1400, 1400, [240, 200, 40]),
+  });
+  await expect(page.locator(".cover-editor .artwork img")).toBeVisible({ timeout: 60_000 });
 
   // No submit button until the master is checked.
   await expect(page.getByRole("button", { name: "Wyślij do weryfikacji" })).toHaveCount(0);
@@ -134,6 +141,7 @@ test.describe("review and publishing", () => {
     await listener.getByRole("link", { name: "Szychta" }).click();
     await expect(listener).toHaveURL(new RegExp(`/artysci/${slug}/wydawnictwa/szychta$`));
     await expect(listener.getByRole("heading", { level: 1 })).toHaveText("Szychta");
+    await expect(listener.getByRole("img", { name: /^Okładka: Szychta/ })).toBeVisible();
     await expect(listener.getByText("1 utwór · 0:12")).toBeVisible();
     await expect(listener.getByText("Bez AI — utworzone przez ludzi.")).toBeVisible();
     // A Free listener's page has no link to lossless files at all.

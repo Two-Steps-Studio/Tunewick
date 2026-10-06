@@ -19,7 +19,7 @@ test.describe("rights declaration", () => {
     await page.waitForURL(/wydawnictwa/);
 
     const readiness = page.locator(".readiness");
-    await expect(readiness.locator(".readiness__todo")).toHaveCount(4);
+    await expect(readiness.locator(".readiness__todo")).toHaveCount(5);
     await expect(
       page.getByText("Treść oświadczenia i warunków dla artystów jest wersją roboczą"),
     ).toBeVisible();

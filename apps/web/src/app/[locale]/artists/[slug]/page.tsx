@@ -6,6 +6,7 @@ import type { Locale } from "@/i18n/routing";
 import { getArtistBySlug, isArtistMember } from "@/modules/artists";
 import { getOptionalUser } from "@/modules/auth";
 import { getPublishedReleases } from "@/modules/catalog";
+import { Artwork, getImageSources } from "@/modules/images";
 
 export async function generateMetadata({
   params,
@@ -25,13 +26,25 @@ export default async function ArtistPage({ params }: PageProps<"/[locale]/artist
   const t = await getTranslations("Artists");
   const tReleases = await getTranslations("Releases");
   const user = await getOptionalUser();
-  const published = await getPublishedReleases(artist.id);
+  const [published, photo] = await Promise.all([
+    getPublishedReleases(artist.id),
+    getImageSources(artist.image_id),
+  ]);
 
   return (
     <section className="profile">
       <p className={`artist-badge artist-badge--${artist.verification_status}`}>
         {t(`verification.${artist.verification_status}`)}
       </p>
+      {photo ? (
+        <Artwork
+          image={photo}
+          alt={artist.name}
+          sizes="8rem"
+          className="artwork--round profile__photo"
+          priority
+        />
+      ) : null}
       <h1 className="profile__name">{artist.name}</h1>
       {artist.formed_year ? (
         <p className="profile__meta">{t("profile.since", { year: artist.formed_year })}</p>

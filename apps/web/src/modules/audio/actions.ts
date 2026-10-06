@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { masterSize, presignMasterUpload } from "@/lib/media/storage";
+import { ingestObjectSize, presignIngestUpload } from "@/lib/media/storage";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { checkMasterFile, type UploadError } from "./validation";
 
@@ -35,7 +35,7 @@ export async function startAudioUpload(
   if (error || !data) return { ok: false, error: dbError(error?.code) };
 
   try {
-    return { ok: true, uploadId: data.id, url: await presignMasterUpload(data.object_key) };
+    return { ok: true, uploadId: data.id, url: await presignIngestUpload(data.object_key) };
   } catch {
     await supabase.rpc("abandon_audio_upload", { upload: data.id, reason: "storage_unavailable" });
     return { ok: false, error: "unavailable" };
@@ -54,7 +54,7 @@ export async function finishAudioUpload(uploadId: string): Promise<FinishResult>
 
   let size: number | null;
   try {
-    size = await masterSize(upload.object_key);
+    size = await ingestObjectSize(upload.object_key);
   } catch {
     return { ok: false, error: "unavailable" };
   }
