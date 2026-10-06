@@ -100,7 +100,7 @@ test.describe("artist onboarding", () => {
 
 test("an artist from anywhere in Poland sets the city and voivodeship", async ({ page }) => {
   await createConfirmedUser(page, "location");
-  const slug = `miejsce-${Date.now().toString(36)}`;
+  const slug = unique("miejsce");
   await page.goto("/artysci/nowy");
   await page.getByLabel("Nazwa artysty").fill("Suwalska Fala");
   await page.getByLabel("Adres profilu").fill(slug);

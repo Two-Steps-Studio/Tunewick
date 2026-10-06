@@ -33,16 +33,29 @@ export async function refreshSession(request: NextRequest, response: NextRespons
   if (!data?.claims) return response;
 
   // Accounts with a verified second factor must finish it before using the app: a password-only
-  // (aal1) session is sent to the verification page. The level comes from the signed token; the
-  // factors from the Auth server (the user object stored in the cookie is not signed, so it is
-  // never trusted). Sessions that are already aal2 skip the extra request. The database enforces
-  // the same rule for every API call (public.enforce_mfa), so this is the friendly front door.
+  // (aal1) session is sent to the verification page. This redirect is a convenience — the database
+  // refuses every API request of such a session anyway (public.enforce_mfa) — so whether the
+  // account has a factor (asked from the Auth server, never from the unsigned cookie user object)
+  // may be remembered for a few minutes in MFA_HINT_COOKIE. A forged hint can only skip the
+  // redirect, not unlock data.
   const pathname = request.nextUrl.pathname;
-  if (
-    data.claims.aal !== "aal2" &&
-    !isVerifyPath(pathname) &&
-    (await hasVerifiedFactor(supabase))
-  ) {
+  const userId = data.claims.sub;
+  if (data.claims.aal !== "aal2" && !isVerifyPath(pathname)) {
+    const hint = request.cookies.get(MFA_HINT_COOKIE)?.value;
+    let hasFactor: boolean;
+    if (hint?.startsWith(`${userId}:`)) {
+      hasFactor = hint.endsWith(":1");
+    } else {
+      hasFactor = await hasVerifiedFactor(supabase);
+      response.cookies.set(MFA_HINT_COOKIE, `${userId}:${hasFactor ? 1 : 0}`, {
+        httpOnly: true,
+        sameSite: "lax",
+        secure: request.nextUrl.protocol === "https:",
+        path: "/",
+        maxAge: MFA_HINT_SECONDS,
+      });
+    }
+    if (!hasFactor) return response;
     const target = request.nextUrl.clone();
     target.pathname =
       pathname === "/en" || pathname.startsWith("/en/") ? "/en/verify" : "/weryfikacja";
@@ -54,6 +67,10 @@ export async function refreshSession(request: NextRequest, response: NextRespons
   }
   return response;
 }
+
+/** Remembered answer to "does this account have a verified factor?" — see refreshSession. */
+export const MFA_HINT_COOKIE = "tw_mfa_hint";
+const MFA_HINT_SECONDS = 10 * 60;
 
 async function hasVerifiedFactor(supabase: ReturnType<typeof createServerClient<Database>>) {
   const { data } = await supabase.auth.getUser();

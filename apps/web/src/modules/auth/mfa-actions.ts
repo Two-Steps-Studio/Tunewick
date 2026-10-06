@@ -1,8 +1,10 @@
 "use server";
 
+import { cookies } from "next/headers";
 import { redirect as redirectToPath } from "next/navigation";
 import { getLocale } from "next-intl/server";
 import { redirect } from "@/i18n/navigation";
+import { MFA_HINT_COOKIE } from "@/lib/supabase/session";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { safeNextPath } from "./validation";
 
@@ -62,6 +64,7 @@ export async function confirmTotpEnrollment(
   const supabase = await createSupabaseServerClient();
   const { error } = await supabase.auth.mfa.challengeAndVerify({ factorId: prev.factorId, code });
   if (error) return { ...prev, error: mfaError(error) };
+  (await cookies()).delete(MFA_HINT_COOKIE); // the account now has a factor
 
   return redirect({ href: "/settings/security", locale: await getLocale() });
 }
@@ -91,5 +94,6 @@ export async function disableTotp(): Promise<void> {
   for (const factor of factors?.totp ?? []) {
     await supabase.auth.mfa.unenroll({ factorId: factor.id });
   }
+  (await cookies()).delete(MFA_HINT_COOKIE);
   redirect({ href: "/settings/security", locale: await getLocale() });
 }
