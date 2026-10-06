@@ -10,8 +10,10 @@ import { supabaseConfig } from "./config";
  * Create one per request. Acts as the signed-in user, so RLS applies.
  */
 export async function createSupabaseServerClient() {
-  const { url, publishableKey } = supabaseConfig();
+  // cookies() first: it marks the route as dynamic, so builds never prerender user-specific
+  // pages (and do not need Supabase configuration at build time).
   const cookieStore = await cookies();
+  const { url, publishableKey } = supabaseConfig();
 
   return createServerClient<Database>(url, publishableKey, {
     cookies: {
