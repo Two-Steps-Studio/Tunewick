@@ -95,6 +95,22 @@ describe("describeQuality", () => {
     expect(q.notes).toContain("source_upsampled_suspected");
   });
 
+  it("calls a genuine 24-bit master Hi-Res at its original rate even when upsampled", () => {
+    const source: SourceQuality = {
+      ...flac2496,
+      authenticity: "suspected_upsampled",
+      effectiveSampleRateHz: 44100,
+    };
+    const atOriginal = describeQuality(source, { ...hires2496, sampleRateHz: 44100 });
+    expect(atOriginal.isHiRes).toBe(true);
+    expect(atOriginal.deliveredText).toBe("FLAC 24/44.1");
+    expect(atOriginal.notes).toContain("source_upsampled_suspected");
+
+    const atUpsampled = describeQuality(source, hires2496);
+    expect(atUpsampled.isHiRes).toBe(false);
+    expect(atUpsampled.notes).toContain("delivered_exceeds_source");
+  });
+
   it("never calls bit-padded 24-bit Hi-Res when the effective depth is 16 at 44.1 kHz", () => {
     const q = describeQuality(
       {

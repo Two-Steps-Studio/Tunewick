@@ -14,6 +14,8 @@ export interface SettingsFormState {
   saved?: boolean;
   error?: SettingsErrorCode;
   fieldErrors?: Partial<Record<SettingsField, SettingsErrorCode>>;
+  /** Submitted values, returned on errors because React resets the form after an action. */
+  values?: Record<string, string>;
 }
 
 const optionalText = (max: number, error: SettingsErrorCode) =>

@@ -54,6 +54,8 @@ graph_edges (derived)      feature_flags, access_invites, waitlist      private.
 
 ### 3.2 Artists
 
+> ✅ Implemented in M2.1 (`20261006060000_catalog.sql`): artists, membership with invitations (`accepted_at`) and the keep-an-owner rule, verification requests, labels, genres (22 seeded), releases, tracks, credits, release/track artists, release genres, immutable rights declarations. Membership and status changes only through functions (`create_artist`, `invite_artist_member`, `accept_artist_membership`, `remove_artist_member`, `request_artist_verification`); visibility via `release_is_public`, `can_view_release`, `can_edit_release`.
+
 | Table | Key columns | Notes |
 | --- | --- | --- |
 | `artists` | `slug`, `name`, `bio`, `home_city_id`, `formed_year`, `verification_status (unverified, pending, verified, rejected)`, `verified_at`, `status (active, suspended)` | Verification shown only when `verified`. |

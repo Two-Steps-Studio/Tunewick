@@ -148,6 +148,17 @@ The player has a **delivery strategy abstraction** chosen per device by capabili
 - **Strategy MSE** (Chromium, Firefox, Android): fragmented MP4 (CMAF) with FLAC or AAC. Consecutive tracks are appended to the same `SourceBuffer` with `timestampOffset`, trimming AAC encoder priming via edit lists. This gives true gapless for FLAC and near-gapless for AAC.
 - **Strategy Native** (Safari / iOS): progressive files via `<audio>` (Safari plays FLAC natively) with preloading of the next track. Gapless is best-effort here. If the spike confirms FLAC-in-fMP4 works in Safari MSE / ManagedMediaSource, Safari moves to Strategy MSE.
 - HTTP range requests on all files; the media edge supports `Range` and caches by object + range.
+
+**Spike results (2026-10-06, audio.md §9) → packaging decision (provisional until Safari/iOS/Android are measured):**
+
+| Tier | Packaging | Playback |
+| --- | --- | --- |
+| Data Saver, High | AAC-LC in fMP4 + stored priming/padding | MSE with append-window trimming (required for gapless — untrimmed AAC drops out at boundaries) |
+| Lossless (≤ 48 kHz) | FLAC in fMP4 **and** plain `.flac` | MSE (measured gapless in Chromium/Firefox); `.flac` for the native strategy |
+| Hi-Res (> 48 kHz) | plain `.flac` only | native `<audio>` (FLAC-in-fMP4 > 48 kHz fails in Firefox); gapless best-effort |
+
+Storing Lossless twice costs little on R2 (no egress, ~$0.015/GB-month). Capability probing must
+decode a short sample, not trust `canPlayType`.
 - **No adaptive switching inside a track for lossless.** "Auto" picks a tier at track start based on connection, device, battery and user setting, and may step down at the next track (or mid-track only on stall). The quality indicator always shows the variant actually being played.
 
 ### 6.4 Playback authorization
@@ -160,7 +171,7 @@ The player has a **delivery strategy abstraction** chosen per device by capabili
 | # | Compromise | Why | Better solution / follow-up |
 | --- | --- | --- | --- |
 | C1 | **Browsers are not bit-perfect.** All browsers mix through the OS and resample to the output device rate (AudioContext/output rate, often 48 kHz). | Platform limitation; no exclusive mode in the web platform. | UI shows "output resampled by system" when track rate ≠ output rate. Native desktop app (e.g. Tauri + WASAPI exclusive / CoreAudio) for bit-perfect — future roadmap item. |
-| C2 | Safari gapless is best-effort until the spike proves MSE + FLAC works. | Known WebKit issues with FLAC-in-MP4 in MSE (historically silent output). | Phase 7 spike with a device matrix; fall back documented in the UI only as "gapless unavailable on this browser" where true. |
+| C2 | Gapless is best-effort for Hi-Res in Firefox (FLAC-in-fMP4 > 48 kHz unsupported, measured) and for Safari until measured on real devices. | Browser codec support. | Native strategy with next-track preload; UI says "gapless unavailable on this browser" only where true. Re-test each browser release. |
 | C3 | Lossless tier for 24-bit masters is dithered to 16-bit. | Bandwidth/compatibility for the Lossless tier. | Hi-Res tier delivers the native 24-bit; users can choose it. |
 | C4 | Lossy tiers use AAC, not Opus. | Safari does not play Opus in MP4; one universal lossy codec simplifies gapless and storage. | Re-evaluate Opus when Safari supports it in MP4/MSE. |
 | C5 | No adaptive bitrate within a lossless track. | Mid-track switching would make the quality label untrue or need constant UI changes. | Step-down only on stall; indicator updates immediately. |

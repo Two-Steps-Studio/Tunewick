@@ -1,0 +1,190 @@
+{
+  "env": {
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.8010.12 Safari/537.36",
+    "outputSampleRate": 48000,
+    "baseLatency": 0.01,
+    "mediaSource": true,
+    "managedMediaSource": false,
+    "setSinkId": true
+  },
+  "capabilities": [
+    {
+      "type": "flac",
+      "mime": "audio/flac",
+      "canPlayType": "probably",
+      "mseIsTypeSupported": false
+    },
+    {
+      "type": "fmp4-flac",
+      "mime": "audio/mp4; codecs=\"flac\"",
+      "canPlayType": "probably",
+      "mseIsTypeSupported": true
+    },
+    {
+      "type": "fmp4-aac",
+      "mime": "audio/mp4; codecs=\"mp4a.40.2\"",
+      "canPlayType": "probably",
+      "mseIsTypeSupported": true
+    }
+  ],
+  "progressive": [
+    {
+      "id": "flac-16-44",
+      "file": "flac-16-44.flac",
+      "rate": 44100,
+      "duration": 12,
+      "error": null,
+      "advancedSeconds": 1.222,
+      "peakRms": 0.1787,
+      "audible": true
+    },
+    {
+      "id": "flac-16-44-fmp4",
+      "file": "flac-16-44.mp4",
+      "rate": 44100,
+      "duration": 12,
+      "error": null,
+      "advancedSeconds": 1.225,
+      "peakRms": 0.1787,
+      "audible": true
+    },
+    {
+      "id": "flac-24-48",
+      "file": "flac-24-48.flac",
+      "rate": 48000,
+      "duration": 12,
+      "error": null,
+      "advancedSeconds": 1.211,
+      "peakRms": 0.1783,
+      "audible": true
+    },
+    {
+      "id": "flac-24-48-fmp4",
+      "file": "flac-24-48.mp4",
+      "rate": 48000,
+      "duration": 12,
+      "error": null,
+      "advancedSeconds": 1.219,
+      "peakRms": 0.1781,
+      "audible": true
+    },
+    {
+      "id": "flac-24-96",
+      "file": "flac-24-96.flac",
+      "rate": 96000,
+      "duration": 12,
+      "error": null,
+      "advancedSeconds": 1.212,
+      "peakRms": 0.1783,
+      "audible": true
+    },
+    {
+      "id": "flac-24-96-fmp4",
+      "file": "flac-24-96.mp4",
+      "rate": 96000,
+      "duration": 12,
+      "error": null,
+      "advancedSeconds": 1.212,
+      "peakRms": 0.1783,
+      "audible": true
+    },
+    {
+      "id": "flac-24-192",
+      "file": "flac-24-192.flac",
+      "rate": 192000,
+      "duration": 12,
+      "error": null,
+      "advancedSeconds": 1.211,
+      "peakRms": 0.1781,
+      "audible": true
+    },
+    {
+      "id": "flac-24-192-fmp4",
+      "file": "flac-24-192.mp4",
+      "rate": 192000,
+      "duration": 12,
+      "error": null,
+      "advancedSeconds": 1.201,
+      "peakRms": 0.1783,
+      "audible": true
+    },
+    {
+      "id": "aac-256-48-fmp4",
+      "file": "aac-256-48.m4a",
+      "rate": 48000,
+      "duration": 12.021,
+      "error": null,
+      "advancedSeconds": 1.211,
+      "peakRms": 0.178,
+      "audible": true
+    }
+  ],
+  "mse": [
+    {
+      "id": "flac-16-44-fmp4",
+      "rate": 44100,
+      "managed": false,
+      "buffered": "[[0,12]]",
+      "error": null,
+      "advancedSeconds": 1.213,
+      "peakRms": 0.1774,
+      "audible": true
+    },
+    {
+      "id": "flac-24-48-fmp4",
+      "rate": 48000,
+      "managed": false,
+      "buffered": "[[0,12]]",
+      "error": null,
+      "advancedSeconds": 1.219,
+      "peakRms": 0.1781,
+      "audible": true
+    },
+    {
+      "id": "flac-24-96-fmp4",
+      "rate": 96000,
+      "managed": false,
+      "buffered": "[[0,12]]",
+      "error": null,
+      "advancedSeconds": 1.212,
+      "peakRms": 0.1787,
+      "audible": true
+    },
+    {
+      "id": "flac-24-192-fmp4",
+      "rate": 192000,
+      "managed": false,
+      "buffered": "[[0,12]]",
+      "error": null,
+      "advancedSeconds": 1.211,
+      "peakRms": 0.1787,
+      "audible": true
+    },
+    {
+      "id": "aac-256-48-fmp4",
+      "rate": 48000,
+      "managed": false,
+      "buffered": "[[0,12.0213]]",
+      "error": null,
+      "advancedSeconds": 1.209,
+      "peakRms": 0.1787,
+      "audible": true
+    }
+  ],
+  "gapless": {
+    "flac": {
+      "bufferedRanges": [[0, 12]],
+      "continuousBuffer": true,
+      "totalSeconds": 12,
+      "minRmsAcrossBoundary": 0.1762,
+      "noDropout": true
+    },
+    "aac": {
+      "bufferedRanges": [[0, 12.064]],
+      "continuousBuffer": true,
+      "totalSeconds": 12.064,
+      "minRmsAcrossBoundary": 0.0012,
+      "noDropout": false
+    }
+  }
+}

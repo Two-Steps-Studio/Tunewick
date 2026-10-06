@@ -192,5 +192,241 @@
       "rateLimited": "Too many attempts. Try again shortly.",
       "unexpected": "Something went wrong. Please try again."
     }
+  },
+  "Artists": {
+    "my": {
+      "title": "Your artist projects",
+      "empty": "You are not part of any project yet.",
+      "create": "Create an artist profile",
+      "invitedAs": "Invited as: {role}",
+      "accept": "Accept invitation",
+      "manage": "Manage"
+    },
+    "create": {
+      "title": "New artist profile",
+      "lead": "A band, solo project or collective. After creating it you can invite the other members.",
+      "submit": "Create profile"
+    },
+    "fields": {
+      "name": "Artist name",
+      "slug": "Profile address",
+      "bio": "Description",
+      "formedYear": "Year formed",
+      "handle": "Person profile name (address)",
+      "role": "Role",
+      "evidence": "Links that confirm the artist (one per line)",
+      "note": "Message for moderators (optional)"
+    },
+    "hints": {
+      "slug": "Lowercase letters, digits and hyphens. Address: tunewick.com/en/artists/address",
+      "evidence": "E.g. official website, Bandcamp, the band social media profile. Up to 5 links.",
+      "handle": "The person needs an account with a profile name."
+    },
+    "roles": {
+      "owner": "Owner",
+      "manager": "Manager",
+      "member": "Member"
+    },
+    "verification": {
+      "unverified": "Unverified profile",
+      "pending": "Verification in progress",
+      "verified": "Verified artist",
+      "rejected": "Verification rejected"
+    },
+    "profile": {
+      "since": "Since {year}",
+      "manage": "Manage profile",
+      "noBio": "This artist has not added a description yet.",
+      "noReleases": "No published releases."
+    },
+    "manage": {
+      "title": "Manage: {name}",
+      "info": "Details",
+      "members": "Members",
+      "invited": "invitation sent",
+      "remove": "Remove",
+      "leave": "Leave project",
+      "invite": "Invite",
+      "verification": "Verification",
+      "verificationLead": "Verification confirms that the profile belongs to the real artist. Tunewick moderators decide.",
+      "requestVerification": "Request verification",
+      "save": "Save",
+      "saved": "Saved.",
+      "viewPublic": "View public profile",
+      "you": "You",
+      "noName": "Account without a profile name"
+    },
+    "errors": {
+      "nameRequired": "Enter the artist name.",
+      "nameTooLong": "The name can have at most 120 characters.",
+      "slugInvalid": "Use 2–60 characters: lowercase letters, digits and hyphens.",
+      "slugTaken": "This address is already taken.",
+      "slugReserved": "This address is reserved.",
+      "bioTooLong": "The description can have at most 2000 characters.",
+      "yearInvalid": "Enter a year between 1900 and 2100.",
+      "handleNotFound": "There is no profile with this name.",
+      "evidenceRequired": "Add at least one link (https://).",
+      "evidenceInvalid": "Every link must start with https:// (at most 5).",
+      "alreadyPending": "A verification request is already waiting for a decision.",
+      "lastOwner": "The project must keep at least one owner.",
+      "forbidden": "You are not allowed to do this.",
+      "unexpected": "Could not save. Please try again."
+    }
+  },
+  "Releases": {
+    "list": {
+      "title": "Releases",
+      "empty": "No releases yet.",
+      "create": "New release",
+      "edit": "Edit"
+    },
+    "create": {
+      "title": "New release",
+      "lead": "Start with the title and type. Tracks, credits and genres come next.",
+      "submit": "Create draft"
+    },
+    "editor": {
+      "title": "{title}",
+      "details": "Details",
+      "tracks": "Tracks",
+      "genres": "Genres",
+      "genresHint": "Choose up to 3 genres.",
+      "save": "Save",
+      "saved": "Saved.",
+      "addTrack": "Add track",
+      "trackTitle": "Track title",
+      "moveUp": "Move up",
+      "moveDown": "Move down",
+      "deleteTrack": "Delete track",
+      "noTracks": "Add the first track.",
+      "credits": "Credits",
+      "addCredit": "Add credit",
+      "deleteCredit": "Remove",
+      "readOnly": "This release is no longer a draft — editing is locked.",
+      "deleteDraft": "Delete draft",
+      "back": "Back to the artist profile",
+      "aiMissing": "Declare AI involvement before submitting for review."
+    },
+    "fields": {
+      "title": "Title",
+      "slug": "Release address",
+      "type": "Type",
+      "releaseDate": "Release date",
+      "explicit": "Explicit content",
+      "aiContent": "Artificial intelligence involvement",
+      "territories": "Availability",
+      "upc": "UPC/EAN code (optional)",
+      "pLine": "℗ line (recording)",
+      "cLine": "© line (release)",
+      "isrc": "ISRC (optional)",
+      "creditName": "Name or alias",
+      "creditRole": "Role",
+      "creditDetail": "Details (e.g. instrument)"
+    },
+    "types": {
+      "single": "Single",
+      "ep": "EP",
+      "album": "Album",
+      "compilation": "Compilation",
+      "live": "Live"
+    },
+    "statuses": {
+      "draft": "Draft",
+      "processing": "Processing",
+      "in_review": "In review",
+      "approved": "Approved",
+      "published": "Published",
+      "rejected": "Needs changes",
+      "taken_down": "Taken down"
+    },
+    "ai": {
+      "unknown": "Not declared (required before submitting)",
+      "human": "No AI — made by people",
+      "ai_assisted": "AI-assisted",
+      "ai_generated": "AI-generated"
+    },
+    "territories": {
+      "WORLD": "Worldwide",
+      "EU": "European Union",
+      "PL": "Poland only"
+    },
+    "creditRoles": {
+      "producer": "Producer",
+      "songwriter": "Songwriter",
+      "composer": "Composer",
+      "lyricist": "Lyricist",
+      "performer": "Performer",
+      "mixing_engineer": "Mixing engineer",
+      "mastering_engineer": "Mastering engineer",
+      "other": "Other role"
+    },
+    "errors": {
+      "titleRequired": "Enter a title.",
+      "titleTooLong": "The title can have at most 200 characters.",
+      "slugInvalid": "Use 1–80 characters: lowercase letters, digits and hyphens.",
+      "slugTaken": "This artist already has a release with this address.",
+      "dateInvalid": "Enter a valid date.",
+      "upcInvalid": "UPC/EAN has 12 or 13 digits.",
+      "lineTooLong": "At most 200 characters.",
+      "isrcInvalid": "ISRC looks like PLABC2600001.",
+      "nameRequired": "Enter a name or alias.",
+      "tooManyGenres": "At most 3 genres.",
+      "notEditable": "This release can no longer be edited.",
+      "forbidden": "You are not allowed to do this.",
+      "unexpected": "Could not save. Please try again.",
+      "masterRequired": "Tunewick only accepts recordings you hold the rights to.",
+      "cmoRequired": "Choose an answer (including “No” or “I don’t know”).",
+      "cmoNoneExclusive": "“No, nobody is a member” cannot be combined with an organization.",
+      "samplesDescriptionRequired": "Describe the samples and permissions.",
+      "aiRequired": "Declare AI involvement.",
+      "termsRequired": "Accept the terms to submit the declaration."
+    },
+    "rights": {
+      "title": "Rights to this release",
+      "lead": "The declaration is stored permanently as evidence. A new declaration supersedes the previous one without deleting it.",
+      "legalNote": "The declaration and artist terms are drafts pending legal review.",
+      "ownsMaster": "I (or we) own the rights to the recordings of all tracks on this release.",
+      "controlsComposition": "We are the authors of the music and lyrics, or we have their consent to make the works available on Tunewick.",
+      "cmoQuestion": "Is any author or performer a member of a collective management organization?",
+      "cmo": {
+        "zaiks": "ZAiKS",
+        "stoart": "STOART",
+        "sawp": "SAWP",
+        "zpav": "ZPAV",
+        "other_cmo": "Other organization",
+        "none": "No, nobody is a member",
+        "unknown": "I don’t know"
+      },
+      "samplesQuestion": "Samples and excerpts of other recordings",
+      "samples": {
+        "none": "There are no samples",
+        "cleared": "There are samples — I have permission to use them"
+      },
+      "samplesDescription": "Describe the samples and permissions (author, source, type of permission)",
+      "aiContent": "Artificial intelligence involvement",
+      "territories": "Availability: {territory} (set in the release details)",
+      "acceptTerms": "I accept the artist terms (version {version}).",
+      "submit": "Submit declaration",
+      "current": "Submitted declaration",
+      "declaredAt": "Submitted {date}",
+      "newDeclaration": "Submit a new declaration",
+      "summary": {
+        "master": "Recording rights",
+        "composition": "Authorship / consent",
+        "cmo": "Organizations",
+        "samples": "Samples",
+        "ai": "AI",
+        "yes": "Yes",
+        "no": "No"
+      }
+    },
+    "readiness": {
+      "title": "Ready to submit",
+      "tracks": "At least one track",
+      "ai": "AI involvement declared",
+      "rights": "Rights declaration submitted",
+      "audio": "Recordings — file upload arrives in the next stage",
+      "note": "Submitting for review becomes possible once recording upload launches."
+    }
   }
 }

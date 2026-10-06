@@ -34,6 +34,14 @@ Every release submission requires a declaration stored immutably in `rights_decl
 
 The declaration is evidence, not proof. Moderation and duplicate/fingerprint checks run anyway.
 
+**Implemented (M2.4):** form on the release editor; stored insert-only with terms version
+`draft-2026-10` (draft until the lawyer approves the Artist Terms — the UI says so). Database rules:
+cleared samples must be described; the collective-management question must be answered ("none" is
+exclusive, "unknown" is allowed and flagged for review); AI involvement must be declared and the
+declaration sets the release's AI value. A new declaration supersedes the previous one; history is
+kept. Submitting a release for review is not available until audio upload exists (M3) — the
+editor shows an honest readiness checklist instead.
+
 ## 4. Artist Terms (outline for the lawyer) ⚖️
 
 - Non-exclusive license to store, transcode, stream, display, and use metadata for discovery, in the selected territories.

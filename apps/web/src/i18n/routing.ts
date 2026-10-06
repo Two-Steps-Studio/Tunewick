@@ -17,6 +17,17 @@ export const routing = defineRouting({
     "/settings": { pl: "/ustawienia", en: "/settings" },
     "/settings/security": { pl: "/ustawienia/bezpieczenstwo", en: "/settings/security" },
     "/verify": { pl: "/weryfikacja", en: "/verify" },
+    "/artists/new": { pl: "/artysci/nowy", en: "/artists/new" },
+    "/artists/[slug]": { pl: "/artysci/[slug]", en: "/artists/[slug]" },
+    "/artists/[slug]/manage": { pl: "/artysci/[slug]/zarzadzaj", en: "/artists/[slug]/manage" },
+    "/artists/[slug]/releases/new": {
+      pl: "/artysci/[slug]/wydawnictwa/nowe",
+      en: "/artists/[slug]/releases/new",
+    },
+    "/artists/[slug]/releases/[release]": {
+      pl: "/artysci/[slug]/wydawnictwa/[release]",
+      en: "/artists/[slug]/releases/[release]",
+    },
     "/profile/[handle]": { pl: "/profil/[handle]", en: "/profile/[handle]" },
   },
 });

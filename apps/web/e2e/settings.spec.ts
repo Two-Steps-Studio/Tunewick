@@ -89,6 +89,19 @@ test.describe("account settings and public profile", () => {
     await expect(page.getByLabel("Language")).toHaveValue("en");
   });
 
+  test("a validation error keeps everything the user typed", async ({ page }) => {
+    await createConfirmedUser(page, "keep-input");
+    await page.goto("/ustawienia");
+    await page.getByLabel("Nazwa wyświetlana").fill("Perkusistka z Bytomia");
+    await page.getByLabel("O mnie").fill("Gram w trzech składach.");
+    await page.getByLabel("Nazwa profilu (adres)").fill("admin");
+    await page.getByRole("button", { name: "Zapisz zmiany" }).click();
+    await expect(page.getByText("Ta nazwa jest zarezerwowana.")).toBeVisible();
+    await expect(page.getByLabel("Nazwa wyświetlana")).toHaveValue("Perkusistka z Bytomia");
+    await expect(page.getByLabel("O mnie")).toHaveValue("Gram w trzech składach.");
+    await expect(page.getByLabel("Nazwa profilu (adres)")).toHaveValue("admin");
+  });
+
   test("unknown profiles return 404", async ({ page }) => {
     const response = await page.goto("/profil/nikt-taki-nie-istnieje");
     expect(response?.status()).toBe(404);

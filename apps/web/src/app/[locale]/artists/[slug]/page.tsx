@@ -1,0 +1,62 @@
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
+import type { Locale } from "@/i18n/routing";
+import { getArtistBySlug, isArtistMember } from "@/modules/artists";
+import { getOptionalUser } from "@/modules/auth";
+import { getPublishedReleases } from "@/modules/catalog";
+
+export async function generateMetadata({
+  params,
+}: PageProps<"/[locale]/artists/[slug]">): Promise<Metadata> {
+  const { slug } = await params;
+  const artist = await getArtistBySlug(decodeURIComponent(slug));
+  return artist ? { title: artist.name, description: artist.bio ?? undefined } : {};
+}
+
+/** Public artist page: only real data — no invented stats, unverified profiles say so. */
+export default async function ArtistPage({ params }: PageProps<"/[locale]/artists/[slug]">) {
+  const { locale, slug } = await params;
+  setRequestLocale(locale as Locale);
+  const artist = await getArtistBySlug(decodeURIComponent(slug));
+  if (!artist) notFound();
+
+  const t = await getTranslations("Artists");
+  const tReleases = await getTranslations("Releases");
+  const user = await getOptionalUser();
+  const published = await getPublishedReleases(artist.id);
+
+  return (
+    <section className="profile">
+      <p className={`artist-badge artist-badge--${artist.verification_status}`}>
+        {t(`verification.${artist.verification_status}`)}
+      </p>
+      <h1 className="profile__name">{artist.name}</h1>
+      {artist.formed_year ? (
+        <p className="profile__meta">{t("profile.since", { year: artist.formed_year })}</p>
+      ) : null}
+      <p className="profile__bio">{artist.bio ?? t("profile.noBio")}</p>
+      {published.length === 0 ? (
+        <p className="field__hint">{t("profile.noReleases")}</p>
+      ) : (
+        <ul className="artist-list">
+          {published.map((r) => (
+            <li key={r.id} className="artist-list__item">
+              <span className="artist-list__name">{r.title}</span>
+              <span className="field__hint">{tReleases(`types.${r.type}`)}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+      {user && (await isArtistMember(artist.id)) ? (
+        <Link
+          href={{ pathname: "/artists/[slug]/manage", params: { slug: artist.slug } }}
+          className="button button--quiet"
+        >
+          {t("profile.manage")}
+        </Link>
+      ) : null}
+    </section>
+  );
+}

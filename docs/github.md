@@ -37,7 +37,7 @@ Configured in GitHub → Settings → Branches (or Rules → Rulesets) by a repo
 | ---- | ------- |
 | Require a pull request before merging | on |
 | Required approvals | 1 (when a second reviewer exists; until then 0 with PR still required) |
-| Require status checks to pass | on — required checks: `lint`, `typecheck`, `test`, `format:check`, `build`, `e2e`, `database` (workflow `.github/workflows/ci.yml`; `database` = migrations from zero + pgTAP + db lint) |
+| Require status checks to pass | on — required checks: `lint`, `typecheck`, `test`, `format:check`, `build`, `e2e`, `database`, `worker` (workflow `.github/workflows/ci.yml`; `database` = migrations from zero + pgTAP + db lint; `worker` = audio worker ruff + pytest in Docker) |
 | Require branch to be up to date before merging | on |
 | Block force pushes | on |
 | Restrict deletions | on |

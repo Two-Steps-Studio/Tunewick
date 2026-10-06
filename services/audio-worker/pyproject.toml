@@ -1,0 +1,28 @@
+[project]
+name = "tunewick-audio"
+version = "0.1.0"
+description = "Tunewick audio worker: validate, analyse, transcode, package and verify masters"
+requires-python = ">=3.12"
+dependencies = ["numpy>=2.1"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.3", "ruff>=0.8"]
+
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM", "RUF"]
+# Typographic dashes and minus signs in prose are intentional.
+ignore = ["RUF001", "RUF002", "RUF003"]
