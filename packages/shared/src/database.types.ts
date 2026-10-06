@@ -324,6 +324,39 @@ export type Database = {
           },
         ];
       };
+      graph_edges: {
+        Row: {
+          derived_from: NonNullable<Json>;
+          dst_id: string;
+          dst_type: string;
+          refreshed_at: string;
+          relation: string;
+          src_id: string;
+          src_type: string;
+          weight: number;
+        };
+        Insert: {
+          derived_from?: NonNullable<Json>;
+          dst_id: string;
+          dst_type: string;
+          refreshed_at?: string;
+          relation: string;
+          src_id: string;
+          src_type: string;
+          weight?: number;
+        };
+        Update: {
+          derived_from?: NonNullable<Json>;
+          dst_id?: string;
+          dst_type?: string;
+          refreshed_at?: string;
+          relation?: string;
+          src_id?: string;
+          src_type?: string;
+          weight?: number;
+        };
+        Relationships: [];
+      };
       images: {
         Row: {
           artist_id: string | null;
@@ -1627,6 +1660,20 @@ export type Database = {
         Returns: undefined;
       };
       redeem_promo_code: { Args: { code: string }; Returns: Json };
+      related_artists: {
+        Args: { artist: string; max_results?: number };
+        Returns: {
+          artist_id: string;
+          city: string;
+          evidence: Json;
+          image_id: string;
+          name: string;
+          relation: string;
+          score: number;
+          slug: string;
+          voivodeship: Database["public"]["Enums"]["voivodeship"];
+        }[];
+      };
       release_is_public: { Args: { release: string }; Returns: boolean };
       release_playback: {
         Args: { release: string };

@@ -81,3 +81,24 @@ export async function isArtistMember(artistId: string) {
   if (error) throw error;
   return data === true;
 }
+
+export type RelatedRelation =
+  "collaborated" | "shared_credit" | "same_label" | "shared_audience" | "same_city";
+
+/** Related artists with the evidence for their strongest reason (public data only). */
+export async function getRelatedArtists(artistId: string) {
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase.rpc("related_artists", {
+    artist: artistId,
+    max_results: 8,
+  });
+  if (error) throw error;
+  return (data ?? []).map((row) => ({
+    id: row.artist_id,
+    slug: row.slug,
+    name: row.name,
+    imageId: row.image_id,
+    relation: row.relation as RelatedRelation,
+    evidence: (row.evidence ?? {}) as Record<string, string | number>,
+  }));
+}

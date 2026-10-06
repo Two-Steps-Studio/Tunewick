@@ -167,6 +167,47 @@ export default async function ReleasePage({
         })}
       </ol>
 
+      {tracks.some((track) => track.credits.length) ? (
+        <section aria-labelledby="credits" className="release-credits">
+          <h2 id="credits" className="section-title">
+            {t("credits")}
+          </h2>
+          <dl className="release-credits__list">
+            {tracks
+              .filter((track) => track.credits.length)
+              .map((track) => (
+                <div key={track.id} className="release-credits__track">
+                  <dt>{track.title}</dt>
+                  <dd>
+                    <ul>
+                      {track.credits.map((c) => (
+                        <li key={c.id}>
+                          <span className="release-credits__role">
+                            {tReleases(`creditRoles.${c.role}`)}
+                          </span>{" "}
+                          {c.artist ? (
+                            <Link
+                              href={{
+                                pathname: "/artists/[slug]",
+                                params: { slug: c.artist.slug },
+                              }}
+                            >
+                              {c.name}
+                            </Link>
+                          ) : (
+                            c.name
+                          )}
+                          {c.detail ? ` (${c.detail})` : ""}
+                        </li>
+                      ))}
+                    </ul>
+                  </dd>
+                </div>
+              ))}
+          </dl>
+        </section>
+      ) : null}
+
       {entitlement !== "hires" ? <p className="field__hint">{t("qualityNote")}</p> : null}
       {release.p_line || release.c_line ? (
         <p className="release-page__lines">

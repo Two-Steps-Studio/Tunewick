@@ -56,10 +56,15 @@ describe("trackSchema", () => {
 
 describe("creditSchema and genresSchema", () => {
   it("validates credits and limits genres to three", () => {
-    expect(creditSchema.safeParse({ name: "", role: "producer", detail: "" }).success).toBe(false);
-    expect(creditSchema.parse({ name: "Ola", role: "performer", detail: "bas" }).detail).toBe(
-      "bas",
+    const credit = { name: "Ola", role: "performer", detail: "bas", artistSlug: "" };
+    expect(creditSchema.safeParse({ ...credit, name: "" }).success).toBe(false);
+    expect(creditSchema.parse(credit).detail).toBe("bas");
+    expect(creditSchema.parse(credit).artistSlug).toBeNull();
+    // A linked profile address is normalized and must look like an address.
+    expect(creditSchema.parse({ ...credit, artistSlug: " Halda-Kolektyw " }).artistSlug).toBe(
+      "halda-kolektyw",
     );
+    expect(creditSchema.safeParse({ ...credit, artistSlug: "nie adres!" }).success).toBe(false);
     expect(genresSchema.safeParse(["1", "2", "3"]).success).toBe(true);
     expect(genresSchema.safeParse(["1", "2", "3", "4"]).success).toBe(false);
   });

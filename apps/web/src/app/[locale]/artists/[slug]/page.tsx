@@ -3,10 +3,10 @@ import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
-import { getArtistBySlug, isArtistMember } from "@/modules/artists";
+import { getArtistBySlug, getRelatedArtists, isArtistMember } from "@/modules/artists";
 import { getOptionalUser } from "@/modules/auth";
 import { getPublishedReleases } from "@/modules/catalog";
-import { Artwork, getImageSources } from "@/modules/images";
+import { Artwork, getImageSources, getImageSourcesMany } from "@/modules/images";
 import { getArtistFollow, LibraryButton } from "@/modules/library";
 
 export async function generateMetadata({
@@ -28,11 +28,35 @@ export default async function ArtistPage({ params }: PageProps<"/[locale]/artist
   const tReleases = await getTranslations("Releases");
   const tPlaces = await getTranslations("Places");
   const user = await getOptionalUser();
-  const [published, photo, follow] = await Promise.all([
+  const [published, photo, follow, related] = await Promise.all([
     getPublishedReleases(artist.id),
     getImageSources(artist.image_id),
     getArtistFollow(artist.id),
+    getRelatedArtists(artist.id),
   ]);
+  const covers = await getImageSourcesMany(
+    [...published.map((r) => r.artwork_image_id), ...related.map((a) => a.imageId)],
+    320,
+  );
+  const tRelated = await getTranslations("Artists.related");
+  const reason = (r: (typeof related)[number]) => {
+    const e = r.evidence;
+    switch (r.relation) {
+      case "collaborated":
+        return tRelated("collaborated", { track: String(e.track ?? "") });
+      case "shared_credit":
+        return tRelated("sharedCredit", {
+          role: String(e.role ?? "other"),
+          name: String(e.name ?? ""),
+        });
+      case "same_label":
+        return tRelated("sameLabel", { label: String(e.label ?? "") });
+      case "shared_audience":
+        return tRelated("sharedAudience", { count: Number(e.followers ?? 0) });
+      case "same_city":
+        return tRelated("sameCity", { city: String(e.city ?? "") });
+    }
+  };
 
   return (
     <section className="profile">
@@ -77,26 +101,67 @@ export default async function ArtistPage({ params }: PageProps<"/[locale]/artist
         <p className="profile__meta">{t("profile.since", { year: artist.formed_year })}</p>
       ) : null}
       <p className="profile__bio">{artist.bio ?? t("profile.noBio")}</p>
-      {published.length === 0 ? (
-        <p className="field__hint">{t("profile.noReleases")}</p>
-      ) : (
-        <ul className="artist-list">
-          {published.map((r) => (
-            <li key={r.id} className="artist-list__item">
-              <Link
-                className="artist-list__name"
-                href={{
-                  pathname: "/artists/[slug]/releases/[release]",
-                  params: { slug: artist.slug, release: r.slug },
-                }}
-              >
-                {r.title}
-              </Link>
-              <span className="field__hint">{tReleases(`types.${r.type}`)}</span>
-            </li>
-          ))}
-        </ul>
-      )}
+      <section aria-labelledby="discography" className="discover__section">
+        <h2 id="discography" className="section-title">
+          {t("profile.discography")}
+        </h2>
+        {published.length === 0 ? (
+          <p className="field__hint">{t("profile.noReleases")}</p>
+        ) : (
+          <ul className="release-grid">
+            {published.map((r) => (
+              <li key={r.id} className="release-card">
+                <Link
+                  href={{
+                    pathname: "/artists/[slug]/releases/[release]",
+                    params: { slug: artist.slug, release: r.slug },
+                  }}
+                  className="release-card__link"
+                >
+                  <Artwork
+                    image={r.artwork_image_id ? (covers.get(r.artwork_image_id) ?? null) : null}
+                    alt=""
+                    sizes="(min-width: 1024px) 14rem, 45vw"
+                  />
+                  <span className="release-card__title">{r.title}</span>
+                </Link>
+                <span className="release-card__artist">
+                  {tReleases(`types.${r.type}`)}
+                  {(r.release_date ?? r.publish_at)
+                    ? ` · ${(r.release_date ?? r.publish_at ?? "").slice(0, 4)}`
+                    : ""}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+      {related.length ? (
+        <section aria-labelledby="related" className="discover__section">
+          <h2 id="related" className="section-title">
+            {tRelated("title")}
+          </h2>
+          <ul className="artist-grid">
+            {related.map((a) => (
+              <li key={a.id} className="artist-card">
+                <Link
+                  href={{ pathname: "/artists/[slug]", params: { slug: a.slug } }}
+                  className="artist-card__link"
+                >
+                  <Artwork
+                    image={a.imageId ? (covers.get(a.imageId) ?? null) : null}
+                    alt=""
+                    sizes="8rem"
+                    className="artwork--round"
+                  />
+                  <span className="artist-card__name">{a.name}</span>
+                </Link>
+                <span className="release-card__reason">{reason(a)}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
       {user && (await isArtistMember(artist.id)) ? (
         <Link
           href={{ pathname: "/artists/[slug]/manage", params: { slug: artist.slug } }}

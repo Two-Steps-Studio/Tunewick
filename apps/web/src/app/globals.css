@@ -519,6 +519,33 @@ body {
   .recent-item {
     grid-template-columns: 0 minmax(0, 1fr) auto;
   }
+  .release-credits {
+    display: grid;
+    gap: var(--tk-space-3);
+  }
+  .release-credits__list {
+    display: grid;
+    gap: var(--tk-space-4);
+  }
+  .release-credits__track dt {
+    font-weight: 600;
+  }
+  .release-credits__track ul {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: var(--tk-space-1);
+    font-size: var(--tk-text-sm);
+  }
+  .release-credits a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .release-credits__role {
+    font-family: var(--tk-font-mono);
+    font-size: var(--tk-text-xs);
+    color: var(--text-muted);
+  }
   .library-track__by {
     display: block;
     font-size: var(--tk-text-sm);

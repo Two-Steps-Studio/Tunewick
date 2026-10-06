@@ -31,6 +31,12 @@ function toneWav(seconds: number) {
 async function readyRelease(page: Page) {
   const email = await createConfirmedUser(page, "publish-artist");
   const slug = `pub-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 5)}`;
+  // A second profile to credit (the producer has an artist page too).
+  await page.goto("/artysci/nowy");
+  await page.getByLabel("Nazwa artysty").fill(`Kopalnia ${slug}`);
+  await page.getByLabel("Adres profilu").fill(`${slug}-prod`);
+  await page.getByRole("button", { name: "Załóż profil" }).click();
+  await expect(page).toHaveURL(new RegExp(`/artysci/${slug}-prod/zarzadzaj$`));
   await page.goto("/artysci/nowy");
   // Unique per run: the local database is shared with other (and earlier) test runs.
   await page.getByLabel("Nazwa artysty").fill(`Familok ${slug}`);
@@ -44,6 +50,22 @@ async function readyRelease(page: Page) {
   await page.getByLabel("Tytuł utworu").fill("Nocna zmiana");
   await page.getByRole("button", { name: "Dodaj utwór" }).click();
   await expect(page.locator(".track-item__title")).toHaveText(["Nocna zmiana"]);
+
+  // Credits: one linked to a Tunewick profile, one only by name.
+  await page.getByText("Szczegóły: Nocna zmiana").click();
+  const track = page.locator(".track-item", { hasText: "Nocna zmiana" });
+  await track.getByLabel("Imię i nazwisko lub pseudonim").fill("Kopalnia");
+  await track.getByLabel("Rola").selectOption("producer");
+  await track.getByLabel("Profil w Tunewick (opcjonalnie)").fill("nie-ma-takiego-profilu");
+  await track.getByRole("button", { name: "Dodaj twórcę" }).click();
+  await expect(track.getByText("Nie ma aktywnego profilu artysty o takim adresie.")).toBeVisible();
+  await track.getByLabel("Profil w Tunewick (opcjonalnie)").fill(`${slug}-prod`);
+  await track.getByRole("button", { name: "Dodaj twórcę" }).click();
+  await expect(track.getByText(`Kopalnia → Kopalnia ${slug}`)).toBeVisible();
+  await track.getByLabel("Imię i nazwisko lub pseudonim").fill("Ola Nowak");
+  await track.getByLabel("Rola").selectOption("mastering_engineer");
+  await track.getByRole("button", { name: "Dodaj twórcę" }).click();
+  await expect(track.getByText("Ola Nowak", { exact: true })).toBeVisible();
 
   const rights = page.locator("form", {
     has: page.getByRole("button", { name: "Złóż oświadczenie" }),
@@ -146,6 +168,14 @@ test.describe("review and publishing", () => {
     await expect(listener.getByRole("img", { name: /^Okładka: Szychta/ })).toBeVisible();
     await expect(listener.getByText("1 utwór · 0:12")).toBeVisible();
     await expect(listener.getByText("Bez AI — utworzone przez ludzi.")).toBeVisible();
+    const credits = listener.locator("section", {
+      has: listener.getByRole("heading", { name: "Twórcy" }),
+    });
+    await expect(credits.getByRole("link", { name: "Kopalnia" })).toHaveAttribute(
+      "href",
+      `/artysci/${slug}-prod`,
+    );
+    await expect(credits.getByText("Ola Nowak")).toBeVisible();
     // A Free listener's page has no link to lossless files at all.
     expect(await listener.content()).not.toContain("lossless.flac");
 

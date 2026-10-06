@@ -44,7 +44,7 @@ export async function getReleaseForEditing(artistSlug: string, releaseSlug: stri
     supabase
       .from("tracks")
       .select(
-        "id, disc_number, track_number, title, isrc, explicit, ai_content, credits (id, name, role, detail)",
+        "id, disc_number, track_number, title, isrc, explicit, ai_content, credits (id, name, role, detail, artist:artists (slug, name))",
       )
       .eq("release_id", release.id)
       .order("disc_number")
@@ -69,7 +69,7 @@ export async function getPublishedReleases(artistId: string) {
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase
     .from("releases")
-    .select("id, slug, title, type, release_date")
+    .select("id, slug, title, type, release_date, publish_at, artwork_image_id")
     .eq("artist_id", artistId)
     .eq("status", "published")
     .lte("publish_at", new Date().toISOString())
@@ -120,7 +120,9 @@ export async function getPublicRelease(artistSlug: string, releaseSlug: string) 
 
   const { data: tracks, error } = await supabase
     .from("tracks")
-    .select("id, disc_number, track_number, title, duration_ms, explicit, ai_content")
+    .select(
+      "id, disc_number, track_number, title, duration_ms, explicit, ai_content, credits (id, name, role, detail, artist:artists (slug, name))",
+    )
     .eq("release_id", release.id)
     .order("disc_number")
     .order("track_number");

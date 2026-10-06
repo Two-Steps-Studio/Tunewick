@@ -17,6 +17,7 @@ export type ReleaseErrorCode =
   | "samplesDescriptionRequired"
   | "aiRequired"
   | "termsRequired"
+  | "artistNotFound"
   | "notEditable"
   | "forbidden"
   | "unexpected";
@@ -102,6 +103,14 @@ export const creditSchema = z.object({
   name: z.string().trim().min(1, { error: "nameRequired" }).max(120, { error: "nameRequired" }),
   role: z.enum(CREDIT_ROLES),
   detail: optional(z.string().max(120, { error: "lineTooLong" })),
+  /** Optional link to a Tunewick artist profile (its address, e.g. "halda-kolektyw"). */
+  artistSlug: optional(
+    z
+      .string()
+      .trim()
+      .toLowerCase()
+      .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, { error: "artistNotFound" }),
+  ),
 });
 
 export const genresSchema = z

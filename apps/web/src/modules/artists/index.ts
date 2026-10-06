@@ -1,4 +1,11 @@
-export { getArtistBySlug, getArtistForManagement, getMyArtists, isArtistMember } from "./queries";
+export {
+  getArtistBySlug,
+  getArtistForManagement,
+  getMyArtists,
+  getRelatedArtists,
+  isArtistMember,
+  type RelatedRelation,
+} from "./queries";
 export {
   AcceptInviteButton,
   ArtistInfoForm,

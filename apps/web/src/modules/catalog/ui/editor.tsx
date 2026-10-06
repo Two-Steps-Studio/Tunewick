@@ -249,6 +249,7 @@ interface TrackValues {
     name: string;
     role: (typeof CREDIT_ROLES)[number];
     detail: string | null;
+    artist: { slug: string; name: string } | null;
   }[];
 }
 
@@ -335,7 +336,10 @@ export function TrackItem({
           <ul className="artist-list">
             {track.credits.map((c) => (
               <li key={c.id} className="artist-list__item">
-                <span className="artist-list__name">{c.name}</span>
+                <span className="artist-list__name">
+                  {c.name}
+                  {c.artist ? ` → ${c.artist.name}` : ""}
+                </span>
                 <span className="field__hint">
                   {t(`creditRoles.${c.role}`)}
                   {c.detail ? ` · ${c.detail}` : ""}
@@ -366,6 +370,15 @@ export function TrackItem({
               name="detail"
               label={t("fields.creditDetail")}
               defaultValue={creditState.values?.detail}
+            />
+            <InputField
+              name="artistSlug"
+              label={t("fields.creditArtist")}
+              hint={t("fields.creditArtistHint")}
+              defaultValue={creditState.values?.artistSlug}
+              error={err(creditState.fieldErrors?.artistSlug)}
+              autoCapitalize="none"
+              spellCheck={false}
             />
             <Submit variant="quiet">{t("editor.addCredit")}</Submit>
           </form>

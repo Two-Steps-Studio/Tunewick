@@ -299,6 +299,19 @@ life; audited). Wrappers: `admin_grant_entitlement(user, plan, days | null, note
 plan, days, source, note)` (service role, `scripts/grant-plan.mjs`). The web app's
 `listenerEntitlement()` is `my_plan().max_quality_tier`.
 
+## Credits and the artist graph (implemented, M7)
+
+Credits may link a Tunewick artist (`credits.artist_id`, set from the profile address in the
+editor; only active profiles). `graph_edges` (public, derived) holds artist ↔ artist edges, both
+directions, rebuilt by `private.refresh_artist_graph()` from `private.public_tracks` whenever release
+or artist status changes: `collaborated` (a credit or featured link on a public track),
+`shared_credit` (the same person — normalized name — in the same role: producer, mixing,
+mastering, songwriting), `same_label`. Evidence (`derived_from`) always comes from one source row.
+`related_artists(artist)` adds live `shared_audience` (≥ 3 accounts follow both — a count only) and
+`same_city`, ranks collaboration > shared people > label > audience > city, and lists only artists
+with public music. The artist page shows the discography and related artists with these reasons;
+release pages show credits.
+
 ## Likes and follows (implemented, M5.1)
 
 `track_likes`, `release_likes`, `artist_follows` (PK `(user_id, subject)`, `user_id` defaults to

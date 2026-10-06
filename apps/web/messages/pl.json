@@ -325,7 +325,8 @@
       "manage": "Zarządzaj profilem",
       "noBio": "Ten artysta nie dodał jeszcze opisu.",
       "noReleases": "Brak opublikowanych wydawnictw.",
-      "followers": "{count, plural, =0 {Nikt jeszcze nie obserwuje} one {# osoba obserwuje} few {# osoby obserwują} many {# osób obserwuje} other {# osoby obserwuje}}"
+      "followers": "{count, plural, =0 {Nikt jeszcze nie obserwuje} one {# osoba obserwuje} few {# osoby obserwują} many {# osób obserwuje} other {# osoby obserwuje}}",
+      "discography": "Dyskografia"
     },
     "manage": {
       "title": "Zarządzaj: {name}",
@@ -362,6 +363,14 @@
       "unexpected": "Nie udało się zapisać. Spróbuj ponownie.",
       "voivodeshipInvalid": "Wybierz województwo z listy.",
       "cityTooLong": "Nazwa miejscowości może mieć do 80 znaków."
+    },
+    "related": {
+      "title": "Powiązani artyści",
+      "collaborated": "Współpraca: „{track}”",
+      "sharedCredit": "{role, select, producer {Ten sam producent} mixing_engineer {Ten sam realizator miksu} mastering_engineer {Ten sam mastering} songwriter {Ten sam autor piosenek} composer {Ten sam kompozytor} lyricist {Ten sam autor tekstów} other {Ten sam twórca}}: {name}",
+      "sameLabel": "Ta sama wytwórnia: {label}",
+      "sharedAudience": "{count, plural, few {# osoby obserwują oboje} many {# osób obserwuje oboje} other {# osoby obserwują oboje}}",
+      "sameCity": "Też z: {city}"
     }
   },
   "Releases": {
@@ -414,7 +423,9 @@
       "isrc": "ISRC (opcjonalnie)",
       "creditName": "Imię i nazwisko lub pseudonim",
       "creditRole": "Rola",
-      "creditDetail": "Szczegóły (np. instrument)"
+      "creditDetail": "Szczegóły (np. instrument)",
+      "creditArtist": "Profil w Tunewick (opcjonalnie)",
+      "creditArtistHint": "Adres profilu artysty, np. halda-kolektyw. Połączy utwór z jego profilem i pomoże słuchaczom trafić do powiązanych artystów."
     },
     "types": {
       "single": "Singiel",
@@ -472,7 +483,8 @@
       "cmoNoneExclusive": "„Nie, nikt nie należy” nie może być zaznaczone razem z organizacją.",
       "samplesDescriptionRequired": "Opisz sample i zgody.",
       "aiRequired": "Określ udział AI.",
-      "termsRequired": "Aby złożyć oświadczenie, zaakceptuj warunki."
+      "termsRequired": "Aby złożyć oświadczenie, zaakceptuj warunki.",
+      "artistNotFound": "Nie ma aktywnego profilu artysty o takim adresie."
     },
     "rights": {
       "title": "Prawa do wydawnictwa",
@@ -605,7 +617,8 @@
       "ai_assisted": "Utworzone z pomocą AI.",
       "ai_generated": "Wygenerowane przez AI."
     },
-    "coverAlt": "Okładka: {title} — {artist}"
+    "coverAlt": "Okładka: {title} — {artist}",
+    "credits": "Twórcy"
   },
   "Moderation": {
     "title": "Moderacja",

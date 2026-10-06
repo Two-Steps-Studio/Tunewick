@@ -186,11 +186,26 @@ export async function addCredit(
   _prev: ReleaseFormState,
   formData: FormData,
 ): Promise<ReleaseFormState> {
-  const values = read(formData, ["name", "role", "detail"]);
+  const values = read(formData, ["name", "role", "detail", "artistSlug"]);
   const parsed = creditSchema.safeParse(values);
   if (!parsed.success) return { fieldErrors: fieldErrors(parsed.error.issues), values };
   const supabase = await createSupabaseServerClient();
-  const { error } = await supabase.from("credits").insert({ track_id: trackId, ...parsed.data });
+  const { artistSlug, ...credit } = parsed.data;
+  let artistId: string | null = null;
+  if (artistSlug) {
+    // Only active, public profiles can be linked; the link feeds related artists (M7).
+    const { data: artist } = await supabase
+      .from("artists")
+      .select("id")
+      .eq("slug", artistSlug)
+      .eq("status", "active")
+      .maybeSingle();
+    if (!artist) return { fieldErrors: { artistSlug: "artistNotFound" }, values };
+    artistId = artist.id;
+  }
+  const { error } = await supabase
+    .from("credits")
+    .insert({ track_id: trackId, ...credit, artist_id: artistId });
   if (error) return releaseDbError(error);
   refresh();
   return { saved: true };
