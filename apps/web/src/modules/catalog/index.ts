@@ -1,4 +1,9 @@
-export { getArtistReleases, getPublishedReleases, getReleaseForEditing } from "./queries";
+export {
+  getArtistReleases,
+  getLatestDeclaration,
+  getPublishedReleases,
+  getReleaseForEditing,
+} from "./queries";
 export {
   AddTrackForm,
   DeleteReleaseButton,
@@ -8,3 +13,5 @@ export {
   TrackItem,
 } from "./ui/editor";
 export { ArtistReleaseList } from "./ui/release-list";
+export { DeclarationSummary, ReadinessChecklist } from "./ui/readiness";
+export { RightsForm } from "./ui/rights";

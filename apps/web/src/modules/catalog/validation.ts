@@ -11,6 +11,12 @@ export type ReleaseErrorCode =
   | "isrcInvalid"
   | "nameRequired"
   | "tooManyGenres"
+  | "masterRequired"
+  | "cmoRequired"
+  | "cmoNoneExclusive"
+  | "samplesDescriptionRequired"
+  | "aiRequired"
+  | "termsRequired"
   | "notEditable"
   | "forbidden"
   | "unexpected";
@@ -101,6 +107,40 @@ export const creditSchema = z.object({
 export const genresSchema = z
   .array(z.coerce.number().int().positive())
   .max(3, { error: "tooManyGenres" });
+
+/** Artist terms version recorded with each declaration (draft until the legal review). */
+export const ARTIST_TERMS_VERSION = "draft-2026-10";
+export const CMO_OPTIONS = [
+  "zaiks",
+  "stoart",
+  "sawp",
+  "zpav",
+  "other_cmo",
+  "none",
+  "unknown",
+] as const;
+
+/** Rights declaration (docs/licensing.md §3); mirrors the database constraints. */
+export const rightsSchema = z
+  .object({
+    ownsMaster: z.literal("on", { error: "masterRequired" }),
+    controlsComposition: z
+      .literal("on")
+      .optional()
+      .transform((v) => v === "on"),
+    cmo: z
+      .array(z.enum(CMO_OPTIONS))
+      .min(1, { error: "cmoRequired" })
+      .refine((a) => !a.includes("none") || a.length === 1, { error: "cmoNoneExclusive" }),
+    samples: z.enum(["none", "cleared"]),
+    samplesDescription: z.string().trim().max(2000),
+    aiContent: z.enum(["human", "ai_assisted", "ai_generated"], { error: "aiRequired" }),
+    acceptTerms: z.literal("on", { error: "termsRequired" }),
+  })
+  .refine((v) => v.samples === "none" || v.samplesDescription.length > 0, {
+    error: "samplesDescriptionRequired",
+    path: ["samplesDescription"],
+  });
 
 /** First error code per field. */
 export function fieldErrors(issues: { path: PropertyKey[]; message: string }[]) {

@@ -373,7 +373,60 @@
       "tooManyGenres": "Najwyżej 3 gatunki.",
       "notEditable": "Tego wydawnictwa nie można już edytować.",
       "forbidden": "Nie masz uprawnień do tej operacji.",
-      "unexpected": "Nie udało się zapisać. Spróbuj ponownie."
+      "unexpected": "Nie udało się zapisać. Spróbuj ponownie.",
+      "masterRequired": "Tunewick przyjmuje tylko nagrania, do których masz prawa.",
+      "cmoRequired": "Zaznacz odpowiedź (również „Nie” albo „Nie wiem”).",
+      "cmoNoneExclusive": "„Nie, nikt nie należy” nie może być zaznaczone razem z organizacją.",
+      "samplesDescriptionRequired": "Opisz sample i zgody.",
+      "aiRequired": "Określ udział AI.",
+      "termsRequired": "Aby złożyć oświadczenie, zaakceptuj warunki."
+    },
+    "rights": {
+      "title": "Prawa do wydawnictwa",
+      "lead": "Oświadczenie zapisujemy na stałe jako dowód. Kolejne oświadczenie zastępuje poprzednie, ale go nie usuwa.",
+      "legalNote": "Treść oświadczenia i warunków dla artystów jest wersją roboczą i czeka na weryfikację prawną.",
+      "ownsMaster": "Mam (lub mamy) prawa do nagrań wszystkich utworów z tego wydawnictwa.",
+      "controlsComposition": "Autorzy muzyki i tekstów to my albo mamy ich zgodę na udostępnienie utworów w Tunewick.",
+      "cmoQuestion": "Czy któryś z autorów lub wykonawców należy do organizacji zbiorowego zarządzania?",
+      "cmo": {
+        "zaiks": "ZAiKS",
+        "stoart": "STOART",
+        "sawp": "SAWP",
+        "zpav": "ZPAV",
+        "other_cmo": "Inna organizacja",
+        "none": "Nie, nikt nie należy",
+        "unknown": "Nie wiem"
+      },
+      "samplesQuestion": "Sample i fragmenty cudzych nagrań",
+      "samples": {
+        "none": "Nie ma żadnych sampli",
+        "cleared": "Są sample — mam zgodę na ich użycie"
+      },
+      "samplesDescription": "Opisz sample i zgody (autor, źródło, rodzaj zgody)",
+      "aiContent": "Udział sztucznej inteligencji",
+      "territories": "Dostępność: {territory} (ustawiona w szczegółach wydawnictwa)",
+      "acceptTerms": "Akceptuję warunki dla artystów (wersja {version}).",
+      "submit": "Złóż oświadczenie",
+      "current": "Złożone oświadczenie",
+      "declaredAt": "Złożone {date}",
+      "newDeclaration": "Złóż nowe oświadczenie",
+      "summary": {
+        "master": "Prawa do nagrań",
+        "composition": "Prawa autorskie / zgody",
+        "cmo": "Organizacje",
+        "samples": "Sample",
+        "ai": "AI",
+        "yes": "Tak",
+        "no": "Nie"
+      }
+    },
+    "readiness": {
+      "title": "Gotowość do wysłania",
+      "tracks": "Co najmniej jeden utwór",
+      "ai": "Określony udział AI",
+      "rights": "Złożone oświadczenie o prawach",
+      "audio": "Nagrania — przesyłanie plików pojawi się w kolejnym etapie",
+      "note": "Wysyłka do weryfikacji będzie możliwa, gdy uruchomimy przesyłanie nagrań."
     }
   }
 }

@@ -5,6 +5,7 @@ import { getLocale } from "next-intl/server";
 import { redirect } from "@/i18n/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import {
+  ARTIST_TERMS_VERSION,
   creditSchema,
   fieldErrors,
   genresSchema,
@@ -12,6 +13,7 @@ import {
   releaseDbError,
   releaseDetailsSchema,
   type ReleaseFormState,
+  rightsSchema,
   trackSchema,
 } from "./validation";
 
@@ -208,4 +210,57 @@ export async function deleteRelease(releaseId: string, artistSlug: string): Prom
     href: { pathname: "/artists/[slug]/manage", params: { slug: artistSlug } },
     locale: await getLocale(),
   });
+}
+
+export async function declareRights(
+  releaseId: string,
+  _prev: ReleaseFormState,
+  formData: FormData,
+): Promise<ReleaseFormState> {
+  const raw = {
+    ownsMaster: formData.get("ownsMaster") ?? undefined,
+    controlsComposition: formData.get("controlsComposition") ?? undefined,
+    cmo: formData.getAll("cmo").map(String),
+    samples: String(formData.get("samples") ?? "none"),
+    samplesDescription: String(formData.get("samplesDescription") ?? ""),
+    aiContent: String(formData.get("aiContent") ?? ""),
+    acceptTerms: formData.get("acceptTerms") ?? undefined,
+  };
+  // Echoed back on errors because React resets the form after an action.
+  const values = {
+    ownsMaster: raw.ownsMaster ? "on" : "",
+    controlsComposition: raw.controlsComposition ? "on" : "",
+    cmo: raw.cmo.join(","),
+    samples: raw.samples,
+    samplesDescription: raw.samplesDescription,
+    aiContent: raw.aiContent,
+    acceptTerms: raw.acceptTerms ? "on" : "",
+  };
+  const parsed = rightsSchema.safeParse(raw);
+  if (!parsed.success) return { fieldErrors: fieldErrors(parsed.error.issues), values };
+  const d = parsed.data;
+
+  const supabase = await createSupabaseServerClient();
+  // Territories are taken from the release so the declaration matches what will be published.
+  const { data: release } = await supabase
+    .from("releases")
+    .select("territories")
+    .eq("id", releaseId)
+    .maybeSingle();
+  if (!release) return { error: "forbidden", values };
+
+  const { error } = await supabase.from("rights_declarations").insert({
+    release_id: releaseId,
+    owns_master: true,
+    controls_composition: d.controlsComposition,
+    cmo_memberships: d.cmo,
+    samples: d.samples,
+    samples_description: d.samples === "cleared" ? d.samplesDescription : null,
+    ai_content: d.aiContent,
+    territories: release.territories,
+    terms_version: ARTIST_TERMS_VERSION,
+  });
+  if (error) return { ...releaseDbError(error), values };
+  refresh();
+  return { saved: true };
 }

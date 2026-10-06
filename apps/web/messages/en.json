@@ -373,7 +373,60 @@
       "tooManyGenres": "At most 3 genres.",
       "notEditable": "This release can no longer be edited.",
       "forbidden": "You are not allowed to do this.",
-      "unexpected": "Could not save. Please try again."
+      "unexpected": "Could not save. Please try again.",
+      "masterRequired": "Tunewick only accepts recordings you hold the rights to.",
+      "cmoRequired": "Choose an answer (including “No” or “I don’t know”).",
+      "cmoNoneExclusive": "“No, nobody is a member” cannot be combined with an organization.",
+      "samplesDescriptionRequired": "Describe the samples and permissions.",
+      "aiRequired": "Declare AI involvement.",
+      "termsRequired": "Accept the terms to submit the declaration."
+    },
+    "rights": {
+      "title": "Rights to this release",
+      "lead": "The declaration is stored permanently as evidence. A new declaration supersedes the previous one without deleting it.",
+      "legalNote": "The declaration and artist terms are drafts pending legal review.",
+      "ownsMaster": "I (or we) own the rights to the recordings of all tracks on this release.",
+      "controlsComposition": "We are the authors of the music and lyrics, or we have their consent to make the works available on Tunewick.",
+      "cmoQuestion": "Is any author or performer a member of a collective management organization?",
+      "cmo": {
+        "zaiks": "ZAiKS",
+        "stoart": "STOART",
+        "sawp": "SAWP",
+        "zpav": "ZPAV",
+        "other_cmo": "Other organization",
+        "none": "No, nobody is a member",
+        "unknown": "I don’t know"
+      },
+      "samplesQuestion": "Samples and excerpts of other recordings",
+      "samples": {
+        "none": "There are no samples",
+        "cleared": "There are samples — I have permission to use them"
+      },
+      "samplesDescription": "Describe the samples and permissions (author, source, type of permission)",
+      "aiContent": "Artificial intelligence involvement",
+      "territories": "Availability: {territory} (set in the release details)",
+      "acceptTerms": "I accept the artist terms (version {version}).",
+      "submit": "Submit declaration",
+      "current": "Submitted declaration",
+      "declaredAt": "Submitted {date}",
+      "newDeclaration": "Submit a new declaration",
+      "summary": {
+        "master": "Recording rights",
+        "composition": "Authorship / consent",
+        "cmo": "Organizations",
+        "samples": "Samples",
+        "ai": "AI",
+        "yes": "Yes",
+        "no": "No"
+      }
+    },
+    "readiness": {
+      "title": "Ready to submit",
+      "tracks": "At least one track",
+      "ai": "AI involvement declared",
+      "rights": "Rights declaration submitted",
+      "audio": "Recordings — file upload arrives in the next stage",
+      "note": "Submitting for review becomes possible once recording upload launches."
     }
   }
 }

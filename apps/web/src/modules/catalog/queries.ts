@@ -77,3 +77,19 @@ export async function getPublishedReleases(artistId: string) {
   if (error) throw error;
   return data;
 }
+
+/** The current (latest) rights declaration of a release; earlier ones stay as history. */
+export async function getLatestDeclaration(releaseId: string) {
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase
+    .from("rights_declarations")
+    .select(
+      "id, owns_master, controls_composition, cmo_memberships, samples, samples_description, ai_content, territories, terms_version, declared_at",
+    )
+    .eq("release_id", releaseId)
+    .order("declared_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  if (error) throw error;
+  return data;
+}

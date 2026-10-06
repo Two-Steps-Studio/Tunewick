@@ -92,7 +92,7 @@ select throws_ok(
 -- ---------------------------------------------------------------- moderator (f4)
 set local request.jwt.claims = '{"sub": "00000000-0000-0000-0000-0000000000f4", "role": "authenticated"}';
 select is((select count(*)::int from releases where id = (select id from ids where name = 'release')), 1, 'moderators see drafts');
-select is((select count(*)::int from rights_declarations), 1, 'moderators see declarations');
+select is((select count(*)::int from rights_declarations where release_id = (select id from ids where name = 'release')), 1, 'moderators see declarations');
 
 -- ---------------------------------------------------------------- anonymous
 set local role anon;

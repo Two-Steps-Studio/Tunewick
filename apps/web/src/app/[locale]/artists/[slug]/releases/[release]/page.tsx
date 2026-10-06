@@ -6,10 +6,14 @@ import type { Locale } from "@/i18n/routing";
 import { requireUser } from "@/modules/auth";
 import {
   AddTrackForm,
+  DeclarationSummary,
   DeleteReleaseButton,
   GenresForm,
+  getLatestDeclaration,
   getReleaseForEditing,
+  ReadinessChecklist,
   ReleaseDetailsForm,
+  RightsForm,
   TrackItem,
 } from "@/modules/catalog";
 
@@ -38,6 +42,9 @@ export default async function ReleaseEditorPage({
 
   const t = await getTranslations("Releases");
   const { artist, release, editable, tracks, genreIds, allGenres } = data;
+  const declaration = await getLatestDeclaration(release.id);
+  const territory = (["WORLD", "EU", "PL"] as const).find((v) => release.territories.includes(v));
+  const territoryLabel = territory ? t(`territories.${territory}`) : release.territories.join(", ");
 
   return (
     <section className="auth-page">
@@ -94,6 +101,38 @@ export default async function ReleaseEditorPage({
             </h2>
             <GenresForm releaseId={release.id} selected={genreIds} genres={allGenres} />
           </section>
+        ) : null}
+
+        <section className="settings-form__group" aria-labelledby="rights">
+          <h2 id="rights" className="section-title">
+            {t("rights.title")}
+          </h2>
+          {declaration ? <DeclarationSummary declaration={declaration} /> : null}
+          {editable && !declaration ? (
+            <RightsForm
+              releaseId={release.id}
+              defaultAi={release.ai_content}
+              territoryLabel={territoryLabel}
+            />
+          ) : null}
+          {editable && declaration ? (
+            <details className="track-item__details">
+              <summary>{t("rights.newDeclaration")}</summary>
+              <RightsForm
+                releaseId={release.id}
+                defaultAi={release.ai_content}
+                territoryLabel={territoryLabel}
+              />
+            </details>
+          ) : null}
+        </section>
+
+        {editable ? (
+          <ReadinessChecklist
+            hasTracks={tracks.length > 0}
+            aiDeclared={release.ai_content !== "unknown"}
+            rightsDeclared={Boolean(declaration)}
+          />
         ) : null}
 
         {release.status === "draft" ? (

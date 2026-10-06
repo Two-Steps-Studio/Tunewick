@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   creditSchema,
+  rightsSchema,
   genresSchema,
   releaseDbError,
   releaseDetailsSchema,
@@ -71,5 +72,35 @@ describe("releaseDbError", () => {
       releaseDbError({ code: "23514", message: "a release can have at most 3 genres" }),
     ).toEqual({ error: "tooManyGenres" });
     expect(releaseDbError({ code: "42501" })).toEqual({ error: "forbidden" });
+  });
+});
+
+describe("rightsSchema", () => {
+  const valid = {
+    ownsMaster: "on",
+    cmo: ["none"],
+    samples: "none",
+    samplesDescription: "",
+    aiContent: "human",
+    acceptTerms: "on",
+  };
+
+  it("accepts a complete declaration", () => {
+    const r = rightsSchema.parse(valid);
+    expect(r.controlsComposition).toBe(false);
+    expect(r.cmo).toEqual(["none"]);
+  });
+
+  it("requires master rights, an answer about organizations, terms and a declared AI value", () => {
+    const issues = (input: object) => {
+      const r = rightsSchema.safeParse(input);
+      return r.success ? [] : r.error.issues.map((i) => i.message);
+    };
+    expect(issues({ ...valid, ownsMaster: undefined })).toContain("masterRequired");
+    expect(issues({ ...valid, cmo: [] })).toContain("cmoRequired");
+    expect(issues({ ...valid, cmo: ["none", "zaiks"] })).toContain("cmoNoneExclusive");
+    expect(issues({ ...valid, acceptTerms: undefined })).toContain("termsRequired");
+    expect(issues({ ...valid, aiContent: "unknown" })).toContain("aiRequired");
+    expect(issues({ ...valid, samples: "cleared" })).toContain("samplesDescriptionRequired");
   });
 });
