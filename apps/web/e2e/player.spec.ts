@@ -4,6 +4,7 @@ import { expect, test, type Page } from "@playwright/test";
 // (pnpm dev:media, Docker). The web server runs with TUNEWICK_DEV_PAGES=1.
 
 interface Debug {
+  capabilities: { mse: boolean; decodes: Record<string, boolean> } | null;
   status: string;
   index: number;
   tier?: string;
@@ -28,6 +29,21 @@ async function playAlbum(page: Page, setting: string, entitlement = "hires") {
   await page.getByRole("button", { name: "Play album" }).click();
   await expect.poll(async () => (await debug(page)).status, { timeout: 15_000 }).toBe("playing");
 }
+
+test("this browser decodes every delivery format", async ({ page }) => {
+  await playAlbum(page, "high");
+  const { capabilities } = await debug(page);
+  expect(capabilities).toMatchObject({
+    mse: true,
+    decodes: {
+      mseAac: true,
+      mseFlac: true,
+      nativeAac: true,
+      nativeFlac: true,
+      nativeFlacHiRes: true,
+    },
+  });
+});
 
 const player = (page: Page) => page.getByRole("region", { name: "Odtwarzacz" });
 

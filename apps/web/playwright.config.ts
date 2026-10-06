@@ -8,6 +8,8 @@ export default defineConfig({
   globalSetup: "./e2e/global-setup.ts",
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
+  // On CI failures also become GitHub annotations (readable without signing in to see logs).
+  reporter: process.env.CI ? [["github"], ["list"], ["html", { open: "never" }]] : "list",
   retries: process.env.CI ? 1 : 0,
   // Polish browser locale: the proxy redirects English browsers from / to /en (locale detection).
   use: { baseURL: `http://localhost:${port}`, trace: "on-first-retry", locale: "pl-PL" },
