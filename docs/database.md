@@ -299,6 +299,15 @@ life; audited). Wrappers: `admin_grant_entitlement(user, plan, days | null, note
 plan, days, source, note)` (service role, `scripts/grant-plan.mjs`). The web app's
 `listenerEntitlement()` is `my_plan().max_quality_tier`.
 
+## Likes and follows (implemented, M5.1)
+
+`track_likes`, `release_likes`, `artist_follows` (PK `(user_id, subject)`, `user_id` defaults to
+`auth.uid()` and is not insertable). RLS: owners read/insert/delete their own rows; inserts only for
+public music (`release_is_public`) and active artists. Who follows whom is private;
+`artist_follower_count(artist)` is the one public number (a real count). The library page lists
+liked tracks (played as one queue in like order), liked releases and followed artists; music that
+stops being public drops out through RLS.
+
 ## Promo codes (implemented, M9.2)
 
 `public.promo_campaigns` (dates, `active`, `max_redemptions_total`, `per_user_limit` per

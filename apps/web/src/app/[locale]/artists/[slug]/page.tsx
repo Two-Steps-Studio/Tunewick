@@ -7,6 +7,7 @@ import { getArtistBySlug, isArtistMember } from "@/modules/artists";
 import { getOptionalUser } from "@/modules/auth";
 import { getPublishedReleases } from "@/modules/catalog";
 import { Artwork, getImageSources } from "@/modules/images";
+import { getArtistFollow, LibraryButton } from "@/modules/library";
 
 export async function generateMetadata({
   params,
@@ -27,9 +28,10 @@ export default async function ArtistPage({ params }: PageProps<"/[locale]/artist
   const tReleases = await getTranslations("Releases");
   const tPlaces = await getTranslations("Places");
   const user = await getOptionalUser();
-  const [published, photo] = await Promise.all([
+  const [published, photo, follow] = await Promise.all([
     getPublishedReleases(artist.id),
     getImageSources(artist.image_id),
+    getArtistFollow(artist.id),
   ]);
 
   return (
@@ -59,6 +61,18 @@ export default async function ArtistPage({ params }: PageProps<"/[locale]/artist
             .join(" · ")}
         </p>
       ) : null}
+      <div className="profile__follow">
+        <p className="profile__meta">{t("profile.followers", { count: follow.count })}</p>
+        {follow.following === null ? null : (
+          <LibraryButton
+            kind="artist"
+            id={artist.id}
+            initial={follow.following}
+            name={artist.name}
+            variant="text"
+          />
+        )}
+      </div>
       {artist.formed_year ? (
         <p className="profile__meta">{t("profile.since", { year: artist.formed_year })}</p>
       ) : null}

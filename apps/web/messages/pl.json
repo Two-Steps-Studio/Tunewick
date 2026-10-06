@@ -92,8 +92,27 @@
   },
   "Library": {
     "title": "Biblioteka",
-    "lead": "Polubione utwory, wydawnictwa, playlisty i historia słuchania.",
-    "empty": "Biblioteka będzie dostępna po zalogowaniu. Konta uruchomimy wkrótce."
+    "lead": "Twoja muzyka: polubione utwory i wydawnictwa oraz artyści, których obserwujesz.",
+    "empty": "Nic tu jeszcze nie ma. Polub utwór albo wydawnictwo i zacznij obserwować artystów — pojawią się tutaj.",
+    "signedOut": "Zaloguj się, żeby zapisywać utwory, wydawnictwa i artystów.",
+    "signIn": "Zaloguj się",
+    "likedTracks": "Polubione utwory ({count})",
+    "likedReleases": "Polubione wydawnictwa",
+    "followedArtists": "Obserwowani artyści",
+    "play": "Odtwórz polubione",
+    "playLiked": "Odtwórz polubione utwory",
+    "playTrack": "Odtwórz: {title}",
+    "actions": {
+      "like": "Polub: {name}",
+      "unlike": "Usuń z polubionych: {name}",
+      "likeShort": "Polub",
+      "liked": "Polubione",
+      "follow": "Obserwuj: {name}",
+      "unfollow": "Przestań obserwować: {name}",
+      "followShort": "Obserwuj",
+      "following": "Obserwujesz",
+      "failed": "Nie udało się zapisać. Spróbuj ponownie."
+    }
   },
   "NotFound": {
     "title": "Nie ma takiej strony",
@@ -295,7 +314,8 @@
       "since": "Od {year}",
       "manage": "Zarządzaj profilem",
       "noBio": "Ten artysta nie dodał jeszcze opisu.",
-      "noReleases": "Brak opublikowanych wydawnictw."
+      "noReleases": "Brak opublikowanych wydawnictw.",
+      "followers": "{count, plural, =0 {Nikt jeszcze nie obserwuje} one {# osoba obserwuje} few {# osoby obserwują} many {# osób obserwuje} other {# osoby obserwuje}}"
     },
     "manage": {
       "title": "Zarządzaj: {name}",

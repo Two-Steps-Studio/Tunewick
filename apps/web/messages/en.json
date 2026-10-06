@@ -92,8 +92,27 @@
   },
   "Library": {
     "title": "Library",
-    "lead": "Liked tracks, releases, playlists and listening history.",
-    "empty": "Your library will be available after signing in. Accounts are coming soon."
+    "lead": "Your music: liked tracks and releases, and the artists you follow.",
+    "empty": "Nothing here yet. Like a track or a release and follow artists — they will show up here.",
+    "signedOut": "Sign in to save tracks, releases and artists.",
+    "signIn": "Sign in",
+    "likedTracks": "Liked tracks ({count})",
+    "likedReleases": "Liked releases",
+    "followedArtists": "Followed artists",
+    "play": "Play liked",
+    "playLiked": "Play liked tracks",
+    "playTrack": "Play: {title}",
+    "actions": {
+      "like": "Like: {name}",
+      "unlike": "Remove from liked: {name}",
+      "likeShort": "Like",
+      "liked": "Liked",
+      "follow": "Follow: {name}",
+      "unfollow": "Unfollow: {name}",
+      "followShort": "Follow",
+      "following": "Following",
+      "failed": "Could not save. Please try again."
+    }
   },
   "NotFound": {
     "title": "This page does not exist",
@@ -295,7 +314,8 @@
       "since": "Since {year}",
       "manage": "Manage profile",
       "noBio": "This artist has not added a description yet.",
-      "noReleases": "No published releases."
+      "noReleases": "No published releases.",
+      "followers": "{count, plural, =0 {No followers yet} one {# follower} other {# followers}}"
     },
     "manage": {
       "title": "Manage: {name}",

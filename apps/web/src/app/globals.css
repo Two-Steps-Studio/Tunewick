@@ -302,11 +302,11 @@ body {
     color: var(--on-accent);
   }
   /* Previous is reachable from the OS media controls on phones; keep the bar uncluttered. */
-  .player-button:first-child {
+  .player-bar__controls .player-button:first-child {
     display: none;
   }
   @media (min-width: 768px) {
-    .player-button:first-child {
+    .player-bar__controls .player-button:first-child {
       display: inline-grid;
     }
   }
@@ -513,6 +513,37 @@ body {
     min-height: 3.25rem;
     border-bottom: 1px solid var(--line);
   }
+  .release-tracks__item--likes {
+    grid-template-columns: 2rem minmax(0, 1fr) auto 2.75rem 2.75rem;
+  }
+  .library-track__by {
+    display: block;
+    font-size: var(--tk-text-sm);
+    color: var(--text-muted);
+  }
+  .library-button[aria-pressed="true"] {
+    color: var(--accent);
+  }
+  :root[data-theme="light"] .library-button[aria-pressed="true"] {
+    color: var(--text);
+  }
+  .library-button--text {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--tk-space-2);
+  }
+  .library-button__wrap {
+    display: inline-grid;
+    gap: var(--tk-space-1);
+    justify-items: start;
+  }
+  .profile__follow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--tk-space-3);
+  }
+
   .release-tracks__number,
   .release-tracks__duration {
     font-family: var(--tk-font-mono);

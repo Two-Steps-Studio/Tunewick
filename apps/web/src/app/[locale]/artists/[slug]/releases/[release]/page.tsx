@@ -6,6 +6,7 @@ import type { Locale } from "@/i18n/routing";
 import { getPlayableTracks, listenerEntitlement } from "@/modules/audio";
 import { getPublicRelease } from "@/modules/catalog";
 import { Artwork, getImageSources } from "@/modules/images";
+import { getReleaseLikes, LibraryButton } from "@/modules/library";
 import { PlayButton } from "@/modules/player";
 
 type Params = PageProps<"/[locale]/artists/[slug]/releases/[release]">["params"];
@@ -41,9 +42,13 @@ export default async function ReleasePage({
   const t = await getTranslations("Release");
   const tReleases = await getTranslations("Releases");
   const entitlement = await listenerEntitlement();
-  const [playable, cover] = await Promise.all([
+  const [playable, cover, likes] = await Promise.all([
     getPlayableTracks(release.id, tracks, artist.name, entitlement),
     getImageSources(release.artwork_image_id, 1280),
+    getReleaseLikes(
+      release.id,
+      tracks.map((track) => track.id),
+    ),
   ]);
   const indexOf = (trackId: string) => playable.findIndex((p) => p.id === trackId);
   const total = tracks.reduce((sum, track) => sum + (track.duration_ms ?? 0), 0);
@@ -89,6 +94,15 @@ export default async function ReleasePage({
           ) : (
             <p className="field__hint">{t("notPlayable")}</p>
           )}
+          {likes ? (
+            <LibraryButton
+              kind="release"
+              id={release.id}
+              initial={likes.release}
+              name={release.title}
+              variant="text"
+            />
+          ) : null}
         </div>
       </header>
 
@@ -96,7 +110,12 @@ export default async function ReleasePage({
         {tracks.map((track) => {
           const index = indexOf(track.id);
           return (
-            <li key={track.id} className="release-tracks__item">
+            <li
+              key={track.id}
+              className={
+                likes ? "release-tracks__item release-tracks__item--likes" : "release-tracks__item"
+              }
+            >
               <span className="release-tracks__number">{track.track_number}</span>
               <span className="release-tracks__title">
                 {track.title}
@@ -124,6 +143,14 @@ export default async function ReleasePage({
               ) : (
                 <span />
               )}
+              {likes ? (
+                <LibraryButton
+                  kind="track"
+                  id={track.id}
+                  initial={likes.tracks.has(track.id)}
+                  name={track.title}
+                />
+              ) : null}
             </li>
           );
         })}

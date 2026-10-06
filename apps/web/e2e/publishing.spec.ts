@@ -183,6 +183,39 @@ test.describe("review and publishing", () => {
     await expect(artistBar.locator(".quality-chip")).toContainText("Lossless");
     expect(await page.content()).toContain("lossless.flac");
 
+    // Library: like the track and the release, follow the artist; all of it is in the library.
+    await expect(listener.getByRole("button", { name: /^Polub/ })).toHaveCount(0);
+    await page.getByRole("button", { name: "Polub: Nocna zmiana" }).click();
+    await expect(
+      page.getByRole("button", { name: "Usuń z polubionych: Nocna zmiana" }),
+    ).toHaveAttribute("aria-pressed", "true");
+    await page.getByRole("button", { name: "Polub", exact: true }).click();
+    await expect(page.getByRole("button", { name: "Polubione", exact: true })).toBeVisible();
+    await page.goto(`/artysci/${slug}`);
+    await expect(page.getByText("Nikt jeszcze nie obserwuje")).toBeVisible();
+    await page.getByRole("button", { name: "Obserwuj", exact: true }).click();
+    await expect(page.getByText("1 osoba obserwuje")).toBeVisible();
+    await expect(page.getByRole("button", { name: "Obserwujesz" })).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
+
+    await page.goto("/biblioteka");
+    await expect(page.getByRole("heading", { name: "Polubione utwory (1)" })).toBeVisible();
+    await expect(page.locator(".release-card", { hasText: "Szychta" })).toBeVisible();
+    await expect(page.locator(".artist-card", { hasText: `Familok ${slug}` })).toBeVisible();
+    await page.getByRole("button", { name: "Odtwórz polubione utwory" }).click();
+    await expect(
+      page.getByRole("region", { name: "Odtwarzacz" }).getByText("Nocna zmiana"),
+    ).toBeVisible();
+    await page.getByRole("button", { name: "Usuń z polubionych: Nocna zmiana" }).click();
+    await page.reload();
+    await expect(page.getByRole("heading", { name: /^Polubione utwory/ })).toHaveCount(0);
+
+    // Signed out, the library asks to sign in.
+    await listener.goto("/biblioteka");
+    await expect(listener.getByRole("link", { name: "Zaloguj się" }).last()).toBeVisible();
+
     await anonymous.close();
     await staffContext.close();
   });

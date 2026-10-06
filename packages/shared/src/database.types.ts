@@ -3,6 +3,32 @@ export type Json = string | number | boolean | null | { [key: string]: Json | un
 export type Database = {
   public: {
     Tables: {
+      artist_follows: {
+        Row: {
+          artist_id: string;
+          created_at: string;
+          user_id: string;
+        };
+        Insert: {
+          artist_id: string;
+          created_at?: string;
+          user_id?: string;
+        };
+        Update: {
+          artist_id?: string;
+          created_at?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "artist_follows_artist_id_fkey";
+            columns: ["artist_id"];
+            isOneToOne: false;
+            referencedRelation: "artists";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       artist_members: {
         Row: {
           accepted_at: string | null;
@@ -642,6 +668,32 @@ export type Database = {
           },
         ];
       };
+      release_likes: {
+        Row: {
+          created_at: string;
+          release_id: string;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          release_id: string;
+          user_id?: string;
+        };
+        Update: {
+          created_at?: string;
+          release_id?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "release_likes_release_id_fkey";
+            columns: ["release_id"];
+            isOneToOne: false;
+            referencedRelation: "releases";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       release_review_events: {
         Row: {
           created_at: string;
@@ -990,6 +1042,32 @@ export type Database = {
           },
         ];
       };
+      track_likes: {
+        Row: {
+          created_at: string;
+          track_id: string;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          track_id: string;
+          user_id?: string;
+        };
+        Update: {
+          created_at?: string;
+          track_id?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "track_likes_track_id_fkey";
+            columns: ["track_id"];
+            isOneToOne: false;
+            referencedRelation: "tracks";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       tracks: {
         Row: {
           ai_content: Database["public"]["Enums"]["ai_content"];
@@ -1173,6 +1251,7 @@ export type Database = {
         Returns: undefined;
       };
       admin_set_promo_code_active: { Args: { active: boolean; code: string }; Returns: undefined };
+      artist_follower_count: { Args: { artist: string }; Returns: number };
       begin_audio_upload: {
         Args: { file_name: string; size_bytes: number; track: string };
         Returns: {
