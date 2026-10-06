@@ -1,0 +1,11 @@
+{
+  "identities": [
+    {
+      "name": "tunewick-local",
+      "credentials": [
+        { "accessKey": "tunewick-local", "secretKey": "tunewick-local-secret-not-for-production" }
+      ],
+      "actions": ["Admin", "Read", "Write", "List", "Tagging"]
+    }
+  ]
+}
