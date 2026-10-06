@@ -47,7 +47,7 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
         {children}
       </main>
       <div className="site-bottom">
-        <PlayerBar />
+        <PlayerBar reportListens={user !== null} />
         <MainNav variant="bottom" />
       </div>
     </>

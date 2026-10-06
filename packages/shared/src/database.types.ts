@@ -426,6 +426,53 @@ export type Database = {
         };
         Relationships: [];
       };
+      listening_events: {
+        Row: {
+          artist_id: string;
+          completed: boolean;
+          created_at: string;
+          id: string;
+          ms_played: number;
+          release_id: string;
+          started_at: string;
+          tier: Database["public"]["Enums"]["quality_tier"] | null;
+          track_id: string;
+          user_id: string;
+        };
+        Insert: {
+          artist_id: string;
+          completed?: boolean;
+          created_at?: string;
+          id?: string;
+          ms_played: number;
+          release_id: string;
+          started_at: string;
+          tier?: Database["public"]["Enums"]["quality_tier"] | null;
+          track_id: string;
+          user_id: string;
+        };
+        Update: {
+          artist_id?: string;
+          completed?: boolean;
+          created_at?: string;
+          id?: string;
+          ms_played?: number;
+          release_id?: string;
+          started_at?: string;
+          tier?: Database["public"]["Enums"]["quality_tier"] | null;
+          track_id?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "listening_events_track_id_fkey";
+            columns: ["track_id"];
+            isOneToOne: false;
+            referencedRelation: "tracks";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       plans: {
         Row: {
           code: string;
@@ -1560,6 +1607,24 @@ export type Database = {
           source: Database["public"]["Enums"]["entitlement_source"];
           source_ref: string;
         }[];
+      };
+      my_recent_tracks: {
+        Args: { max_results?: number };
+        Returns: {
+          last_played_at: string;
+          plays: number;
+          track_id: string;
+        }[];
+      };
+      record_listen: {
+        Args: {
+          completed?: boolean;
+          ms_played: number;
+          started_at: string;
+          tier?: Database["public"]["Enums"]["quality_tier"];
+          track: string;
+        };
+        Returns: undefined;
       };
       redeem_promo_code: { Args: { code: string }; Returns: Json };
       release_is_public: { Args: { release: string }; Returns: boolean };

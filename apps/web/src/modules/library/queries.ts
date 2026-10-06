@@ -88,3 +88,41 @@ export async function getLibrary() {
     artists: artists.data.flatMap((row) => (row.artist ? [row.artist] : [])),
   };
 }
+
+/** Recently played tracks (last 90 days, one row per track), with what the library page shows. */
+export async function getRecentlyPlayed() {
+  const supabase = await createSupabaseServerClient();
+  const { data: recent, error } = await supabase.rpc("my_recent_tracks", { max_results: 20 });
+  if (error) throw error;
+  if (!recent?.length) return [];
+  const { data: tracks, error: tracksError } = await supabase
+    .from("tracks")
+    .select(
+      "id, title, duration_ms, release:releases(id, slug, title, status, publish_at, artist:artists!releases_artist_id_fkey(slug, name))",
+    )
+    .in(
+      "id",
+      recent.map((r) => r.track_id),
+    );
+  if (tracksError) throw tracksError;
+  const byId = new Map(tracks.map((t) => [t.id, t]));
+  const now = Date.now();
+  return recent.flatMap((r) => {
+    const track = byId.get(r.track_id);
+    const release = track?.release;
+    return track &&
+      release?.artist &&
+      release.status === "published" &&
+      release.publish_at &&
+      Date.parse(release.publish_at) <= now
+      ? [
+          {
+            ...track,
+            release: { ...release, artist: release.artist },
+            lastPlayedAt: r.last_played_at,
+            plays: r.plays,
+          },
+        ]
+      : [];
+  });
+}

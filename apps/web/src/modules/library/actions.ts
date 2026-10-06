@@ -34,3 +34,14 @@ export async function setLibraryItem(kind: LibraryKind, id: string, on: boolean)
   if (kind === "artist") refresh();
   return { ok: true as const, on };
 }
+
+/** Deletes the listener's whole listening history (RLS: own rows only). */
+export async function clearListeningHistory() {
+  const supabase = await createSupabaseServerClient();
+  const { error } = await supabase
+    .from("listening_events")
+    .delete()
+    .gte("started_at", "1970-01-01T00:00:00Z");
+  if (error) throw error;
+  refresh();
+}

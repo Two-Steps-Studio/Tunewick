@@ -320,6 +320,17 @@ title/description/visibility and delete. Items are added and moved only through
 below 1e-9); owners delete items directly. Tracks that stop being public stay in the playlist and
 are hidden by the catalog RLS (the page says how many are unavailable).
 
+## Listening history (implemented, M5.3)
+
+`listening_events` is range-partitioned by `started_at` (monthly partitions and a default one live in
+the `private` schema; `private.create_listening_partition(day)` adds a month and should run monthly,
+ahead of time). Rows: `user_id`, `track_id`, `release_id`, `artist_id`, `started_at`,
+`ms_played` (time actually heard — seeks and pauses excluded by the player's `ListeningTracker`),
+`completed`, `tier`. Written only by `record_listen(...)` (signed-in, public track, ≤ duration + 30 s,
+start within the last day, ≤ 120 a minute) via `POST /api/listen` (sent on track change, stop and
+page hide with `keepalive`). Private to the listener (`my_recent_tracks`), who can clear it in the
+library. A play qualifies for payouts at ≥ 30 s (D2) when aggregation arrives.
+
 ## Promo codes (implemented, M9.2)
 
 `public.promo_campaigns` (dates, `active`, `max_redemptions_total`, `per_user_limit` per

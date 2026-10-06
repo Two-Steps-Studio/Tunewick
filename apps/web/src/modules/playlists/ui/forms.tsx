@@ -1,8 +1,9 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useActionState, useId, useState } from "react";
+import { useActionState, useId } from "react";
 import { useFormStatus } from "react-dom";
+import { ConfirmAction } from "@/components/confirm-action";
 import {
   type AddState,
   addToPlaylist,
@@ -204,20 +205,13 @@ export function AddToPlaylist({
 /** Deleting cannot be undone: the first click asks, the second deletes. */
 export function DeletePlaylistButton({ action }: { action: () => Promise<void> }) {
   const t = useTranslations("Playlists");
-  const [confirming, setConfirming] = useState(false);
-  return confirming ? (
-    <form action={action} className="playlist-delete__confirm">
-      <p role="alert" className="field__error">
-        {t("deleteConfirm")}
-      </p>
-      <Submit label={t("deleteYes")} />
-      <button type="button" className="button" onClick={() => setConfirming(false)}>
-        {t("deleteNo")}
-      </button>
-    </form>
-  ) : (
-    <button type="button" className="button" onClick={() => setConfirming(true)}>
-      {t("delete")}
-    </button>
+  return (
+    <ConfirmAction
+      action={action}
+      label={t("delete")}
+      question={t("deleteConfirm")}
+      yes={t("deleteYes")}
+      no={t("deleteNo")}
+    />
   );
 }

@@ -516,6 +516,9 @@ body {
   .release-tracks__item--likes {
     grid-template-columns: 2rem minmax(0, 1fr) auto 2.75rem 2.75rem;
   }
+  .recent-item {
+    grid-template-columns: 0 minmax(0, 1fr) auto;
+  }
   .library-track__by {
     display: block;
     font-size: var(--tk-text-sm);

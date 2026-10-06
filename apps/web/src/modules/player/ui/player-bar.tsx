@@ -2,8 +2,8 @@
 
 import { describeQuality, type QualityDescription } from "@tunewick/shared";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
-import { getPlayer, usePlayerState } from "../store";
+import { useEffect, useState } from "react";
+import { getPlayer, startListeningReports, usePlayerState } from "../store";
 import type { NowPlaying, PlayerTrack } from "../types";
 
 function formatTime(seconds: number) {
@@ -77,9 +77,13 @@ function QualityChip({ quality, now }: { quality: QualityDescription; now: NowPl
  * Persistent player in the shell. With an empty queue it shows the honest idle state — no fake
  * track, no dead controls.
  */
-export function PlayerBar() {
+/** `reportListens`: keep a listening history for the signed-in listener. */
+export function PlayerBar({ reportListens = false }: { reportListens?: boolean }) {
   const t = useTranslations("Player");
   const state = usePlayerState();
+  useEffect(() => {
+    if (reportListens) startListeningReports();
+  }, [reportListens]);
   const [scrub, setScrub] = useState<number | null>(null);
   const track = state.queue[state.index];
 

@@ -113,7 +113,16 @@
       "following": "Obserwujesz",
       "failed": "Nie udało się zapisać. Spróbuj ponownie."
     },
-    "playlists": "Twoje playlisty"
+    "playlists": "Twoje playlisty",
+    "history": {
+      "title": "Ostatnio słuchane",
+      "lead": "Twoja historia z ostatnich 90 dni. Widzisz ją tylko Ty.",
+      "when": "{when} · {count, plural, one {# raz} other {# razy}}",
+      "clear": "Wyczyść historię",
+      "clearConfirm": "Usunąć całą historię słuchania? Tego nie da się cofnąć.",
+      "clearYes": "Tak, wyczyść",
+      "clearNo": "Anuluj"
+    }
   },
   "NotFound": {
     "title": "Nie ma takiej strony",

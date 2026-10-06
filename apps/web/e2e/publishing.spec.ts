@@ -247,6 +247,27 @@ test.describe("review and publishing", () => {
       page.getByRole("region", { name: "Odtwarzacz" }).getByText("Nocna zmiana"),
     ).toBeVisible();
 
+    // Listening history: a few seconds actually played are recorded when the page goes away.
+    await expect(page.locator(".player-bar__time").first()).toHaveText(/^0:0[3-9]$/, {
+      timeout: 20_000,
+    });
+    await page.goto("/biblioteka");
+    const history = page.locator("section", {
+      has: page.getByRole("heading", { name: "Ostatnio słuchane" }),
+    });
+    // The listen is sent while the page unloads, so it may land just after this page renders.
+    await expect(async () => {
+      await page.reload();
+      await expect(history.getByRole("link", { name: "Nocna zmiana" })).toBeVisible({
+        timeout: 1000,
+      });
+    }).toPass({ timeout: 15_000 });
+    await expect(history.getByText(/· 1 raz$/)).toBeVisible();
+    await history.getByRole("button", { name: "Wyczyść historię" }).click();
+    await history.getByRole("button", { name: "Tak, wyczyść" }).click();
+    await expect(page.getByRole("heading", { name: "Ostatnio słuchane" })).toHaveCount(0);
+    await page.goto(playlistUrl);
+
     // Private by default: a listener with the link gets nothing; unlisted opens for them.
     expect((await listener.goto(playlistUrl))?.status()).toBe(404);
     await page.getByLabel("Kto ją widzi").selectOption("unlisted");

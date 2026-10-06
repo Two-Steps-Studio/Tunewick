@@ -113,7 +113,16 @@
       "following": "Following",
       "failed": "Could not save. Please try again."
     },
-    "playlists": "Your playlists"
+    "playlists": "Your playlists",
+    "history": {
+      "title": "Recently played",
+      "lead": "Your history from the last 90 days. Only you can see it.",
+      "when": "{when} · {count, plural, one {# time} other {# times}}",
+      "clear": "Clear history",
+      "clearConfirm": "Delete your whole listening history? This cannot be undone.",
+      "clearYes": "Yes, clear it",
+      "clearNo": "Cancel"
+    }
   },
   "NotFound": {
     "title": "This page does not exist",

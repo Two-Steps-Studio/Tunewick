@@ -5,7 +5,12 @@ import type { Locale } from "@/i18n/routing";
 import { getPlayableQueue, listenerEntitlement } from "@/modules/audio";
 import { getOptionalUser } from "@/modules/auth";
 import { Artwork, getImageSourcesMany } from "@/modules/images";
-import { getLibrary, LibraryButton } from "@/modules/library";
+import {
+  ClearHistoryButton,
+  getLibrary,
+  getRecentlyPlayed,
+  LibraryButton,
+} from "@/modules/library";
 import { getMyPlaylists, NewPlaylistForm } from "@/modules/playlists";
 import { PlayButton, type PlayerTrack } from "@/modules/player";
 
@@ -54,10 +59,11 @@ export default async function LibraryPage({ params }: PageProps<"/[locale]/libra
   const tReleases = await getTranslations("Releases");
   const tPlaylists = await getTranslations("Playlists");
   const format = await getFormatter();
-  const [library, entitlement, playlists] = await Promise.all([
+  const [library, entitlement, playlists, recent] = await Promise.all([
     getLibrary(),
     listenerEntitlement(),
     getMyPlaylists(user.id),
+    getRecentlyPlayed(),
   ]);
 
   // Liked tracks play as one queue, in the order they were liked.
@@ -80,7 +86,8 @@ export default async function LibraryPage({ params }: PageProps<"/[locale]/libra
     !library.tracks.length &&
     !library.releases.length &&
     !library.artists.length &&
-    !playlists.length;
+    !playlists.length &&
+    !recent.length;
 
   return (
     <section className="discover">
@@ -183,6 +190,40 @@ export default async function LibraryPage({ params }: PageProps<"/[locale]/libra
               );
             })}
           </ol>
+        </section>
+      ) : null}
+
+      {recent.length ? (
+        <section aria-labelledby="recent" className="discover__section">
+          <h2 id="recent" className="section-title">
+            {t("history.title")}
+          </h2>
+          <p className="field__hint">{t("history.lead")}</p>
+          <ol className="release-tracks">
+            {recent.map((track) => (
+              <li key={track.id} className="release-tracks__item recent-item">
+                <span className="release-tracks__number" />
+                <span className="release-tracks__title">
+                  <Link
+                    href={{
+                      pathname: "/artists/[slug]/releases/[release]",
+                      params: { slug: track.release.artist.slug, release: track.release.slug },
+                    }}
+                  >
+                    {track.title}
+                  </Link>
+                  <span className="library-track__by">{track.release.artist.name}</span>
+                </span>
+                <span className="release-tracks__duration">
+                  {t("history.when", {
+                    when: format.relativeTime(new Date(track.lastPlayedAt), new Date()),
+                    count: track.plays,
+                  })}
+                </span>
+              </li>
+            ))}
+          </ol>
+          <ClearHistoryButton />
         </section>
       ) : null}
 
