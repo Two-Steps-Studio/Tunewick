@@ -32,11 +32,17 @@ export async function refreshSession(request: NextRequest, response: NextRespons
   const { data } = await supabase.auth.getClaims();
   if (!data?.claims) return response;
 
-  // Accounts with a verified second factor must finish it before using the app:
-  // a password-only (aal1) session is sent to the verification page.
-  const { data: aal } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+  // Accounts with a verified second factor must finish it before using the app: a password-only
+  // (aal1) session is sent to the verification page. The level comes from the signed token; the
+  // factors from the Auth server (the user object stored in the cookie is not signed, so it is
+  // never trusted). Sessions that are already aal2 skip the extra request. The database enforces
+  // the same rule for every API call (public.enforce_mfa), so this is the friendly front door.
   const pathname = request.nextUrl.pathname;
-  if (aal?.nextLevel === "aal2" && aal.currentLevel !== "aal2" && !isVerifyPath(pathname)) {
+  if (
+    data.claims.aal !== "aal2" &&
+    !isVerifyPath(pathname) &&
+    (await hasVerifiedFactor(supabase))
+  ) {
     const target = request.nextUrl.clone();
     target.pathname =
       pathname === "/en" || pathname.startsWith("/en/") ? "/en/verify" : "/weryfikacja";
@@ -47,6 +53,11 @@ export async function refreshSession(request: NextRequest, response: NextRespons
     return redirect;
   }
   return response;
+}
+
+async function hasVerifiedFactor(supabase: ReturnType<typeof createServerClient<Database>>) {
+  const { data } = await supabase.auth.getUser();
+  return data.user?.factors?.some((factor) => factor.status === "verified") ?? false;
 }
 
 /** Localized paths of the second-factor page (see routing pathnames "/verify"). */

@@ -1069,6 +1069,7 @@ export type Database = {
       };
       create_artist: { Args: { name: string; slug: string }; Returns: string };
       delete_track: { Args: { track: string }; Returns: undefined };
+      enforce_mfa: { Args: Record<PropertyKey, never>; Returns: undefined };
       fail_audio_upload: {
         Args: { upload: string };
         Returns: Database["public"]["Enums"]["audio_upload_status"];

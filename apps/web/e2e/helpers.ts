@@ -1,4 +1,5 @@
 import { execFileSync } from "node:child_process";
+import { readFileSync } from "node:fs";
 import { deflateSync } from "node:zlib";
 import { expect, type Page } from "@playwright/test";
 import { totp } from "./totp";
@@ -146,4 +147,33 @@ export function solidPng(width: number, height: number, [r, g, b]: [number, numb
     chunk("IDAT", deflateSync(raw)),
     chunk("IEND", Buffer.alloc(0)),
   ]);
+}
+
+/** The Supabase access token of the page's session (as an attacker with the cookie would). */
+export async function accessToken(page: Page): Promise<string> {
+  const cookies = (await page.context().cookies())
+    .filter((c) => /^sb-.+-auth-token(\.\d+)?$/.test(c.name))
+    .sort((a, b) => a.name.localeCompare(b.name, "en", { numeric: true }));
+  let value = cookies.map((c) => c.value).join("");
+  if (value.startsWith("base64-")) {
+    value = Buffer.from(value.slice("base64-".length), "base64url").toString("utf8");
+  }
+  return (JSON.parse(value) as { access_token: string }).access_token;
+}
+
+/** Calls the Supabase Data API directly with a user's token — bypassing the web app. */
+export async function dataApi(token: string, path: string) {
+  const env = Object.fromEntries(
+    readFileSync(".env.local", "utf8")
+      .split(/\r?\n/)
+      .map((line) => line.match(/^([A-Z_]+)=(.*)$/))
+      .filter((m): m is RegExpMatchArray => m !== null)
+      .map((m) => [m[1], m[2]]),
+  );
+  return fetch(`${env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/${path}`, {
+    headers: {
+      apikey: env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
+      Authorization: `Bearer ${token}`,
+    },
+  });
 }

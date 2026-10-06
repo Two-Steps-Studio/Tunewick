@@ -31,13 +31,15 @@ export interface MfaStatus {
 
 export async function getMfaStatus(): Promise<MfaStatus> {
   const supabase = await createSupabaseServerClient();
-  const [{ data: factors }, { data: aal }] = await Promise.all([
+  // Both from verified sources: listFactors reads the user from the Auth server, the level comes
+  // from the signed access token (never from the unsigned user object in the cookie).
+  const [{ data: factors }, { data: claims }] = await Promise.all([
     supabase.auth.mfa.listFactors(),
-    supabase.auth.mfa.getAuthenticatorAssuranceLevel(),
+    supabase.auth.getClaims(),
   ]);
   return {
     enabled: (factors?.totp.length ?? 0) > 0,
-    verified: aal?.currentLevel === "aal2",
+    verified: claims?.claims?.aal === "aal2",
   };
 }
 

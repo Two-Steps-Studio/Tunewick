@@ -93,14 +93,17 @@ export async function signIn(_prev: AuthFormState, formData: FormData): Promise<
   if (!parsed.success) return { fieldErrors: fieldErrorsFrom(parsed.error), values };
 
   const supabase = await createSupabaseServerClient();
-  const { error } = await supabase.auth.signInWithPassword(parsed.data);
+  const { data: signedIn, error } = await supabase.auth.signInWithPassword(parsed.data);
   if (error) return { error: authErrorCode(error), values };
 
   const next = safeNextPath(raw.next);
 
   // Accounts with an authenticator app continue with the second step. (A redirect from a server
   // action renders without passing the proxy again, so the proxy's aal2 gate is not enough here.)
-  const { data: aal } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+  // Passing the fresh access token makes auth-js read the factors from the Auth server.
+  const { data: aal } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel(
+    signedIn.session.access_token,
+  );
   if (aal?.nextLevel === "aal2" && aal.currentLevel !== "aal2") {
     return go({ pathname: "/verify", query: next ? { next } : undefined });
   }

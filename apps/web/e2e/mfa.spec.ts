@@ -1,5 +1,14 @@
 import { expect, test } from "@playwright/test";
-import { createConfirmedUser, enableTotp, freshCode, SECURITY, signIn, signOut } from "./helpers";
+import {
+  accessToken,
+  createConfirmedUser,
+  dataApi,
+  enableTotp,
+  freshCode,
+  SECURITY,
+  signIn,
+  signOut,
+} from "./helpers";
 
 test.describe("two-factor sign-in (TOTP)", () => {
   test.setTimeout(120_000);
@@ -21,6 +30,11 @@ test.describe("two-factor sign-in (TOTP)", () => {
     await signOut(page);
     await signIn(page, email);
     await expect(page).toHaveURL(/\/weryfikacja$/);
+
+    // The password alone does not open the data either — not even straight through the API.
+    const aal1 = await dataApi(await accessToken(page), "profiles?select=handle");
+    expect(aal1.status).toBe(403);
+    expect(((await aal1.json()) as { hint?: string }).hint).toBe("mfa_required");
     await page.goto("/ustawienia");
     await expect(page).toHaveURL(/\/weryfikacja\?next=%2Fustawienia$/);
 
@@ -31,6 +45,8 @@ test.describe("two-factor sign-in (TOTP)", () => {
     await page.getByLabel("Kod z aplikacji (6 cyfr)").fill(await freshCode(secret, enrollCode));
     await page.getByRole("button", { name: "Potwierdź" }).click();
     await expect(page).toHaveURL(/\/ustawienia$/);
+    const aal2 = await dataApi(await accessToken(page), "profiles?select=handle");
+    expect(aal2.status).toBe(200);
 
     await page.goto(SECURITY);
     await page.getByRole("button", { name: "Wyłącz logowanie dwuskładnikowe" }).click();
