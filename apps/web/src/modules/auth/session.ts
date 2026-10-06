@@ -71,3 +71,10 @@ export async function isStaff(): Promise<boolean> {
   const { data } = await supabase.rpc("is_staff");
   return data === true;
 }
+
+/** Whether the signed-in user is an admin. Not an authorization check (the database decides). */
+export async function isAdmin(): Promise<boolean> {
+  const supabase = await createSupabaseServerClient();
+  const { data } = await supabase.rpc("has_app_role", { required: "admin" });
+  return data === true;
+}

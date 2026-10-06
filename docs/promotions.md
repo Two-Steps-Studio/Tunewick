@@ -1,6 +1,6 @@
 # Promotions, Entitlements & Payments
 
-> Status: **v0.1 specification.** MVP grants Premium **only** through promo codes, beta access
+> Status: **implemented in M9** (entitlements, redemption, admin panel; reports and referrals later). MVP grants Premium **only** through promo codes, beta access
 > and admin grants (decision D3). Card payments arrive in Phase 14 on top of the same
 > entitlement model.
 

@@ -1080,6 +1080,41 @@ export type Database = {
       accept_artist_membership: { Args: { artist: string }; Returns: undefined };
       access_invite_is_valid: { Args: { code: string }; Returns: boolean };
       add_track: { Args: { release: string; title: string }; Returns: string };
+      admin_create_promo_campaign: {
+        Args: {
+          description?: string;
+          ends_at?: string;
+          max_redemptions_total?: number;
+          name: string;
+          partner?: string;
+          per_user_limit?: number;
+          starts_at?: string;
+        };
+        Returns: string;
+      };
+      admin_create_shared_promo_code: {
+        Args: {
+          benefit_type: Database["public"]["Enums"]["promo_benefit"];
+          benefit_value: number;
+          campaign: string;
+          code: string;
+          expires_at?: string;
+          max_uses: number;
+          new_accounts_days?: number;
+        };
+        Returns: string;
+      };
+      admin_generate_promo_codes: {
+        Args: {
+          benefit_type: Database["public"]["Enums"]["promo_benefit"];
+          benefit_value: number;
+          campaign: string;
+          expires_at?: string;
+          how_many: number;
+          new_accounts_days?: number;
+        };
+        Returns: string[];
+      };
       admin_grant_entitlement: {
         Args: { days: number; note: string; plan: string; target_user: string };
         Returns: string;
@@ -1088,8 +1123,44 @@ export type Database = {
         Args: { role: Database["public"]["Enums"]["app_role"]; target_user: string };
         Returns: undefined;
       };
+      admin_list_promo_codes: {
+        Args: { campaign: string; hint?: string };
+        Returns: {
+          active: boolean;
+          benefit_type: Database["public"]["Enums"]["promo_benefit"];
+          benefit_value: number;
+          code_hint: string;
+          created_at: string;
+          eligibility: Json;
+          expires_at: string;
+          id: string;
+          max_uses: number;
+          shared: boolean;
+          starts_at: string;
+          uses_count: number;
+        }[];
+      };
+      admin_list_promo_redemptions: {
+        Args: { campaign: string };
+        Returns: {
+          code_hint: string;
+          display_name: string;
+          ends_at: string;
+          entitlement_id: string;
+          handle: string;
+          id: string;
+          redeemed_at: string;
+          revoked_at: string;
+          status: string;
+          user_id: string;
+        }[];
+      };
       admin_revoke_entitlement: {
         Args: { entitlement: string; reason: string };
+        Returns: undefined;
+      };
+      admin_revoke_promo_redemption: {
+        Args: { reason: string; redemption: string };
         Returns: undefined;
       };
       admin_revoke_role: {
@@ -1097,6 +1168,11 @@ export type Database = {
         Returns: undefined;
       };
       admin_set_feature_flag: { Args: { enabled: boolean; flag: string }; Returns: undefined };
+      admin_set_promo_campaign_active: {
+        Args: { active: boolean; campaign: string };
+        Returns: undefined;
+      };
+      admin_set_promo_code_active: { Args: { active: boolean; code: string }; Returns: undefined };
       begin_audio_upload: {
         Args: { file_name: string; size_bytes: number; track: string };
         Returns: {

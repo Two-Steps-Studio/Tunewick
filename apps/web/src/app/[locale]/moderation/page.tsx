@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
 import { getPathname, Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
-import { requireStaff } from "@/modules/auth";
+import { isAdmin, requireStaff } from "@/modules/auth";
 import { getSubmissions } from "@/modules/moderation";
 
 export const metadata: Metadata = { robots: { index: false } };
@@ -19,13 +19,19 @@ export default async function ModerationPage({ params }: PageProps<"/[locale]/mo
   const t = await getTranslations("Moderation");
   const tReleases = await getTranslations("Releases");
   const format = await getFormatter();
-  const submissions = await getSubmissions();
+  const [submissions, admin] = await Promise.all([getSubmissions(), isAdmin()]);
+  const tPromo = await getTranslations("PromoAdmin");
 
   return (
     <section className="auth-page">
       <div className="auth-page__head">
         <h1 className="auth-page__title">{t("title")}</h1>
         <p className="auth-page__lead">{t("lead")}</p>
+        {admin ? (
+          <p className="settings-profile-link">
+            <Link href="/admin/promo">{tPromo("link")}</Link>
+          </p>
+        ) : null}
       </div>
       <div className="auth-page__body">
         {submissions.length === 0 ? (

@@ -312,8 +312,13 @@ admins) and `private.promo_attempts`. Generated codes: 16 characters from
 `redeem_promo_code(code)` implements promotions.md §4 and returns `{status, plan, ends_at}` —
 failures are results (recorded attempts), not exceptions; 10 failed attempts per 15 minutes →
 `rate_limited`; a refused code is never consumed; the code row lock serializes concurrent
-redemptions (E2E: six accounts, one single-use code, exactly one grant). Creation until the admin
-panel (M9.3): `system_create_promo_codes(...)` (service role) via `scripts/create-promo-codes.mjs`.
+redemptions (E2E: six accounts, one single-use code, exactly one grant). Admin (M9.3, admin + aal2,
+audited): `admin_create_promo_campaign`, `admin_set_promo_campaign_active`, `admin_list_promo_codes`
+(hints only, lookup by hint), `admin_generate_promo_codes` (plaintext returned once → CSV in the
+panel), `admin_create_shared_promo_code` (max uses required), `admin_set_promo_code_active`,
+`admin_list_promo_redemptions` (public handle, no email), `admin_revoke_promo_redemption` (revokes
+the entitlement, keeps the row). Panel: `/admin/promocje`, linked from the moderation page for
+admins. Server-side bootstrap: `system_create_promo_codes(...)` via `scripts/create-promo-codes.mjs`.
 
 ## Search (implemented, M6.2)
 

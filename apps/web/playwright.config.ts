@@ -7,6 +7,9 @@ export default defineConfig({
   // Creates closed-beta invite codes in the local Supabase (requires pnpm db:start).
   globalSetup: "./e2e/global-setup.ts",
   fullyParallel: true,
+  // One local Auth container and one audio worker serve every test: on many-core machines the
+  // default (half the cores) only turns their queues into timeouts. CI runners have fewer cores.
+  workers: process.env.CI ? undefined : 6,
   forbidOnly: !!process.env.CI,
   // On CI failures also become GitHub annotations (readable without signing in to see logs).
   reporter: process.env.CI ? [["github"], ["list"], ["html", { open: "never" }]] : "list",

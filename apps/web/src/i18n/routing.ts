@@ -35,6 +35,11 @@ export const routing = defineRouting({
     "/profile/[handle]": { pl: "/profil/[handle]", en: "/profile/[handle]" },
     "/moderation": { pl: "/moderacja", en: "/moderation" },
     "/moderation/[release]": { pl: "/moderacja/[release]", en: "/moderation/[release]" },
+    "/admin/promo": { pl: "/admin/promocje", en: "/admin/promotions" },
+    "/admin/promo/[campaign]": {
+      pl: "/admin/promocje/[campaign]",
+      en: "/admin/promotions/[campaign]",
+    },
     // Developer-only (404 in production unless TUNEWICK_DEV_PAGES=1).
     "/dev/player": "/dev/player",
   },

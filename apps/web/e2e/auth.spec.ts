@@ -75,7 +75,8 @@ test.describe("authentication", () => {
     await page.getByLabel("Nowe hasło").fill("nowe-haslo-scena-1");
     await page.getByLabel("Powtórz hasło").fill("nowe-haslo-scena-1");
     await page.getByRole("button", { name: "Zapisz hasło" }).click();
-    await expect(page).toHaveURL(/\/$/);
+    // The Auth server is slow while the whole suite runs in parallel.
+    await expect(page).toHaveURL(/\/$/, { timeout: 15_000 });
 
     await signOut(page);
     await signIn(page, email, PASSWORD);
