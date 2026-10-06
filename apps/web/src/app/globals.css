@@ -265,6 +265,178 @@ body {
     }
   }
 
+  /* Active player ---------------------------------------------------------- */
+  .player-bar--active {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: var(--tk-space-3);
+    padding-block: var(--tk-space-2);
+  }
+  .player-bar__controls {
+    display: flex;
+    align-items: center;
+    gap: var(--tk-space-1);
+  }
+  .player-button {
+    display: inline-grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0;
+    border: 0;
+    border-radius: var(--tk-radius-pill);
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+    transition: transform var(--tk-dur-press) var(--tk-ease-out);
+  }
+  .player-button:active:not(:disabled) {
+    transform: scale(0.94);
+  }
+  .player-button:disabled {
+    color: var(--text-muted);
+    cursor: default;
+  }
+  .player-button--main {
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+  /* Previous is reachable from the OS media controls on phones; keep the bar uncluttered. */
+  .player-button:first-child {
+    display: none;
+  }
+  @media (min-width: 768px) {
+    .player-button:first-child {
+      display: inline-grid;
+    }
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .player-button:not(.player-button--main):not(:disabled):hover {
+      box-shadow: inset 0 0 0 1px var(--line);
+    }
+  }
+  .player-bar__now {
+    display: grid;
+    gap: var(--tk-space-1);
+    min-width: 0;
+  }
+  .player-bar__title {
+    display: flex;
+    gap: var(--tk-space-2);
+    min-width: 0;
+    font-size: var(--tk-text-sm);
+    white-space: nowrap;
+  }
+  .player-bar__track {
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .player-bar__artist {
+    color: var(--text-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .player-bar__timeline {
+    display: flex;
+    align-items: center;
+    gap: var(--tk-space-2);
+  }
+  .player-bar__time {
+    flex: none;
+    font-family: var(--tk-font-mono);
+    font-size: 0.6875rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-muted);
+  }
+  .player-bar__seek,
+  .player-bar__volume {
+    min-width: 0;
+    height: 1rem;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+  .player-bar__seek {
+    flex: 1;
+  }
+  .player-bar__side {
+    display: flex;
+    align-items: center;
+    gap: var(--tk-space-3);
+  }
+  .player-bar__volume {
+    display: none;
+    width: 6rem;
+  }
+  @media (min-width: 1024px) {
+    .player-bar__volume {
+      display: block;
+    }
+  }
+  .player-bar__quality {
+    display: flex;
+    align-items: center;
+    gap: var(--tk-space-2);
+    font-family: var(--tk-font-mono);
+    font-size: 0.6875rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+  .player-bar__spec,
+  .player-bar__reason {
+    display: none;
+  }
+  @media (min-width: 768px) {
+    .player-bar__spec {
+      display: inline;
+    }
+  }
+  @media (min-width: 1280px) {
+    .player-bar__reason {
+      display: inline;
+    }
+  }
+  .quality-chip {
+    padding: 0.125rem 0.375rem;
+    border-radius: var(--tk-radius-1);
+    box-shadow: inset 0 0 0 1px var(--line);
+    color: var(--text);
+  }
+  .quality-chip--hires {
+    background: var(--accent);
+    color: var(--on-accent);
+    box-shadow: none;
+  }
+  .quality-chip--lossless {
+    box-shadow: inset 0 0 0 1px var(--accent);
+  }
+  .player-bar__error {
+    grid-column: 1 / -1;
+    font-size: var(--tk-text-xs);
+    color: var(--signal);
+  }
+
+  /* Developer pages ------------------------------------------------------ */
+  .dev-player {
+    display: grid;
+    gap: var(--tk-space-4);
+    max-width: 48rem;
+  }
+  .dev-player__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--tk-space-3);
+  }
+  .dev-player__debug {
+    max-height: 24rem;
+    overflow: auto;
+    padding: var(--tk-space-3);
+    background: var(--bg-sunken);
+    font-family: var(--tk-font-mono);
+    font-size: var(--tk-text-xs);
+  }
+
   .page-intro {
     display: grid;
     gap: var(--tk-space-12);

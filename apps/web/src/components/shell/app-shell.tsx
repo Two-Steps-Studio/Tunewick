@@ -3,7 +3,7 @@ import { Link } from "@/i18n/navigation";
 import { getOptionalUser, SignOutButton } from "@/modules/auth";
 import { LocaleSwitcher } from "./locale-switcher";
 import { MainNav } from "./main-nav";
-import { PlayerBar } from "./player-bar";
+import { PlayerBar } from "@/modules/player";
 import { Wordmark } from "./wordmark";
 
 export async function AppShell({ children }: { children: React.ReactNode }) {

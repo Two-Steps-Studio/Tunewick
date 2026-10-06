@@ -106,6 +106,16 @@ Implemented as pure functions in `packages/shared/src/playback` (M4.0): `resolve
 from the worker report), `chooseTier` / `tierAfterStall` (§4.1, with the reasons that limited the
 tier). The real-decode capability probe ships with the player engine (M4).
 
+The engine (M4.1) lives in `apps/web/src/modules/player`: a real-decode capability probe
+(`public/player-probe/`, cached per tab session), one `<audio>` element, MSE sessions that stream
+each fMP4 with `fetch` and stay ≈ 30 s ahead of the playhead (played data evicted, so the ~12 MB
+SourceBuffer quota is never hit), native playback otherwise, step-down after a 4 s stall, Media
+Session controls. Known limitation: seeking outside the buffered range restarts the stream at the
+track start and drops data before the target with the append window (no byte-range seeking until
+the worker publishes a fragment index). Developer test page `/dev/player` with the worker-made
+sweep album (`pnpm dev:media`); E2E in Chromium and Firefox verify one continuous buffer of
+exactly 30.000 s for FLAC and AAC.
+
 ### 4.1 Auto quality
 Auto selects a tier at track start from: user setting/cap, plan entitlement, network type and measured throughput, Save-Data hint, battery saver (where exposed), and variant availability. It may step down at the next track, and mid-track only on a stall. It never steps up mid-track. The indicator reflects every change.
 

@@ -14,10 +14,18 @@ export default defineConfig({
   projects: [
     { name: "desktop-chromium", use: { ...devices["Desktop Chrome"] } },
     { name: "mobile-chromium", use: { ...devices["Pixel 7"] } },
+    // The player engine also runs in Gecko (MSE FLAC ≤ 48 kHz, native Hi-Res — spike M3.0).
+    {
+      name: "desktop-firefox",
+      use: { ...devices["Desktop Firefox"] },
+      testMatch: /player\.spec\.ts/,
+    },
   ],
   webServer: {
     command: `pnpm start --port ${port}`,
     url: `http://localhost:${port}`,
     reuseExistingServer: !process.env.CI,
+    // Enables /dev/player (test album from `pnpm dev:media`) in the production build.
+    env: { TUNEWICK_DEV_PAGES: "1" },
   },
 });

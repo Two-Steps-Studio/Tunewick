@@ -19,7 +19,38 @@
   "Player": {
     "region": "Odtwarzacz",
     "idle": "Nic teraz nie gra.",
-    "idleHint": "Odtwarzanie pojawi się razem z pierwszymi wydawnictwami."
+    "idleHint": "Odtwarzanie pojawi się razem z pierwszymi wydawnictwami.",
+    "play": "Odtwarzaj",
+    "pause": "Pauza",
+    "next": "Następny utwór",
+    "previous": "Poprzedni utwór",
+    "seek": "Pozycja w utworze",
+    "seekValue": "{position} z {duration}",
+    "volume": "Głośność",
+    "quality": {
+      "hires": "Hi-Res",
+      "lossless": "Lossless",
+      "high": "High",
+      "dataSaver": "Oszczędzanie danych",
+      "full": "Źródło {source}, odtwarzane {delivered} ({label})",
+      "output": "wyjście {rate} (system)"
+    },
+    "reason": {
+      "plan": "Lossless i Hi-Res w Premium",
+      "setting": "Twoje ustawienie jakości",
+      "save_data": "Tryb oszczędzania danych",
+      "battery": "Oszczędzanie baterii",
+      "network": "Ograniczone przez sieć",
+      "throughput": "Ograniczone przez prędkość łącza",
+      "stall": "Obniżone po zacięciu",
+      "unplayable": "Ta przeglądarka nie odtwarza wyższej jakości"
+    },
+    "error": {
+      "media_error": "Nie udało się odtworzyć utworu.",
+      "playback_blocked": "Przeglądarka zablokowała odtwarzanie — naciśnij Odtwarzaj.",
+      "unplayable": "Ta przeglądarka nie odtwarza żadnej wersji tego utworu.",
+      "stream_error": "Połączenie z serwerem audio zostało przerwane."
+    }
   },
   "Discover": {
     "title": "Odkrywaj",

@@ -29,6 +29,8 @@ export const routing = defineRouting({
       en: "/artists/[slug]/releases/[release]",
     },
     "/profile/[handle]": { pl: "/profil/[handle]", en: "/profile/[handle]" },
+    // Developer-only (404 in production unless TUNEWICK_DEV_PAGES=1).
+    "/dev/player": "/dev/player",
   },
 });
 

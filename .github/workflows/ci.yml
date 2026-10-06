@@ -61,7 +61,9 @@ jobs:
         run: pnpm db:start
       - run: pnpm db:env
       - run: pnpm --filter @tunewick/web build
-      - run: pnpm --filter @tunewick/web exec playwright install --with-deps chromium
+      - run: pnpm --filter @tunewick/web exec playwright install --with-deps chromium firefox
+      - name: Test album for the player (audio worker in Docker)
+        run: pnpm dev:media
       - run: pnpm e2e
       - uses: actions/upload-artifact@v4
         if: failure()

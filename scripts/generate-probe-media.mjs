@@ -14,9 +14,32 @@ const tone = (rate) => ["-f", "lavfi", "-i", `sine=frequency=440:sample_rate=${r
 const run = (args) =>
   execFileSync(ffmpeg, ["-hide_banner", "-loglevel", "error", "-y", ...args], { stdio: "inherit" });
 
-run([...tone(48000), "-ac", "2", "-c:a", "aac", "-b:a", "96k", ...FMP4, "-f", "mp4", join(out, "aac.mp4")]);
+run([
+  ...tone(48000),
+  "-ac",
+  "2",
+  "-c:a",
+  "aac",
+  "-b:a",
+  "96k",
+  ...FMP4,
+  "-f",
+  "mp4",
+  join(out, "aac.mp4"),
+]);
 run([...tone(48000), "-ac", "2", "-sample_fmt", "s16", "-c:a", "flac", join(out, "flac-48.flac")]);
-run(["-i", join(out, "flac-48.flac"), "-c", "copy", "-strict", "-2", ...FMP4, "-f", "mp4", join(out, "flac.mp4")]);
+run([
+  "-i",
+  join(out, "flac-48.flac"),
+  "-c",
+  "copy",
+  "-strict",
+  "-2",
+  ...FMP4,
+  "-f",
+  "mp4",
+  join(out, "flac.mp4"),
+]);
 run([
   ...tone(96000),
   "-ac", "2", "-sample_fmt", "s32", "-bits_per_raw_sample", "24", "-c:a", "flac",

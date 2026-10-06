@@ -19,7 +19,38 @@
   "Player": {
     "region": "Player",
     "idle": "Nothing is playing.",
-    "idleHint": "Playback arrives with the first releases."
+    "idleHint": "Playback arrives with the first releases.",
+    "play": "Play",
+    "pause": "Pause",
+    "next": "Next track",
+    "previous": "Previous track",
+    "seek": "Position in track",
+    "seekValue": "{position} of {duration}",
+    "volume": "Volume",
+    "quality": {
+      "hires": "Hi-Res",
+      "lossless": "Lossless",
+      "high": "High",
+      "dataSaver": "Data Saver",
+      "full": "Source {source}, playing {delivered} ({label})",
+      "output": "output {rate} (system)"
+    },
+    "reason": {
+      "plan": "Lossless and Hi-Res with Premium",
+      "setting": "Your quality setting",
+      "save_data": "Data saver mode",
+      "battery": "Battery saver",
+      "network": "Limited by network",
+      "throughput": "Limited by connection speed",
+      "stall": "Lowered after a stall",
+      "unplayable": "This browser can't play higher quality"
+    },
+    "error": {
+      "media_error": "This track couldn't be played.",
+      "playback_blocked": "The browser blocked playback — press Play.",
+      "unplayable": "This browser can't play any version of this track.",
+      "stream_error": "The audio stream was interrupted."
+    }
   },
   "Discover": {
     "title": "Discover",
