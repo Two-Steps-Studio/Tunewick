@@ -136,3 +136,42 @@ Goal: replace 🔬 assumptions with measured facts.
 | Memory/CPU for 24/192 decode on mid-range Android | Android Chrome |
 
 Deliverable: a support matrix in this document and decisions on packaging and Safari strategy.
+
+### 9.1 Results — automated engines (2026-10-06)
+
+Tool: `tools/playback-spike/` (generator + test page + Playwright runner; raw results in
+`tools/playback-spike/results-*.json`). Signal: synthetic stereo sweep at −12 dBFS; playback is
+measured through an `AnalyserNode` (signal level), not only `currentTime`, because the known WebKit
+failure mode is "plays without error but outputs silence". Engines: Playwright builds on Windows 11.
+
+| Check | Chromium 153 | Firefox 155 | WebKit 26.6 (Windows port) |
+| --- | --- | --- | --- |
+| Progressive `.flac` 16/44.1, 24/48 | ✅ audible | ✅ audible | ❌ declares "probably", never becomes playable |
+| Progressive `.flac` 24/96, 24/192 | ✅ audible | ✅ audible | ❌ |
+| FLAC in fMP4 ≤ 48 kHz (progressive and MSE) | ✅ | ✅ | ❌ no MSE |
+| FLAC in fMP4 96 / 192 kHz | ✅ (MSE too) | ❌ fails both progressive and MSE | ❌ |
+| AAC 256 in fMP4 (MSE) | ✅ | ✅ | progressive time advances (signal not measurable) |
+| `MediaSource.isTypeSupported('audio/flac')` (bare FLAC in MSE) | false | false | — |
+| Gapless FLAC fMP4, 3 tracks in one SourceBuffer (sequence mode) | ✅ continuous buffer, no dropout (min level 0.176) | ✅ same | — |
+| Gapless AAC fMP4 without priming trim | ❌ dropout at boundary (min level 0.001), buffer 12.064 s instead of 12 s | ❌ same | — |
+| Output sample rate (`AudioContext.sampleRate`) | 48 000 Hz | 48 000 Hz | no Web Audio |
+| `setSinkId` (output device choice) | yes | yes | no |
+
+**Not yet tested (manual, real devices):** Safari macOS, Safari iOS (ManagedMediaSource),
+Chrome Android incl. 24/192 CPU/memory. The Windows WebKit port is **not** Safari — its failures do
+not predict Safari, which plays FLAC natively.
+
+### 9.2 Conclusions
+
+1. **Never trust `canPlayType`/`isTypeSupported` alone.** Capability probing must include a short
+   real decode (WebKit Windows: "probably" yet unplayable).
+2. **Lossless ≤ 48 kHz: FLAC in fMP4 via MSE** works in Chromium and Firefox and is truly gapless
+   (measured).
+3. **Hi-Res > 48 kHz: plain progressive `.flac` is the universal format** (Chromium and Firefox at
+   96 and 192 kHz); FLAC-in-fMP4 above 48 kHz fails in Firefox. Hi-Res gapless in Firefox is
+   therefore best-effort (native strategy).
+4. **AAC gapless needs explicit trimming** of encoder priming/padding (`appendWindowStart/End` from
+   stored `encoder_delay_samples`/`padding_samples`), otherwise every boundary has a dropout.
+5. **Both browsers output 48 kHz** — 44.1/96/192 kHz material is resampled by the platform
+   (compromise C1 confirmed). The quality indicator must show "Output 48 kHz (system)" when the
+   delivered rate differs.

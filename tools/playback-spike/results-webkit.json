@@ -1,0 +1,139 @@
+{
+  "env": {
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.6 Safari/605.1.15",
+    "webAudio": false,
+    "outputSampleRate": null,
+    "baseLatency": null,
+    "mediaSource": false,
+    "managedMediaSource": false,
+    "setSinkId": false
+  },
+  "capabilities": [
+    {
+      "type": "flac",
+      "mime": "audio/flac",
+      "canPlayType": "probably",
+      "mseIsTypeSupported": false
+    },
+    {
+      "type": "fmp4-flac",
+      "mime": "audio/mp4; codecs=\"flac\"",
+      "canPlayType": "probably",
+      "mseIsTypeSupported": false
+    },
+    {
+      "type": "fmp4-aac",
+      "mime": "audio/mp4; codecs=\"mp4a.40.2\"",
+      "canPlayType": "probably",
+      "mseIsTypeSupported": false
+    }
+  ],
+  "progressive": [
+    {
+      "id": "flac-16-44",
+      "file": "flac-16-44.flac",
+      "rate": 44100,
+      "error": "timeout waiting for canplay",
+      "audible": false
+    },
+    {
+      "id": "flac-16-44-fmp4",
+      "file": "flac-16-44.mp4",
+      "rate": 44100,
+      "error": "timeout waiting for canplay",
+      "audible": false
+    },
+    {
+      "id": "flac-24-48",
+      "file": "flac-24-48.flac",
+      "rate": 48000,
+      "error": "timeout waiting for canplay",
+      "audible": false
+    },
+    {
+      "id": "flac-24-48-fmp4",
+      "file": "flac-24-48.mp4",
+      "rate": 48000,
+      "error": "timeout waiting for canplay",
+      "audible": false
+    },
+    {
+      "id": "flac-24-96",
+      "file": "flac-24-96.flac",
+      "rate": 96000,
+      "error": "timeout waiting for canplay",
+      "audible": false
+    },
+    {
+      "id": "flac-24-96-fmp4",
+      "file": "flac-24-96.mp4",
+      "rate": 96000,
+      "error": "timeout waiting for canplay",
+      "audible": false
+    },
+    {
+      "id": "flac-24-192",
+      "file": "flac-24-192.flac",
+      "rate": 192000,
+      "error": "timeout waiting for canplay",
+      "audible": false
+    },
+    {
+      "id": "flac-24-192-fmp4",
+      "file": "flac-24-192.mp4",
+      "rate": 192000,
+      "error": "timeout waiting for canplay",
+      "audible": false
+    },
+    {
+      "id": "aac-256-48-fmp4",
+      "file": "aac-256-48.m4a",
+      "rate": 48000,
+      "duration": 0,
+      "error": null,
+      "advancedSeconds": 1.177,
+      "peakRms": null,
+      "audible": "unmeasured (time advances)"
+    }
+  ],
+  "mse": [
+    {
+      "id": "flac-16-44-fmp4",
+      "rate": 44100,
+      "error": "no MediaSource",
+      "audible": false
+    },
+    {
+      "id": "flac-24-48-fmp4",
+      "rate": 48000,
+      "error": "no MediaSource",
+      "audible": false
+    },
+    {
+      "id": "flac-24-96-fmp4",
+      "rate": 96000,
+      "error": "no MediaSource",
+      "audible": false
+    },
+    {
+      "id": "flac-24-192-fmp4",
+      "rate": 192000,
+      "error": "no MediaSource",
+      "audible": false
+    },
+    {
+      "id": "aac-256-48-fmp4",
+      "rate": 48000,
+      "error": "no MediaSource",
+      "audible": false
+    }
+  ],
+  "gapless": {
+    "flac": {
+      "error": "no MediaSource"
+    },
+    "aac": {
+      "error": "no MediaSource"
+    }
+  }
+}
