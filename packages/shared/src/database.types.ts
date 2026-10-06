@@ -450,6 +450,81 @@ export type Database = {
         };
         Relationships: [];
       };
+      playlist_tracks: {
+        Row: {
+          added_at: string;
+          added_by: string | null;
+          id: string;
+          playlist_id: string;
+          position: number;
+          track_id: string;
+        };
+        Insert: {
+          added_at?: string;
+          added_by?: string | null;
+          id?: string;
+          playlist_id: string;
+          position: number;
+          track_id: string;
+        };
+        Update: {
+          added_at?: string;
+          added_by?: string | null;
+          id?: string;
+          playlist_id?: string;
+          position?: number;
+          track_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "playlist_tracks_playlist_id_fkey";
+            columns: ["playlist_id"];
+            isOneToOne: false;
+            referencedRelation: "playlists";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "playlist_tracks_track_id_fkey";
+            columns: ["track_id"];
+            isOneToOne: false;
+            referencedRelation: "tracks";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      playlists: {
+        Row: {
+          created_at: string;
+          description: string | null;
+          id: string;
+          kind: string;
+          owner_id: string;
+          title: string;
+          updated_at: string;
+          visibility: Database["public"]["Enums"]["playlist_visibility"];
+        };
+        Insert: {
+          created_at?: string;
+          description?: string | null;
+          id?: string;
+          kind?: string;
+          owner_id?: string;
+          title: string;
+          updated_at?: string;
+          visibility?: Database["public"]["Enums"]["playlist_visibility"];
+        };
+        Update: {
+          created_at?: string;
+          description?: string | null;
+          id?: string;
+          kind?: string;
+          owner_id?: string;
+          title?: string;
+          updated_at?: string;
+          visibility?: Database["public"]["Enums"]["playlist_visibility"];
+        };
+        Relationships: [];
+      };
       profile_settings: {
         Row: {
           activity_visibility: Database["public"]["Enums"]["visibility_level"];
@@ -1157,6 +1232,7 @@ export type Database = {
       abandon_image_upload: { Args: { image: string }; Returns: undefined };
       accept_artist_membership: { Args: { artist: string }; Returns: undefined };
       access_invite_is_valid: { Args: { code: string }; Returns: boolean };
+      add_playlist_track: { Args: { playlist: string; track: string }; Returns: string };
       add_track: { Args: { release: string; title: string }; Returns: string };
       admin_create_promo_campaign: {
         Args: {
@@ -1320,6 +1396,7 @@ export type Database = {
       can_edit_release: { Args: { release: string }; Returns: boolean };
       can_view_audio_upload: { Args: { upload: string }; Returns: boolean };
       can_view_image: { Args: { image: string }; Returns: boolean };
+      can_view_playlist: { Args: { playlist: string }; Returns: boolean };
       can_view_release: { Args: { release: string }; Returns: boolean };
       claim_audio_upload: {
         Args: Record<PropertyKey, never>;
@@ -1471,6 +1548,7 @@ export type Database = {
       is_feature_enabled: { Args: { flag: string }; Returns: boolean };
       is_reserved_handle: { Args: { candidate: string }; Returns: boolean };
       is_staff: { Args: Record<PropertyKey, never>; Returns: boolean };
+      move_playlist_track: { Args: { item: string; to_index: number }; Returns: undefined };
       move_track: { Args: { direction: number; track: string }; Returns: undefined };
       my_plan: {
         Args: Record<PropertyKey, never>;
@@ -1575,6 +1653,7 @@ export type Database = {
         | "other";
       entitlement_source: "promo" | "beta" | "admin" | "referral" | "subscription";
       image_kind: "release_artwork" | "artist_image";
+      playlist_visibility: "public" | "unlisted" | "private";
       promo_benefit:
         | "premium_days"
         | "premium_months"
@@ -1736,6 +1815,7 @@ export const Constants = {
       ],
       entitlement_source: ["promo", "beta", "admin", "referral", "subscription"],
       image_kind: ["release_artwork", "artist_image"],
+      playlist_visibility: ["public", "unlisted", "private"],
       promo_benefit: [
         "premium_days",
         "premium_months",

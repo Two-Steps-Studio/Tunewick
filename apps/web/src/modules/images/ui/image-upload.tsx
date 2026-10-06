@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
 import { abandonImageUpload, finishImageUpload, startImageUpload } from "../actions";
 import type { ImageUploadState } from "../queries";
 import { checkImageFile, IMAGE_ACCEPT, type ImageKind, type ImageUploadError } from "../validation";
@@ -27,6 +27,8 @@ function put(url: string, file: File, onProgress: (percent: number) => void): Pr
   });
 }
 
+const noSubscription = () => () => {};
+
 /** Upload of a cover or an artist photo, with the honest processing status. */
 export function ImageUpload({
   kind,
@@ -45,6 +47,12 @@ export function ImageUpload({
   const inputId = useId();
   const input = useRef<HTMLInputElement>(null);
   const [phase, setPhase] = useState<Phase>({ kind: "idle" });
+  // Until React has hydrated, choosing a file would do nothing: keep the input disabled.
+  const hydrated = useSyncExternalStore(
+    noSubscription,
+    () => true,
+    () => false,
+  );
   const busy = phase.kind === "uploading" || phase.kind === "finishing";
   const waiting = latest?.status === "uploaded" || latest?.status === "processing";
   const label = kind === "release_artwork" ? "cover" : "photo";
@@ -109,7 +117,7 @@ export function ImageUpload({
           type="file"
           accept={IMAGE_ACCEPT}
           className="visually-hidden"
-          disabled={busy}
+          disabled={busy || !hydrated}
           onChange={(event) => {
             const file = event.target.files?.[0];
             if (file) void upload(file);

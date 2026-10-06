@@ -210,3 +210,28 @@ export async function getPlayableTracks(
   }
   return result;
 }
+
+/**
+ * Playable versions of tracks from many releases (library, playlists), in the given order — one
+ * `release_playback` call per release. Items without a playable variant come back as null, so
+ * the caller can show them without a play button.
+ */
+export async function getPlayableQueue(
+  items: { id: string; title: string; releaseId: string; artistName: string }[],
+  maxTier: QualityTier,
+): Promise<(PlayerTrack | null)[]> {
+  const byRelease = new Map<string, { artist: string; tracks: { id: string; title: string }[] }>();
+  for (const item of items) {
+    const entry = byRelease.get(item.releaseId) ?? { artist: item.artistName, tracks: [] };
+    if (!entry.tracks.some((t) => t.id === item.id)) entry.tracks.push(item);
+    byRelease.set(item.releaseId, entry);
+  }
+  const playable = new Map<string, PlayerTrack>();
+  const results = await Promise.all(
+    [...byRelease].map(([releaseId, entry]) =>
+      getPlayableTracks(releaseId, entry.tracks, entry.artist, maxTier),
+    ),
+  );
+  for (const list of results) for (const track of list) playable.set(track.id, track);
+  return items.map((item) => playable.get(item.id) ?? null);
+}

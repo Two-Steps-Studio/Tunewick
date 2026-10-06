@@ -1,6 +1,7 @@
 export {
   audioReadiness,
   getLatestTrackAudio,
+  getPlayableQueue,
   getPlayableTracks,
   isAudioUploadAvailable,
   type TrackAudio,

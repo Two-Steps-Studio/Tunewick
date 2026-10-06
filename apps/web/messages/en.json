@@ -112,7 +112,8 @@
       "followShort": "Follow",
       "following": "Following",
       "failed": "Could not save. Please try again."
-    }
+    },
+    "playlists": "Your playlists"
   },
   "NotFound": {
     "title": "This page does not exist",
@@ -816,6 +817,51 @@
       "not_allowed": "You are not allowed to manage promotions.",
       "not_found": "Not found — it may have been removed.",
       "failed": "That did not work. Please try again."
+    }
+  },
+  "Playlists": {
+    "badge": "Playlist",
+    "visibility": {
+      "public": "public",
+      "unlisted": "anyone with the link",
+      "private": "private"
+    },
+    "visibilityHint": "Public: visible to everyone. Anyone with the link: not listed anywhere, but opens for whoever has the address. Private: only you.",
+    "trackCount": "{count, plural, =0 {no tracks} one {# track} other {# tracks}}",
+    "hidden": "{count, plural, one {# track is unavailable right now} other {# tracks are unavailable right now}}",
+    "play": "Play",
+    "playAll": "Play playlist {title}",
+    "playTrack": "Play: {title}",
+    "empty": "This playlist is empty.",
+    "emptyMine": "The playlist is empty. Add tracks with the + button next to a track on a release page.",
+    "moveUp": "Move up: {title} (position {position})",
+    "moveDown": "Move down: {title} (position {position})",
+    "remove": "Remove from playlist: {title} (position {position})",
+    "settings": "Playlist settings",
+    "fields": {
+      "title": "Name",
+      "description": "Description (optional)",
+      "visibility": "Who can see it"
+    },
+    "save": "Save",
+    "saved": "Saved.",
+    "delete": "Delete playlist",
+    "deleteHint": "Deleting cannot be undone. The tracks stay on Tunewick.",
+    "deleteConfirm": "Delete this playlist?",
+    "deleteYes": "Yes, delete",
+    "deleteNo": "Cancel",
+    "newTitle": "New playlist",
+    "create": "Create",
+    "addTrack": "Add to playlist: {title}",
+    "addTo": "Add to playlist",
+    "add": "Add",
+    "added": "Added to: {playlist}",
+    "addFailed": "Could not add. Please try again.",
+    "noPlaylists": "You have no playlists yet — create one in your Library.",
+    "errors": {
+      "title": "The name needs 1 to 100 characters.",
+      "limit": "You already have 200 playlists — that is the maximum.",
+      "failed": "Could not save. Please try again."
     }
   }
 }

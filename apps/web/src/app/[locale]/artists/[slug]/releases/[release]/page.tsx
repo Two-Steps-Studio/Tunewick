@@ -6,7 +6,9 @@ import type { Locale } from "@/i18n/routing";
 import { getPlayableTracks, listenerEntitlement } from "@/modules/audio";
 import { getPublicRelease } from "@/modules/catalog";
 import { Artwork, getImageSources } from "@/modules/images";
+import { getOptionalUser } from "@/modules/auth";
 import { getReleaseLikes, LibraryButton } from "@/modules/library";
+import { AddToPlaylist, getMyPlaylists } from "@/modules/playlists";
 import { PlayButton } from "@/modules/player";
 
 type Params = PageProps<"/[locale]/artists/[slug]/releases/[release]">["params"];
@@ -50,6 +52,8 @@ export default async function ReleasePage({
       tracks.map((track) => track.id),
     ),
   ]);
+  const user = likes ? await getOptionalUser() : null;
+  const playlists = user ? await getMyPlaylists(user.id) : null;
   const indexOf = (trackId: string) => playable.findIndex((p) => p.id === trackId);
   const total = tracks.reduce((sum, track) => sum + (track.duration_ms ?? 0), 0);
   const year = (release.release_date ?? release.publish_at ?? "").slice(0, 4);
@@ -149,6 +153,13 @@ export default async function ReleasePage({
                   id={track.id}
                   initial={likes.tracks.has(track.id)}
                   name={track.title}
+                />
+              ) : null}
+              {playlists ? (
+                <AddToPlaylist
+                  trackId={track.id}
+                  trackTitle={track.title}
+                  playlists={playlists.map((p) => ({ id: p.id, title: p.title }))}
                 />
               ) : null}
             </li>

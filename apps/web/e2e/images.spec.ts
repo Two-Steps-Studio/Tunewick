@@ -19,6 +19,7 @@ test.describe("covers and artist photos", () => {
     await expect(page).toHaveURL(new RegExp(`/artysci/${slug}/zarzadzaj$`));
 
     // Artist photo: centre-cropped and shown on the public profile.
+    await expect(page.getByLabel("Dodaj zdjęcie")).toBeEnabled();
     await page.getByLabel("Dodaj zdjęcie").setInputFiles({
       name: "zdjecie.png",
       mimeType: "image/png",
@@ -38,6 +39,8 @@ test.describe("covers and artist photos", () => {
     await page.getByRole("button", { name: "Utwórz szkic" }).click();
     await expect(page.locator(".readiness__todo", { hasText: "Okładka" })).toBeVisible();
 
+    await expect(page.getByLabel("Dodaj okładkę")).toBeEnabled();
+
     await page.getByLabel("Dodaj okładkę").setInputFiles({
       name: "logo.svg",
       mimeType: "image/svg+xml",
@@ -46,6 +49,8 @@ test.describe("covers and artist photos", () => {
     await expect(page.locator(".image-upload").getByRole("alert")).toHaveText(
       "Ten typ pliku nie jest obsługiwany. Wybierz JPEG, PNG lub WebP.",
     );
+
+    await expect(page.getByLabel("Dodaj okładkę")).toBeEnabled();
 
     await page.getByLabel("Dodaj okładkę").setInputFiles({
       name: "mala.png",
@@ -56,6 +61,8 @@ test.describe("covers and artist photos", () => {
       "Okładka została odrzucona. Obraz jest za mały (okładka: min. 1400 × 1400 px, zdjęcie: min. 400 px).",
       { timeout: 60_000 },
     );
+
+    await expect(page.getByLabel("Dodaj okładkę")).toBeEnabled();
 
     await page.getByLabel("Dodaj okładkę").setInputFiles({
       name: "okladka.png",

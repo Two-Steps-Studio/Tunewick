@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
 import { getPathname, Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
-import { getPlayableTracks, listenerEntitlement } from "@/modules/audio";
+import { getPlayableQueue, listenerEntitlement } from "@/modules/audio";
 import { getOptionalUser } from "@/modules/auth";
 import { Artwork, getImageSourcesMany } from "@/modules/images";
 import { getLibrary, LibraryButton } from "@/modules/library";
+import { getMyPlaylists, NewPlaylistForm } from "@/modules/playlists";
 import { PlayButton, type PlayerTrack } from "@/modules/player";
 
 export async function generateMetadata({
@@ -51,31 +52,35 @@ export default async function LibraryPage({ params }: PageProps<"/[locale]/libra
   }
 
   const tReleases = await getTranslations("Releases");
+  const tPlaylists = await getTranslations("Playlists");
   const format = await getFormatter();
-  const [library, entitlement] = await Promise.all([getLibrary(), listenerEntitlement()]);
+  const [library, entitlement, playlists] = await Promise.all([
+    getLibrary(),
+    listenerEntitlement(),
+    getMyPlaylists(user.id),
+  ]);
 
   // Liked tracks play as one queue, in the order they were liked.
-  const byRelease = new Map<string, { artist: string; tracks: { id: string; title: string }[] }>();
-  for (const track of library.tracks) {
-    const entry = byRelease.get(track.release.id) ?? {
-      artist: track.release.artist.name,
-      tracks: [],
-    };
-    entry.tracks.push({ id: track.id, title: track.title });
-    byRelease.set(track.release.id, entry);
-  }
-  const playableById = new Map<string, PlayerTrack>();
-  for (const [releaseId, entry] of byRelease) {
-    for (const p of await getPlayableTracks(releaseId, entry.tracks, entry.artist, entitlement)) {
-      playableById.set(p.id, p);
-    }
-  }
-  const queue = library.tracks.flatMap((track) => playableById.get(track.id) ?? []);
+  const queue = (
+    await getPlayableQueue(
+      library.tracks.map((track) => ({
+        id: track.id,
+        title: track.title,
+        releaseId: track.release.id,
+        artistName: track.release.artist.name,
+      })),
+      entitlement,
+    )
+  ).filter((track): track is PlayerTrack => track !== null);
   const images = await getImageSourcesMany(
     [...library.releases.map((r) => r.artwork_image_id), ...library.artists.map((a) => a.image_id)],
     320,
   );
-  const empty = !library.tracks.length && !library.releases.length && !library.artists.length;
+  const empty =
+    !library.tracks.length &&
+    !library.releases.length &&
+    !library.artists.length &&
+    !playlists.length;
 
   return (
     <section className="discover">
@@ -83,6 +88,31 @@ export default async function LibraryPage({ params }: PageProps<"/[locale]/libra
         <h1 className="discover__title">{t("title")}</h1>
         <p className="discover__lead">{empty ? t("empty") : t("lead")}</p>
       </header>
+
+      <section aria-labelledby="playlists" className="discover__section">
+        <h2 id="playlists" className="section-title">
+          {t("playlists")}
+        </h2>
+        {playlists.length ? (
+          <ul className="artist-list">
+            {playlists.map((p) => (
+              <li key={p.id} className="artist-list__item">
+                <Link
+                  className="artist-list__name"
+                  href={{ pathname: "/playlists/[id]", params: { id: p.id } }}
+                >
+                  {p.title}
+                </Link>
+                <span className="field__hint">
+                  {tPlaylists("trackCount", { count: p.count })} ·{" "}
+                  {tPlaylists(`visibility.${p.visibility}`)}
+                </span>
+              </li>
+            ))}
+          </ul>
+        ) : null}
+        <NewPlaylistForm />
+      </section>
 
       {library.tracks.length ? (
         <section aria-labelledby="liked-tracks" className="discover__section">

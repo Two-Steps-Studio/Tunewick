@@ -308,6 +308,18 @@ public music (`release_is_public`) and active artists. Who follows whom is priva
 liked tracks (played as one queue in like order), liked releases and followed artists; music that
 stops being public drops out through RLS.
 
+## Playlists (implemented, M5.2)
+
+`playlists` (`owner_id` from the session, `title` 1–100, `description` ≤ 500, `visibility`
+public/unlisted/private — private by default, `kind` manual, `updated_at` touched by item changes;
+≤ 200 per owner via `private.playlist_count`) and `playlist_tracks` (fractional `position`,
+duplicates allowed). Read: owner, or anyone for public/unlisted (`can_view_playlist`); owners update
+title/description/visibility and delete. Items are added and moved only through
+`add_playlist_track(playlist, track)` (public tracks only, ≤ 1000, row lock per playlist) and
+`move_playlist_track(item, to_index)` (midpoint of the new neighbours, renumbered when gaps fall
+below 1e-9); owners delete items directly. Tracks that stop being public stay in the playlist and
+are hidden by the catalog RLS (the page says how many are unavailable).
+
 ## Promo codes (implemented, M9.2)
 
 `public.promo_campaigns` (dates, `active`, `max_redemptions_total`, `per_user_limit` per

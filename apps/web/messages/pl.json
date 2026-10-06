@@ -112,7 +112,8 @@
       "followShort": "Obserwuj",
       "following": "Obserwujesz",
       "failed": "Nie udało się zapisać. Spróbuj ponownie."
-    }
+    },
+    "playlists": "Twoje playlisty"
   },
   "NotFound": {
     "title": "Nie ma takiej strony",
@@ -816,6 +817,51 @@
       "not_allowed": "Nie masz uprawnień do zarządzania promocjami.",
       "not_found": "Nie znaleziono — może zostało usunięte.",
       "failed": "Nie udało się. Spróbuj ponownie."
+    }
+  },
+  "Playlists": {
+    "badge": "Playlista",
+    "visibility": {
+      "public": "publiczna",
+      "unlisted": "dla osób z linkiem",
+      "private": "prywatna"
+    },
+    "visibilityHint": "Publiczna: widoczna dla wszystkich. Dla osób z linkiem: nie pojawia się nigdzie, ale otworzy ją każdy, kto ma adres. Prywatna: tylko Ty.",
+    "trackCount": "{count, plural, =0 {brak utworów} one {# utwór} few {# utwory} many {# utworów} other {# utworu}}",
+    "hidden": "{count, plural, one {# utwór jest teraz niedostępny} few {# utwory są teraz niedostępne} many {# utworów jest teraz niedostępnych} other {# utworu jest teraz niedostępne}}",
+    "play": "Odtwórz",
+    "playAll": "Odtwórz playlistę {title}",
+    "playTrack": "Odtwórz: {title}",
+    "empty": "Ta playlista jest pusta.",
+    "emptyMine": "Playlista jest pusta. Dodaj utwory przyciskiem + przy utworze na stronie wydawnictwa.",
+    "moveUp": "Przesuń wyżej: {title} (pozycja {position})",
+    "moveDown": "Przesuń niżej: {title} (pozycja {position})",
+    "remove": "Usuń z playlisty: {title} (pozycja {position})",
+    "settings": "Ustawienia playlisty",
+    "fields": {
+      "title": "Nazwa",
+      "description": "Opis (opcjonalnie)",
+      "visibility": "Kto ją widzi"
+    },
+    "save": "Zapisz",
+    "saved": "Zapisano.",
+    "delete": "Usuń playlistę",
+    "deleteHint": "Usunięcia nie da się cofnąć. Utwory zostają w serwisie.",
+    "deleteConfirm": "Na pewno usunąć tę playlistę?",
+    "deleteYes": "Tak, usuń",
+    "deleteNo": "Anuluj",
+    "newTitle": "Nowa playlista",
+    "create": "Utwórz",
+    "addTrack": "Dodaj do playlisty: {title}",
+    "addTo": "Dodaj do playlisty",
+    "add": "Dodaj",
+    "added": "Dodano do: {playlist}",
+    "addFailed": "Nie udało się dodać. Spróbuj ponownie.",
+    "noPlaylists": "Nie masz jeszcze playlist — utwórz pierwszą w Bibliotece.",
+    "errors": {
+      "title": "Nazwa musi mieć od 1 do 100 znaków.",
+      "limit": "Masz już 200 playlist — to maksimum.",
+      "failed": "Nie udało się zapisać. Spróbuj ponownie."
     }
   }
 }
