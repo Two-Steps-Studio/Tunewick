@@ -1147,6 +1147,22 @@ body {
     box-shadow: inset 3px 0 0 var(--accent);
   }
 
+  .redeem-form {
+    display: grid;
+    gap: var(--tk-space-3);
+  }
+  .redeem-form__row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--tk-space-2);
+  }
+  .redeem-form__input {
+    flex: 1 1 14rem;
+    font-family: var(--tk-font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
   /* Artists --------------------------------------------------------------- */
   .section-title {
     font-family: var(--tk-font-display);

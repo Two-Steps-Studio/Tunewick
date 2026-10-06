@@ -486,6 +486,96 @@ export type Database = {
         };
         Relationships: [];
       };
+      promo_campaigns: {
+        Row: {
+          active: boolean;
+          created_at: string;
+          created_by: string | null;
+          description: string | null;
+          ends_at: string | null;
+          id: string;
+          max_redemptions_total: number | null;
+          name: string;
+          partner: string | null;
+          per_user_limit: number;
+          redemptions_count: number;
+          starts_at: string | null;
+        };
+        Insert: {
+          active?: boolean;
+          created_at?: string;
+          created_by?: string | null;
+          description?: string | null;
+          ends_at?: string | null;
+          id?: string;
+          max_redemptions_total?: number | null;
+          name: string;
+          partner?: string | null;
+          per_user_limit?: number;
+          redemptions_count?: number;
+          starts_at?: string | null;
+        };
+        Update: {
+          active?: boolean;
+          created_at?: string;
+          created_by?: string | null;
+          description?: string | null;
+          ends_at?: string | null;
+          id?: string;
+          max_redemptions_total?: number | null;
+          name?: string;
+          partner?: string | null;
+          per_user_limit?: number;
+          redemptions_count?: number;
+          starts_at?: string | null;
+        };
+        Relationships: [];
+      };
+      promo_redemptions: {
+        Row: {
+          campaign_id: string;
+          code_id: string;
+          entitlement_id: string | null;
+          id: string;
+          redeemed_at: string;
+          status: string;
+          user_id: string;
+        };
+        Insert: {
+          campaign_id: string;
+          code_id: string;
+          entitlement_id?: string | null;
+          id?: string;
+          redeemed_at?: string;
+          status?: string;
+          user_id: string;
+        };
+        Update: {
+          campaign_id?: string;
+          code_id?: string;
+          entitlement_id?: string | null;
+          id?: string;
+          redeemed_at?: string;
+          status?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "promo_redemptions_campaign_id_fkey";
+            columns: ["campaign_id"];
+            isOneToOne: false;
+            referencedRelation: "promo_campaigns";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "promo_redemptions_entitlement_id_fkey";
+            columns: ["entitlement_id"];
+            isOneToOne: false;
+            referencedRelation: "entitlements";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       release_artists: {
         Row: {
           artist_id: string;
@@ -1238,6 +1328,7 @@ export type Database = {
           source_ref: string;
         }[];
       };
+      redeem_promo_code: { Args: { code: string }; Returns: Json };
       release_is_public: { Args: { release: string }; Returns: boolean };
       release_playback: {
         Args: { release: string };
@@ -1281,6 +1372,19 @@ export type Database = {
       search_normalize: { Args: { value: string }; Returns: string };
       set_release_genres: { Args: { genre_ids: number[]; release: string }; Returns: undefined };
       submit_release: { Args: { release: string }; Returns: undefined };
+      system_create_promo_codes: {
+        Args: {
+          benefit_type: Database["public"]["Enums"]["promo_benefit"];
+          benefit_value: number;
+          campaign_name: string;
+          eligibility?: Json;
+          expires_at?: string;
+          how_many?: number;
+          max_uses?: number;
+          shared_code?: string;
+        };
+        Returns: string[];
+      };
       system_grant_entitlement: {
         Args: {
           days: number;
@@ -1316,6 +1420,13 @@ export type Database = {
         | "other";
       entitlement_source: "promo" | "beta" | "admin" | "referral" | "subscription";
       image_kind: "release_artwork" | "artist_image";
+      promo_benefit:
+        | "premium_days"
+        | "premium_months"
+        | "premium_lifetime"
+        | "feature_access"
+        | "percent_discount"
+        | "fixed_discount";
       quality_tier: "data_saver" | "high" | "lossless" | "hires";
       release_artist_role: "primary" | "featured";
       release_review_kind: "submitted" | "withdrawn" | "approved" | "returned";
@@ -1470,6 +1581,14 @@ export const Constants = {
       ],
       entitlement_source: ["promo", "beta", "admin", "referral", "subscription"],
       image_kind: ["release_artwork", "artist_image"],
+      promo_benefit: [
+        "premium_days",
+        "premium_months",
+        "premium_lifetime",
+        "feature_access",
+        "percent_discount",
+        "fixed_discount",
+      ],
       quality_tier: ["data_saver", "high", "lossless", "hires"],
       release_artist_role: ["primary", "featured"],
       release_review_kind: ["submitted", "withdrawn", "approved", "returned"],

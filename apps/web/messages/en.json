@@ -697,6 +697,25 @@
       "admin": "Granted by the Tunewick team: {ref}",
       "referral": "For a referral: {ref}",
       "subscription": "Subscription"
+    },
+    "redeem": {
+      "label": "Have a promo code?",
+      "submit": "Redeem",
+      "granted": "Code accepted. Premium is on from now.",
+      "errors": {
+        "empty": "Enter a code.",
+        "invalid": "This code does not work. Check that you typed it exactly.",
+        "inactive": "This promotion is switched off.",
+        "expired": "This code has expired.",
+        "not_yet_valid": "This code does not work yet — check when the promotion starts.",
+        "not_eligible": "This code is not meant for your account (e.g. new accounts only, or it needs a confirmed email).",
+        "exhausted": "This code has been used by the maximum number of people.",
+        "already_redeemed": "This code (or a code from the same promotion) is already used on your account.",
+        "already_lifetime": "You already have Premium for life — keep the code for someone else, it was not used.",
+        "unavailable": "This kind of code will work once we introduce payments.",
+        "rate_limited": "Too many attempts. Try again in 15 minutes.",
+        "unexpected": "Something went wrong. Please try again."
+      }
     }
   }
 }

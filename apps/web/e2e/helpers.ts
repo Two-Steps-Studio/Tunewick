@@ -131,6 +131,17 @@ export function grantPremium(email: string, days = 30) {
   );
 }
 
+/** Creates promo codes in the local database; returns the plaintext codes (shown once). */
+export function createPromoCodes(campaign: string, options: string[]) {
+  return execFileSync(
+    "node",
+    ["../../scripts/create-promo-codes.mjs", "--local", "--campaign", campaign, ...options],
+    { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] },
+  )
+    .trim()
+    .split(/\r?\n/);
+}
+
 /** A valid solid-colour PNG (RGB, 8-bit) built with zlib only — for image upload tests. */
 export function solidPng(width: number, height: number, [r, g, b]: [number, number, number]) {
   const crcTable = Array.from({ length: 256 }, (_, n) => {
@@ -179,19 +190,26 @@ export async function accessToken(page: Page): Promise<string> {
   return (JSON.parse(value) as { access_token: string }).access_token;
 }
 
-/** Calls the Supabase Data API directly with a user's token — bypassing the web app. */
-export async function dataApi(token: string, path: string) {
-  const env = Object.fromEntries(
+function localEnv() {
+  return Object.fromEntries(
     readFileSync(".env.local", "utf8")
       .split(/\r?\n/)
       .map((line) => line.match(/^([A-Z_]+)=(.*)$/))
       .filter((m): m is RegExpMatchArray => m !== null)
       .map((m) => [m[1], m[2]]),
   );
+}
+
+/** Calls the Supabase Data API directly with a user's token — bypassing the web app. */
+export async function dataApi(token: string, path: string, body?: unknown) {
+  const env = localEnv();
   return fetch(`${env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/${path}`, {
+    method: body === undefined ? "GET" : "POST",
+    body: body === undefined ? undefined : JSON.stringify(body),
     headers: {
       apikey: env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,
       Authorization: `Bearer ${token}`,
+      ...(body === undefined ? {} : { "Content-Type": "application/json" }),
     },
   });
 }

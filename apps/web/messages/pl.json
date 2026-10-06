@@ -697,6 +697,25 @@
       "admin": "Przyznane przez zespół Tunewick: {ref}",
       "referral": "Za polecenie: {ref}",
       "subscription": "Subskrypcja"
+    },
+    "redeem": {
+      "label": "Masz kod promocyjny?",
+      "submit": "Użyj kodu",
+      "granted": "Kod przyjęty. Premium działa od teraz.",
+      "errors": {
+        "empty": "Wpisz kod.",
+        "invalid": "Ten kod nie działa. Sprawdź, czy jest wpisany dokładnie.",
+        "inactive": "Ta promocja jest wyłączona.",
+        "expired": "Ten kod już wygasł.",
+        "not_yet_valid": "Ten kod jeszcze nie działa — sprawdź datę startu promocji.",
+        "not_eligible": "Ten kod nie jest przeznaczony dla Twojego konta (np. tylko dla nowych kont albo wymaga potwierdzonego e-maila).",
+        "exhausted": "Ten kod został już wykorzystany przez maksymalną liczbę osób.",
+        "already_redeemed": "Ten kod (albo kod z tej samej promocji) jest już użyty na Twoim koncie.",
+        "already_lifetime": "Masz już Premium na zawsze — zachowaj kod dla kogoś innego, nie został zużyty.",
+        "unavailable": "Tego rodzaju kod zadziała dopiero, gdy wprowadzimy płatności.",
+        "rate_limited": "Za dużo prób. Spróbuj ponownie za 15 minut.",
+        "unexpected": "Coś poszło nie tak. Spróbuj ponownie."
+      }
     }
   }
 }

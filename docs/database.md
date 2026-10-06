@@ -299,6 +299,22 @@ life; audited). Wrappers: `admin_grant_entitlement(user, plan, days | null, note
 plan, days, source, note)` (service role, `scripts/grant-plan.mjs`). The web app's
 `listenerEntitlement()` is `my_plan().max_quality_tier`.
 
+## Promo codes (implemented, M9.2)
+
+`public.promo_campaigns` (dates, `active`, `max_redemptions_total`, `per_user_limit` per
+campaign; admins with aal2 read), `private.promo_codes` (HMAC-SHA256 `code_hash` with the
+`promo_code_pepper` Vault secret — generated inside each database by the migration, never in the
+repo — `code_hint` = last 4 characters, `shared`, `benefit_type` enum, `benefit_value`,
+`target_plan`, dates, `max_uses`/`uses_count`, `per_user_limit`, `eligibility`
+`{"new_accounts_days": n, "min_account_age_days": n}`), `public.promo_redemptions` (own rows;
+admins) and `private.promo_attempts`. Generated codes: 16 characters from
+`ABCDEFGHJKMNPQRSTUVWXYZ23456789` (rejection-sampled, ~79 bits), `XXXX-XXXX-XXXX-XXXX`.
+`redeem_promo_code(code)` implements promotions.md §4 and returns `{status, plan, ends_at}` —
+failures are results (recorded attempts), not exceptions; 10 failed attempts per 15 minutes →
+`rate_limited`; a refused code is never consumed; the code row lock serializes concurrent
+redemptions (E2E: six accounts, one single-use code, exactly one grant). Creation until the admin
+panel (M9.3): `system_create_promo_codes(...)` (service role) via `scripts/create-promo-codes.mjs`.
+
 ## Search (implemented, M6.2)
 
 `public.search_normalize(text)` = lower(unaccent(text)) (immutable wrapper; "Łódź" → "lodz") with

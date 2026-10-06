@@ -142,6 +142,12 @@ then run `node scripts/create-invites.mjs ...` in the same window.
    ```bash
    SUPABASE_URL=... SUPABASE_SECRET_KEY=... node scripts/grant-plan.mjs --email <tester> --days 90 --source beta --note "beta 2026"
    ```
+5. Promo codes (until the admin panel exists). Codes are printed once — use `--csv` and keep the
+   file in the password manager / hand it to the partner; only hashes stay in the database:
+
+   ```bash
+   SUPABASE_URL=... SUPABASE_SECRET_KEY=... node scripts/create-promo-codes.mjs --campaign "Beta 2026" --count 50 --days 90 --csv beta-codes.csv
+   ```
 
 ## 5. Checklist after each deploy
 

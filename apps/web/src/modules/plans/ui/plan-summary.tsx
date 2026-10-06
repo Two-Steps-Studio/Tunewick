@@ -1,5 +1,6 @@
 import { getFormatter, getTranslations } from "next-intl/server";
 import { getMyPlan } from "../queries";
+import { RedeemForm } from "./redeem-form";
 
 /** Settings section: the plan as the database knows it — never more than that. */
 export async function PlanSummary() {
@@ -32,6 +33,7 @@ export async function PlanSummary() {
         ) : null}
         <p className="field__hint">{premium ? t("premiumQuality") : t("freeQuality")}</p>
       </div>
+      {plan.endsAt !== null || !premium ? <RedeemForm /> : null}
     </section>
   );
 }
