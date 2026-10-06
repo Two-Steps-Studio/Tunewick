@@ -117,7 +117,7 @@ graph_edges (derived)      feature_flags, access_invites, waitlist      private.
 
 | Table | Key columns | Notes |
 | --- | --- | --- |
-| `cities` | `slug`, `name_pl`, `name_en`, `region` (e.g. `GZM`), `country_code`, `lat`, `lng` | Seeded for GZM first. |
+| `cities` | `slug`, `name_pl`, `name_en`, `region` (voivodeship or metro area, e.g. `śląskie`, `GZM`), `country_code`, `lat`, `lng` | Seeded with Polish cities and towns (all voivodeships). |
 | `venues` | `slug`, `name`, `city_id`, `address`, `lat`, `lng`, `website`, `verified` | |
 | `venue_members` | `venue_id`, `user_id`, `role` | Organizers (post-MVP self-service). |
 | `events` | `slug`, `title`, `venue_id`, `starts_at`, `ends_at`, `status (scheduled, cancelled, postponed)`, `ticket_url`, `description`, `source (artist, venue, admin)`, `published` | Only real, moderated events are published. |

@@ -135,7 +135,7 @@ then run `node scripts/create-invites.mjs ...` in the same window.
    ```bash
    SUPABASE_URL=... SUPABASE_SECRET_KEY=... node scripts/grant-role.mjs --email <owner-email> --role admin
    ```
-3. Create beta invites in batches (`--count 50 --max-uses 1 --expires-days 30 --label "GZM artists"`).
+3. Create beta invites in batches (`--count 50 --max-uses 1 --expires-days 30 --label "beta artists"`).
    Codes are printed once; only hashes are stored.
 
 ## 5. Checklist after each deploy
