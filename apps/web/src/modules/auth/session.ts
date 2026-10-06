@@ -21,3 +21,40 @@ export async function requireUser(signInPath: string): Promise<User> {
   if (!user) redirect(signInPath);
   return user;
 }
+
+export interface MfaStatus {
+  /** A verified TOTP factor exists. */
+  enabled: boolean;
+  /** This session passed the second factor (aal2). */
+  verified: boolean;
+}
+
+export async function getMfaStatus(): Promise<MfaStatus> {
+  const supabase = await createSupabaseServerClient();
+  const [{ data: factors }, { data: aal }] = await Promise.all([
+    supabase.auth.mfa.listFactors(),
+    supabase.auth.mfa.getAuthenticatorAssuranceLevel(),
+  ]);
+  return {
+    enabled: (factors?.totp.length ?? 0) > 0,
+    verified: aal?.currentLevel === "aal2",
+  };
+}
+
+/**
+ * Staff pages: the role is checked with the database and the session must be aal2.
+ * Staff without a second factor are sent to set one up (docs/security.md §2).
+ * Database functions enforce the same rule independently (public.require_staff).
+ */
+export async function requireStaff(
+  role: "moderator" | "admin",
+  paths: { signIn: string; security: string; forbidden: string },
+): Promise<User> {
+  const user = await requireUser(paths.signIn);
+  const supabase = await createSupabaseServerClient();
+  const { data: hasRole } = await supabase.rpc("has_app_role", { required: role });
+  if (!hasRole) redirect(paths.forbidden);
+  const mfa = await getMfaStatus();
+  if (!mfa.enabled || !mfa.verified) redirect(paths.security);
+  return user;
+}

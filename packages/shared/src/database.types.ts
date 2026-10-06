@@ -116,6 +116,15 @@ export type Database = {
     };
     Functions: {
       access_invite_is_valid: { Args: { code: string }; Returns: boolean };
+      admin_grant_role: {
+        Args: { role: Database["public"]["Enums"]["app_role"]; target_user: string };
+        Returns: undefined;
+      };
+      admin_revoke_role: {
+        Args: { role: Database["public"]["Enums"]["app_role"]; target_user: string };
+        Returns: undefined;
+      };
+      admin_set_feature_flag: { Args: { enabled: boolean; flag: string }; Returns: undefined };
       create_access_invites: {
         Args: { codes: string[]; expires_at?: string; label?: string; max_uses?: number };
         Returns: number;
@@ -126,6 +135,14 @@ export type Database = {
       };
       is_feature_enabled: { Args: { flag: string }; Returns: boolean };
       is_reserved_handle: { Args: { candidate: string }; Returns: boolean };
+      require_staff: {
+        Args: { required: Database["public"]["Enums"]["app_role"] };
+        Returns: undefined;
+      };
+      system_grant_role: {
+        Args: { role: Database["public"]["Enums"]["app_role"]; target_email: string };
+        Returns: string;
+      };
     };
     Enums: {
       app_role: "moderator" | "admin";

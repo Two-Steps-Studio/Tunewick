@@ -15,6 +15,8 @@ export const routing = defineRouting({
     "/update-password": { pl: "/nowe-haslo", en: "/new-password" },
     "/check-email": { pl: "/sprawdz-poczte", en: "/check-email" },
     "/settings": { pl: "/ustawienia", en: "/settings" },
+    "/settings/security": { pl: "/ustawienia/bezpieczenstwo", en: "/settings/security" },
+    "/verify": { pl: "/weryfikacja", en: "/verify" },
     "/profile/[handle]": { pl: "/profil/[handle]", en: "/profile/[handle]" },
   },
 });

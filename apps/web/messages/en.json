@@ -165,5 +165,32 @@
   "Profile": {
     "memberSince": "On Tunewick since {date}",
     "empty": "This profile has no description yet."
+  },
+  "Security": {
+    "title": "Security",
+    "lead": "A second sign-in factor protects your account even if someone learns your password.",
+    "link": "Security and two-factor sign-in",
+    "staffNote": "Moderator and administrator accounts must use two-factor sign-in.",
+    "statusOn": "Two-factor sign-in is on.",
+    "statusOff": "Two-factor sign-in is off.",
+    "enable": "Set up an authenticator app",
+    "disable": "Turn off two-factor sign-in",
+    "scan": "Scan the code with an authenticator app (e.g. Aegis, 2FAS, Google Authenticator) or enter the key manually.",
+    "qrAlt": "QR code for adding Tunewick to your authenticator app",
+    "secretLabel": "Key for manual entry",
+    "code": "Code from the app (6 digits)",
+    "confirm": "Confirm and turn on",
+    "disableNeedsVerify": "To turn off the second factor, first confirm your sign-in with a code from the app.",
+    "verify": {
+      "title": "Confirm sign-in",
+      "lead": "Enter the 6-digit code from your authenticator app.",
+      "submit": "Confirm"
+    },
+    "errors": {
+      "codeInvalid": "Invalid or expired code. Try a new code from the app.",
+      "codeFormat": "The code has 6 digits.",
+      "rateLimited": "Too many attempts. Try again shortly.",
+      "unexpected": "Something went wrong. Please try again."
+    }
   }
 }

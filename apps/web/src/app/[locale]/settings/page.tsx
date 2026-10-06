@@ -25,6 +25,7 @@ export default async function SettingsPage({ params }: PageProps<"/[locale]/sett
   const user = await requireUser(signIn);
   const { profile, settings } = await getMyAccount(user.id);
   const t = await getTranslations("Settings");
+  const tSecurity = await getTranslations("Security");
 
   return (
     <section className="auth-page">
@@ -39,6 +40,9 @@ export default async function SettingsPage({ params }: PageProps<"/[locale]/sett
           ) : (
             t("noHandle")
           )}
+        </p>
+        <p className="settings-profile-link">
+          <Link href="/settings/security">{tSecurity("link")}</Link>
         </p>
       </div>
       <div className="auth-page__body">

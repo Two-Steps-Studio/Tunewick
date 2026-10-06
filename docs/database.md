@@ -147,7 +147,7 @@ graph_edges (derived)      feature_flags, access_invites, waitlist      private.
 | `feature_flags` | `key`, `description`, `enabled`, `updated_by` | Evaluated server-side via `is_feature_enabled()`; no direct client access. `closed_beta` = on. ✅ implemented (M1.4; rollout/rules columns when needed). |
 | `private.access_invites` | `code_hash` (SHA-256 of normalized code), `label`, `max_uses`, `uses_count`, `expires_at`, `revoked_at` | Closed beta gate (D5), enforced by a BEFORE INSERT trigger on `auth.users` (also covers direct Auth API calls); invite id recorded in `app_metadata`; staff bypass only via server-set `app_metadata.beta_bypass`. Codes created with `pnpm invites:create`. Separate from promo codes: access ≠ entitlement. ✅ implemented (M1.4). |
 | `waitlist` | `email`, `locale`, `city_id`, `consented_at`, `invited_at` | Email only with consent; deletable. |
-| `private.audit_log` | `id bigint`, `actor_id`, `actor_role`, `action`, `subject_type`, `subject_id`, `before jsonb`, `after jsonb`, `ip_hash`, `created_at` | Append-only (UPDATE/DELETE revoked from all roles). |
+| `private.audit_log` | `id bigint`, `actor_id`, `actor_kind (user, system)`, `action`, `subject_type`, `subject_id`, `before jsonb`, `after jsonb`, `created_at` | Append-only, enforced by triggers even for the owner; written via `private.write_audit()` inside the same transaction as the action. ✅ implemented (M1.5). |
 | `analytics_events` | `id bigint`, `user_id null`, `anon_id`, `name`, `props jsonb`, `occurred_at` | Only with analytics consent. Partitioned monthly, retention limited. |
 
 ## 4. Key database functions

@@ -165,5 +165,32 @@
   "Profile": {
     "memberSince": "Na Tunewick od {date}",
     "empty": "Ten profil nie ma jeszcze opisu."
+  },
+  "Security": {
+    "title": "Bezpieczeństwo",
+    "lead": "Drugi składnik logowania chroni konto nawet wtedy, gdy ktoś pozna Twoje hasło.",
+    "link": "Bezpieczeństwo i logowanie dwuskładnikowe",
+    "staffNote": "Konta moderatorów i administratorów muszą mieć włączone logowanie dwuskładnikowe.",
+    "statusOn": "Logowanie dwuskładnikowe jest włączone.",
+    "statusOff": "Logowanie dwuskładnikowe jest wyłączone.",
+    "enable": "Włącz aplikację uwierzytelniającą",
+    "disable": "Wyłącz logowanie dwuskładnikowe",
+    "scan": "Zeskanuj kod w aplikacji uwierzytelniającej (np. Aegis, 2FAS, Google Authenticator) albo wpisz klucz ręcznie.",
+    "qrAlt": "Kod QR do dodania Tunewick w aplikacji uwierzytelniającej",
+    "secretLabel": "Klucz do wpisania ręcznie",
+    "code": "Kod z aplikacji (6 cyfr)",
+    "confirm": "Potwierdź i włącz",
+    "disableNeedsVerify": "Aby wyłączyć drugi składnik, najpierw potwierdź logowanie kodem z aplikacji.",
+    "verify": {
+      "title": "Potwierdź logowanie",
+      "lead": "Wpisz 6-cyfrowy kod z aplikacji uwierzytelniającej.",
+      "submit": "Potwierdź"
+    },
+    "errors": {
+      "codeInvalid": "Nieprawidłowy lub wygasły kod. Spróbuj z nowym kodem z aplikacji.",
+      "codeFormat": "Kod ma 6 cyfr.",
+      "rateLimited": "Zbyt wiele prób. Spróbuj ponownie za chwilę.",
+      "unexpected": "Coś poszło nie tak. Spróbuj ponownie."
+    }
   }
 }

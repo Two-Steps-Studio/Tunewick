@@ -97,6 +97,14 @@ export async function signIn(_prev: AuthFormState, formData: FormData): Promise<
   if (error) return { error: authErrorCode(error), values };
 
   const next = safeNextPath(raw.next);
+
+  // Accounts with an authenticator app continue with the second step. (A redirect from a server
+  // action renders without passing the proxy again, so the proxy's aal2 gate is not enough here.)
+  const { data: aal } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+  if (aal?.nextLevel === "aal2" && aal.currentLevel !== "aal2") {
+    return go({ pathname: "/verify", query: next ? { next } : undefined });
+  }
+
   // `next` is an already-localized, same-site path produced by our own links.
   if (next) redirectToPath(next);
   return go("/");

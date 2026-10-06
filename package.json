@@ -20,7 +20,8 @@
     "db:types": "supabase gen types typescript --local --schema public > packages/shared/src/database.types.ts && prettier --write packages/shared/src/database.types.ts",
     "db:env": "node scripts/write-local-env.mjs",
     "check:client-bundle": "node scripts/check-client-bundle.mjs",
-    "invites:create": "node scripts/create-invites.mjs"
+    "invites:create": "node scripts/create-invites.mjs",
+    "staff:grant": "node scripts/grant-role.mjs"
   },
   "devDependencies": {
     "@supabase/supabase-js": "^2.117.2",

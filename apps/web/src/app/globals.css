@@ -534,4 +534,43 @@ body {
     font-size: var(--tk-text-xs);
     color: var(--text-muted);
   }
+
+  /* Two-factor sign-in ------------------------------------------------------ */
+  .mfa-step {
+    display: grid;
+    gap: var(--tk-space-6);
+  }
+  .mfa-qr {
+    width: 200px;
+    height: 200px;
+    padding: var(--tk-space-3);
+    background: #fff; /* QR codes need a light quiet zone in both themes */
+  }
+  .mfa-secret {
+    font-family: var(--tk-font-mono);
+    font-size: var(--tk-text-sm);
+    overflow-wrap: anywhere;
+    padding: var(--tk-space-3);
+    background: var(--bg-sunken);
+  }
+  .field__input--code {
+    max-width: 10rem;
+    font-family: var(--tk-font-mono);
+    letter-spacing: 0.3em;
+  }
+  .mfa-status {
+    display: grid;
+    gap: var(--tk-space-2);
+  }
+  .mfa-status__on,
+  .mfa-status__off {
+    padding-left: var(--tk-space-3);
+    font-weight: 600;
+  }
+  .mfa-status__on {
+    box-shadow: inset 3px 0 0 var(--accent);
+  }
+  .mfa-status__off {
+    box-shadow: inset 3px 0 0 var(--line);
+  }
 }
