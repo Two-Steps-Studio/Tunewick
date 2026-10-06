@@ -1,0 +1,90 @@
+# Deployment runbook
+
+> Production = `main` on Vercel + a Supabase project in the EU. Previews = `work` and PR branches.
+> Secrets are never committed and never pasted into chats or issues; they live in Vercel / Supabase
+> / a password manager only.
+
+Until the variables in §3 are set, every page answers **503 "not configured yet"** (by design,
+see `apps/web/src/proxy.ts`) instead of a bare 500.
+
+## 1. Supabase project (once)
+
+1. supabase.com → **New project** in the Tunewick organisation.
+   - Name `tunewick-prod`, region **Central EU (Frankfurt)** (GDPR, decision D3).
+   - Generate a strong database password and store it in the password manager.
+2. **Authentication → Sign In / Providers → Email**
+   - Enable email provider, **Confirm email: ON**, **Secure email change: ON**,
+     **Secure password change: ON**.
+   - Minimum password length **10**.
+   - Anonymous sign-ins **OFF**, manual linking **OFF**.
+3. **Authentication → Multi-Factor** → TOTP (authenticator app): enroll **and** verify enabled.
+   Phone MFA off.
+4. **Authentication → URL Configuration**
+   - Site URL: the production domain, e.g. `https://tunewick.vercel.app` (later the custom
+     domain).
+   - Redirect URLs: `https://<production-domain>/**` and, for previews,
+     `https://*-<vercel-team-slug>.vercel.app/**`.
+5. **Authentication → Emails → Templates** (the app relies on `token_hash` links, docs/security.md
+   §2 — the default templates will not work):
+   - *Confirm signup*: subject and body from `supabase/templates/confirmation.html`
+     (subject in `supabase/config.toml`).
+   - *Reset password*: from `supabase/templates/recovery.html`.
+6. **Authentication → Emails → SMTP**: the built-in mailer only delivers to project team members
+   and is heavily rate limited, so beta invites need a real SMTP provider (EU region preferred,
+   e.g. Resend EU / Brevo / Amazon SES eu-central-1). Sender `no-reply@<domain>` with SPF/DKIM.
+   Then set **Rate limits → emails per hour** to a sane value (e.g. 60).
+
+## 2. Database schema
+
+Migrations are the source of truth (`supabase/migrations`). From the repo root:
+
+```bash
+pnpm exec supabase login
+pnpm exec supabase link --project-ref <project-ref>
+pnpm exec supabase db push
+```
+
+`link` asks for the database password from §1. `db push` lists the migrations before applying
+them. Never edit production schema in the dashboard — write a migration instead.
+
+## 3. Vercel project
+
+Settings → General: Root Directory `apps/web`, framework Next.js, "Include files outside the root
+directory" **ON**, Node 22.x. Functions region `fra1`. Production branch `main`.
+
+Settings → Environment Variables (Production **and** Preview):
+
+| Name | Value | Secret? |
+| --- | --- | --- |
+| `NEXT_PUBLIC_SUPABASE_URL` | Project URL (Settings → API) | no, public |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | `sb_publishable_…` key | no, public |
+
+`NEXT_PUBLIC_*` values are inlined at build time → after adding or changing them, **Redeploy**
+(Deployments → latest → Redeploy). No secret key is needed by the web app today; if one is added
+later it must not use the `NEXT_PUBLIC_` prefix (`pnpm check:client-bundle` guards this).
+
+## 4. Bootstrap (once)
+
+Run locally with the secret key in the shell environment only (Settings → API → secret key):
+
+```bash
+SUPABASE_URL=https://<ref>.supabase.co SUPABASE_SECRET_KEY=<secret> node scripts/create-invites.mjs --count 1 --label owner
+```
+
+On Windows PowerShell set the variables first: `$env:SUPABASE_URL="https://<ref>.supabase.co"; $env:SUPABASE_SECRET_KEY="<secret>"`,
+then run `node scripts/create-invites.mjs ...` in the same window.
+
+1. Register with that invite code, confirm the email.
+2. Grant admin, then enable TOTP in Settings → Security (staff tools require MFA):
+
+   ```bash
+   SUPABASE_URL=... SUPABASE_SECRET_KEY=... node scripts/grant-role.mjs --email <owner-email> --role admin
+   ```
+3. Create beta invites in batches (`--count 50 --max-uses 1 --expires-days 30 --label "GZM artists"`).
+   Codes are printed once; only hashes are stored.
+
+## 5. Checklist after each deploy
+
+- `/` and `/en` load; `/logowanie` shows the form.
+- Sign-up email arrives and the link lands on `/api/auth/confirm` → signed in.
+- Vercel → Logs: no `error` level entries for the new deployment.
