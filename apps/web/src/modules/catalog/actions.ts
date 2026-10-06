@@ -149,7 +149,7 @@ export async function updateTrack(
   _prev: ReleaseFormState,
   formData: FormData,
 ): Promise<ReleaseFormState> {
-  const values = read(formData, ["title", "isrc", "explicit", "aiContent"]);
+  const values = read(formData, ["title", "isrc", "explicit", "aiContent", "soundcheckStart"]);
   const parsed = trackSchema.safeParse(values);
   if (!parsed.success) return { fieldErrors: fieldErrors(parsed.error.issues), values };
   const supabase = await createSupabaseServerClient();
@@ -160,6 +160,7 @@ export async function updateTrack(
       isrc: parsed.data.isrc,
       explicit: parsed.data.explicit,
       ai_content: parsed.data.aiContent,
+      soundcheck_start_ms: parsed.data.soundcheckStart,
     })
     .eq("id", trackId)
     .select("id");

@@ -51,7 +51,8 @@
       "playback_blocked": "Przeglądarka zablokowała odtwarzanie — naciśnij Odtwarzaj.",
       "unplayable": "Ta przeglądarka nie odtwarza żadnej wersji tego utworu.",
       "stream_error": "Połączenie z serwerem audio zostało przerwane."
-    }
+    },
+    "soundcheck": "Soundcheck"
   },
   "Discover": {
     "title": "Odkrywaj",
@@ -68,7 +69,9 @@
       "new": "Nowość · {when}",
       "released": "Wydane {when}",
       "firstRelease": "Pierwsze wydawnictwo {when} · {count, plural, one {# wydawnictwo} few {# wydawnictwa} many {# wydawnictw} other {# wydawnictwa}}"
-    }
+    },
+    "soundcheck": "Soundcheck {seconds} s",
+    "soundcheckLabel": "Posłuchaj fragmentu: {title} — {artist}"
   },
   "Scene": {
     "title": "Scena",
@@ -425,7 +428,9 @@
       "creditRole": "Rola",
       "creditDetail": "Szczegóły (np. instrument)",
       "creditArtist": "Profil w Tunewick (opcjonalnie)",
-      "creditArtistHint": "Adres profilu artysty, np. halda-kolektyw. Połączy utwór z jego profilem i pomoże słuchaczom trafić do powiązanych artystów."
+      "creditArtistHint": "Adres profilu artysty, np. halda-kolektyw. Połączy utwór z jego profilem i pomoże słuchaczom trafić do powiązanych artystów.",
+      "soundcheckStart": "Początek soundchecku (m:ss)",
+      "soundcheckStartHint": "30-sekundowy fragment, którym utwór przedstawia się w Odkrywaj. Puste = od początku."
     },
     "types": {
       "single": "Singiel",
@@ -484,7 +489,9 @@
       "samplesDescriptionRequired": "Opisz sample i zgody.",
       "aiRequired": "Określ udział AI.",
       "termsRequired": "Aby złożyć oświadczenie, zaakceptuj warunki.",
-      "artistNotFound": "Nie ma aktywnego profilu artysty o takim adresie."
+      "artistNotFound": "Nie ma aktywnego profilu artysty o takim adresie.",
+      "soundcheckInvalid": "Wpisz czas jako minuty:sekundy, np. 1:05.",
+      "soundcheckTooLate": "Soundcheck musi zacząć się co najmniej 5 s przed końcem utworu."
     },
     "rights": {
       "title": "Prawa do wydawnictwa",

@@ -54,6 +54,13 @@ async function readyRelease(page: Page) {
   // Credits: one linked to a Tunewick profile, one only by name.
   await page.getByText("Szczegóły: Nocna zmiana").click();
   const track = page.locator(".track-item", { hasText: "Nocna zmiana" });
+  // Soundcheck: the excerpt Discover plays.
+  await track.getByLabel("Początek soundchecku (m:ss)").fill("75");
+  await track.getByRole("button", { name: "Zapisz", exact: true }).click();
+  await expect(track.getByText("Wpisz czas jako minuty:sekundy, np. 1:05.")).toBeVisible();
+  await track.getByLabel("Początek soundchecku (m:ss)").fill("0:02");
+  await track.getByRole("button", { name: "Zapisz", exact: true }).click();
+  await expect(track.getByText("Zapisano.")).toBeVisible();
   await track.getByLabel("Imię i nazwisko lub pseudonim").fill("Kopalnia");
   await track.getByLabel("Rola").selectOption("producer");
   await track.getByLabel("Profil w Tunewick (opcjonalnie)").fill("nie-ma-takiego-profilu");
@@ -94,7 +101,7 @@ async function readyRelease(page: Page) {
     mimeType: "audio/wav",
     buffer: toneWav(12),
   });
-  await expect(page.locator(".track-item").first().getByRole("status")).toHaveText(
+  await expect(page.locator(".track-item").first().locator(".track-audio__status")).toHaveText(
     /^Gotowe: nocna-zmiana\.wav/,
     { timeout: 90_000 },
   );
@@ -190,6 +197,15 @@ test.describe("review and publishing", () => {
     const card = listener.locator(".release-card", { hasText: `Familok ${slug}` });
     await expect(card.getByRole("link", { name: "Szychta" })).toBeVisible();
     await expect(card.getByText(/^Debiut · /)).toBeVisible();
+    // Its soundcheck: 10 s from 0:02 (the 12 s track ends there), marked in the player.
+    await card
+      .getByRole("button", { name: `Posłuchaj fragmentu: Nocna zmiana — Familok ${slug}` })
+      .click();
+    const soundcheckBar = listener.getByRole("region", { name: "Odtwarzacz" });
+    await expect(soundcheckBar.getByText("Soundcheck", { exact: true })).toBeVisible();
+    await expect(soundcheckBar.locator(".player-bar__time").first()).toHaveText(/^0:0[3-9]$/, {
+      timeout: 20_000,
+    });
 
     // Search finds the newly published music — no Polish characters needed.
     await listener.goto(`/szukaj?q=${encodeURIComponent(`familok ${slug}`)}`);

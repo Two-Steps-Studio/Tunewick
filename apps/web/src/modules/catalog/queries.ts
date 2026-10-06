@@ -44,7 +44,7 @@ export async function getReleaseForEditing(artistSlug: string, releaseSlug: stri
     supabase
       .from("tracks")
       .select(
-        "id, disc_number, track_number, title, isrc, explicit, ai_content, credits (id, name, role, detail, artist:artists (slug, name))",
+        "id, disc_number, track_number, title, isrc, explicit, ai_content, soundcheck_start_ms, duration_ms, credits (id, name, role, detail, artist:artists (slug, name))",
       )
       .eq("release_id", release.id)
       .order("disc_number")

@@ -51,7 +51,8 @@
       "playback_blocked": "The browser blocked playback — press Play.",
       "unplayable": "This browser can't play any version of this track.",
       "stream_error": "The audio stream was interrupted."
-    }
+    },
+    "soundcheck": "Soundcheck"
   },
   "Discover": {
     "title": "Discover",
@@ -68,7 +69,9 @@
       "new": "New · {when}",
       "released": "Released {when}",
       "firstRelease": "First release {when} · {count, plural, one {# release} other {# releases}}"
-    }
+    },
+    "soundcheck": "Soundcheck {seconds} s",
+    "soundcheckLabel": "Hear an excerpt: {title} — {artist}"
   },
   "Scene": {
     "title": "Scene",
@@ -425,7 +428,9 @@
       "creditRole": "Role",
       "creditDetail": "Details (e.g. instrument)",
       "creditArtist": "Tunewick profile (optional)",
-      "creditArtistHint": "The artist's profile address, e.g. halda-kolektyw. Links the track to their profile and helps listeners find related artists."
+      "creditArtistHint": "The artist's profile address, e.g. halda-kolektyw. Links the track to their profile and helps listeners find related artists.",
+      "soundcheckStart": "Soundcheck start (m:ss)",
+      "soundcheckStartHint": "The 30-second excerpt that introduces the track in Discover. Empty = from the beginning."
     },
     "types": {
       "single": "Single",
@@ -484,7 +489,9 @@
       "samplesDescriptionRequired": "Describe the samples and permissions.",
       "aiRequired": "Declare AI involvement.",
       "termsRequired": "Accept the terms to submit the declaration.",
-      "artistNotFound": "No active artist profile has this address."
+      "artistNotFound": "No active artist profile has this address.",
+      "soundcheckInvalid": "Enter the time as minutes:seconds, e.g. 1:05.",
+      "soundcheckTooLate": "The soundcheck must start at least 5 s before the end of the track."
     },
     "rights": {
       "title": "Rights to this release",

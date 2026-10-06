@@ -5,6 +5,7 @@ import {
   genresSchema,
   releaseDbError,
   releaseDetailsSchema,
+  formatSoundcheckStart,
   trackSchema,
 } from "./validation";
 
@@ -107,5 +108,19 @@ describe("rightsSchema", () => {
     expect(issues({ ...valid, acceptTerms: undefined })).toContain("termsRequired");
     expect(issues({ ...valid, aiContent: "unknown" })).toContain("aiRequired");
     expect(issues({ ...valid, samples: "cleared" })).toContain("samplesDescriptionRequired");
+  });
+});
+
+describe("soundcheck start", () => {
+  const track = { title: "Utwór", isrc: "", aiContent: "human" };
+  it("reads m:ss into milliseconds and empty as from the beginning", () => {
+    expect(trackSchema.parse({ ...track, soundcheckStart: "1:05" }).soundcheckStart).toBe(65000);
+    expect(trackSchema.parse({ ...track, soundcheckStart: " " }).soundcheckStart).toBeNull();
+    expect(formatSoundcheckStart(65000)).toBe("1:05");
+    expect(formatSoundcheckStart(null)).toBe("");
+  });
+  it("refuses other formats", () => {
+    expect(trackSchema.safeParse({ ...track, soundcheckStart: "65" }).success).toBe(false);
+    expect(trackSchema.safeParse({ ...track, soundcheckStart: "1:75" }).success).toBe(false);
   });
 });

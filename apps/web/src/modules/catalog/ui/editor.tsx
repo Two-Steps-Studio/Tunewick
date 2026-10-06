@@ -27,6 +27,7 @@ import {
   CREDIT_ROLES,
   RELEASE_TYPES,
   type ReleaseFormState,
+  formatSoundcheckStart,
   TERRITORIES,
 } from "../validation";
 
@@ -244,6 +245,8 @@ interface TrackValues {
   isrc: string | null;
   explicit: boolean;
   ai_content: (typeof AI_CONTENT)[number];
+  soundcheck_start_ms: number | null;
+  duration_ms: number | null;
   credits: {
     id: string;
     name: string;
@@ -317,6 +320,17 @@ export function TrackItem({
               defaultValue={state.values?.isrc ?? track.isrc ?? ""}
               autoCapitalize="characters"
               error={err(state.fieldErrors?.isrc)}
+            />
+            <InputField
+              name="soundcheckStart"
+              label={t("fields.soundcheckStart")}
+              hint={t("fields.soundcheckStartHint")}
+              defaultValue={
+                state.values?.soundcheckStart ?? formatSoundcheckStart(track.soundcheck_start_ms)
+              }
+              placeholder="0:45"
+              inputMode="numeric"
+              error={err(state.fieldErrors?.soundcheckStart)}
             />
             <SelectField
               name="aiContent"

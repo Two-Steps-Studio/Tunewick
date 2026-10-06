@@ -7,6 +7,8 @@ export interface Listen {
   msPlayed: number;
   completed: boolean;
   tier: QualityTier | null;
+  /** Soundcheck plays are recorded but never count towards payouts (D2). */
+  soundcheck: boolean;
 }
 
 /** Only time actually heard counts: jumps larger than this (seeks) are not added. */
@@ -22,6 +24,7 @@ interface Current {
   playedMs: number;
   duration: number;
   tier: QualityTier | null;
+  soundcheck: boolean;
 }
 
 /**
@@ -40,7 +43,7 @@ export class ListeningTracker {
   update(state: PlayerState) {
     const track = state.queue[state.index];
     // The same track twice in a row (playlist duplicates) is a new occurrence: key by index too.
-    const key = track ? `${state.index}:${track.id}` : "";
+    const key = track ? `${state.index}:${track.id}:${state.clip ? "clip" : "full"}` : "";
     if (!track || state.status === "idle" || state.status === "error") {
       this.flush();
       return;
@@ -55,6 +58,7 @@ export class ListeningTracker {
         playedMs: 0,
         duration: state.duration,
         tier: state.now?.tier ?? null,
+        soundcheck: state.clip !== null,
       };
       return;
     }
@@ -78,6 +82,7 @@ export class ListeningTracker {
       msPlayed: current.playedMs,
       completed: current.duration > 0 && current.lastPosition >= current.duration - 1,
       tier: current.tier,
+      soundcheck: current.soundcheck,
     });
   }
 }

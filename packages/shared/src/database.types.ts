@@ -467,6 +467,7 @@ export type Database = {
           id: string;
           ms_played: number;
           release_id: string;
+          soundcheck: boolean;
           started_at: string;
           tier: Database["public"]["Enums"]["quality_tier"] | null;
           track_id: string;
@@ -479,6 +480,7 @@ export type Database = {
           id?: string;
           ms_played: number;
           release_id: string;
+          soundcheck?: boolean;
           started_at: string;
           tier?: Database["public"]["Enums"]["quality_tier"] | null;
           track_id: string;
@@ -491,6 +493,7 @@ export type Database = {
           id?: string;
           ms_played?: number;
           release_id?: string;
+          soundcheck?: boolean;
           started_at?: string;
           tier?: Database["public"]["Enums"]["quality_tier"] | null;
           track_id?: string;
@@ -1653,6 +1656,7 @@ export type Database = {
         Args: {
           completed?: boolean;
           ms_played: number;
+          soundcheck?: boolean;
           started_at: string;
           tier?: Database["public"]["Enums"]["quality_tier"];
           track: string;
@@ -1685,6 +1689,16 @@ export type Database = {
         }[];
       };
       release_readiness: { Args: { release: string }; Returns: Json };
+      release_soundchecks: {
+        Args: { releases: string[] };
+        Returns: {
+          duration_ms: number;
+          release_id: string;
+          start_ms: number;
+          title: string;
+          track_id: string;
+        }[];
+      };
       remove_artist_member: { Args: { artist: string; member: string }; Returns: undefined };
       request_artist_verification: {
         Args: { artist: string; evidence: Json; note?: string };

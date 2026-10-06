@@ -3,8 +3,10 @@ import type { Metadata } from "next";
 import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
+import { getSoundchecks, listenerEntitlement } from "@/modules/audio";
 import { getDiscover, parseRegion } from "@/modules/discover";
 import { Artwork, getImageSourcesMany } from "@/modules/images";
+import { SoundcheckButton } from "@/modules/player";
 
 const NEW_FOR_DAYS = 14;
 
@@ -28,6 +30,11 @@ export default async function DiscoverPage({ params, searchParams }: PageProps<"
   const format = await getFormatter();
   const region = parseRegion((await searchParams).woj);
   const { releases, artists } = await getDiscover(region);
+  const entitlement = await listenerEntitlement();
+  const soundchecks = await getSoundchecks(
+    releases.map((r) => ({ id: r.release_id, artistName: r.artist_name })),
+    entitlement,
+  );
   const images = await getImageSourcesMany(
     [...releases.map((r) => r.artwork_image_id), ...artists.map((a) => a.image_id)],
     320,
@@ -116,6 +123,23 @@ export default async function DiscoverPage({ params, searchParams }: PageProps<"
                 <span className="release-card__reason">
                   {releaseReason(r.publish_at, r.is_debut)}
                 </span>
+                {soundchecks.get(r.release_id) ? (
+                  <SoundcheckButton
+                    {...soundchecks.get(r.release_id)!}
+                    entitlement={entitlement}
+                    label={t("soundcheckLabel", {
+                      title: soundchecks.get(r.release_id)!.track.title,
+                      artist: r.artist_name,
+                    })}
+                  >
+                    <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+                      <path d="M7 4.5v15l12-7.5z" fill="currentColor" />
+                    </svg>
+                    {t("soundcheck", {
+                      seconds: Math.round(soundchecks.get(r.release_id)!.length),
+                    })}
+                  </SoundcheckButton>
+                ) : null}
                 {r.city || r.voivodeship ? (
                   <span className="release-card__place">{place(r.city, r.voivodeship)}</span>
                 ) : null}

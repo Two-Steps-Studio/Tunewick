@@ -10,6 +10,7 @@ const listenSchema = z.object({
   msPlayed: z.number().int().min(1000).max(21_600_000),
   completed: z.boolean(),
   tier: z.enum(["data_saver", "high", "lossless", "hires"]).nullable(),
+  soundcheck: z.boolean().default(false),
 });
 
 export async function POST(request: NextRequest) {
@@ -23,6 +24,7 @@ export async function POST(request: NextRequest) {
     ms_played: parsed.data.msPlayed,
     completed: parsed.data.completed,
     tier: parsed.data.tier ?? undefined,
+    soundcheck: parsed.data.soundcheck,
   });
   if (!error) return new NextResponse(null, { status: 204 });
   if (error.code === "42501") return new NextResponse(null, { status: 403 });

@@ -327,6 +327,16 @@ body {
     font-size: var(--tk-text-sm);
     white-space: nowrap;
   }
+  .player-bar__soundcheck {
+    flex: none;
+    font-family: var(--tk-font-mono);
+    font-size: var(--tk-text-xs);
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  :root[data-theme="light"] .player-bar__soundcheck {
+    color: var(--text);
+  }
   .player-bar__track {
     font-weight: 600;
     overflow: hidden;
@@ -921,6 +931,30 @@ body {
   }
   :root[data-theme="light"] .release-card__reason {
     color: var(--text);
+  }
+  .soundcheck-button {
+    display: inline-flex;
+    align-items: center;
+    justify-self: start;
+    gap: var(--tk-space-1);
+    padding: var(--tk-space-1) var(--tk-space-2);
+    border: 0;
+    border-radius: var(--tk-radius-pill);
+    background: transparent;
+    box-shadow: inset 0 0 0 1px var(--line);
+    color: var(--text);
+    font-family: var(--tk-font-mono);
+    font-size: var(--tk-text-xs);
+    cursor: pointer;
+    transition: transform var(--tk-dur-press) var(--tk-ease-out);
+  }
+  .soundcheck-button:active {
+    transform: scale(0.96);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .soundcheck-button:hover {
+      box-shadow: inset 0 0 0 1px var(--text-muted);
+    }
   }
   .release-card__place {
     font-size: var(--tk-text-xs);

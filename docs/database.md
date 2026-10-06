@@ -312,6 +312,15 @@ mastering, songwriting), `same_label`. Evidence (`derived_from`) always comes fr
 with public music. The artist page shows the discography and related artists with these reasons;
 release pages show credits.
 
+## Soundchecks (implemented, M7.4)
+
+`tracks.soundcheck_start_ms` is chosen by the artist in the editor (m:ss; must start ≥ 5 s before the
+end — a shorter new master resets it instead of failing processing). `release_soundchecks(ids)`
+returns, per public release, its first track with a chosen excerpt (else track 1) and a length of
+≤ 30 s. The player's `playClip` plays only that excerpt and stops; Discover shows a soundcheck button
+on each release. Soundcheck listens are recorded with `listening_events.soundcheck = true` (≤ 35 s)
+and never count towards payouts (D2).
+
 ## Likes and follows (implemented, M5.1)
 
 `track_likes`, `release_likes`, `artist_follows` (PK `(user_id, subject)`, `user_id` defaults to

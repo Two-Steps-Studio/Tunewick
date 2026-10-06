@@ -235,3 +235,43 @@ export async function getPlayableQueue(
   for (const list of results) for (const track of list) playable.set(track.id, track);
   return items.map((item) => playable.get(item.id) ?? null);
 }
+
+export interface Soundcheck {
+  track: PlayerTrack;
+  /** Seconds into the track. */
+  start: number;
+  length: number;
+}
+
+/** Playable soundchecks (≤ 30 s excerpts) of public releases, by release id. */
+export async function getSoundchecks(
+  releases: { id: string; artistName: string }[],
+  maxTier: QualityTier,
+): Promise<Map<string, Soundcheck>> {
+  const result = new Map<string, Soundcheck>();
+  if (!releases.length) return result;
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase.rpc("release_soundchecks", {
+    releases: releases.map((r) => r.id),
+  });
+  if (error) throw error;
+  await Promise.all(
+    (data ?? []).map(async (row) => {
+      const artistName = releases.find((r) => r.id === row.release_id)?.artistName ?? "";
+      const [track] = await getPlayableTracks(
+        row.release_id,
+        [{ id: row.track_id, title: row.title }],
+        artistName,
+        maxTier,
+      );
+      if (track) {
+        result.set(row.release_id, {
+          track,
+          start: row.start_ms / 1000,
+          length: row.duration_ms / 1000,
+        });
+      }
+    }),
+  );
+  return result;
+}
