@@ -39,7 +39,7 @@ Upload (ingest bucket) → Validate → Analyse → Loudness → Fingerprint/dup
 | Check | Method (initial) | Effect |
 | --- | --- | --- |
 | Lossy origin in lossless container | Spectral analysis: hard low-pass cutoff (e.g. ~16/19/20 kHz shelves) and codec-typical holes in the spectrum over time | `authenticity = suspected_lossy_origin` → no Lossless/Hi-Res tiers; artist notified to upload the real master |
-| Fake Hi-Res (upsampled) | Effective bandwidth vs Nyquist: no content above the original rate's Nyquist (e.g. nothing above 22.05 kHz in a 96 kHz file) | `suspected_upsampled` → Hi-Res tier not generated; Lossless still offered |
+| Fake Hi-Res (upsampled) | Effective bandwidth vs Nyquist: no content above the original rate's Nyquist (e.g. nothing above 22.05 kHz in a 96 kHz file) | `suspected_upsampled` → treated as the original rate: no Hi-Res *rate* claim; a Hi-Res variant is made only if the bit depth is genuinely > 16, at the original rate. Lossless still offered |
 | Bit padding (16-bit in 24-bit container) | Low-order bits always zero / effective bit depth analysis | `suspected_bit_padded` → treated as 16-bit |
 | Clipping | Consecutive full-scale samples count, true-peak > 0 dBTP | Flag shown to artist; not blocked |
 | Silence / DC offset / phase issues | Basic stats (astats) | Flag |
@@ -50,6 +50,33 @@ Analysis is advisory for flags and **binding for quality labels**: a tier label 
 analysis verifies. False positives can be overridden only by a moderator after review, with an
 audit-log entry.
 
+### 2.4 Implementation (M3.1, `services/audio-worker`)
+
+Runs on local files today (storage and queue: M3.2). `python -m tunewick_audio process <master>
+--out <dir>` writes the variants and returns a JSON report (`version`, `status`, `rejection`,
+`input`, `analysis`, `variants`); exit code 2 = rejected. Tests: `pnpm worker:test` (Docker,
+Debian ffmpeg with libsoxr), CI job `worker`.
+
+| Step | How it is implemented |
+| --- | --- |
+| Allow-list | ffprobe: containers wav (incl. BWF/RF64), aiff, flac, mov/m4a (ALAC only); codecs PCM s16/s24/s32/f32/f64, FLAC, ALAC; 8-bit and lossy codecs rejected; standard rates 44.1–192 kHz; 1–2 channels; exactly one audio stream |
+| Integrity | Full decode in one streaming pass; any ffmpeg error → `decode_error`. FLAC STREAMINFO MD5 compared with the MD5 of the decoded samples → `integrity` |
+| Hashes | File SHA-256; PCM SHA-256 of the decode (s32le for integer, f32le for float masters) — the duplicate key of §6 |
+| Effective bit depth | OR of all samples → lowest bit ever used; float masters checked for exact 16/24-bit integer values |
+| Spectral cliff | Averaged power spectrum (Hann, ≈ 5.5 Hz bins, all channels), smoothed over 100 Hz; the strongest drop between the median level 0.2–1.5 kHz below a frequency and the 95th percentile of everything above it up to Nyquist. Drop ≥ 25 dB = cliff. Cliff at 10–19.5 kHz → `suspected_lossy_origin`; in a > 48 kHz file within −2.5/+1.5 kHz of a lower standard rate's Nyquist → `suspected_upsampled` (either rate family) |
+| Levels | Peak, clipping events (≥ 3 consecutive samples at ≥ −0.001 dBFS), DC offset (> −40 dBFS flagged), L/R correlation (< −0.3 flagged), digital silence |
+| Loudness | ffmpeg `ebur128` (integrated LUFS, LRA, true peak dBTP); true peak > 0 dBTP also flags `clipping` |
+| Variants | AAC-LC 96/256 kbps fMP4 (2 s fragments) at 44.1/48 kHz; FLAC 16-bit Lossless; FLAC Hi-Res at effective depth (24 if > 16) and rate. Resampling `soxr` precision 28; TPDF dither only when reducing to 16 bits loses information (resampling or effective depth > 16). 24-bit targets are truncated from 32-bit intermediates (error ≈ −144 dBFS). Tags stripped (metadata comes from the catalog) |
+| Packaging | Plain `.flac` always; FLAC-in-fMP4 additionally at ≤ 48 kHz (spike §9.2). AAC: ffmpeg's encoder primes 1024 samples and the fMP4 muxer does not record it, so `encoder_delay_samples` = 1024 and `padding_samples` (measured) are stored for the player's trim |
+| Verification | Every output re-probed (codec, rate, channels, bits) and fully decoded; `.flac` and `.mp4` must decode to identical PCM; sample counts exact (± 1 ms when resampled); where no resampling/dither is involved the variant must be **bit-identical** to the master (`exact: true`); AAC frame count must match delay + samples + padding |
+
+Known limitations (advisory flags; moderator override with audit entry per §2.3):
+- High-bitrate MP3/AAC with a low-pass ≥ 19.5 kHz (e.g. LAME 320 kbps at ~20 kHz) is not caught
+  by the cliff detector — indistinguishable from converter filters by this method alone.
+- A deliberate steep low-pass on a genuine master (10–19.5 kHz) is a false positive.
+- AAC encoder is ffmpeg's native encoder as an interim choice; the final encoder follows the ABX
+  and licensing check (§3).
+
 ## 3. Delivery tiers
 
 | Tier | Variant 🔬 | Generated when | Plan |
@@ -57,7 +84,7 @@ audit-log entry.
 | Data Saver | AAC-LC ~96 kbps, 44.1/48 kHz, M4A/fMP4 | always | Free + Premium |
 | High | AAC-LC ~256 kbps, 44.1/48 kHz, M4A/fMP4 | always | Free + Premium |
 | Lossless | FLAC 16-bit at the master's rate if ≤ 48 kHz; else 16-bit at 44.1/48 kHz family-matched (88.2→44.1, 96→48) | master is verified lossless | Premium |
-| Hi-Res Lossless | FLAC at the master's native depth/rate (≤ 24-bit/192 kHz) | master > 16-bit or > 48 kHz **and** `verified_lossless`, not upsampled/padded | Premium |
+| Hi-Res Lossless | FLAC at the master's *effective* depth/rate (≤ 24-bit/192 kHz; upsampled → original rate, padded → 16-bit) | effective > 16-bit or > 48 kHz **and** `verified_lossless` | Premium |
 
 Rules:
 - Every variant is made **directly from the master** (no generation loss chains).

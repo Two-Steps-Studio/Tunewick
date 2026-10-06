@@ -57,3 +57,9 @@ design/logo/preview-*.png
 
 # Playback spike runner output
 tools/playback-spike/test-results/
+
+# Python (audio worker)
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+.venv/

@@ -106,3 +106,14 @@ jobs:
             echo "::error title=database types::Run pnpm db:types and commit the result."
             exit 1
           }
+
+  worker:
+    # Audio worker: ruff + pytest in the production image (Debian ffmpeg with libsoxr).
+    name: worker
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t tunewick-audio-worker:test --target test services/audio-worker
+      - run: docker run --rm tunewick-audio-worker:test
+      - name: Production image builds
+        run: docker build -t tunewick-audio-worker services/audio-worker
