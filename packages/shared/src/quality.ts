@@ -22,6 +22,8 @@ export interface SourceQuality {
   bitDepth: number | null;
   /** Bit depth measured by analysis (e.g. 16 for zero-padded 24-bit files). */
   effectiveBitDepth: number | null;
+  /** Original rate of an upsampled master (e.g. 44100 for a 96 kHz file made from 44.1 kHz). */
+  effectiveSampleRateHz?: number | null;
   authenticity: Authenticity;
 }
 
@@ -88,8 +90,9 @@ export function describeQuality(
   if (source.authenticity === "suspected_bit_padded") notes.push("source_bit_padded_suspected");
 
   const sourceDepth = source.effectiveBitDepth ?? source.bitDepth;
+  const sourceRate = source.effectiveSampleRateHz ?? source.sampleRateHz;
   const exceedsSource =
-    delivered.sampleRateHz > source.sampleRateHz ||
+    delivered.sampleRateHz > sourceRate ||
     (delivered.bitDepth !== null && sourceDepth !== null && delivered.bitDepth > sourceDepth);
   if (exceedsSource) notes.push("delivered_exceeds_source");
 
@@ -98,9 +101,15 @@ export function describeQuality(
     source.isLosslessCodec &&
     source.authenticity !== "suspected_lossy_origin";
 
+  // Suspected upsampling/padding only disqualifies Hi-Res when analysis could not tell what the
+  // real rate/depth is; otherwise the comparison with the effective values decides.
+  const measured =
+    source.authenticity === "verified_lossless" ||
+    (source.authenticity === "suspected_upsampled" && source.effectiveSampleRateHz != null) ||
+    (source.authenticity === "suspected_bit_padded" && source.effectiveBitDepth != null);
   const isHiRes =
     isLossless &&
-    source.authenticity === "verified_lossless" &&
+    measured &&
     !exceedsSource &&
     ((delivered.bitDepth ?? 0) > 16 || delivered.sampleRateHz > 48000);
 

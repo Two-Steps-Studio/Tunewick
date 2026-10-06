@@ -100,6 +100,12 @@ Rules:
 - Strategy chosen by capability probing (`MediaSource.isTypeSupported`, `canPlayType`) **plus** a known-broken list maintained from the spike (Safari historically reported FLAC-in-MP4 MSE support but played silence).
 - Range requests everywhere; first audio target < 1 s for cached High tier.
 
+Implemented as pure functions in `packages/shared/src/playback` (M4.0): `resolvePlayback`
+(strategy + rendition per tier, stepping down when a tier cannot play; known-broken list),
+`planGaplessAppends` / `applyAppendPlan` (sample-exact MSE timeline with AAC priming/padding trim
+from the worker report), `chooseTier` / `tierAfterStall` (§4.1, with the reasons that limited the
+tier). The real-decode capability probe ships with the player engine (M4).
+
 ### 4.1 Auto quality
 Auto selects a tier at track start from: user setting/cap, plan entitlement, network type and measured throughput, Save-Data hint, battery saver (where exposed), and variant availability. It may step down at the next track, and mid-track only on a stall. It never steps up mid-track. The indicator reflects every change.
 
