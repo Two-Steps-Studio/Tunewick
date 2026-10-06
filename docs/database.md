@@ -299,6 +299,21 @@ life; audited). Wrappers: `admin_grant_entitlement(user, plan, days | null, note
 plan, days, source, note)` (service role, `scripts/grant-plan.mjs`). The web app's
 `listenerEntitlement()` is `my_plan().max_quality_tier`.
 
+## Reports, takedowns and appeals (implemented, M10.2)
+
+`reports` (artist / release / playlist; reason copyright, illegal, hate, impersonation, spam, other;
+copyright notices require claimant name, email and a good-faith statement) are created by
+`submit_report` (signed in, public content only, one open report per person and subject, 10 a day).
+Reporters read their own; staff read all; owners never see who reported.
+`moderate_report(report, action, statement)` (moderator + aal2): dismiss, `takedown_release`
+(→ `taken_down`), `suspend_artist` (→ `suspended`) or `hide_playlist` (→ private), always with a
+statement of reasons (≥ 20 chars); closes every open report about the subject; the previous state is
+kept. `moderation_decisions` are readable by the affected artist's members / playlist owner, who can
+`appeal_moderation_decision` once within 6 months; `decide_appeal` is made by a **different**
+moderator (uphold, or reverse = restore the previous state). `artist_copyright_strikes` (staff only)
+counts upheld copyright takedowns (repeat-infringer signal). All steps are audited. Verification:
+`review_artist_verification` (M10.1) with a reason for rejections, shown to the artist.
+
 ## Credits and the artist graph (implemented, M7)
 
 Credits may link a Tunewick artist (`credits.artist_id`, set from the profile address in the

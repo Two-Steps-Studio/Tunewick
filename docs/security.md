@@ -93,7 +93,7 @@
 
 ## 9. Moderation and abuse
 
-- Reporting on artists, releases, tracks, playlists, profiles, events.
+- Reporting on artists, releases, tracks, playlists, profiles, events. ✅ artists, releases and playlists (M10.2; docs/database.md).
 - Moderation queue with statement of reasons for every decision (DSA). Appeals path.
 - Blocking between users.
 - Takedown process: notice → temporary restriction (when manifestly infringing) → artist notified → counter-notice → decision. Documented in licensing.md.

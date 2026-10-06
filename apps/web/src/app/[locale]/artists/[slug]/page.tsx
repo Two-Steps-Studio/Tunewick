@@ -26,6 +26,7 @@ export default async function ArtistPage({ params }: PageProps<"/[locale]/artist
 
   const t = await getTranslations("Artists");
   const tReleases = await getTranslations("Releases");
+  const tReports = await getTranslations("Reports");
   const tPlaces = await getTranslations("Places");
   const user = await getOptionalUser();
   const [published, photo, follow, related] = await Promise.all([
@@ -162,6 +163,11 @@ export default async function ArtistPage({ params }: PageProps<"/[locale]/artist
           </ul>
         </section>
       ) : null}
+      <p className="report-link">
+        <Link href={{ pathname: "/report", query: { typ: "artist", id: artist.id } }}>
+          {tReports("link")}
+        </Link>
+      </p>
       {user && (await isArtistMember(artist.id)) ? (
         <Link
           href={{ pathname: "/artists/[slug]/manage", params: { slug: artist.slug } }}

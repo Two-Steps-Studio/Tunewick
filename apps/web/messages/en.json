@@ -908,5 +908,104 @@
       "limit": "You already have 200 playlists — that is the maximum.",
       "failed": "Could not save. Please try again."
     }
+  },
+  "Reports": {
+    "link": "Report a problem",
+    "title": "Report a problem",
+    "about": "You are reporting the {subject} “{title}”",
+    "lead": "Your report goes to Tunewick moderators. The owner will not see who reported; they will see the decision and its reasons.",
+    "subjects": {
+      "artist": "artist profile",
+      "release": "release",
+      "playlist": "playlist"
+    },
+    "reasons": {
+      "copyright": "Copyright infringement",
+      "illegal": "Illegal content",
+      "hate": "Hate speech or harassment",
+      "impersonation": "Impersonation",
+      "spam": "Spam or fraud",
+      "other": "Other"
+    },
+    "fields": {
+      "reason": "Reason",
+      "details": "Details",
+      "claimantName": "Name of the rights holder or their representative",
+      "claimantEmail": "Contact email",
+      "goodFaith": "I state in good faith that this information is accurate and that I am authorised to act for the rights holder."
+    },
+    "hints": {
+      "details": "What is wrong and where (e.g. which track). 10–2000 characters."
+    },
+    "copyright": {
+      "title": "Copyright notice",
+      "lead": "We need the claimant's details so a moderator can get in touch and assess the notice."
+    },
+    "submit": "Send report",
+    "sent": "Thank you. Your report has been sent to the moderators.",
+    "errors": {
+      "details": "Describe the problem (10–2000 characters).",
+      "copyright": "For copyright, give a name, a valid email and tick the statement.",
+      "duplicate": "You already reported this — it is waiting for a decision.",
+      "limit": "Too many reports today. Try again tomorrow.",
+      "gone": "This content is no longer public.",
+      "signedOut": "Sign in to report content.",
+      "failed": "Could not send the report. Please try again."
+    },
+    "queue": {
+      "title": "Reports ({count})",
+      "empty": "No open reports.",
+      "count": "{count, plural, one {# report} other {# reports}}",
+      "strikes": "{count, plural, one {# upheld copyright infringement} other {# upheld copyright infringements}}",
+      "claimant": "claimant: {name} <{email}>"
+    },
+    "appeals": {
+      "title": "Appeals ({count})",
+      "empty": "No appeals to decide.",
+      "statement": "Decision:",
+      "appeal": "Appeal:"
+    },
+    "moderation": {
+      "action": "Decision",
+      "actions": {
+        "takedown_release": "Release taken down",
+        "suspend_artist": "Artist profile suspended",
+        "hide_playlist": "Playlist hidden",
+        "dismiss": "Report dismissed"
+      },
+      "statement": "Statement of reasons (the owner will read it)",
+      "statementHint": "What was decided and why, in plain words — at least 20 characters.",
+      "decide": "Save decision",
+      "appealNote": "Reasons for the appeal decision",
+      "reverse": "Grant the appeal (restore)",
+      "uphold": "Uphold the decision",
+      "errors": {
+        "statement": "The statement needs at least 20 characters.",
+        "mismatch": "This decision does not fit the reported content.",
+        "mfa_required": "This decision needs two-factor sign-in in this session.",
+        "not_allowed": "You cannot make this decision (e.g. a different moderator decides appeals against your decisions).",
+        "decided": "This has already been decided.",
+        "failed": "Could not save the decision. Please try again."
+      }
+    },
+    "decisions": {
+      "title": "Moderation decisions",
+      "appealStatus": {
+        "none": "you can appeal",
+        "pending": "appeal in progress",
+        "upheld": "appeal not granted",
+        "reversed": "appeal granted — restored"
+      },
+      "appealDecided": "Appeal decision: {note}",
+      "appeal": "Appeal",
+      "appealHint": "Explain why the decision is wrong (e.g. you hold a licence). A different moderator decides. 10–4000 characters.",
+      "sendAppeal": "Send appeal",
+      "errors": {
+        "text": "Describe your appeal (10–4000 characters).",
+        "already": "This decision was already appealed or the period has ended.",
+        "not_allowed": "Only the profile owner or a manager can appeal.",
+        "failed": "Could not send the appeal. Please try again."
+      }
+    }
   }
 }

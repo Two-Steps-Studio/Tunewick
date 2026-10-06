@@ -4,6 +4,7 @@ import { Artwork, getImageSources, getLatestImageUpload, ImageUpload } from "@/m
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getPathname, Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
+import { DecisionList } from "@/modules/reports";
 import {
   ArtistInfoForm,
   getArtistForManagement,
@@ -150,6 +151,10 @@ export default async function ManageArtistPage({
             <p role="status">{t(`verification.${artist.verification_status}`)}</p>
           )}
         </section>
+        <DecisionList
+          filter={{ artistId: artist.id }}
+          canAppeal={data.myRole === "owner" || data.myRole === "manager"}
+        />
       </div>
     </section>
   );

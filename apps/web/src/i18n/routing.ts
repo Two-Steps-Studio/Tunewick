@@ -32,6 +32,7 @@ export const routing = defineRouting({
       pl: "/artysci/[slug]/wydawnictwa/[release]/edytuj",
       en: "/artists/[slug]/releases/[release]/edit",
     },
+    "/report": { pl: "/zglos", en: "/report" },
     "/playlists/[id]": { pl: "/playlisty/[id]", en: "/playlists/[id]" },
     "/profile/[handle]": { pl: "/profil/[handle]", en: "/profile/[handle]" },
     "/moderation": { pl: "/moderacja", en: "/moderation" },

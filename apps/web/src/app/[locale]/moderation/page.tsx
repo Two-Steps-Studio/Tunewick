@@ -8,6 +8,12 @@ import {
   getVerificationRequests,
   VerificationDecisionForm,
 } from "@/modules/moderation";
+import {
+  AppealDecisionForm,
+  getOpenReports,
+  getPendingAppeals,
+  ModerateReportForm,
+} from "@/modules/reports";
 
 export const metadata: Metadata = { robots: { index: false } };
 
@@ -23,11 +29,14 @@ export default async function ModerationPage({ params }: PageProps<"/[locale]/mo
   const t = await getTranslations("Moderation");
   const tReleases = await getTranslations("Releases");
   const format = await getFormatter();
-  const [submissions, admin, verifications] = await Promise.all([
+  const [submissions, admin, verifications, reports, appeals] = await Promise.all([
     getSubmissions(),
     isAdmin(),
     getVerificationRequests(),
+    getOpenReports(),
+    getPendingAppeals(),
   ]);
+  const tReports = await getTranslations("Reports");
   const tPromo = await getTranslations("PromoAdmin");
 
   return (
@@ -105,6 +114,125 @@ export default async function ModerationPage({ params }: PageProps<"/[locale]/mo
                   </ul>
                   {v.note ? <p className="profile__bio">{v.note}</p> : null}
                   <VerificationDecisionForm requestId={v.id} artistName={v.artist.name} />
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+        <section className="settings-form__group" aria-labelledby="reports">
+          <h2 id="reports" className="section-title">
+            {tReports("queue.title", { count: reports.length })}
+          </h2>
+          {reports.length === 0 ? (
+            <p className="field__hint">{tReports("queue.empty")}</p>
+          ) : (
+            <ul className="promo-codes">
+              {reports.map((item) => (
+                <li key={item.report.id} className="promo-codes__item report-item">
+                  {item.subject?.releaseSlug && item.subject.artistSlug ? (
+                    <Link
+                      className="artist-list__name"
+                      href={{
+                        pathname: "/artists/[slug]/releases/[release]",
+                        params: {
+                          slug: item.subject.artistSlug,
+                          release: item.subject.releaseSlug,
+                        },
+                      }}
+                    >
+                      {item.subject.title}
+                    </Link>
+                  ) : item.subject?.artistSlug ? (
+                    <Link
+                      className="artist-list__name"
+                      href={{
+                        pathname: "/artists/[slug]",
+                        params: { slug: item.subject.artistSlug },
+                      }}
+                    >
+                      {item.subject.title}
+                    </Link>
+                  ) : (
+                    <span className="artist-list__name">{item.subject?.title ?? "—"}</span>
+                  )}
+                  <span className="field__hint">
+                    {tReports(`subjects.${item.report.subject_type}`)} ·{" "}
+                    {tReports("queue.count", { count: item.reports.length })}
+                    {item.strikes ? ` · ${tReports("queue.strikes", { count: item.strikes })}` : ""}
+                  </span>
+                  <ul className="report-item__reports">
+                    {item.reports.map((r) => (
+                      <li key={r.id}>
+                        <strong>{tReports(`reasons.${r.reason}`)}</strong>: {r.details}
+                        {r.claimant_name ? (
+                          <span className="field__hint">
+                            {" "}
+                            ·{" "}
+                            {tReports("queue.claimant", {
+                              name: r.claimant_name,
+                              email: r.claimant_email ?? "",
+                            })}
+                          </span>
+                        ) : null}
+                      </li>
+                    ))}
+                  </ul>
+                  <ModerateReportForm
+                    reportId={item.report.id}
+                    subjectType={item.report.subject_type}
+                  />
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+        <section className="settings-form__group" aria-labelledby="appeals">
+          <h2 id="appeals" className="section-title">
+            {tReports("appeals.title", { count: appeals.length })}
+          </h2>
+          {appeals.length === 0 ? (
+            <p className="field__hint">{tReports("appeals.empty")}</p>
+          ) : (
+            <ul className="promo-codes">
+              {appeals.map((item) => (
+                <li key={item.id} className="promo-codes__item">
+                  {item.subject?.releaseSlug && item.subject.artistSlug ? (
+                    <Link
+                      className="artist-list__name"
+                      href={{
+                        pathname: "/artists/[slug]/releases/[release]",
+                        params: {
+                          slug: item.subject.artistSlug,
+                          release: item.subject.releaseSlug,
+                        },
+                      }}
+                    >
+                      {item.subject.title}
+                    </Link>
+                  ) : item.subject?.artistSlug ? (
+                    <Link
+                      className="artist-list__name"
+                      href={{
+                        pathname: "/artists/[slug]",
+                        params: { slug: item.subject.artistSlug },
+                      }}
+                    >
+                      {item.subject.title}
+                    </Link>
+                  ) : (
+                    <span className="artist-list__name">{item.subject?.title ?? "—"}</span>
+                  )}
+                  <span className="field__hint">
+                    {tReports(`moderation.actions.${item.action as "takedown_release"}`)} ·{" "}
+                    {tReports(`reasons.${item.reason}`)}
+                  </span>
+                  <p>
+                    <strong>{tReports("appeals.statement")}</strong> {item.statement}
+                  </p>
+                  <p>
+                    <strong>{tReports("appeals.appeal")}</strong> {item.appeal_text}
+                  </p>
+                  <AppealDecisionForm decisionId={item.id} />
                 </li>
               ))}
             </ul>

@@ -43,6 +43,7 @@ export default async function ReleasePage({
   const { artist, release, tracks } = data;
   const t = await getTranslations("Release");
   const tReleases = await getTranslations("Releases");
+  const tReports = await getTranslations("Reports");
   const entitlement = await listenerEntitlement();
   const [playable, cover, likes] = await Promise.all([
     getPlayableTracks(release.id, tracks, artist.name, entitlement),
@@ -216,6 +217,11 @@ export default async function ReleasePage({
             .join(" · ")}
         </p>
       ) : null}
+      <p className="report-link">
+        <Link href={{ pathname: "/report", query: { typ: "release", id: release.id } }}>
+          {tReports("link")}
+        </Link>
+      </p>
     </article>
   );
 }

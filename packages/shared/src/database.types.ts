@@ -509,6 +509,74 @@ export type Database = {
           },
         ];
       };
+      moderation_decisions: {
+        Row: {
+          action: string;
+          appeal_decided_at: string | null;
+          appeal_decided_by: string | null;
+          appeal_note: string | null;
+          appeal_status: string;
+          appeal_text: string | null;
+          appealed_at: string | null;
+          artist_id: string | null;
+          decided_at: string;
+          decided_by: string | null;
+          id: string;
+          owner_id: string | null;
+          previous_state: NonNullable<Json>;
+          reason: Database["public"]["Enums"]["report_reason"];
+          statement: string;
+          subject_id: string;
+          subject_type: Database["public"]["Enums"]["report_subject"];
+        };
+        Insert: {
+          action: string;
+          appeal_decided_at?: string | null;
+          appeal_decided_by?: string | null;
+          appeal_note?: string | null;
+          appeal_status?: string;
+          appeal_text?: string | null;
+          appealed_at?: string | null;
+          artist_id?: string | null;
+          decided_at?: string;
+          decided_by?: string | null;
+          id?: string;
+          owner_id?: string | null;
+          previous_state?: NonNullable<Json>;
+          reason: Database["public"]["Enums"]["report_reason"];
+          statement: string;
+          subject_id: string;
+          subject_type: Database["public"]["Enums"]["report_subject"];
+        };
+        Update: {
+          action?: string;
+          appeal_decided_at?: string | null;
+          appeal_decided_by?: string | null;
+          appeal_note?: string | null;
+          appeal_status?: string;
+          appeal_text?: string | null;
+          appealed_at?: string | null;
+          artist_id?: string | null;
+          decided_at?: string;
+          decided_by?: string | null;
+          id?: string;
+          owner_id?: string | null;
+          previous_state?: NonNullable<Json>;
+          reason?: Database["public"]["Enums"]["report_reason"];
+          statement?: string;
+          subject_id?: string;
+          subject_type?: Database["public"]["Enums"]["report_subject"];
+        };
+        Relationships: [
+          {
+            foreignKeyName: "moderation_decisions_artist_id_fkey";
+            columns: ["artist_id"];
+            isOneToOne: false;
+            referencedRelation: "artists";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       plans: {
         Row: {
           code: string;
@@ -981,6 +1049,59 @@ export type Database = {
           },
         ];
       };
+      reports: {
+        Row: {
+          claimant_email: string | null;
+          claimant_name: string | null;
+          created_at: string;
+          decision_id: string | null;
+          details: string;
+          good_faith: boolean;
+          id: string;
+          reason: Database["public"]["Enums"]["report_reason"];
+          reporter_id: string | null;
+          status: string;
+          subject_id: string;
+          subject_type: Database["public"]["Enums"]["report_subject"];
+        };
+        Insert: {
+          claimant_email?: string | null;
+          claimant_name?: string | null;
+          created_at?: string;
+          decision_id?: string | null;
+          details: string;
+          good_faith?: boolean;
+          id?: string;
+          reason: Database["public"]["Enums"]["report_reason"];
+          reporter_id?: string | null;
+          status?: string;
+          subject_id: string;
+          subject_type: Database["public"]["Enums"]["report_subject"];
+        };
+        Update: {
+          claimant_email?: string | null;
+          claimant_name?: string | null;
+          created_at?: string;
+          decision_id?: string | null;
+          details?: string;
+          good_faith?: boolean;
+          id?: string;
+          reason?: Database["public"]["Enums"]["report_reason"];
+          reporter_id?: string | null;
+          status?: string;
+          subject_id?: string;
+          subject_type?: Database["public"]["Enums"]["report_subject"];
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reports_decision_fkey";
+            columns: ["decision_id"];
+            isOneToOne: false;
+            referencedRelation: "moderation_decisions";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       rights_declarations: {
         Row: {
           ai_content: Database["public"]["Enums"]["ai_content"];
@@ -1410,6 +1531,11 @@ export type Database = {
         Returns: undefined;
       };
       admin_set_promo_code_active: { Args: { active: boolean; code: string }; Returns: undefined };
+      appeal_moderation_decision: {
+        Args: { appeal: string; decision: string };
+        Returns: undefined;
+      };
+      artist_copyright_strikes: { Args: { artist: string }; Returns: number };
       artist_follower_count: { Args: { artist: string }; Returns: number };
       begin_audio_upload: {
         Args: { file_name: string; size_bytes: number; track: string };
@@ -1564,6 +1690,10 @@ export type Database = {
         Returns: number;
       };
       create_artist: { Args: { name: string; slug: string }; Returns: string };
+      decide_appeal: {
+        Args: { decision: string; note: string; outcome: string };
+        Returns: undefined;
+      };
       delete_track: { Args: { track: string }; Returns: undefined };
       discover_artists: {
         Args: { max_results?: number; region?: Database["public"]["Enums"]["voivodeship"] };
@@ -1631,6 +1761,10 @@ export type Database = {
       is_feature_enabled: { Args: { flag: string }; Returns: boolean };
       is_reserved_handle: { Args: { candidate: string }; Returns: boolean };
       is_staff: { Args: Record<PropertyKey, never>; Returns: boolean };
+      moderate_report: {
+        Args: { action: string; report: string; statement: string };
+        Returns: string;
+      };
       move_playlist_track: { Args: { item: string; to_index: number }; Returns: undefined };
       move_track: { Args: { direction: number; track: string }; Returns: undefined };
       my_plan: {
@@ -1735,6 +1869,18 @@ export type Database = {
       search_normalize: { Args: { value: string }; Returns: string };
       set_release_genres: { Args: { genre_ids: number[]; release: string }; Returns: undefined };
       submit_release: { Args: { release: string }; Returns: undefined };
+      submit_report: {
+        Args: {
+          claimant_email?: string;
+          claimant_name?: string;
+          details: string;
+          good_faith?: boolean;
+          reason: Database["public"]["Enums"]["report_reason"];
+          subject_id: string;
+          subject_type: Database["public"]["Enums"]["report_subject"];
+        };
+        Returns: string;
+      };
       system_create_promo_codes: {
         Args: {
           benefit_type: Database["public"]["Enums"]["promo_benefit"];
@@ -1797,6 +1943,8 @@ export type Database = {
       release_status:
         "draft" | "processing" | "in_review" | "approved" | "published" | "rejected" | "taken_down";
       release_type: "single" | "ep" | "album" | "compilation" | "live";
+      report_reason: "copyright" | "illegal" | "hate" | "impersonation" | "spam" | "other";
+      report_subject: "artist" | "release" | "playlist";
       track_artist_role: "main" | "featured" | "remixer";
       visibility_level: "public" | "followers" | "private";
       voivodeship:
@@ -1967,6 +2115,8 @@ export const Constants = {
         "taken_down",
       ],
       release_type: ["single", "ep", "album", "compilation", "live"],
+      report_reason: ["copyright", "illegal", "hate", "impersonation", "spam", "other"],
+      report_subject: ["artist", "release", "playlist"],
       track_artist_role: ["main", "featured", "remixer"],
       visibility_level: ["public", "followers", "private"],
       voivodeship: [

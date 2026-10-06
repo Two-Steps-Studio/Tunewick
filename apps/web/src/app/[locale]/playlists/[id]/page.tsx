@@ -14,6 +14,7 @@ import {
   removePlaylistItem,
 } from "@/modules/playlists";
 import { PlayButton, type PlayerTrack } from "@/modules/player";
+import { DecisionList } from "@/modules/reports";
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -62,6 +63,7 @@ export default async function PlaylistPage({ params }: PageProps<"/[locale]/play
 
   const { playlist, owner, items, hidden } = data;
   const t = await getTranslations("Playlists");
+  const tReports = await getTranslations("Reports");
   const user = await getOptionalUser();
   const mine = user?.id === playlist.owner_id;
   const entitlement = await listenerEntitlement();
@@ -233,6 +235,15 @@ export default async function PlaylistPage({ params }: PageProps<"/[locale]/play
           </div>
         </section>
       ) : null}
+      {mine ? (
+        <DecisionList filter={{ playlistId: playlist.id }} canAppeal />
+      ) : (
+        <p className="report-link">
+          <Link href={{ pathname: "/report", query: { typ: "playlist", id: playlist.id } }}>
+            {tReports("link")}
+          </Link>
+        </p>
+      )}
     </article>
   );
 }

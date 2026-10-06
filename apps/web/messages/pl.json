@@ -908,5 +908,104 @@
       "limit": "Masz już 200 playlist — to maksimum.",
       "failed": "Nie udało się zapisać. Spróbuj ponownie."
     }
+  },
+  "Reports": {
+    "link": "Zgłoś naruszenie",
+    "title": "Zgłoś naruszenie",
+    "about": "Zgłaszasz: {subject} „{title}”",
+    "lead": "Zgłoszenie trafi do moderatorów Tunewick. Właściciel treści nie zobaczy, kto zgłosił; zobaczy decyzję i jej uzasadnienie.",
+    "subjects": {
+      "artist": "profil artysty",
+      "release": "wydawnictwo",
+      "playlist": "playlistę"
+    },
+    "reasons": {
+      "copyright": "Naruszenie praw autorskich",
+      "illegal": "Treść niezgodna z prawem",
+      "hate": "Mowa nienawiści lub nękanie",
+      "impersonation": "Podszywanie się",
+      "spam": "Spam lub oszustwo",
+      "other": "Inny powód"
+    },
+    "fields": {
+      "reason": "Powód",
+      "details": "Opis",
+      "claimantName": "Imię i nazwisko lub nazwa podmiotu uprawnionego",
+      "claimantEmail": "E-mail do kontaktu",
+      "goodFaith": "Oświadczam w dobrej wierze, że podane informacje są prawdziwe i że mam prawo działać w imieniu właściciela praw."
+    },
+    "hints": {
+      "details": "Co jest nie tak i gdzie (np. który utwór). 10–2000 znaków."
+    },
+    "copyright": {
+      "title": "Zgłoszenie naruszenia praw autorskich",
+      "lead": "Potrzebujemy danych wnioskodawcy, żeby moderator mógł się skontaktować i ocenić zgłoszenie."
+    },
+    "submit": "Wyślij zgłoszenie",
+    "sent": "Dziękujemy. Zgłoszenie trafiło do moderatorów.",
+    "errors": {
+      "details": "Opisz problem (10–2000 znaków).",
+      "copyright": "Przy naruszeniu praw autorskich podaj imię i nazwisko, poprawny e-mail i zaznacz oświadczenie.",
+      "duplicate": "Twoje zgłoszenie tej treści już czeka na decyzję.",
+      "limit": "Wysłano dziś zbyt wiele zgłoszeń. Spróbuj jutro.",
+      "gone": "Tej treści już nie ma publicznie.",
+      "signedOut": "Zaloguj się, aby zgłosić treść.",
+      "failed": "Nie udało się wysłać zgłoszenia. Spróbuj ponownie."
+    },
+    "queue": {
+      "title": "Zgłoszenia ({count})",
+      "empty": "Nie ma otwartych zgłoszeń.",
+      "count": "{count, plural, one {# zgłoszenie} few {# zgłoszenia} many {# zgłoszeń} other {# zgłoszenia}}",
+      "strikes": "{count, plural, one {# uznane naruszenie praw autorskich} few {# uznane naruszenia praw autorskich} many {# uznanych naruszeń praw autorskich} other {# uznanego naruszenia praw autorskich}}",
+      "claimant": "wnioskodawca: {name} <{email}>"
+    },
+    "appeals": {
+      "title": "Odwołania ({count})",
+      "empty": "Nie ma odwołań do rozpatrzenia.",
+      "statement": "Decyzja:",
+      "appeal": "Odwołanie:"
+    },
+    "moderation": {
+      "action": "Decyzja",
+      "actions": {
+        "takedown_release": "Zdjęcie wydawnictwa",
+        "suspend_artist": "Zawieszenie profilu artysty",
+        "hide_playlist": "Ukrycie playlisty",
+        "dismiss": "Oddalenie zgłoszenia"
+      },
+      "statement": "Uzasadnienie (zobaczy je właściciel treści)",
+      "statementHint": "Co postanowiono i dlaczego, prostym językiem — co najmniej 20 znaków.",
+      "decide": "Zapisz decyzję",
+      "appealNote": "Uzasadnienie decyzji w sprawie odwołania",
+      "reverse": "Uwzględnij odwołanie (przywróć)",
+      "uphold": "Utrzymaj decyzję",
+      "errors": {
+        "statement": "Uzasadnienie musi mieć co najmniej 20 znaków.",
+        "mismatch": "Ta decyzja nie pasuje do zgłoszonej treści.",
+        "mfa_required": "Ta decyzja wymaga logowania dwuskładnikowego w tej sesji.",
+        "not_allowed": "Nie możesz podjąć tej decyzji (np. odwołanie od własnej decyzji rozpatruje inny moderator).",
+        "decided": "To zostało już rozstrzygnięte.",
+        "failed": "Nie udało się zapisać decyzji. Spróbuj ponownie."
+      }
+    },
+    "decisions": {
+      "title": "Decyzje moderacji",
+      "appealStatus": {
+        "none": "możesz się odwołać",
+        "pending": "odwołanie w toku",
+        "upheld": "odwołanie nieuwzględnione",
+        "reversed": "odwołanie uwzględnione — przywrócono"
+      },
+      "appealDecided": "Rozstrzygnięcie odwołania: {note}",
+      "appeal": "Odwołanie",
+      "appealHint": "Wyjaśnij, dlaczego decyzja jest błędna (np. masz licencję). Odwołanie rozpatrzy inny moderator. 10–4000 znaków.",
+      "sendAppeal": "Wyślij odwołanie",
+      "errors": {
+        "text": "Opisz odwołanie (10–4000 znaków).",
+        "already": "Od tej decyzji już się odwołano albo minął termin.",
+        "not_allowed": "Odwołać się może właściciel lub menedżer profilu.",
+        "failed": "Nie udało się wysłać odwołania. Spróbuj ponownie."
+      }
+    }
   }
 }
