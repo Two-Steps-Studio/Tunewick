@@ -153,6 +153,17 @@ test.describe("review and publishing", () => {
     await expect(bar.locator(".quality-chip")).toContainText("High");
     await expect(bar.getByRole("button", { name: "Pauza" })).toBeVisible();
 
+    // Search finds the newly published music — no Polish characters needed.
+    await listener.goto(`/szukaj?q=${encodeURIComponent(`familok ${slug}`)}`);
+    await expect(
+      listener.getByRole("link", { name: `Familok ${slug}`, exact: true }),
+    ).toBeVisible();
+    await listener.getByRole("searchbox").fill("nocna zmiana");
+    await listener.getByRole("button", { name: "Szukaj" }).click();
+    await expect(listener).toHaveURL(/\/szukaj\?q=nocna\+zmiana$/);
+    await listener.getByRole("button", { name: "Odtwórz: Nocna zmiana" }).first().click();
+    await expect(bar.getByText("Nocna zmiana")).toBeVisible();
+
     await anonymous.close();
     await staffContext.close();
   });

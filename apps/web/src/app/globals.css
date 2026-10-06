@@ -640,6 +640,68 @@ body {
     min-width: 0;
   }
 
+  /* Search ------------------------------------------------------------------ */
+  .search-page {
+    display: grid;
+    gap: var(--tk-space-6);
+    max-width: 48rem;
+  }
+  .search-page__title {
+    font-family: var(--tk-font-display);
+    font-size: var(--tk-text-3xl);
+    line-height: 1.05;
+  }
+  .search-page__lead,
+  .search-page__empty {
+    color: var(--text-muted);
+  }
+  .search-form {
+    display: flex;
+    gap: var(--tk-space-2);
+  }
+  .search-form__input {
+    flex: 1;
+    min-width: 0;
+  }
+  .search-group {
+    display: grid;
+    gap: var(--tk-space-3);
+  }
+  .search-hits {
+    list-style: none;
+    padding: 0;
+    border-top: 1px solid var(--line);
+  }
+  .search-hit {
+    display: grid;
+    grid-template-columns: 3rem minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--tk-space-3);
+    min-height: 4rem;
+    padding-block: var(--tk-space-2);
+    border-bottom: 1px solid var(--line);
+  }
+  .search-hit__thumb {
+    width: 3rem;
+  }
+  .search-hit__text {
+    display: grid;
+    min-width: 0;
+  }
+  .search-hit__title {
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .search-hit__meta {
+    font-size: var(--tk-text-sm);
+    color: var(--text-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
   /* Developer pages ------------------------------------------------------ */
   .dev-player {
     display: grid;

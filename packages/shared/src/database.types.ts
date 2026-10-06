@@ -1136,6 +1136,23 @@ export type Database = {
         Args: { decision: string; note?: string; release: string };
         Returns: Database["public"]["Enums"]["release_status"];
       };
+      search_catalog: {
+        Args: { max_results?: number; query: string };
+        Returns: {
+          artist_name: string;
+          artist_slug: string;
+          id: string;
+          image_id: string;
+          kind: string;
+          release_id: string;
+          release_slug: string;
+          release_title: string;
+          release_type: Database["public"]["Enums"]["release_type"];
+          score: number;
+          title: string;
+        }[];
+      };
+      search_normalize: { Args: { value: string }; Returns: string };
       set_release_genres: { Args: { genre_ids: number[]; release: string }; Returns: undefined };
       submit_release: { Args: { release: string }; Returns: undefined };
       system_grant_role: {

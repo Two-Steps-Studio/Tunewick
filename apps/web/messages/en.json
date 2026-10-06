@@ -65,8 +65,18 @@
   },
   "Search": {
     "title": "Search",
-    "lead": "Artists, releases, tracks, playlists and events.",
-    "empty": "Search goes live once there is music in the catalog."
+    "lead": "Independent artists from all over Poland — type a name, a title or part of it. Polish characters are optional.",
+    "empty": "Search goes live once there is music in the catalog.",
+    "titleFor": "“{query}” — search",
+    "label": "Search artists, releases and tracks",
+    "placeholder": "Artist, release or track",
+    "submit": "Search",
+    "tooShort": "Type at least 2 characters.",
+    "noResults": "Nothing found for “{query}”. Check the spelling or try a shorter part.",
+    "artists": "Artists",
+    "releases": "Releases",
+    "tracks": "Tracks",
+    "play": "Play: {title}"
   },
   "Library": {
     "title": "Library",

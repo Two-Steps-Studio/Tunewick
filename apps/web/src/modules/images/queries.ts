@@ -70,3 +70,24 @@ export async function getLatestImageUpload(
     .maybeSingle();
   return data ? { id: data.id, status: data.status, rejectionCode: data.rejection_code } : null;
 }
+
+/** Sources for many attached images in one query (lists, search results). */
+export async function getImageSourcesMany(
+  imageIds: (string | null)[],
+  preferredWidth = 160,
+): Promise<Map<string, ImageSources>> {
+  const ids = [...new Set(imageIds.filter((id): id is string => Boolean(id)))];
+  const result = new Map<string, ImageSources>();
+  if (!ids.length) return result;
+  const supabase = await createSupabaseServerClient();
+  const { data } = await supabase
+    .from("images")
+    .select("id, variants, dominant_color, width, status")
+    .in("id", ids);
+  for (const image of data ?? []) {
+    if (image.status !== "accepted") continue;
+    const sources = await imageSources(image, preferredWidth);
+    if (sources) result.set(image.id, sources);
+  }
+  return result;
+}

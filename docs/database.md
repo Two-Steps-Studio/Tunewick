@@ -283,3 +283,13 @@ and public (`can_view_image`). Member functions: `begin_image_upload(kind, owner
 size)` (JPEG/PNG/WebP, ≤ 25 MB, 10 per owner per hour), `complete_image_upload`,
 `abandon_image_upload`; worker: `claim_image_upload`, `finish_image_upload`, `fail_image_upload`.
 `release_readiness` now also requires an accepted cover (`artwork`).
+
+## Search (implemented, M6.2)
+
+`public.search_normalize(text)` = lower(unaccent(text)) (immutable wrapper; "Łódź" → "lodz") with
+trigram GIN indexes on artist names, release titles and track titles.
+`public.search_catalog(query, max_results)` (security invoker + explicit public filters: active
+artists, released releases and their tracks — members never see their drafts in search) ranks:
+exact name 1.0, prefix 0.9, word prefix 0.8, substring 0.6, trigram similarity (> 0.3) × 0.7;
+up to `max_results` (≤ 20) per kind; LIKE wildcards in the query are literal; < 2 characters
+returns nothing. Playlists, events and venues join when they exist.

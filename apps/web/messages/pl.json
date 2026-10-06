@@ -65,8 +65,18 @@
   },
   "Search": {
     "title": "Szukaj",
-    "lead": "Artyści, wydawnictwa, utwory, playlisty i wydarzenia.",
-    "empty": "Wyszukiwarka ruszy, gdy w katalogu pojawi się muzyka."
+    "lead": "Niezależni artyści z całej Polski — wpisz nazwę, tytuł albo fragment. Polskie znaki nie są potrzebne.",
+    "empty": "Wyszukiwarka ruszy, gdy w katalogu pojawi się muzyka.",
+    "titleFor": "„{query}” — szukaj",
+    "label": "Szukaj artystów, wydawnictw i utworów",
+    "placeholder": "Artysta, wydawnictwo albo utwór",
+    "submit": "Szukaj",
+    "tooShort": "Wpisz co najmniej 2 znaki.",
+    "noResults": "Nic nie znaleźliśmy dla „{query}”. Sprawdź pisownię albo wpisz krótszy fragment.",
+    "artists": "Artyści",
+    "releases": "Wydawnictwa",
+    "tracks": "Utwory",
+    "play": "Odtwórz: {title}"
   },
   "Library": {
     "title": "Biblioteka",

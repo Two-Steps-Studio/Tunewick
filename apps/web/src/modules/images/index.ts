@@ -1,5 +1,6 @@
 export {
   getImageSources,
+  getImageSourcesMany,
   getLatestImageUpload,
   type ImageSources,
   type ImageUploadState,
