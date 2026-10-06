@@ -45,7 +45,7 @@ async function draftWithTrack(page: Page) {
   await page.getByRole("link", { name: "Nowe wydawnictwo" }).click();
   await page.getByLabel("Tytuł").fill("Szyb");
   await page.getByRole("button", { name: "Utwórz szkic" }).click();
-  await expect(page).toHaveURL(new RegExp(`/artysci/${slug}/wydawnictwa/szyb$`));
+  await expect(page).toHaveURL(new RegExp(`/artysci/${slug}/wydawnictwa/szyb/edytuj$`));
   await page.getByLabel("Tytuł utworu").fill("Hałda");
   await page.getByRole("button", { name: "Dodaj utwór" }).click();
   await expect(page.locator(".track-item__title")).toHaveText(["Hałda"]);

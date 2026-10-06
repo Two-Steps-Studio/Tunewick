@@ -1,6 +1,7 @@
 export {
   getArtistReleases,
   getLatestDeclaration,
+  getPublicRelease,
   getPublishedReleases,
   getReleaseForEditing,
 } from "./queries";
@@ -14,4 +15,5 @@ export {
 } from "./ui/editor";
 export { ArtistReleaseList } from "./ui/release-list";
 export { DeclarationSummary, ReadinessChecklist } from "./ui/readiness";
+export { ReviewStatus, SubmitReleaseForm } from "./ui/review";
 export { RightsForm } from "./ui/rights";

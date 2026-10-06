@@ -1,28 +1,5 @@
-import { expect, type Page, test } from "@playwright/test";
-import { createConfirmedUser, signIn, signOut } from "./helpers";
-import { totp } from "./totp";
-
-const SECURITY = "/ustawienia/bezpieczenstwo";
-
-/** Waits for a fresh 30-second window so a code is never reused (servers may reject reuse). */
-async function freshCode(secret: string, lastCode?: string) {
-  let code = totp(secret);
-  while (code === lastCode) {
-    await new Promise((r) => setTimeout(r, 1000));
-    code = totp(secret);
-  }
-  return code;
-}
-
-async function enableTotp(page: Page) {
-  await page.goto(SECURITY);
-  await expect(page.getByRole("status")).toHaveText("Logowanie dwuskładnikowe jest wyłączone.");
-  await page.getByRole("button", { name: "Włącz aplikację uwierzytelniającą" }).click();
-  const secret = (await page.getByTestId("totp-secret").textContent())?.trim() ?? "";
-  expect(secret).toMatch(/^[A-Z2-7]{16,}$/);
-  await expect(page.getByRole("img", { name: /Kod QR/ })).toBeVisible();
-  return secret;
-}
+import { expect, test } from "@playwright/test";
+import { createConfirmedUser, enableTotp, freshCode, SECURITY, signIn, signOut } from "./helpers";
 
 test.describe("two-factor sign-in (TOTP)", () => {
   test.setTimeout(120_000);

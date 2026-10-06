@@ -28,7 +28,13 @@ export const routing = defineRouting({
       pl: "/artysci/[slug]/wydawnictwa/[release]",
       en: "/artists/[slug]/releases/[release]",
     },
+    "/artists/[slug]/releases/[release]/edit": {
+      pl: "/artysci/[slug]/wydawnictwa/[release]/edytuj",
+      en: "/artists/[slug]/releases/[release]/edit",
+    },
     "/profile/[handle]": { pl: "/profil/[handle]", en: "/profile/[handle]" },
+    "/moderation": { pl: "/moderacja", en: "/moderation" },
+    "/moderation/[release]": { pl: "/moderacja/[release]", en: "/moderation/[release]" },
     // Developer-only (404 in production unless TUNEWICK_DEV_PAGES=1).
     "/dev/player": "/dev/player",
   },

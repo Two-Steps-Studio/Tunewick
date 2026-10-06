@@ -1,4 +1,6 @@
+import { execFileSync } from "node:child_process";
 import { expect, type Page } from "@playwright/test";
+import { totp } from "./totp";
 
 // Requires local Supabase (pnpm db:start && pnpm db:env) — emails are read from Mailpit.
 const MAILPIT = process.env.MAILPIT_URL ?? "http://127.0.0.1:54324";
@@ -65,4 +67,46 @@ export async function createConfirmedUser(page: Page, prefix: string) {
   await page.goto(await emailLinkPath(email, "Potwierdź konto"));
   await expect(page.getByRole("banner").getByRole("button", { name: "Wyloguj" })).toBeVisible();
   return email;
+}
+
+export const SECURITY = "/ustawienia/bezpieczenstwo";
+
+/** Waits for a fresh 30-second window so a code is never reused (servers may reject reuse). */
+export async function freshCode(secret: string, lastCode?: string) {
+  let code = totp(secret);
+  while (code === lastCode) {
+    await new Promise((r) => setTimeout(r, 1000));
+    code = totp(secret);
+  }
+  return code;
+}
+
+export async function enableTotp(page: Page) {
+  await page.goto(SECURITY);
+  await expect(page.getByRole("status")).toHaveText("Logowanie dwuskładnikowe jest wyłączone.");
+  await page.getByRole("button", { name: "Włącz aplikację uwierzytelniającą" }).click();
+  const secret = (await page.getByTestId("totp-secret").textContent())?.trim() ?? "";
+  expect(secret).toMatch(/^[A-Z2-7]{16,}$/);
+  await expect(page.getByRole("img", { name: /Kod QR/ })).toBeVisible();
+  return secret;
+}
+
+/** Turns on TOTP for the signed-in user and leaves the session at aal2. Returns the secret. */
+export async function enableMfa(page: Page) {
+  const secret = await enableTotp(page);
+  await page.getByLabel("Kod z aplikacji (6 cyfr)").fill(await freshCode(secret));
+  await page.getByRole("button", { name: "Potwierdź i włącz" }).click();
+  await expect(page.getByRole("status")).toHaveText("Logowanie dwuskładnikowe jest włączone.");
+  return secret;
+}
+
+/** Grants a staff role in the local database (the same script admins use to bootstrap). */
+export function grantRole(email: string, role: "moderator" | "admin") {
+  execFileSync(
+    "node",
+    ["../../scripts/grant-role.mjs", "--local", "--email", email, "--role", role],
+    {
+      stdio: "pipe",
+    },
+  );
 }

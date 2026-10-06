@@ -1,172 +1,129 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { getPathname, Link } from "@/i18n/navigation";
+import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
-import {
-  audioReadiness,
-  getLatestTrackAudio,
-  getPreviewTracks,
-  isAudioUploadAvailable,
-  TrackAudioUpload,
-} from "@/modules/audio";
-import { requireUser } from "@/modules/auth";
-import {
-  AddTrackForm,
-  DeclarationSummary,
-  DeleteReleaseButton,
-  GenresForm,
-  getLatestDeclaration,
-  getReleaseForEditing,
-  ReadinessChecklist,
-  ReleaseDetailsForm,
-  RightsForm,
-  TrackItem,
-} from "@/modules/catalog";
+import { getPlayableTracks, listenerEntitlement } from "@/modules/audio";
+import { getPublicRelease } from "@/modules/catalog";
+import { PlayButton } from "@/modules/player";
 
-export const metadata: Metadata = { robots: { index: false } };
+type Params = PageProps<"/[locale]/artists/[slug]/releases/[release]">["params"];
 
-/** Release editor for artist members; drafts only (published releases are read-only). */
-export default async function ReleaseEditorPage({
+async function load(params: Params) {
+  const { slug, release } = await params;
+  return getPublicRelease(decodeURIComponent(slug), decodeURIComponent(release));
+}
+
+export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
+  const data = await load(params);
+  return data ? { title: `${data.release.title} — ${data.artist.name}` } : {};
+}
+
+function formatDuration(ms: number) {
+  const seconds = Math.round(ms / 1000);
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const rest = String(seconds % 60).padStart(2, "0");
+  return hours ? `${hours}:${String(minutes).padStart(2, "0")}:${rest}` : `${minutes}:${rest}`;
+}
+
+/** Public release page: only released releases, only real data, playback within the plan. */
+export default async function ReleasePage({
   params,
 }: PageProps<"/[locale]/artists/[slug]/releases/[release]">) {
-  const { locale: rawLocale, slug: rawSlug, release: rawRelease } = await params;
-  const locale = rawLocale as Locale;
-  const slug = decodeURIComponent(rawSlug);
-  const releaseSlug = decodeURIComponent(rawRelease);
-  setRequestLocale(locale);
-
-  const here = getPathname({
-    href: {
-      pathname: "/artists/[slug]/releases/[release]",
-      params: { slug, release: releaseSlug },
-    },
-    locale,
-  });
-  await requireUser(getPathname({ href: { pathname: "/login", query: { next: here } }, locale }));
-  const data = await getReleaseForEditing(slug, releaseSlug);
+  const { locale } = await params;
+  setRequestLocale(locale as Locale);
+  const data = await load(params);
   if (!data) notFound();
 
-  const t = await getTranslations("Releases");
-  const { artist, release, editable, tracks, genreIds, allGenres } = data;
-  const trackIds = tracks.map((track) => track.id);
-  const [declaration, audio] = await Promise.all([
-    getLatestDeclaration(release.id),
-    getLatestTrackAudio(trackIds),
-  ]);
-  const uploadAvailable = isAudioUploadAvailable();
-  const previewTracks = await getPreviewTracks(tracks, artist.name, audio);
-  const previewFor = (trackId: string) => {
-    const index = previewTracks.findIndex((p) => p.id === trackId);
-    return index === -1 ? undefined : { tracks: previewTracks, index };
-  };
-  const territory = (["WORLD", "EU", "PL"] as const).find((v) => release.territories.includes(v));
-  const territoryLabel = territory ? t(`territories.${territory}`) : release.territories.join(", ");
+  const { artist, release, tracks } = data;
+  const t = await getTranslations("Release");
+  const tReleases = await getTranslations("Releases");
+  const entitlement = await listenerEntitlement();
+  const playable = await getPlayableTracks(release.id, tracks, artist.name, entitlement);
+  const indexOf = (trackId: string) => playable.findIndex((p) => p.id === trackId);
+  const total = tracks.reduce((sum, track) => sum + (track.duration_ms ?? 0), 0);
+  const year = (release.release_date ?? release.publish_at ?? "").slice(0, 4);
 
   return (
-    <section className="auth-page">
-      <div className="auth-page__head">
+    <article className="release-page">
+      <header className="release-page__head">
         <p className="artist-badge">
-          {t(`types.${release.type}`)} · {t(`statuses.${release.status}`)}
+          {tReleases(`types.${release.type}`)}
+          {year ? ` · ${year}` : ""}
         </p>
-        <h1 className="auth-page__title">{release.title}</h1>
-        <p className="auth-page__lead">{artist.name}</p>
-        {editable && release.ai_content === "unknown" ? (
-          <p className="form-error">{t("editor.aiMissing")}</p>
-        ) : null}
-        {!editable ? <p role="status">{t("editor.readOnly")}</p> : null}
-        <p className="settings-profile-link">
-          <Link href={{ pathname: "/artists/[slug]/manage", params: { slug: artist.slug } }}>
-            {t("editor.back")}
+        <h1 className="release-page__title">{release.title}</h1>
+        <p className="release-page__artist">
+          <Link href={{ pathname: "/artists/[slug]", params: { slug: artist.slug } }}>
+            {artist.name}
           </Link>
         </p>
-      </div>
+        <p className="release-page__meta">
+          {t("trackCount", { count: tracks.length })}
+          {total ? ` · ${formatDuration(total)}` : ""}
+          {release.explicit ? ` · ${t("explicit")}` : ""}
+        </p>
+        <p className="release-page__ai">{t(`ai.${release.ai_content}`)}</p>
+        {playable.length ? (
+          <PlayButton
+            tracks={playable}
+            index={0}
+            entitlement={entitlement}
+            label={t("playAll", { title: release.title })}
+            className="button button--primary"
+          >
+            {t("play")}
+          </PlayButton>
+        ) : (
+          <p className="field__hint">{t("notPlayable")}</p>
+        )}
+      </header>
 
-      <div className="auth-page__body">
-        {editable ? (
-          <section className="settings-form__group" aria-labelledby="details">
-            <h2 id="details" className="section-title">
-              {t("editor.details")}
-            </h2>
-            <ReleaseDetailsForm release={release} artistSlug={artist.slug} />
-          </section>
-        ) : null}
-
-        <section className="settings-form__group" aria-labelledby="tracks">
-          <h2 id="tracks" className="section-title">
-            {t("editor.tracks")}
-          </h2>
-          {tracks.length === 0 ? <p className="field__hint">{t("editor.noTracks")}</p> : null}
-          <ol className="track-list">
-            {tracks.map((track, i) => (
-              <TrackItem
-                key={track.id}
-                track={track}
-                editable={editable}
-                isFirst={i === 0}
-                isLast={i === tracks.length - 1}
-              >
-                {editable ? (
-                  <TrackAudioUpload
-                    trackId={track.id}
-                    trackTitle={track.title}
-                    audio={audio.get(track.id) ?? null}
-                    available={uploadAvailable}
-                    preview={previewFor(track.id)}
-                  />
+      <ol className="release-tracks">
+        {tracks.map((track) => {
+          const index = indexOf(track.id);
+          return (
+            <li key={track.id} className="release-tracks__item">
+              <span className="release-tracks__number">{track.track_number}</span>
+              <span className="release-tracks__title">
+                {track.title}
+                {track.explicit ? (
+                  <abbr className="release-tracks__explicit" title={t("explicit")}>
+                    E
+                  </abbr>
                 ) : null}
-              </TrackItem>
-            ))}
-          </ol>
-          {editable ? <AddTrackForm releaseId={release.id} /> : null}
-        </section>
+              </span>
+              <span className="release-tracks__duration">
+                {track.duration_ms ? formatDuration(track.duration_ms) : ""}
+              </span>
+              {index !== -1 ? (
+                <PlayButton
+                  tracks={playable}
+                  index={index}
+                  entitlement={entitlement}
+                  label={t("playTrack", { title: track.title })}
+                  className="player-button release-tracks__play"
+                >
+                  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                    <path d="M7 4.5v15l12-7.5z" fill="currentColor" />
+                  </svg>
+                </PlayButton>
+              ) : (
+                <span />
+              )}
+            </li>
+          );
+        })}
+      </ol>
 
-        {editable ? (
-          <section className="settings-form__group" aria-labelledby="genres">
-            <h2 id="genres" className="section-title">
-              {t("editor.genres")}
-            </h2>
-            <GenresForm releaseId={release.id} selected={genreIds} genres={allGenres} />
-          </section>
-        ) : null}
-
-        <section className="settings-form__group" aria-labelledby="rights">
-          <h2 id="rights" className="section-title">
-            {t("rights.title")}
-          </h2>
-          {declaration ? <DeclarationSummary declaration={declaration} /> : null}
-          {editable && !declaration ? (
-            <RightsForm
-              releaseId={release.id}
-              defaultAi={release.ai_content}
-              territoryLabel={territoryLabel}
-            />
-          ) : null}
-          {editable && declaration ? (
-            <details className="track-item__details">
-              <summary>{t("rights.newDeclaration")}</summary>
-              <RightsForm
-                releaseId={release.id}
-                defaultAi={release.ai_content}
-                territoryLabel={territoryLabel}
-              />
-            </details>
-          ) : null}
-        </section>
-
-        {editable ? (
-          <ReadinessChecklist
-            hasTracks={tracks.length > 0}
-            aiDeclared={release.ai_content !== "unknown"}
-            rightsDeclared={Boolean(declaration)}
-            audio={audioReadiness(trackIds, audio)}
-          />
-        ) : null}
-
-        {release.status === "draft" ? (
-          <DeleteReleaseButton releaseId={release.id} artistSlug={artist.slug} />
-        ) : null}
-      </div>
-    </section>
+      {entitlement !== "hires" ? <p className="field__hint">{t("qualityNote")}</p> : null}
+      {release.p_line || release.c_line ? (
+        <p className="release-page__lines">
+          {[release.p_line && `℗ ${release.p_line}`, release.c_line && `© ${release.c_line}`]
+            .filter(Boolean)
+            .join(" · ")}
+        </p>
+      ) : null}
+    </article>
   );
 }

@@ -33,7 +33,7 @@ export async function getReleaseForEditing(artistSlug: string, releaseSlug: stri
   const { data: release } = await supabase
     .from("releases")
     .select(
-      "id, slug, title, type, status, release_date, explicit, ai_content, territories, upc, p_line, c_line",
+      "id, slug, title, type, status, release_date, publish_at, submitted_at, review_note, explicit, ai_content, territories, upc, p_line, c_line",
     )
     .eq("artist_id", artist.id)
     .eq("slug", releaseSlug.toLowerCase())
@@ -92,4 +92,36 @@ export async function getLatestDeclaration(releaseId: string) {
     .maybeSingle();
   if (error) throw error;
   return data;
+}
+
+/** A released release for its public page; null when it does not exist or is not out yet. */
+export async function getPublicRelease(artistSlug: string, releaseSlug: string) {
+  const supabase = await createSupabaseServerClient();
+  const { data: artist } = await supabase
+    .from("artists")
+    .select("id, slug, name, verification_status")
+    .eq("slug", artistSlug.toLowerCase())
+    .eq("status", "active")
+    .maybeSingle();
+  if (!artist) return null;
+
+  // Members can read their drafts through RLS; the public page shows released ones only.
+  const { data: release } = await supabase
+    .from("releases")
+    .select("id, slug, title, type, release_date, publish_at, explicit, ai_content, p_line, c_line")
+    .eq("artist_id", artist.id)
+    .eq("slug", releaseSlug.toLowerCase())
+    .eq("status", "published")
+    .lte("publish_at", new Date().toISOString())
+    .maybeSingle();
+  if (!release) return null;
+
+  const { data: tracks, error } = await supabase
+    .from("tracks")
+    .select("id, disc_number, track_number, title, duration_ms, explicit, ai_content")
+    .eq("release_id", release.id)
+    .order("disc_number")
+    .order("track_number");
+  if (error) throw error;
+  return { artist, release, tracks };
 }

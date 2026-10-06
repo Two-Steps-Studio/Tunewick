@@ -377,6 +377,38 @@ export type Database = {
           },
         ];
       };
+      release_review_events: {
+        Row: {
+          created_at: string;
+          id: number;
+          kind: Database["public"]["Enums"]["release_review_kind"];
+          note: string | null;
+          release_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: never;
+          kind: Database["public"]["Enums"]["release_review_kind"];
+          note?: string | null;
+          release_id: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: never;
+          kind?: Database["public"]["Enums"]["release_review_kind"];
+          note?: string | null;
+          release_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "release_review_events_release_id_fkey";
+            columns: ["release_id"];
+            isOneToOne: false;
+            referencedRelation: "releases";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       releases: {
         Row: {
           ai_content: Database["public"]["Enums"]["ai_content"];
@@ -390,8 +422,11 @@ export type Database = {
           p_line: string | null;
           publish_at: string | null;
           release_date: string | null;
+          review_note: string | null;
+          reviewed_at: string | null;
           slug: string;
           status: Database["public"]["Enums"]["release_status"];
+          submitted_at: string | null;
           territories: string[];
           title: string;
           type: Database["public"]["Enums"]["release_type"];
@@ -410,8 +445,11 @@ export type Database = {
           p_line?: string | null;
           publish_at?: string | null;
           release_date?: string | null;
+          review_note?: string | null;
+          reviewed_at?: string | null;
           slug: string;
           status?: Database["public"]["Enums"]["release_status"];
+          submitted_at?: string | null;
           territories?: string[];
           title: string;
           type: Database["public"]["Enums"]["release_type"];
@@ -430,8 +468,11 @@ export type Database = {
           p_line?: string | null;
           publish_at?: string | null;
           release_date?: string | null;
+          review_note?: string | null;
+          reviewed_at?: string | null;
           slug?: string;
           status?: Database["public"]["Enums"]["release_status"];
+          submitted_at?: string | null;
           territories?: string[];
           title?: string;
           type?: Database["public"]["Enums"]["release_type"];
@@ -879,6 +920,16 @@ export type Database = {
       is_staff: { Args: Record<PropertyKey, never>; Returns: boolean };
       move_track: { Args: { direction: number; track: string }; Returns: undefined };
       release_is_public: { Args: { release: string }; Returns: boolean };
+      release_playback: {
+        Args: { release: string };
+        Returns: {
+          source: Json;
+          track_id: string;
+          upload_id: string;
+          variants: Json;
+        }[];
+      };
+      release_readiness: { Args: { release: string }; Returns: Json };
       remove_artist_member: { Args: { artist: string; member: string }; Returns: undefined };
       request_artist_verification: {
         Args: { artist: string; evidence: Json; note?: string };
@@ -888,11 +939,17 @@ export type Database = {
         Args: { required: Database["public"]["Enums"]["app_role"] };
         Returns: undefined;
       };
+      review_release: {
+        Args: { decision: string; note?: string; release: string };
+        Returns: Database["public"]["Enums"]["release_status"];
+      };
       set_release_genres: { Args: { genre_ids: number[]; release: string }; Returns: undefined };
+      submit_release: { Args: { release: string }; Returns: undefined };
       system_grant_role: {
         Args: { role: Database["public"]["Enums"]["app_role"]; target_email: string };
         Returns: string;
       };
+      withdraw_release_submission: { Args: { release: string }; Returns: undefined };
     };
     Enums: {
       ai_content: "human" | "ai_assisted" | "ai_generated" | "unknown";
@@ -913,6 +970,7 @@ export type Database = {
         | "other";
       quality_tier: "data_saver" | "high" | "lossless" | "hires";
       release_artist_role: "primary" | "featured";
+      release_review_kind: "submitted" | "withdrawn" | "approved" | "returned";
       release_status:
         "draft" | "processing" | "in_review" | "approved" | "published" | "rejected" | "taken_down";
       release_type: "single" | "ep" | "album" | "compilation" | "live";
@@ -1047,6 +1105,7 @@ export const Constants = {
       ],
       quality_tier: ["data_saver", "high", "lossless", "hires"],
       release_artist_role: ["primary", "featured"],
+      release_review_kind: ["submitted", "withdrawn", "approved", "returned"],
       release_status: [
         "draft",
         "processing",

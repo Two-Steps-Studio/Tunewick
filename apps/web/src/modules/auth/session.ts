@@ -52,9 +52,20 @@ export async function requireStaff(
 ): Promise<User> {
   const user = await requireUser(paths.signIn);
   const supabase = await createSupabaseServerClient();
-  const { data: hasRole } = await supabase.rpc("has_app_role", { required: role });
+  // Admins can do everything moderators can (same rule as public.is_staff()).
+  const { data: hasRole } =
+    role === "moderator"
+      ? await supabase.rpc("is_staff")
+      : await supabase.rpc("has_app_role", { required: role });
   if (!hasRole) redirect(paths.forbidden);
   const mfa = await getMfaStatus();
   if (!mfa.enabled || !mfa.verified) redirect(paths.security);
   return user;
+}
+
+/** Whether the signed-in user has a staff role (moderator or admin). Not an authorization check. */
+export async function isStaff(): Promise<boolean> {
+  const supabase = await createSupabaseServerClient();
+  const { data } = await supabase.rpc("is_staff");
+  return data === true;
 }

@@ -48,7 +48,7 @@ function sourceName(source: NonNullable<TrackAudio["source"]>) {
 }
 
 /** What the worker found, in plain words: source format, length, loudness, versions, caveats. */
-function AcceptedDetails({ audio }: { audio: TrackAudio }) {
+export function AcceptedDetails({ audio }: { audio: TrackAudio }) {
   const t = useTranslations("Audio");
   const format = useFormatter();
   const facts = [

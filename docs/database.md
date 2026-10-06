@@ -255,3 +255,18 @@ stuck > 30 min; `FOR UPDATE SKIP LOCKED`; at most 3 attempts), `finish_audio_upl
 report, variants)` (accepted → variants, duration/loudness, `tracks.duration_ms` from the audio;
 rejected → code + message), `fail_audio_upload(upload)` (crash → back to the queue, failed after
 the third attempt).
+
+## Release review and publishing (implemented, M5.0)
+
+`releases` gains `submitted_at`, `reviewed_at`, `review_note` (why it was returned; cleared on
+approval). `public.release_review_events` (submitted / withdrawn / approved / returned + note) is
+the history members and staff see; the moderator's identity is only in the private audit log.
+Functions: `release_readiness(release)` (tracks, AI declared, rights declared, every track's newest
+master accepted — the same rules as the editor checklist), `submit_release` and
+`withdraw_release_submission` (members), `review_release(release, 'approve' | 'return', note)`
+(moderator or admin **and** aal2; approve → `published` with `publish_at` = release date at
+midnight Europe/Warsaw if in the future, else now; return → `rejected` with a ≥ 10-character note;
+both audit-logged). `release_playback(release)` returns, for releases the caller may see, each
+track's newest accepted master (source description) and its variants — the only way anonymous
+listeners reach playback data. The web app signs URLs only for tiers within the listener's plan
+(everyone is on Free = High until Premium codes exist).

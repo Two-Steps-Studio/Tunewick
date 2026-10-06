@@ -43,7 +43,15 @@ export default async function ArtistPage({ params }: PageProps<"/[locale]/artist
         <ul className="artist-list">
           {published.map((r) => (
             <li key={r.id} className="artist-list__item">
-              <span className="artist-list__name">{r.title}</span>
+              <Link
+                className="artist-list__name"
+                href={{
+                  pathname: "/artists/[slug]/releases/[release]",
+                  params: { slug: artist.slug, release: r.slug },
+                }}
+              >
+                {r.title}
+              </Link>
               <span className="field__hint">{tReleases(`types.${r.type}`)}</span>
             </li>
           ))}

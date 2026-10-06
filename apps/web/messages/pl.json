@@ -8,7 +8,8 @@
     "mainNav": "Nawigacja główna",
     "home": "Strona główna Tunewick",
     "language": "Język",
-    "switchTo": "English"
+    "switchTo": "English",
+    "moderation": "Moderacja"
   },
   "Nav": {
     "discover": "Odkrywaj",
@@ -457,9 +458,25 @@
       "ai": "Określony udział AI",
       "rights": "Złożone oświadczenie o prawach",
       "audio": "Pliki master wszystkich utworów — sprawdzone",
-      "note": "Wysyłka do weryfikacji będzie możliwa, gdy uruchomimy automatyczne sprawdzanie nagrań.",
+      "note": "Gdy wszystko będzie gotowe, wyślij wydawnictwo do weryfikacji. Przed publikacją sprawdzamy prawa, metadane i nagrania.",
       "audioMissing": "Pliki master wszystkich utworów",
       "audioProcessing": "Pliki master przesłane — czekają na sprawdzenie i przetworzenie"
+    },
+    "review": {
+      "submit": "Wyślij do weryfikacji",
+      "submitHint": "Sprawdzimy oświadczenie o prawach, metadane i nagrania. Do czasu decyzji wydawnictwa nie można edytować.",
+      "inReview": "Wysłane do weryfikacji {date}. Do czasu decyzji wydawnictwa nie można edytować.",
+      "withdraw": "Wycofaj zgłoszenie",
+      "returned": "Wydawnictwo wróciło do poprawy:",
+      "returnedHint": "Wprowadź poprawki i wyślij je ponownie.",
+      "published": "Opublikowane {date}.",
+      "scheduled": "Zatwierdzone — premiera {date}.",
+      "viewPublic": "Zobacz stronę wydawnictwa",
+      "error": {
+        "not_ready": "Wydawnictwo nie jest jeszcze gotowe — sprawdź listę powyżej.",
+        "not_allowed": "Nie możesz wysłać tego wydawnictwa.",
+        "failed": "Coś poszło nie tak. Spróbuj ponownie."
+      }
     }
   },
   "Audio": {
@@ -510,6 +527,65 @@
       "empty": "Plik nie zawiera dźwięku.",
       "integrity": "Suma kontrolna pliku FLAC nie zgadza się z zawartością — plik jest uszkodzony.",
       "processing_failed": "Nie udało się przetworzyć pliku mimo kilku prób. Prześlij go ponownie albo napisz do nas."
+    }
+  },
+  "Release": {
+    "trackCount": "{count, plural, one {# utwór} few {# utwory} many {# utworów} other {# utworu}}",
+    "explicit": "Treści dla dorosłych",
+    "play": "Odtwórz",
+    "playAll": "Odtwórz wydawnictwo {title}",
+    "playTrack": "Odtwórz: {title}",
+    "notPlayable": "Nagrania tego wydawnictwa nie są jeszcze dostępne do odtwarzania.",
+    "qualityNote": "Słuchasz w jakości do High (AAC 256 kb/s). Lossless i Hi-Res będą częścią planu Premium.",
+    "ai": {
+      "unknown": "Udział AI nie został określony.",
+      "human": "Bez AI — utworzone przez ludzi.",
+      "ai_assisted": "Utworzone z pomocą AI.",
+      "ai_generated": "Wygenerowane przez AI."
+    }
+  },
+  "Moderation": {
+    "title": "Moderacja",
+    "lead": "Wydawnictwa czekające na weryfikację — najstarsze na górze.",
+    "empty": "Nic nie czeka na weryfikację.",
+    "trackCount": "{count, plural, one {# utwór} few {# utwory} many {# utworów} other {# utworu}}",
+    "submitted": "wysłane {date}",
+    "back": "← Wszystkie zgłoszenia",
+    "metadata": "Metadane",
+    "fields": {
+      "releaseDate": "Data wydania",
+      "ai": "Udział AI",
+      "explicit": "Treści dla dorosłych",
+      "territories": "Dostępność",
+      "lines": "Linie ℗ / ©"
+    },
+    "none": "brak",
+    "yes": "tak",
+    "no": "nie",
+    "listen": "Odsłuchaj: {title}",
+    "listenShort": "Odsłuchaj",
+    "noAudio": "Brak sprawdzonego pliku master.",
+    "history": "Historia zgłoszenia",
+    "events": {
+      "submitted": "wysłane do weryfikacji",
+      "withdrawn": "wycofane przez artystę",
+      "approved": "zatwierdzone",
+      "returned": "zwrócone do poprawy"
+    },
+    "decided": "To wydawnictwo nie czeka już na decyzję.",
+    "decision": {
+      "title": "Decyzja",
+      "note": "Uwagi dla artysty",
+      "noteHint": "Wymagane przy zwrocie (min. 10 znaków) — artysta zobaczy je w edytorze. Przy zatwierdzeniu pole jest pomijane.",
+      "approve": "Zatwierdź i opublikuj",
+      "return": "Zwróć do poprawy",
+      "error": {
+        "note_required": "Napisz artyście, co trzeba poprawić (co najmniej 10 znaków).",
+        "mfa_required": "Potwierdź logowanie drugim składnikiem, aby podejmować decyzje.",
+        "not_allowed": "Nie masz uprawnień moderatora.",
+        "not_waiting": "To wydawnictwo nie czeka już na decyzję.",
+        "failed": "Coś poszło nie tak. Spróbuj ponownie."
+      }
     }
   }
 }

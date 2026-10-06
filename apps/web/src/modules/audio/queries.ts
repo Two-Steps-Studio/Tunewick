@@ -1,9 +1,16 @@
 import "server-only";
 
-import { TIER_ORDER, type Database } from "@tunewick/shared";
+import {
+  type Authenticity,
+  type Database,
+  type QualityTier,
+  type SourceQuality,
+  TIER_ORDER,
+  tierRank,
+} from "@tunewick/shared";
 import { isMediaStorageConfigured, presignVariantGet } from "@/lib/media/storage";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import { trackFromWorkerReport, type PlayerTrack, type WorkerReport } from "@/modules/player";
+import type { PlayerTrack, TrackRendition, WorkerReport } from "@/modules/player";
 
 export type AudioUploadStatus = Database["public"]["Enums"]["audio_upload_status"];
 
@@ -102,48 +109,104 @@ export function audioReadiness(trackIds: string[], audio: Map<string, TrackAudio
   return "missing" as const;
 }
 
+interface PlaybackSource {
+  container: string | null;
+  codec: string | null;
+  sample_rate: number | null;
+  bits: number | null;
+  effective_bits: number | null;
+  effective_sample_rate: number | null;
+  authenticity: string | null;
+  upsampled_from: number | null;
+  flags: string[];
+}
+
+interface PlaybackVariant {
+  tier: QualityTier;
+  codec: "aac_lc" | "flac";
+  container: "flac" | "fmp4";
+  sample_rate: number;
+  bit_depth: number | null;
+  nominal_kbps: number | null;
+  bitrate_kbps: number;
+  samples: number;
+  encoder_delay_samples: number;
+  padding_samples: number;
+  object_key: string;
+}
+
+function sourceQuality(source: PlaybackSource): SourceQuality {
+  const authenticity: Authenticity =
+    source.authenticity === "suspected_lossy_origin"
+      ? "suspected_lossy_origin"
+      : source.upsampled_from
+        ? "suspected_upsampled"
+        : source.flags.includes("suspected_bit_padded")
+          ? "suspected_bit_padded"
+          : source.authenticity === "verified_lossless"
+            ? "verified_lossless"
+            : "unknown";
+  const container = source.container ?? "";
+  return {
+    codec: container === "wav" || container === "aiff" ? container : (source.codec ?? "unknown"),
+    isLosslessCodec: true, // only lossless masters are accepted
+    sampleRateHz: source.sample_rate ?? 0,
+    bitDepth: source.bits,
+    effectiveBitDepth: source.effective_bits,
+    effectiveSampleRateHz: source.effective_sample_rate,
+    authenticity,
+  };
+}
+
 /**
- * Playable tracks for members to preview their processed masters, in release order. URLs are
- * short-lived presigned GETs of the media bucket.
+ * Playable tracks of a release the caller may see (public once released; members and staff
+ * earlier), in release order. Only variants up to `maxTier` get a URL — a Free listener's page
+ * never contains a link to a Lossless file. URLs are short-lived presigned GETs of the media
+ * bucket until the media edge with playback tokens exists (docs/architecture.md §6.4).
  */
-export async function getPreviewTracks(
+export async function getPlayableTracks(
+  releaseId: string,
   tracks: { id: string; title: string }[],
   artistName: string,
-  audio: Map<string, TrackAudio>,
+  maxTier: QualityTier,
 ): Promise<PlayerTrack[]> {
-  const accepted = tracks.filter((track) => audio.get(track.id)?.status === "accepted");
-  if (!accepted.length) return [];
-  const uploadIds = accepted.map((track) => audio.get(track.id)!.id);
-
   const supabase = await createSupabaseServerClient();
-  const [{ data: uploads }, { data: variants }] = await Promise.all([
-    supabase.from("track_audio_uploads").select("id, report").in("id", uploadIds),
-    supabase
-      .from("track_audio_variants")
-      .select("upload_id, object_key")
-      .in("upload_id", uploadIds),
-  ]);
-  if (!uploads || !variants) return [];
+  const { data, error } = await supabase.rpc("release_playback", { release: releaseId });
+  if (error) throw error;
 
   const result: PlayerTrack[] = [];
-  for (const track of accepted) {
-    const uploadId = audio.get(track.id)!.id;
-    const report = uploads.find((u) => u.id === uploadId)?.report as WorkerReport | undefined;
-    if (!report) continue;
-    const urls = new Map<string, string>();
-    for (const variant of variants.filter((v) => v.upload_id === uploadId)) {
-      const url = await presignVariantGet(variant.object_key);
-      if (url) urls.set(variant.object_key.split("/").pop()!, url);
-    }
-    const playable = trackFromWorkerReport(
-      report,
-      { id: track.id, title: track.title, artist: artistName },
-      (name) => urls.get(name) ?? "",
+  for (const row of data ?? []) {
+    const track = tracks.find((t) => t.id === row.track_id);
+    if (!track) continue;
+    const variants = (row.variants as unknown as PlaybackVariant[]).filter(
+      (variant) => tierRank(variant.tier) <= tierRank(maxTier),
     );
-    if (playable) {
-      playable.renditions = playable.renditions.filter((rendition) => rendition.url);
-      if (playable.renditions.length) result.push(playable);
+    const renditions: TrackRendition[] = [];
+    for (const variant of variants) {
+      const url = await presignVariantGet(variant.object_key);
+      if (!url) continue;
+      renditions.push({
+        tier: variant.tier,
+        codec: variant.codec,
+        container: variant.container,
+        sampleRateHz: variant.sample_rate,
+        url,
+        bitDepth: variant.bit_depth,
+        bitrateKbps: variant.bitrate_kbps,
+        nominalKbps: variant.nominal_kbps,
+        samples: variant.samples,
+        encoderDelaySamples: variant.encoder_delay_samples,
+        paddingSamples: variant.padding_samples,
+      });
     }
+    if (!renditions.length) continue;
+    result.push({
+      id: track.id,
+      title: track.title,
+      artist: artistName,
+      source: sourceQuality(row.source as unknown as PlaybackSource),
+      renditions,
+    });
   }
   return result;
 }
