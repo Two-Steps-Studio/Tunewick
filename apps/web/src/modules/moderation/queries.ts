@@ -44,3 +44,27 @@ export async function getSubmission(releaseId: string) {
   ]);
   return { release, artist: release.artist, tracks: tracks ?? [], history: history ?? [] };
 }
+
+/** Pending artist verification requests, oldest first (RLS: members and staff). */
+export async function getVerificationRequests() {
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase
+    .from("artist_verification_requests")
+    .select("id, evidence, note, created_at, artist:artists (id, slug, name, city, voivodeship)")
+    .eq("status", "pending")
+    .order("created_at", { ascending: true });
+  if (error) throw error;
+  return data.flatMap((r) =>
+    r.artist
+      ? [
+          {
+            id: r.id,
+            note: r.note,
+            createdAt: r.created_at,
+            artist: r.artist,
+            evidence: Array.isArray(r.evidence) ? (r.evidence as string[]) : [],
+          },
+        ]
+      : [],
+  );
+}

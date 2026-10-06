@@ -1708,6 +1708,10 @@ export type Database = {
         Args: { required: Database["public"]["Enums"]["app_role"] };
         Returns: undefined;
       };
+      review_artist_verification: {
+        Args: { decision: string; note?: string; request: string };
+        Returns: undefined;
+      };
       review_release: {
         Args: { decision: string; note?: string; release: string };
         Returns: Database["public"]["Enums"]["release_status"];

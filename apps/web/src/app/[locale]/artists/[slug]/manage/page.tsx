@@ -139,6 +139,11 @@ export default async function ManageArtistPage({
             {t("manage.verification")}
           </h2>
           <p className="field__hint">{t("manage.verificationLead")}</p>
+          {data.lastRequest?.status === "rejected" && data.lastRequest.decision_note ? (
+            <p className="form-status">
+              {t("manage.verificationRejected", { reason: data.lastRequest.decision_note })}
+            </p>
+          ) : null}
           {canRequest ? (
             <VerificationForm artistId={artist.id} />
           ) : (

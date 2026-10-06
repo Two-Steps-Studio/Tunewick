@@ -57,7 +57,7 @@ export async function getArtistForManagement(slug: string, userId: string) {
       ),
     supabase
       .from("artist_verification_requests")
-      .select("status, created_at")
+      .select("status, created_at, decision_note")
       .eq("artist_id", artist.id)
       .order("created_at", { ascending: false })
       .limit(1),

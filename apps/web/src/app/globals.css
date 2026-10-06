@@ -1365,6 +1365,17 @@ body {
     font-family: var(--tk-font-mono);
     letter-spacing: 0.06em;
   }
+  .verification-evidence {
+    display: grid;
+    gap: var(--tk-space-1);
+    padding-left: var(--tk-space-4);
+    font-size: var(--tk-text-sm);
+    overflow-wrap: anywhere;
+  }
+  .verification-evidence a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
   .revoke-form {
     display: flex;
     flex-wrap: wrap;

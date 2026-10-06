@@ -347,7 +347,8 @@
       "viewPublic": "View public profile",
       "you": "You",
       "noName": "Account without a profile name",
-      "photo": "Artist photo"
+      "photo": "Artist photo",
+      "verificationRejected": "Verification request rejected: {reason} You can send a new one with other evidence."
     },
     "errors": {
       "nameRequired": "Enter the artist name.",
@@ -670,7 +671,22 @@
         "failed": "Something went wrong. Please try again."
       }
     },
-    "cover": "Cover"
+    "cover": "Cover",
+    "verification": {
+      "title": "Artist verification ({count})",
+      "empty": "No verification requests.",
+      "note": "Reason for the decision on: {artist}",
+      "noteHint": "Required when rejecting (at least 10 characters) — the artist sees it in their profile panel.",
+      "approve": "Verify: {artist}",
+      "reject": "Reject: {artist}",
+      "error": {
+        "note_required": "Tell the artist why the request is rejected (at least 10 characters).",
+        "mfa_required": "This decision needs two-factor sign-in in this session.",
+        "not_allowed": "You are not allowed to make this decision.",
+        "already_decided": "This request has already been decided.",
+        "failed": "Could not save the decision. Please try again."
+      }
+    }
   },
   "Images": {
     "uploading": "Uploading… {percent}%",

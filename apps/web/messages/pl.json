@@ -347,7 +347,8 @@
       "viewPublic": "Zobacz profil publiczny",
       "you": "Ty",
       "noName": "Konto bez nazwy profilu",
-      "photo": "Zdjęcie artysty"
+      "photo": "Zdjęcie artysty",
+      "verificationRejected": "Wniosek o weryfikację odrzucony: {reason} Możesz złożyć nowy z innymi dowodami."
     },
     "errors": {
       "nameRequired": "Podaj nazwę artysty.",
@@ -670,7 +671,22 @@
         "failed": "Coś poszło nie tak. Spróbuj ponownie."
       }
     },
-    "cover": "Okładka"
+    "cover": "Okładka",
+    "verification": {
+      "title": "Weryfikacja artystów ({count})",
+      "empty": "Nie ma wniosków o weryfikację.",
+      "note": "Uzasadnienie decyzji dla: {artist}",
+      "noteHint": "Przy odrzuceniu wymagane (co najmniej 10 znaków) — artysta zobaczy je w panelu profilu.",
+      "approve": "Zweryfikuj: {artist}",
+      "reject": "Odrzuć: {artist}",
+      "error": {
+        "note_required": "Napisz artyście, dlaczego wniosek jest odrzucony (co najmniej 10 znaków).",
+        "mfa_required": "Ta decyzja wymaga logowania dwuskładnikowego w tej sesji.",
+        "not_allowed": "Nie masz uprawnień do tej decyzji.",
+        "already_decided": "Ten wniosek został już rozpatrzony.",
+        "failed": "Nie udało się zapisać decyzji. Spróbuj ponownie."
+      }
+    }
   },
   "Images": {
     "uploading": "Przesyłanie… {percent}%",
