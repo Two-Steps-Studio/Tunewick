@@ -3,6 +3,30 @@ export type Json = string | number | boolean | null | { [key: string]: Json | un
 export type Database = {
   public: {
     Tables: {
+      feature_flags: {
+        Row: {
+          description: string | null;
+          enabled: boolean;
+          key: string;
+          updated_at: string;
+          updated_by: string | null;
+        };
+        Insert: {
+          description?: string | null;
+          enabled?: boolean;
+          key: string;
+          updated_at?: string;
+          updated_by?: string | null;
+        };
+        Update: {
+          description?: string | null;
+          enabled?: boolean;
+          key?: string;
+          updated_at?: string;
+          updated_by?: string | null;
+        };
+        Relationships: [];
+      };
       profile_settings: {
         Row: {
           activity_visibility: Database["public"]["Enums"]["visibility_level"];
@@ -91,10 +115,16 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
+      access_invite_is_valid: { Args: { code: string }; Returns: boolean };
+      create_access_invites: {
+        Args: { codes: string[]; expires_at?: string; label?: string; max_uses?: number };
+        Returns: number;
+      };
       has_app_role: {
         Args: { required: Database["public"]["Enums"]["app_role"] };
         Returns: boolean;
       };
+      is_feature_enabled: { Args: { flag: string }; Returns: boolean };
       is_reserved_handle: { Args: { candidate: string }; Returns: boolean };
     };
     Enums: {

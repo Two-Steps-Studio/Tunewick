@@ -15,15 +15,18 @@ export type AuthErrorCode =
   | "samePassword"
   | "rateLimited"
   | "linkInvalid"
+  | "inviteRequired"
+  | "inviteInvalid"
   | "unexpected";
 
-export type AuthField = "email" | "password" | "confirmPassword" | "displayName" | "ageConfirmed";
+export type AuthField =
+  "email" | "password" | "confirmPassword" | "displayName" | "ageConfirmed" | "inviteCode";
 
 export interface AuthFormState {
   error?: AuthErrorCode;
   fieldErrors?: Partial<Record<AuthField, AuthErrorCode>>;
   /** Values echoed back so the form keeps them after a failed submit (never passwords). */
-  values?: { email?: string; displayName?: string };
+  values?: { email?: string; displayName?: string; inviteCode?: string };
 }
 
 export const PASSWORD_MIN = 10;
@@ -51,6 +54,7 @@ export const signUpSchema = z.object({
     .transform((v) => (v === "" ? undefined : v))
     .optional(),
   ageConfirmed: z.literal("on", { error: "ageRequired" }),
+  inviteCode: z.string().trim().max(64, { error: "inviteInvalid" }).optional(),
 });
 
 export const signInSchema = z.object({

@@ -5,10 +5,10 @@ set search_path = public, extensions;
 
 select plan(7);
 
-insert into auth.users (id, email, aud, role)
+insert into auth.users (id, email, raw_app_meta_data, aud, role)
 values
-  ('00000000-0000-0000-0000-0000000000c1', 'c1@test.local', 'authenticated', 'authenticated'),
-  ('00000000-0000-0000-0000-0000000000c2', 'c2@test.local', 'authenticated', 'authenticated');
+  ('00000000-0000-0000-0000-0000000000c1', 'c1@test.local', '{"beta_bypass": "true"}', 'authenticated', 'authenticated'),
+  ('00000000-0000-0000-0000-0000000000c2', 'c2@test.local', '{"beta_bypass": "true"}', 'authenticated', 'authenticated');
 
 set local role authenticated;
 set local request.jwt.claims = '{"sub": "00000000-0000-0000-0000-0000000000c1", "role": "authenticated"}';

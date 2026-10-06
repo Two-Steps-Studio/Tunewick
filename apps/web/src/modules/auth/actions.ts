@@ -5,6 +5,7 @@ import { getLocale } from "next-intl/server";
 import { redirect } from "@/i18n/navigation";
 import type { StaticPathname } from "@/i18n/routing";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { isFeatureEnabled } from "@/modules/flags";
 import {
   type AuthFormState,
   authErrorCode,
@@ -33,21 +34,39 @@ async function go(
 }
 
 export async function signUp(_prev: AuthFormState, formData: FormData): Promise<AuthFormState> {
-  const raw = formFields(formData, ["email", "password", "displayName", "ageConfirmed"]);
+  const raw = formFields(formData, [
+    "email",
+    "password",
+    "displayName",
+    "ageConfirmed",
+    "inviteCode",
+  ]);
   const parsed = signUpSchema.safeParse(raw);
-  const values = { email: raw.email, displayName: raw.displayName };
+  const values = { email: raw.email, displayName: raw.displayName, inviteCode: raw.inviteCode };
   if (!parsed.success) return { fieldErrors: fieldErrorsFrom(parsed.error), values };
 
   const supabase = await createSupabaseServerClient();
+
+  // Closed beta: friendly check first. The real gate is the database trigger on auth.users
+  // (private.enforce_access_invite), which also covers direct calls to the Auth API.
+  const closedBeta = await isFeatureEnabled("closed_beta");
+  const inviteCode = parsed.data.inviteCode;
+  if (closedBeta) {
+    if (!inviteCode) return { fieldErrors: { inviteCode: "inviteRequired" }, values };
+    const { data: valid } = await supabase.rpc("access_invite_is_valid", { code: inviteCode });
+    if (!valid) return { fieldErrors: { inviteCode: "inviteInvalid" }, values };
+  }
+
   const { error } = await supabase.auth.signUp({
     email: parsed.data.email,
     password: parsed.data.password,
     options: {
-      // Only whitelisted keys are read by the signup trigger (private.handle_new_user).
+      // Only whitelisted keys are read by the signup triggers; invite_code is removed there.
       data: {
         display_name: parsed.data.displayName ?? null,
         locale: await getLocale(),
         age_confirmed: "true",
+        ...(closedBeta ? { invite_code: inviteCode } : {}),
       },
     },
   });
@@ -58,7 +77,10 @@ export async function signUp(_prev: AuthFormState, formData: FormData): Promise<
   if (error && !revealsAccountExistence(error)) {
     const code = authErrorCode(error);
     if (code === "weakPassword") return { fieldErrors: { password: code }, values };
-    return { error: code === "rateLimited" ? code : "unexpected", values };
+    if (code === "rateLimited") return { error: code, values };
+    // The invite can be used up between the check and the insert (trigger rejects it).
+    if (closedBeta) return { fieldErrors: { inviteCode: "inviteInvalid" }, values };
+    return { error: "unexpected", values };
   }
 
   return go({ pathname: "/check-email", query: { reason: "signup" } });

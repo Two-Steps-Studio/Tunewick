@@ -61,6 +61,7 @@ pnpm db:start       # local Supabase (Docker): Postgres + Auth
 pnpm db:reset       # apply all migrations from zero
 pnpm db:test        # pgTAP tests (RLS, functions)
 pnpm db:types       # regenerate packages/shared/src/database.types.ts (commit it)
+pnpm invites:create --local --count 5   # closed-beta invite codes (shown once)
 ```
 
 Repository layout: `apps/web` (Next.js app), `packages/shared` (shared types and domain logic),

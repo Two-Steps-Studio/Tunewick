@@ -8,7 +8,7 @@ import { CheckboxField, FormError, SubmitButton, TextField } from "./fields";
 
 const initial: AuthFormState = {};
 
-export function SignUpForm() {
+export function SignUpForm({ inviteRequired }: { inviteRequired: boolean }) {
   const t = useTranslations("Auth");
   const [state, action] = useActionState(signUp, initial);
   return (
@@ -39,6 +39,17 @@ export function SignUpForm() {
         defaultValue={state.values?.displayName}
         error={state.fieldErrors?.displayName}
       />
+      {inviteRequired ? (
+        <TextField
+          name="inviteCode"
+          label={t("fields.inviteCode")}
+          hint={t("hints.inviteCode")}
+          autoComplete="off"
+          defaultValue={state.values?.inviteCode}
+          error={state.fieldErrors?.inviteCode}
+          required
+        />
+      ) : null}
       <CheckboxField
         name="ageConfirmed"
         label={t("fields.ageConfirmed")}

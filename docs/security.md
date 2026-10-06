@@ -25,6 +25,8 @@
 - **No account enumeration (implemented in M1.2):** sign-up and password-reset requests return the same page for new, existing and unknown addresses. Errors only an existing address can trigger ("already exists", the per-address email resend limit) are treated like success; only IP-wide rate limits are shown. Covered by E2E tests.
 - **Email links** (confirmation, recovery) use `token_hash` links to `/api/auth/confirm` (`verifyOtp`), so they work when opened in another browser. Templates: `supabase/templates/*.html` — the same templates and `secure_password_change` must be configured in the production Supabase project (M0.5). Redirect targets after a link are whitelisted.
 - After a password change all other sessions are signed out.
+- **Closed beta gate (M1.4):** sign-up requires a valid access invite while `closed_beta` is on. Enforced in the database (trigger on `auth.users`), verified by an E2E test that calls the public Auth API directly without a code. Codes are stored hashed, printed once by `pnpm invites:create`; the plaintext never stays in user metadata.
+- **Consent banner:** not shown because Tunewick sets only strictly necessary cookies (session, language) and has no analytics. Consents arrive together with the first non-essential cookie (separate Guidon task).
 
 ## 3. Authorization
 

@@ -3,6 +3,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link, redirect } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { AuthPage, getOptionalUser, SignUpForm } from "@/modules/auth";
+import { isFeatureEnabled } from "@/modules/flags";
 
 export async function generateMetadata({
   params,
@@ -28,7 +29,7 @@ export default async function SignUpPage({ params }: PageProps<"/[locale]/signup
         </p>
       }
     >
-      <SignUpForm />
+      <SignUpForm inviteRequired={await isFeatureEnabled("closed_beta")} />
     </AuthPage>
   );
 }

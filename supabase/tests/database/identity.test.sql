@@ -7,12 +7,12 @@ set search_path = public, extensions;
 select plan(17);
 
 -- Fixtures (run as postgres): two users via auth.users so the signup trigger runs.
-insert into auth.users (id, email, raw_user_meta_data, aud, role)
+insert into auth.users (id, email, raw_user_meta_data, raw_app_meta_data, aud, role)
 values
   ('00000000-0000-0000-0000-00000000000a', 'a@test.local',
-   '{"display_name": "Ala", "locale": "en", "age_confirmed": "true", "is_admin": true}', 'authenticated', 'authenticated'),
+   '{"display_name": "Ala", "locale": "en", "age_confirmed": "true", "is_admin": true}', '{"beta_bypass": "true"}', 'authenticated', 'authenticated'),
   ('00000000-0000-0000-0000-00000000000b', 'b@test.local',
-   '{"locale": "xx"}', 'authenticated', 'authenticated');
+   '{"locale": "xx"}', '{"beta_bypass": "true"}', 'authenticated', 'authenticated');
 
 -- 1–4: signup trigger
 select is(

@@ -19,9 +19,11 @@
     "db:test": "supabase test db",
     "db:types": "supabase gen types typescript --local --schema public > packages/shared/src/database.types.ts && prettier --write packages/shared/src/database.types.ts",
     "db:env": "node scripts/write-local-env.mjs",
-    "check:client-bundle": "node scripts/check-client-bundle.mjs"
+    "check:client-bundle": "node scripts/check-client-bundle.mjs",
+    "invites:create": "node scripts/create-invites.mjs"
   },
   "devDependencies": {
+    "@supabase/supabase-js": "^2.117.2",
     "fontkit": "^2.0.4",
     "prettier": "^3.9.9",
     "sharp": "^0.35.5",

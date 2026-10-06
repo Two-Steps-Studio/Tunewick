@@ -144,8 +144,8 @@ graph_edges (derived)      feature_flags, access_invites, waitlist      private.
 
 | Table | Key columns | Notes |
 | --- | --- | --- |
-| `feature_flags` | `key`, `description`, `enabled`, `rollout_percent`, `rules jsonb`, `updated_by` | Evaluated server-side. |
-| `access_invites` | `code_hash`, `created_by`, `max_uses`, `uses_count`, `expires_at`, `grants (beta_access, artist_onboarding)` | Closed beta gate (D5). Separate from promo codes: access ≠ entitlement. |
+| `feature_flags` | `key`, `description`, `enabled`, `updated_by` | Evaluated server-side via `is_feature_enabled()`; no direct client access. `closed_beta` = on. ✅ implemented (M1.4; rollout/rules columns when needed). |
+| `private.access_invites` | `code_hash` (SHA-256 of normalized code), `label`, `max_uses`, `uses_count`, `expires_at`, `revoked_at` | Closed beta gate (D5), enforced by a BEFORE INSERT trigger on `auth.users` (also covers direct Auth API calls); invite id recorded in `app_metadata`; staff bypass only via server-set `app_metadata.beta_bypass`. Codes created with `pnpm invites:create`. Separate from promo codes: access ≠ entitlement. ✅ implemented (M1.4). |
 | `waitlist` | `email`, `locale`, `city_id`, `consented_at`, `invited_at` | Email only with consent; deletable. |
 | `private.audit_log` | `id bigint`, `actor_id`, `actor_role`, `action`, `subject_type`, `subject_id`, `before jsonb`, `after jsonb`, `ip_hash`, `created_at` | Append-only (UPDATE/DELETE revoked from all roles). |
 | `analytics_events` | `id bigint`, `user_id null`, `anon_id`, `name`, `props jsonb`, `occurred_at` | Only with analytics consent. Partitioned monthly, retention limited. |

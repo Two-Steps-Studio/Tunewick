@@ -4,6 +4,8 @@ const port = 3100;
 
 export default defineConfig({
   testDir: "./e2e",
+  // Creates closed-beta invite codes in the local Supabase (requires pnpm db:start).
+  globalSetup: "./e2e/global-setup.ts",
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,

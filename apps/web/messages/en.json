@@ -61,10 +61,12 @@
       "newPassword": "New password",
       "confirmPassword": "Repeat password",
       "displayName": "Display name (optional)",
-      "ageConfirmed": "I am at least 16 years old"
+      "ageConfirmed": "I am at least 16 years old",
+      "inviteCode": "Invite code"
     },
     "hints": {
-      "password": "At least 10 characters."
+      "password": "At least 10 characters.",
+      "inviteCode": "Tunewick is in a closed beta — you need a code from us or from an artist."
     },
     "login": {
       "title": "Sign in",
@@ -114,7 +116,9 @@
       "samePassword": "The new password must differ from the current one.",
       "rateLimited": "Too many attempts. Try again in a few minutes.",
       "linkInvalid": "The link is invalid or has expired.",
-      "unexpected": "Something went wrong. Please try again."
+      "unexpected": "Something went wrong. Please try again.",
+      "inviteRequired": "Enter your invite code.",
+      "inviteInvalid": "This code is invalid, expired or already used."
     }
   },
   "Settings": {

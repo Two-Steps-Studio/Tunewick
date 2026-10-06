@@ -61,10 +61,12 @@
       "newPassword": "Nowe hasło",
       "confirmPassword": "Powtórz hasło",
       "displayName": "Nazwa wyświetlana (opcjonalnie)",
-      "ageConfirmed": "Mam co najmniej 16 lat"
+      "ageConfirmed": "Mam co najmniej 16 lat",
+      "inviteCode": "Kod zaproszenia"
     },
     "hints": {
-      "password": "Co najmniej 10 znaków."
+      "password": "Co najmniej 10 znaków.",
+      "inviteCode": "Tunewick jest w zamkniętej becie — konto założysz z kodem od nas lub od artysty."
     },
     "login": {
       "title": "Zaloguj się",
@@ -114,7 +116,9 @@
       "samePassword": "Nowe hasło musi być inne niż obecne.",
       "rateLimited": "Zbyt wiele prób. Spróbuj ponownie za kilka minut.",
       "linkInvalid": "Link jest nieprawidłowy lub wygasł.",
-      "unexpected": "Coś poszło nie tak. Spróbuj ponownie."
+      "unexpected": "Coś poszło nie tak. Spróbuj ponownie.",
+      "inviteRequired": "Wpisz kod zaproszenia.",
+      "inviteInvalid": "Ten kod jest nieprawidłowy, wygasł albo został już wykorzystany."
     }
   },
   "Settings": {

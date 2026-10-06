@@ -30,9 +30,14 @@ export async function emailLinkPath(to: string, subjectIncludes: string): Promis
   throw new Error(`No email "${subjectIncludes}" for ${to}`);
 }
 
-export async function signUp(page: Page, email: string) {
+export async function signUp(
+  page: Page,
+  email: string,
+  inviteCode = process.env.E2E_INVITE_CODE ?? "",
+) {
   await page.goto("/rejestracja");
   await page.getByLabel("E-mail").fill(email);
+  await page.getByLabel("Kod zaproszenia").fill(inviteCode);
   await page.getByLabel("Hasło", { exact: true }).fill(PASSWORD);
   await page.getByLabel("Mam co najmniej 16 lat").check();
   await page.getByRole("button", { name: "Załóż konto" }).click();
