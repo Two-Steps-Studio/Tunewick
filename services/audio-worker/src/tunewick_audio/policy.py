@@ -23,10 +23,11 @@ class Authenticity:
     effective_sample_rate: int
 
 
-def classify(sample_rate: int, cliff_hz: float | None) -> Authenticity:
-    if cliff_hz is not None and LOSSY_CLIFF_HZ[0] <= cliff_hz < LOSSY_CLIFF_HZ[1]:
+def classify(sample_rate: int, cliff_hz: float | None, *, empty_above: bool = True) -> Authenticity:
+    """`empty_above`: nothing but quantization noise above the cliff (see spectrum.Cliff)."""
+    if cliff_hz is not None and empty_above and LOSSY_CLIFF_HZ[0] <= cliff_hz < LOSSY_CLIFF_HZ[1]:
         return Authenticity(True, None, sample_rate)
-    if cliff_hz is not None and sample_rate > 48000:
+    if cliff_hz is not None and empty_above and sample_rate > 48000:
         # Any lower standard rate, either family (44.1 → 96 kHz upsampling is common).
         originals = [rate for rate in STANDARD_RATES if rate < sample_rate]
         matches = [

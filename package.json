@@ -23,7 +23,8 @@
     "invites:create": "node scripts/create-invites.mjs",
     "staff:grant": "node scripts/grant-role.mjs",
     "spike:generate": "node tools/playback-spike/generate.mjs",
-    "worker:test": "docker build -t tunewick-audio-worker:test --target test services/audio-worker && docker run --rm tunewick-audio-worker:test"
+    "worker:test": "docker build -t tunewick-audio-worker:test --target test services/audio-worker && docker run --rm tunewick-audio-worker:test",
+    "dev:media": "node scripts/generate-dev-media.mjs"
   },
   "devDependencies": {
     "@playwright/test": "1.63.0",

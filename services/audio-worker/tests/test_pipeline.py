@@ -104,6 +104,35 @@ def test_lossy_origin_gets_only_lossy_tiers(media, processed):
     assert set(variants(report)) == {"data_saver", "high"}
 
 
+def test_quiet_lossy_origin_is_still_caught(media, processed):
+    # At −40 dBFS the cliff is shallow (≈ 35 dB) but above it there is only 16-bit rounding noise.
+    quiet = [
+        "-f",
+        "lavfi",
+        "-i",
+        "anoisesrc=color=pink:amplitude=0.01:sample_rate=44100:duration=11",
+    ]
+    mp3 = media("quiet.mp3", *quiet, "-ac", "2", "-c:a", "libmp3lame", "-b:a", "192k")
+    report = processed(media("quiet-from-mp3.wav", "-i", mp3, "-c:a", "pcm_s16le"))
+    assert report["analysis"]["authenticity"] == "suspected_lossy_origin"
+    assert report["analysis"]["spectral_cliff_drop_db"] < 60
+
+
+def test_band_limited_music_over_real_noise_is_not_lossy(media, processed):
+    # Content only up to ~8 kHz, but real (pink) noise continues to Nyquist: a genuine master.
+    tone = "0.25*sin(2*PI*(100*t+300*t*t))"
+    path = media(
+        "band-limited.flac",
+        "-f", "lavfi", "-i", f"aevalsrc={tone}|{tone}:s=48000:d=11",
+        "-f", "lavfi", "-i", "anoisesrc=color=pink:amplitude=0.02:sample_rate=48000:duration=11",
+        "-filter_complex", "[1]pan=stereo|c0=c0|c1=c0[n];[0][n]amix=inputs=2:normalize=0",
+        *S24, "-c:a", "flac",
+    )  # fmt: skip
+    analysis = processed(path)["analysis"]
+    assert analysis["authenticity"] == "verified_lossless"
+    assert analysis["tiers"]["hires"] is True
+
+
 def test_float_master_holding_24_bit_audio(media, processed):
     flac = media("float-src.flac", *noise(44100), "-ac", "2", *S24, "-c:a", "flac")
     report = processed(media("float.wav", "-i", flac, "-c:a", "pcm_f32le"))
