@@ -55,15 +55,15 @@ export const updateArtistSchema = z.object({
     .transform((v) => (v === "" ? null : Number(v))),
   voivodeship: z
     .string()
-    .default("")
-    .refine((v) => v === "" || isVoivodeship(v), { error: "voivodeshipInvalid" })
-    .transform((v) => (v === "" ? null : (v as Voivodeship))),
+    .optional()
+    .refine((v) => !v || isVoivodeship(v), { error: "voivodeshipInvalid" })
+    .transform((v) => (v ? (v as Voivodeship) : null)),
   city: z
     .string()
-    .default("")
     .trim()
     .max(80, { error: "cityTooLong" })
-    .transform((v) => (v === "" ? null : v)),
+    .optional()
+    .transform((v) => (v ? v : null)),
 });
 
 export const inviteSchema = z.object({
