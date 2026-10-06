@@ -541,6 +541,65 @@ export type Database = {
           },
         ];
       };
+      track_audio_uploads: {
+        Row: {
+          created_at: string;
+          file_name: string;
+          id: string;
+          object_key: string;
+          processed_at: string | null;
+          rejection_code: string | null;
+          rejection_message: string | null;
+          report: Json | null;
+          size_bytes: number;
+          status: Database["public"]["Enums"]["audio_upload_status"];
+          track_id: string;
+          updated_at: string;
+          uploaded_at: string | null;
+          uploaded_by: string | null;
+        };
+        Insert: {
+          created_at?: string;
+          file_name: string;
+          id?: string;
+          object_key: string;
+          processed_at?: string | null;
+          rejection_code?: string | null;
+          rejection_message?: string | null;
+          report?: Json | null;
+          size_bytes: number;
+          status?: Database["public"]["Enums"]["audio_upload_status"];
+          track_id: string;
+          updated_at?: string;
+          uploaded_at?: string | null;
+          uploaded_by?: string | null;
+        };
+        Update: {
+          created_at?: string;
+          file_name?: string;
+          id?: string;
+          object_key?: string;
+          processed_at?: string | null;
+          rejection_code?: string | null;
+          rejection_message?: string | null;
+          report?: Json | null;
+          size_bytes?: number;
+          status?: Database["public"]["Enums"]["audio_upload_status"];
+          track_id?: string;
+          updated_at?: string;
+          uploaded_at?: string | null;
+          uploaded_by?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "track_audio_uploads_track_id_fkey";
+            columns: ["track_id"];
+            isOneToOne: false;
+            referencedRelation: "tracks";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       tracks: {
         Row: {
           ai_content: Database["public"]["Enums"]["ai_content"];
@@ -626,6 +685,7 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
+      abandon_audio_upload: { Args: { reason?: string; upload: string }; Returns: undefined };
       accept_artist_membership: { Args: { artist: string }; Returns: undefined };
       access_invite_is_valid: { Args: { code: string }; Returns: boolean };
       add_track: { Args: { release: string; title: string }; Returns: string };
@@ -638,8 +698,58 @@ export type Database = {
         Returns: undefined;
       };
       admin_set_feature_flag: { Args: { enabled: boolean; flag: string }; Returns: undefined };
+      begin_audio_upload: {
+        Args: { file_name: string; size_bytes: number; track: string };
+        Returns: {
+          created_at: string;
+          file_name: string;
+          id: string;
+          object_key: string;
+          processed_at: string | null;
+          rejection_code: string | null;
+          rejection_message: string | null;
+          report: Json | null;
+          size_bytes: number;
+          status: Database["public"]["Enums"]["audio_upload_status"];
+          track_id: string;
+          updated_at: string;
+          uploaded_at: string | null;
+          uploaded_by: string | null;
+        };
+        SetofOptions: {
+          from: "*";
+          to: "track_audio_uploads";
+          isOneToOne: true;
+          isSetofReturn: false;
+        };
+      };
       can_edit_release: { Args: { release: string }; Returns: boolean };
       can_view_release: { Args: { release: string }; Returns: boolean };
+      complete_audio_upload: {
+        Args: { upload: string };
+        Returns: {
+          created_at: string;
+          file_name: string;
+          id: string;
+          object_key: string;
+          processed_at: string | null;
+          rejection_code: string | null;
+          rejection_message: string | null;
+          report: Json | null;
+          size_bytes: number;
+          status: Database["public"]["Enums"]["audio_upload_status"];
+          track_id: string;
+          updated_at: string;
+          uploaded_at: string | null;
+          uploaded_by: string | null;
+        };
+        SetofOptions: {
+          from: "*";
+          to: "track_audio_uploads";
+          isOneToOne: true;
+          isSetofReturn: false;
+        };
+      };
       create_access_invites: {
         Args: { codes: string[]; expires_at?: string; label?: string; max_uses?: number };
         Returns: number;
@@ -688,6 +798,8 @@ export type Database = {
       artist_member_role: "owner" | "manager" | "member";
       artist_status: "active" | "suspended";
       artist_verification: "unverified" | "pending" | "verified" | "rejected";
+      audio_upload_status:
+        "pending" | "uploaded" | "processing" | "accepted" | "rejected" | "failed";
       credit_role:
         | "producer"
         | "songwriter"
@@ -819,6 +931,7 @@ export const Constants = {
       artist_member_role: ["owner", "manager", "member"],
       artist_status: ["active", "suspended"],
       artist_verification: ["unverified", "pending", "verified", "rejected"],
+      audio_upload_status: ["pending", "uploaded", "processing", "accepted", "rejected", "failed"],
       credit_role: [
         "producer",
         "songwriter",

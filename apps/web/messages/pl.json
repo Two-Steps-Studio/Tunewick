@@ -456,8 +456,39 @@
       "tracks": "Co najmniej jeden utwór",
       "ai": "Określony udział AI",
       "rights": "Złożone oświadczenie o prawach",
-      "audio": "Nagrania — przesyłanie plików pojawi się w kolejnym etapie",
-      "note": "Wysyłka do weryfikacji będzie możliwa, gdy uruchomimy przesyłanie nagrań."
+      "audio": "Pliki master wszystkich utworów — sprawdzone",
+      "note": "Wysyłka do weryfikacji będzie możliwa, gdy uruchomimy automatyczne sprawdzanie nagrań.",
+      "audioMissing": "Pliki master wszystkich utworów",
+      "audioProcessing": "Pliki master przesłane — czekają na sprawdzenie i przetworzenie"
+    }
+  },
+  "Audio": {
+    "none": "Brak pliku master.",
+    "choose": "Wybierz plik master",
+    "replace": "Prześlij nowy plik",
+    "hint": "Tylko pliki bezstratne: WAV, AIFF, FLAC lub ALAC, do 4 GB. Sprawdzimy jakość pliku i przygotujemy wersje do odtwarzania.",
+    "unavailable": "Przesyłanie audio będzie dostępne wkrótce — magazyn plików nie jest jeszcze podłączony.",
+    "uploading": "Przesyłanie… {percent}%",
+    "progressLabel": "Postęp przesyłania",
+    "finishing": "Sprawdzanie przesłanego pliku…",
+    "status": {
+      "pending": "Przesyłanie pliku {file} nie zostało dokończone.",
+      "uploaded": "Przesłano {file} ({size} MB) — czeka na sprawdzenie i przetworzenie.",
+      "processing": "Sprawdzamy i przetwarzamy {file}…",
+      "accepted": "Gotowe: {file} ({size} MB).",
+      "rejected": "Plik {file} został odrzucony.",
+      "failed": "Przesyłanie pliku {file} nie powiodło się — spróbuj ponownie."
+    },
+    "error": {
+      "unsupported_type": "Ten typ pliku nie jest obsługiwany. Prześlij bezstratny master: WAV, AIFF, FLAC lub ALAC.",
+      "too_large": "Plik jest większy niż 4 GB.",
+      "too_small": "Plik jest pusty lub uszkodzony.",
+      "too_many": "Zbyt wiele prób w ciągu godziny. Spróbuj później.",
+      "not_allowed": "Nie możesz przesyłać plików do tego wydawnictwa.",
+      "unavailable": "Magazyn plików jest chwilowo niedostępny. Spróbuj ponownie za chwilę.",
+      "incomplete": "Plik nie dotarł w całości. Spróbuj ponownie.",
+      "transfer": "Przesyłanie zostało przerwane. Sprawdź połączenie i spróbuj ponownie.",
+      "failed": "Coś poszło nie tak. Spróbuj ponownie."
     }
   }
 }

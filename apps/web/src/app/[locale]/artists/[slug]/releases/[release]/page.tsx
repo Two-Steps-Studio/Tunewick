@@ -3,6 +3,12 @@ import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getPathname, Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
+import {
+  audioReadiness,
+  getLatestTrackAudio,
+  isAudioUploadAvailable,
+  TrackAudioUpload,
+} from "@/modules/audio";
 import { requireUser } from "@/modules/auth";
 import {
   AddTrackForm,
@@ -42,7 +48,12 @@ export default async function ReleaseEditorPage({
 
   const t = await getTranslations("Releases");
   const { artist, release, editable, tracks, genreIds, allGenres } = data;
-  const declaration = await getLatestDeclaration(release.id);
+  const trackIds = tracks.map((track) => track.id);
+  const [declaration, audio] = await Promise.all([
+    getLatestDeclaration(release.id),
+    getLatestTrackAudio(trackIds),
+  ]);
+  const uploadAvailable = isAudioUploadAvailable();
   const territory = (["WORLD", "EU", "PL"] as const).find((v) => release.territories.includes(v));
   const territoryLabel = territory ? t(`territories.${territory}`) : release.territories.join(", ");
 
@@ -88,7 +99,16 @@ export default async function ReleaseEditorPage({
                 editable={editable}
                 isFirst={i === 0}
                 isLast={i === tracks.length - 1}
-              />
+              >
+                {editable ? (
+                  <TrackAudioUpload
+                    trackId={track.id}
+                    trackTitle={track.title}
+                    audio={audio.get(track.id) ?? null}
+                    available={uploadAvailable}
+                  />
+                ) : null}
+              </TrackItem>
             ))}
           </ol>
           {editable ? <AddTrackForm releaseId={release.id} /> : null}
@@ -132,6 +152,7 @@ export default async function ReleaseEditorPage({
             hasTracks={tracks.length > 0}
             aiDeclared={release.ai_content !== "unknown"}
             rightsDeclared={Boolean(declaration)}
+            audio={audioReadiness(trackIds, audio)}
           />
         ) : null}
 

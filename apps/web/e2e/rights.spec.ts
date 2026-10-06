@@ -74,6 +74,6 @@ test.describe("rights declaration", () => {
       /Określony udział AI/,
       /Złożone oświadczenie o prawach/,
     ]);
-    await expect(readiness).toContainText("przesyłanie plików pojawi się w kolejnym etapie");
+    await expect(readiness).toContainText("✗ Pliki master wszystkich utworów");
   });
 });

@@ -456,8 +456,39 @@
       "tracks": "At least one track",
       "ai": "AI involvement declared",
       "rights": "Rights declaration submitted",
-      "audio": "Recordings — file upload arrives in the next stage",
-      "note": "Submitting for review becomes possible once recording upload launches."
+      "audio": "Master files for every track — checked",
+      "note": "Submitting for review becomes possible once automatic checking of recordings is switched on.",
+      "audioMissing": "Master files for every track",
+      "audioProcessing": "Master files uploaded — waiting to be checked and processed"
+    }
+  },
+  "Audio": {
+    "none": "No master file yet.",
+    "choose": "Choose master file",
+    "replace": "Upload a new file",
+    "hint": "Lossless files only: WAV, AIFF, FLAC or ALAC, up to 4 GB. We check the file's quality and prepare the playback versions.",
+    "unavailable": "Audio upload is coming soon — file storage is not connected yet.",
+    "uploading": "Uploading… {percent}%",
+    "progressLabel": "Upload progress",
+    "finishing": "Checking the uploaded file…",
+    "status": {
+      "pending": "The upload of {file} was not finished.",
+      "uploaded": "Uploaded {file} ({size} MB) — waiting to be checked and processed.",
+      "processing": "Checking and processing {file}…",
+      "accepted": "Ready: {file} ({size} MB).",
+      "rejected": "{file} was rejected.",
+      "failed": "Uploading {file} failed — please try again."
+    },
+    "error": {
+      "unsupported_type": "This file type isn't supported. Upload a lossless master: WAV, AIFF, FLAC or ALAC.",
+      "too_large": "The file is larger than 4 GB.",
+      "too_small": "The file is empty or damaged.",
+      "too_many": "Too many attempts within an hour. Please try later.",
+      "not_allowed": "You can't upload files to this release.",
+      "unavailable": "File storage is temporarily unavailable. Please try again shortly.",
+      "incomplete": "The file didn't arrive completely. Please try again.",
+      "transfer": "The upload was interrupted. Check your connection and try again.",
+      "failed": "Something went wrong. Please try again."
     }
   }
 }

@@ -9,11 +9,17 @@ const patterns = [
   /sb_secret_[A-Za-z0-9_-]{8,}/, // Supabase secret API keys
   /SUPABASE_SERVICE_ROLE_KEY/,
   /SUPABASE_SECRET_KEY/,
+  /MEDIA_S3_SECRET_ACCESS_KEY/,
+  /tunewick-local-secret/, // local S3 secret (docker/media) must stay server-side too
   /-----BEGIN [A-Z ]*PRIVATE KEY-----/,
 ];
 
 // Exact secret values, when provided to the check (e.g. in CI from the local Supabase).
-for (const name of ["SUPABASE_SECRET_KEY", "SUPABASE_SERVICE_ROLE_KEY"]) {
+for (const name of [
+  "SUPABASE_SECRET_KEY",
+  "SUPABASE_SERVICE_ROLE_KEY",
+  "MEDIA_S3_SECRET_ACCESS_KEY",
+]) {
   const value = process.env[name];
   if (value && value.length > 16)
     patterns.push(new RegExp(value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));

@@ -416,6 +416,55 @@ body {
     color: var(--signal);
   }
 
+  /* Master upload (release editor) ---------------------------------------- */
+  .track-audio {
+    display: grid;
+    gap: var(--tk-space-2);
+    padding-block: var(--tk-space-2);
+  }
+  .track-audio__status {
+    font-size: var(--tk-text-sm);
+  }
+  .track-audio__status--accepted {
+    color: var(--text);
+  }
+  .track-audio__status--rejected,
+  .track-audio__status--failed,
+  .track-audio__status--pending {
+    color: var(--signal);
+  }
+  .track-audio__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--tk-space-3);
+    font-size: var(--tk-text-sm);
+  }
+  .track-audio__row .button {
+    box-shadow: inset 0 0 0 1px var(--line);
+  }
+  .track-audio__row .button.is-disabled {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+  .track-audio__row input:focus-visible + .track-audio__progress,
+  .track-audio__row label:has(+ input:focus-visible) {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+  .track-audio__progress {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--tk-space-2);
+    font-family: var(--tk-font-mono);
+    font-size: var(--tk-text-xs);
+    font-variant-numeric: tabular-nums;
+  }
+  .track-audio__progress progress {
+    width: 10rem;
+    accent-color: var(--accent);
+  }
+
   /* Developer pages ------------------------------------------------------ */
   .dev-player {
     display: grid;

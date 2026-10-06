@@ -63,6 +63,38 @@ Settings → Environment Variables (Production **and** Preview):
 (Deployments → latest → Redeploy). No secret key is needed by the web app today; if one is added
 later it must not use the `NEXT_PUBLIC_` prefix (`pnpm check:client-bundle` guards this).
 
+## 3a. Cloudflare R2 (audio masters)
+
+Until these variables exist the editor says "audio upload is coming soon" — nothing breaks.
+
+1. Cloudflare → R2 → create bucket **`tunewick-ingest`** (location hint: Eastern Europe / EU
+   jurisdiction). It holds the masters artists upload; never public.
+2. Bucket → Settings → **CORS policy** (the browser uploads straight to R2 with a presigned URL):
+
+   ```json
+   [
+     {
+       "AllowedOrigins": ["https://<production-domain>", "https://*-<vercel-team-slug>.vercel.app"],
+       "AllowedMethods": ["PUT"],
+       "AllowedHeaders": ["content-type"],
+       "MaxAgeSeconds": 3600
+     }
+   ]
+   ```
+3. R2 → Manage API tokens → **Create API token**: permission *Object Read & Write*, scoped to the
+   `tunewick-ingest` bucket only. Store the access key and secret in the password manager.
+4. Vercel → Environment Variables (Production and Preview), **server-only, never `NEXT_PUBLIC_`**:
+
+   | Name | Value |
+   | --- | --- |
+   | `MEDIA_S3_ENDPOINT` | `https://<account-id>.r2.cloudflarestorage.com` (EU jurisdiction: `https://<account-id>.eu.r2.cloudflarestorage.com`) |
+   | `MEDIA_S3_REGION` | `auto` |
+   | `MEDIA_S3_ACCESS_KEY_ID` | token access key |
+   | `MEDIA_S3_SECRET_ACCESS_KEY` | token secret (mark *Sensitive*) |
+   | `MEDIA_INGEST_BUCKET` | `tunewick-ingest` |
+
+   Redeploy. Locally the same variables point at `pnpm media:start` (SeaweedFS).
+
 ## 4. Bootstrap (once)
 
 Run locally with the secret key in the shell environment only (Settings → API → secret key):

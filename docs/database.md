@@ -229,3 +229,16 @@ Every policy is covered by pgTAP tests in `supabase/tests/` (a policy without a 
 | Admin, audit | `user_roles`, `private.audit_log`, `feature_flags` |
 | Beta | `access_invites`, `waitlist` |
 | GDPR | `consents`, `data_requests` |
+
+## Master audio uploads (implemented, M3.2a)
+
+`public.track_audio_uploads` — one row per upload attempt of a track's master; the newest row is
+the track's current audio. Status `pending → uploaded → processing → accepted | rejected | failed`.
+Members of the release's artist (and staff) can read rows; clients have **no** write grants:
+`begin_audio_upload(track, file_name, size_bytes)` (editable release, lossless extensions,
+1 KiB–4 GiB, ≤ 10 attempts per track per hour) returns the object key
+`masters/<artist>/<track>/<upload>.<ext>` that the server presigns; `complete_audio_upload(upload)`
+after the server has checked the object's size in storage; `abandon_audio_upload(upload, reason)`.
+`processing`/`accepted`/`rejected` and the worker `report` are written only by the audio worker
+(service role, M3.2b). Objects of deleted tracks stay in the ingest bucket until the cleanup job
+(backlog).
