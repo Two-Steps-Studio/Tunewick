@@ -4,6 +4,7 @@ import { expect, test, type Page } from "@playwright/test";
 // (pnpm dev:media, Docker). The web server runs with TUNEWICK_DEV_PAGES=1.
 
 interface Debug {
+  error: string | null;
   capabilities: { mse: boolean; decodes: Record<string, boolean> } | null;
   status: string;
   index: number;
@@ -27,7 +28,16 @@ async function playAlbum(page: Page, setting: string, entitlement = "hires") {
   await page.getByTestId("setting").selectOption(setting);
   await page.getByTestId("entitlement").selectOption(entitlement);
   await page.getByRole("button", { name: "Play album" }).click();
-  await expect.poll(async () => (await debug(page)).status, { timeout: 15_000 }).toBe("playing");
+  // Status with the engine's error code, so a CI failure says why (e.g. "error:media_error").
+  await expect
+    .poll(
+      async () => {
+        const d = await debug(page);
+        return d.error ? `${d.status}:${d.error}` : d.status;
+      },
+      { timeout: 15_000 },
+    )
+    .toBe("playing");
 }
 
 test("this browser decodes every delivery format", async ({ page }) => {
