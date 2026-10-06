@@ -83,7 +83,12 @@ export async function isArtistMember(artistId: string) {
 }
 
 export type RelatedRelation =
-  "collaborated" | "shared_credit" | "same_label" | "shared_audience" | "same_city";
+  | "collaborated"
+  | "shared_credit"
+  | "same_label"
+  | "shared_audience"
+  | "same_city"
+  | "played_together";
 
 /** Related artists with the evidence for their strongest reason (public data only). */
 export async function getRelatedArtists(artistId: string) {

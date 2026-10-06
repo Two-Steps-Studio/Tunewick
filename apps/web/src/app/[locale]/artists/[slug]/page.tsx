@@ -7,6 +7,7 @@ import { getArtistBySlug, getRelatedArtists, isArtistMember } from "@/modules/ar
 import { getOptionalUser } from "@/modules/auth";
 import { getPublishedReleases } from "@/modules/catalog";
 import { Artwork, getImageSources, getImageSourcesMany } from "@/modules/images";
+import { EventList, getArtistEvents } from "@/modules/events";
 import { getArtistFollow, LibraryButton } from "@/modules/library";
 
 export async function generateMetadata({
@@ -35,6 +36,8 @@ export default async function ArtistPage({ params }: PageProps<"/[locale]/artist
     getArtistFollow(artist.id),
     getRelatedArtists(artist.id),
   ]);
+  const gigs = await getArtistEvents(artist.id);
+  const tEvents = await getTranslations("Events");
   const covers = await getImageSourcesMany(
     [...published.map((r) => r.artwork_image_id), ...related.map((a) => a.imageId)],
     320,
@@ -56,6 +59,8 @@ export default async function ArtistPage({ params }: PageProps<"/[locale]/artist
         return tRelated("sharedAudience", { count: Number(e.followers ?? 0) });
       case "same_city":
         return tRelated("sameCity", { city: String(e.city ?? "") });
+      case "played_together":
+        return tRelated("playedTogether", { event: String(e.event ?? "") });
     }
   };
 
@@ -102,6 +107,14 @@ export default async function ArtistPage({ params }: PageProps<"/[locale]/artist
         <p className="profile__meta">{t("profile.since", { year: artist.formed_year })}</p>
       ) : null}
       <p className="profile__bio">{artist.bio ?? t("profile.noBio")}</p>
+      {gigs.length ? (
+        <section aria-labelledby="gigs" className="discover__section">
+          <h2 id="gigs" className="section-title">
+            {tEvents("artistUpcoming")}
+          </h2>
+          <EventList events={gigs} />
+        </section>
+      ) : null}
       <section aria-labelledby="discography" className="discover__section">
         <h2 id="discography" className="section-title">
           {t("profile.discography")}

@@ -76,7 +76,12 @@
   "Scene": {
     "title": "Scene",
     "lead": "Gigs, clubs and venues around you.",
-    "empty": "No events yet. We will only show real events added by artists and venues."
+    "empty": "No events yet. We will only show real events added by artists and venues.",
+    "leadEvents": "Real gigs of small independent artists from all over Poland — added by them and checked by moderators.",
+    "regionLabel": "Region",
+    "allPoland": "All of Poland",
+    "upcoming": "Upcoming gigs",
+    "emptyRegion": "No gigs announced in {region} Voivodeship yet."
   },
   "Search": {
     "title": "Search",
@@ -125,7 +130,9 @@
       "clearConfirm": "Delete your whole listening history? This cannot be undone.",
       "clearYes": "Yes, clear it",
       "clearNo": "Cancel"
-    }
+    },
+    "gigs": "I was there",
+    "gigsLead": "Gigs you marked. Only you can see them."
   },
   "NotFound": {
     "title": "This page does not exist",
@@ -374,7 +381,8 @@
       "sharedCredit": "{role, select, producer {Same producer} mixing_engineer {Same mixing engineer} mastering_engineer {Same mastering engineer} songwriter {Same songwriter} composer {Same composer} lyricist {Same lyricist} other {Same collaborator}}: {name}",
       "sameLabel": "Same label: {label}",
       "sharedAudience": "{count, plural, other {# people follow both}}",
-      "sameCity": "Also from: {city}"
+      "sameCity": "Also from: {city}",
+      "playedTogether": "Played together: {event}"
     }
   },
   "Releases": {
@@ -748,7 +756,8 @@
       "warminsko_mazurskie": "Warmian-Masurian",
       "wielkopolskie": "Greater Poland",
       "zachodniopomorskie": "West Pomeranian"
-    }
+    },
+    "voivodeshipLabel": "Voivodeship"
   },
   "Plan": {
     "title": "Plan",
@@ -1055,5 +1064,86 @@
       "already_lifetime": "This person already has Premium for life.",
       "failed": "That did not work. Please try again."
     }
+  },
+  "Events": {
+    "badge": "Gig",
+    "cancelled": "Cancelled",
+    "status": {
+      "pending": "waiting for moderation",
+      "published": "published",
+      "rejected": "rejected",
+      "cancelled": "cancelled"
+    },
+    "rejected": "Event rejected: {reason}",
+    "tickets": "Tickets (organiser's site)",
+    "lineup": "Who plays",
+    "soundcheck": "Listen",
+    "soundcheckLabel": "Hear an excerpt: {artist} — {title}",
+    "noMusic": "No music on Tunewick yet",
+    "artistUpcoming": "Upcoming gigs",
+    "manage": {
+      "title": "Gigs",
+      "lead": "Add a gig you play. After a moderator checks it, it shows on the Scene, on your profile and at the venue.",
+      "cancel": "Cancel: {title}"
+    },
+    "form": {
+      "title": "Event name",
+      "startsAt": "Date and time",
+      "startsAtHint": "Polish time.",
+      "venue": "Venue",
+      "venueName": "Club or venue name",
+      "city": "City of the gig",
+      "address": "Address (optional)",
+      "lineup": "Who else plays (optional)",
+      "lineupHint": "Tunewick artist profile addresses, separated by commas, e.g. halda-kolektyw, suwalska-fala.",
+      "ticketUrl": "Ticket link (optional)",
+      "description": "Description (optional)",
+      "submit": "Add gig",
+      "saved": "Added. The gig is waiting for a moderator.",
+      "errors": {
+        "title": "Enter the event name (2–160 characters).",
+        "date": "Enter a date and time — from today up to two years ahead.",
+        "venue": "Enter the venue name, city and voivodeship.",
+        "ticket": "The ticket link must start with https://",
+        "lineup": "One of the profile addresses is not an active Tunewick artist.",
+        "limit": "Too many gigs are waiting for moderation. Wait for a decision.",
+        "forbidden": "Profile owners and managers add gigs.",
+        "failed": "Could not add the gig. Please try again."
+      }
+    },
+    "review": {
+      "title": "Gigs to check ({count})",
+      "empty": "No gigs to check.",
+      "newVenue": "new venue",
+      "note": "Note for the artist: {title}",
+      "publish": "Publish: {title}",
+      "reject": "Reject: {title}",
+      "errors": {
+        "note_required": "Tell the artist why the gig is rejected (at least 10 characters).",
+        "mfa_required": "This decision needs two-factor sign-in in this session.",
+        "not_allowed": "You are not allowed to make this decision.",
+        "decided": "This gig was already checked.",
+        "failed": "Could not save the decision. Please try again."
+      }
+    },
+    "attended": {
+      "mark": "I was there",
+      "marked": "I was there ✓",
+      "private": "Only you see this — it is your gig history, not a counter.",
+      "later": "From the start of the gig and for 30 days you can mark “I was there”.",
+      "errors": {
+        "not_started": "The gig has not started yet.",
+        "too_late": "More than 30 days have passed since the gig.",
+        "failed": "Could not save. Please try again."
+      }
+    }
+  },
+  "Venues": {
+    "verified": "Verified venue",
+    "unverified": "Venue added by an artist",
+    "website": "Venue website",
+    "upcoming": "Upcoming",
+    "noUpcoming": "Nothing planned here yet.",
+    "past": "Played here"
   }
 }

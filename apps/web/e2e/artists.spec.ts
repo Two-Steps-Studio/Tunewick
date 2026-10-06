@@ -146,11 +146,12 @@ test("an artist from anywhere in Poland sets the city and voivodeship", async ({
   await page.getByRole("button", { name: "Załóż profil" }).click();
   await expect(page).toHaveURL(new RegExp(`/artysci/${slug}/zarzadzaj$`));
 
-  await page.getByLabel("Miasto lub miejscowość").fill("Suwałki");
-  await page.getByLabel("Województwo").selectOption("podlaskie");
-  await page.getByRole("button", { name: "Zapisz" }).first().click();
-  await expect(page.getByText("Zapisano.")).toBeVisible();
-  await expect(page.getByLabel("Województwo")).toHaveValue("podlaskie");
+  const info = page.getByRole("region", { name: "Informacje" });
+  await info.getByLabel("Miasto lub miejscowość").fill("Suwałki");
+  await info.getByLabel("Województwo").selectOption("podlaskie");
+  await info.getByRole("button", { name: "Zapisz" }).click();
+  await expect(info.getByText("Zapisano.")).toBeVisible();
+  await expect(info.getByLabel("Województwo")).toHaveValue("podlaskie");
 
   await page.goto(`/artysci/${slug}`);
   await expect(page.getByText("Suwałki · woj. podlaskie")).toBeVisible();

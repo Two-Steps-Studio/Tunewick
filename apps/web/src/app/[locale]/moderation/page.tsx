@@ -14,6 +14,7 @@ import {
   getPendingAppeals,
   ModerateReportForm,
 } from "@/modules/reports";
+import { EventReviewForm, getPendingEvents } from "@/modules/events";
 
 export const metadata: Metadata = { robots: { index: false } };
 
@@ -36,6 +37,8 @@ export default async function ModerationPage({ params }: PageProps<"/[locale]/mo
     getOpenReports(),
     getPendingAppeals(),
   ]);
+  const pendingEvents = await getPendingEvents();
+  const tEvents = await getTranslations("Events");
   const tReports = await getTranslations("Reports");
   const tPromo = await getTranslations("PromoAdmin");
   const tAdmin = await getTranslations("Admin");
@@ -235,6 +238,49 @@ export default async function ModerationPage({ params }: PageProps<"/[locale]/mo
                     <strong>{tReports("appeals.appeal")}</strong> {item.appeal_text}
                   </p>
                   <AppealDecisionForm decisionId={item.id} />
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+        <section className="settings-form__group" aria-labelledby="pending-events">
+          <h2 id="pending-events" className="section-title">
+            {tEvents("review.title", { count: pendingEvents.length })}
+          </h2>
+          {pendingEvents.length === 0 ? (
+            <p className="field__hint">{tEvents("review.empty")}</p>
+          ) : (
+            <ul className="promo-codes">
+              {pendingEvents.map((e) => (
+                <li key={e.id} className="promo-codes__item">
+                  <Link
+                    className="artist-list__name"
+                    href={{ pathname: "/events/[id]", params: { id: e.id } }}
+                  >
+                    {e.title}
+                  </Link>
+                  <span className="field__hint">
+                    {format.dateTime(new Date(e.starts_at), {
+                      dateStyle: "medium",
+                      timeStyle: "short",
+                      timeZone: "Europe/Warsaw",
+                    })}
+                    {e.venue ? ` · ${e.venue.name}, ${e.venue.city}` : ""}
+                    {e.venue && !e.venue.verified ? ` · ${tEvents("review.newVenue")}` : ""}
+                    {e.artist ? ` · ${e.artist.name}` : ""}
+                  </span>
+                  {e.ticket_url ? (
+                    <a
+                      className="verification-evidence"
+                      href={e.ticket_url}
+                      target="_blank"
+                      rel="noopener noreferrer nofollow"
+                    >
+                      {e.ticket_url}
+                    </a>
+                  ) : null}
+                  {e.description ? <p>{e.description}</p> : null}
+                  <EventReviewForm eventId={e.id} title={e.title} />
                 </li>
               ))}
             </ul>

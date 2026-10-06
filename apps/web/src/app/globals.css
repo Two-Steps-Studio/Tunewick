@@ -1418,6 +1418,57 @@ body {
     font-size: var(--tk-text-xs);
     color: var(--text-muted);
   }
+  /* Events ----------------------------------------------------------------- */
+  .event-list {
+    display: grid;
+    list-style: none;
+    padding: 0;
+    border-top: 1px solid var(--line);
+  }
+  .event-list__item {
+    display: grid;
+    grid-template-columns: 3.5rem minmax(0, 1fr);
+    gap: var(--tk-space-4);
+    align-items: start;
+    padding: var(--tk-space-4) 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .event-list__date {
+    display: grid;
+    justify-items: center;
+    font-family: var(--tk-font-mono);
+    line-height: 1.1;
+  }
+  .event-list__day {
+    font-size: var(--tk-text-xl);
+    font-weight: 700;
+  }
+  .event-list__month {
+    font-size: var(--tk-text-xs);
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .event-list__body {
+    display: grid;
+    gap: var(--tk-space-1);
+    min-width: 0;
+  }
+  .event-list__title {
+    font-weight: 600;
+    overflow-wrap: anywhere;
+  }
+  .event-list__meta,
+  .event-list__lineup {
+    font-size: var(--tk-text-sm);
+    color: var(--text-muted);
+  }
+  .event-list__cancelled {
+    justify-self: start;
+    font-family: var(--tk-font-mono);
+    font-size: var(--tk-text-xs);
+    text-transform: uppercase;
+    color: var(--danger, var(--text));
+  }
   .revoke-form {
     display: flex;
     flex-wrap: wrap;

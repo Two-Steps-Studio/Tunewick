@@ -268,6 +268,131 @@ export type Database = {
           },
         ];
       };
+      event_attendance: {
+        Row: {
+          created_at: string;
+          event_id: string;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          event_id: string;
+          user_id?: string;
+        };
+        Update: {
+          created_at?: string;
+          event_id?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "event_attendance_event_id_fkey";
+            columns: ["event_id"];
+            isOneToOne: false;
+            referencedRelation: "events";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      event_lineup: {
+        Row: {
+          artist_id: string;
+          event_id: string;
+          position: number;
+        };
+        Insert: {
+          artist_id: string;
+          event_id: string;
+          position?: number;
+        };
+        Update: {
+          artist_id?: string;
+          event_id?: string;
+          position?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "event_lineup_artist_id_fkey";
+            columns: ["artist_id"];
+            isOneToOne: false;
+            referencedRelation: "artists";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "event_lineup_event_id_fkey";
+            columns: ["event_id"];
+            isOneToOne: false;
+            referencedRelation: "events";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      events: {
+        Row: {
+          artist_id: string;
+          created_at: string;
+          created_by: string | null;
+          description: string | null;
+          ends_at: string | null;
+          id: string;
+          review_note: string | null;
+          reviewed_at: string | null;
+          reviewed_by: string | null;
+          starts_at: string;
+          status: Database["public"]["Enums"]["event_status"];
+          ticket_url: string | null;
+          title: string;
+          venue_id: string;
+        };
+        Insert: {
+          artist_id: string;
+          created_at?: string;
+          created_by?: string | null;
+          description?: string | null;
+          ends_at?: string | null;
+          id?: string;
+          review_note?: string | null;
+          reviewed_at?: string | null;
+          reviewed_by?: string | null;
+          starts_at: string;
+          status?: Database["public"]["Enums"]["event_status"];
+          ticket_url?: string | null;
+          title: string;
+          venue_id: string;
+        };
+        Update: {
+          artist_id?: string;
+          created_at?: string;
+          created_by?: string | null;
+          description?: string | null;
+          ends_at?: string | null;
+          id?: string;
+          review_note?: string | null;
+          reviewed_at?: string | null;
+          reviewed_by?: string | null;
+          starts_at?: string;
+          status?: Database["public"]["Enums"]["event_status"];
+          ticket_url?: string | null;
+          title?: string;
+          venue_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "events_artist_id_fkey";
+            columns: ["artist_id"];
+            isOneToOne: false;
+            referencedRelation: "artists";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "events_venue_id_fkey";
+            columns: ["venue_id"];
+            isOneToOne: false;
+            referencedRelation: "venues";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       feature_flags: {
         Row: {
           description: string | null;
@@ -1427,6 +1552,45 @@ export type Database = {
         };
         Relationships: [];
       };
+      venues: {
+        Row: {
+          address: string | null;
+          city: string;
+          created_at: string;
+          created_by: string | null;
+          id: string;
+          name: string;
+          slug: string;
+          verified: boolean;
+          voivodeship: Database["public"]["Enums"]["voivodeship"];
+          website: string | null;
+        };
+        Insert: {
+          address?: string | null;
+          city: string;
+          created_at?: string;
+          created_by?: string | null;
+          id?: string;
+          name: string;
+          slug: string;
+          verified?: boolean;
+          voivodeship: Database["public"]["Enums"]["voivodeship"];
+          website?: string | null;
+        };
+        Update: {
+          address?: string | null;
+          city?: string;
+          created_at?: string;
+          created_by?: string | null;
+          id?: string;
+          name?: string;
+          slug?: string;
+          verified?: boolean;
+          voivodeship?: Database["public"]["Enums"]["voivodeship"];
+          website?: string | null;
+        };
+        Relationships: [];
+      };
     };
     Views: {
       [_ in never]: never;
@@ -1638,9 +1802,11 @@ export type Database = {
       };
       can_edit_release: { Args: { release: string }; Returns: boolean };
       can_view_audio_upload: { Args: { upload: string }; Returns: boolean };
+      can_view_event: { Args: { event: string }; Returns: boolean };
       can_view_image: { Args: { image: string }; Returns: boolean };
       can_view_playlist: { Args: { playlist: string }; Returns: boolean };
       can_view_release: { Args: { release: string }; Returns: boolean };
+      cancel_event: { Args: { event: string }; Returns: undefined };
       claim_audio_upload: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -1724,6 +1890,19 @@ export type Database = {
         Returns: number;
       };
       create_artist: { Args: { name: string; slug: string }; Returns: string };
+      create_event: {
+        Args: {
+          artist: string;
+          description?: string;
+          ends_at?: string;
+          lineup?: string[];
+          starts_at: string;
+          ticket_url?: string;
+          title: string;
+          venue: string;
+        };
+        Returns: string;
+      };
       decide_appeal: {
         Args: { decision: string; note: string; outcome: string };
         Returns: undefined;
@@ -1768,6 +1947,16 @@ export type Database = {
         Args: { image: string };
         Returns: Database["public"]["Enums"]["audio_upload_status"];
       };
+      find_or_create_venue: {
+        Args: {
+          address?: string;
+          city: string;
+          name: string;
+          voivodeship: Database["public"]["Enums"]["voivodeship"];
+          website?: string;
+        };
+        Returns: string;
+      };
       finish_audio_upload: {
         Args: { report: Json; upload: string; variants?: Json };
         Returns: Database["public"]["Enums"]["audio_upload_status"];
@@ -1795,6 +1984,7 @@ export type Database = {
       is_feature_enabled: { Args: { flag: string }; Returns: boolean };
       is_reserved_handle: { Args: { candidate: string }; Returns: boolean };
       is_staff: { Args: Record<PropertyKey, never>; Returns: boolean };
+      mark_attended: { Args: { event: string }; Returns: undefined };
       moderate_report: {
         Args: { action: string; report: string; statement: string };
         Returns: string;
@@ -1880,6 +2070,10 @@ export type Database = {
         Args: { decision: string; note?: string; request: string };
         Returns: undefined;
       };
+      review_event: {
+        Args: { decision: string; event: string; note?: string };
+        Returns: undefined;
+      };
       review_release: {
         Args: { decision: string; note?: string; release: string };
         Returns: Database["public"]["Enums"]["release_status"];
@@ -1942,6 +2136,21 @@ export type Database = {
         Args: { role: Database["public"]["Enums"]["app_role"]; target_email: string };
         Returns: string;
       };
+      upcoming_events: {
+        Args: { max_results?: number; region?: Database["public"]["Enums"]["voivodeship"] };
+        Returns: {
+          city: string;
+          event_id: string;
+          lineup: Json;
+          starts_at: string;
+          status: Database["public"]["Enums"]["event_status"];
+          ticket_url: string;
+          title: string;
+          venue_name: string;
+          venue_slug: string;
+          voivodeship: Database["public"]["Enums"]["voivodeship"];
+        }[];
+      };
       withdraw_release_submission: { Args: { release: string }; Returns: undefined };
     };
     Enums: {
@@ -1962,6 +2171,7 @@ export type Database = {
         | "mastering_engineer"
         | "other";
       entitlement_source: "promo" | "beta" | "admin" | "referral" | "subscription";
+      event_status: "pending" | "published" | "rejected" | "cancelled";
       image_kind: "release_artwork" | "artist_image";
       playlist_visibility: "public" | "unlisted" | "private";
       promo_benefit:
@@ -2126,6 +2336,7 @@ export const Constants = {
         "other",
       ],
       entitlement_source: ["promo", "beta", "admin", "referral", "subscription"],
+      event_status: ["pending", "published", "rejected", "cancelled"],
       image_kind: ["release_artwork", "artist_image"],
       playlist_visibility: ["public", "unlisted", "private"],
       promo_benefit: [

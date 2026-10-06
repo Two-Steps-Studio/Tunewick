@@ -299,6 +299,21 @@ life; audited). Wrappers: `admin_grant_entitlement(user, plan, days | null, note
 plan, days, source, note)` (service role, `scripts/grant-plan.mjs`). The web app's
 `listenerEntitlement()` is `my_plan().max_quality_tier`.
 
+## Events, venues and "Byłem przy tym" (implemented, M8)
+
+`venues` (slug from name + city, city text + voivodeship like artists, unverified until staff
+verify; `find_or_create_venue` dedupes by normalized name and city), `events` (status pending →
+published / rejected, cancelled by the adding artist; `create_event` by the artist's owner/manager,
+from a day ago up to two years ahead, ≤ 20 pending) and `event_lineup` (the adding artist first).
+`review_event` (moderator + aal2, reason for rejections, audited) publishes; `upcoming_events(region)`
+lists published and cancelled gigs. Pages: Scene (by voivodeship), event (lineup with soundchecks of
+each artist's newest release, ticket link), venue (upcoming and past), artist (upcoming gigs), manage
+(add / cancel, review status). `event_attendance` ("Byłem przy tym") is written only by
+`mark_attended`: published events, from the start to 30 days after; private to the listener, no
+counts; listed in the library. `private.refresh_event_graph` adds `played_together` edges from
+published lineups (evidence: the event). Not yet: reports on events (needs a new enum value in its
+own transaction), venue self-service, verified attendance.
+
 ## Admin panel (implemented, M10.3)
 
 `/admin` (admin + aal2): staff list (`admin_list_staff`, handles only), grant/revoke roles by

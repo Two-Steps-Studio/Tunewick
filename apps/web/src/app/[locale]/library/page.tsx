@@ -11,6 +11,7 @@ import {
   getRecentlyPlayed,
   LibraryButton,
 } from "@/modules/library";
+import { EventList, getMyAttendedEvents } from "@/modules/events";
 import { getMyPlaylists, NewPlaylistForm } from "@/modules/playlists";
 import { PlayButton, type PlayerTrack } from "@/modules/player";
 
@@ -65,6 +66,7 @@ export default async function LibraryPage({ params }: PageProps<"/[locale]/libra
     getMyPlaylists(user.id),
     getRecentlyPlayed(),
   ]);
+  const gigs = await getMyAttendedEvents();
 
   // Liked tracks play as one queue, in the order they were liked.
   const queue = (
@@ -87,7 +89,8 @@ export default async function LibraryPage({ params }: PageProps<"/[locale]/libra
     !library.releases.length &&
     !library.artists.length &&
     !playlists.length &&
-    !recent.length;
+    !recent.length &&
+    !gigs.length;
 
   return (
     <section className="discover">
@@ -224,6 +227,16 @@ export default async function LibraryPage({ params }: PageProps<"/[locale]/libra
             ))}
           </ol>
           <ClearHistoryButton />
+        </section>
+      ) : null}
+
+      {gigs.length ? (
+        <section aria-labelledby="gigs" className="discover__section">
+          <h2 id="gigs" className="section-title">
+            {t("gigs")}
+          </h2>
+          <p className="field__hint">{t("gigsLead")}</p>
+          <EventList events={gigs} />
         </section>
       ) : null}
 

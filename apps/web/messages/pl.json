@@ -76,7 +76,12 @@
   "Scene": {
     "title": "Scena",
     "lead": "Koncerty, kluby i miejsca w Twojej okolicy.",
-    "empty": "Nie ma jeszcze wydarzeń. Pokażemy tylko prawdziwe wydarzenia dodane przez artystów i miejsca."
+    "empty": "Nie ma jeszcze wydarzeń. Pokażemy tylko prawdziwe wydarzenia dodane przez artystów i miejsca.",
+    "leadEvents": "Prawdziwe koncerty małych, niezależnych artystów z całej Polski — dodane przez nich i sprawdzone przez moderatorów.",
+    "regionLabel": "Region",
+    "allPoland": "Cała Polska",
+    "upcoming": "Najbliższe koncerty",
+    "emptyRegion": "W województwie {region} nie ma jeszcze zapowiedzianych koncertów."
   },
   "Search": {
     "title": "Szukaj",
@@ -125,7 +130,9 @@
       "clearConfirm": "Usunąć całą historię słuchania? Tego nie da się cofnąć.",
       "clearYes": "Tak, wyczyść",
       "clearNo": "Anuluj"
-    }
+    },
+    "gigs": "Byłem przy tym",
+    "gigsLead": "Twoja historia koncertów. Widzisz ją tylko Ty."
   },
   "NotFound": {
     "title": "Nie ma takiej strony",
@@ -374,7 +381,8 @@
       "sharedCredit": "{role, select, producer {Ten sam producent} mixing_engineer {Ten sam realizator miksu} mastering_engineer {Ten sam mastering} songwriter {Ten sam autor piosenek} composer {Ten sam kompozytor} lyricist {Ten sam autor tekstów} other {Ten sam twórca}}: {name}",
       "sameLabel": "Ta sama wytwórnia: {label}",
       "sharedAudience": "{count, plural, few {# osoby obserwują oboje} many {# osób obserwuje oboje} other {# osoby obserwują oboje}}",
-      "sameCity": "Też z: {city}"
+      "sameCity": "Też z: {city}",
+      "playedTogether": "Grali razem: {event}"
     }
   },
   "Releases": {
@@ -748,7 +756,8 @@
       "warminsko_mazurskie": "warmińsko-mazurskie",
       "wielkopolskie": "wielkopolskie",
       "zachodniopomorskie": "zachodniopomorskie"
-    }
+    },
+    "voivodeshipLabel": "Województwo"
   },
   "Plan": {
     "title": "Plan",
@@ -1055,5 +1064,86 @@
       "already_lifetime": "Ta osoba ma już Premium na zawsze.",
       "failed": "Nie udało się. Spróbuj ponownie."
     }
+  },
+  "Events": {
+    "badge": "Koncert",
+    "cancelled": "Odwołane",
+    "status": {
+      "pending": "czeka na moderację",
+      "published": "opublikowane",
+      "rejected": "odrzucone",
+      "cancelled": "odwołane"
+    },
+    "rejected": "Wydarzenie odrzucone: {reason}",
+    "tickets": "Bilety (strona organizatora)",
+    "lineup": "Kto gra",
+    "soundcheck": "Posłuchaj",
+    "soundcheckLabel": "Posłuchaj fragmentu: {artist} — {title}",
+    "noMusic": "Bez muzyki w Tunewick",
+    "artistUpcoming": "Najbliższe koncerty",
+    "manage": {
+      "title": "Koncerty",
+      "lead": "Dodaj koncert, na którym grasz. Po sprawdzeniu przez moderatora pojawi się na Scenie, na Twoim profilu i w miejscu, gdzie grasz.",
+      "cancel": "Odwołaj: {title}"
+    },
+    "form": {
+      "title": "Nazwa wydarzenia",
+      "startsAt": "Data i godzina",
+      "startsAtHint": "Czas polski.",
+      "venue": "Miejsce",
+      "venueName": "Nazwa klubu lub miejsca",
+      "city": "Miasto koncertu",
+      "address": "Adres (opcjonalnie)",
+      "lineup": "Kto jeszcze gra (opcjonalnie)",
+      "lineupHint": "Adresy profili artystów w Tunewick, oddzielone przecinkami, np. halda-kolektyw, suwalska-fala.",
+      "ticketUrl": "Link do biletów (opcjonalnie)",
+      "description": "Opis (opcjonalnie)",
+      "submit": "Dodaj koncert",
+      "saved": "Dodano. Koncert czeka na sprawdzenie przez moderatora.",
+      "errors": {
+        "title": "Podaj nazwę wydarzenia (2–160 znaków).",
+        "date": "Podaj datę i godzinę — od dziś do dwóch lat naprzód.",
+        "venue": "Podaj nazwę miejsca, miasto i województwo.",
+        "ticket": "Link do biletów musi zaczynać się od https://",
+        "lineup": "Któryś adres profilu nie należy do aktywnego artysty w Tunewick.",
+        "limit": "Za dużo koncertów czeka na moderację. Poczekaj na decyzję.",
+        "forbidden": "Koncerty dodają właściciele i menedżerowie profilu.",
+        "failed": "Nie udało się dodać koncertu. Spróbuj ponownie."
+      }
+    },
+    "review": {
+      "title": "Koncerty do sprawdzenia ({count})",
+      "empty": "Nie ma koncertów do sprawdzenia.",
+      "newVenue": "nowe miejsce",
+      "note": "Uwagi dla artysty: {title}",
+      "publish": "Opublikuj: {title}",
+      "reject": "Odrzuć: {title}",
+      "errors": {
+        "note_required": "Napisz artyście, dlaczego koncert jest odrzucony (co najmniej 10 znaków).",
+        "mfa_required": "Ta decyzja wymaga logowania dwuskładnikowego w tej sesji.",
+        "not_allowed": "Nie masz uprawnień do tej decyzji.",
+        "decided": "Ten koncert został już sprawdzony.",
+        "failed": "Nie udało się zapisać decyzji. Spróbuj ponownie."
+      }
+    },
+    "attended": {
+      "mark": "Byłem przy tym",
+      "marked": "Byłem przy tym ✓",
+      "private": "Widzisz to tylko Ty — to Twoja historia koncertów, nie licznik.",
+      "later": "Od rozpoczęcia koncertu przez 30 dni możesz zaznaczyć „Byłem przy tym”.",
+      "errors": {
+        "not_started": "Koncert jeszcze się nie zaczął.",
+        "too_late": "Minęło ponad 30 dni od koncertu.",
+        "failed": "Nie udało się zapisać. Spróbuj ponownie."
+      }
+    }
+  },
+  "Venues": {
+    "verified": "Miejsce zweryfikowane",
+    "unverified": "Miejsce dodane przez artystę",
+    "website": "Strona miejsca",
+    "upcoming": "Nadchodzące",
+    "noUpcoming": "Na razie nic tu nie zaplanowano.",
+    "past": "Tu grali"
   }
 }
