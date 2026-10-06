@@ -1,0 +1,576 @@
+@import "tailwindcss";
+@import "../../../../design/tokens.css";
+
+/* Expose semantic tokens to Tailwind utilities (bg-bg, text-text, text-accent, font-display …). */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-raised: var(--bg-raised);
+  --color-bg-sunken: var(--bg-sunken);
+  --color-line: var(--line);
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
+  --color-accent: var(--accent);
+  --color-on-accent: var(--on-accent);
+  --color-signal: var(--signal);
+  --color-scene: var(--scene);
+  --color-focus: var(--focus);
+
+  --font-display: var(--tk-font-display);
+  --font-text: var(--tk-font-text);
+  --font-mono: var(--tk-font-mono);
+
+  --ease-out: var(--tk-ease-out);
+  --ease-in-out: var(--tk-ease-in-out);
+
+  --radius-none: 0;
+  --radius-xs: var(--tk-radius-1);
+}
+
+html {
+  color-scheme: dark;
+}
+
+html[data-theme="light"] {
+  color-scheme: light;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--tk-font-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+}
+
+/* next/font provides hashed family names; route the design tokens through them. */
+:root {
+  --tk-font-display: var(--font-bricolage), ui-sans-serif, sans-serif;
+  --tk-font-text: var(--font-instrument), ui-sans-serif, sans-serif;
+  --tk-font-mono: var(--font-martian), ui-monospace, monospace;
+  --shell-bar-h: 3.5rem;
+}
+
+/* ------------------------------------------------------------------ */
+/* Shell — docs/design-system.md §6–7                                  */
+/* ------------------------------------------------------------------ */
+@layer components {
+  .skip-link {
+    position: absolute;
+    left: var(--tk-space-4);
+    top: var(--tk-space-2);
+    z-index: 50;
+    padding: var(--tk-space-2) var(--tk-space-4);
+    background: var(--accent);
+    color: var(--on-accent);
+    font-weight: 600;
+    transform: translateY(-200%);
+  }
+  .skip-link:focus-visible {
+    transform: none;
+  }
+
+  /* Logo accent (concept B "Split"): coral in both themes (design-system.md §5). */
+  :root {
+    --spark: var(--tk-coral);
+  }
+
+  .wordmark {
+    display: block;
+    height: 1.6rem;
+    width: auto;
+    color: var(--text);
+  }
+
+  .site-header {
+    display: flex;
+    align-items: center;
+    gap: var(--tk-space-8);
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: var(--tk-space-4);
+    border-bottom: 1px solid var(--line);
+  }
+  .site-header__home {
+    margin-right: auto;
+  }
+  .site-header__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--tk-space-2);
+  }
+  @media (min-width: 1024px) {
+    .site-header__home {
+      margin-right: 0;
+    }
+    .site-header__actions {
+      margin-left: auto;
+    }
+  }
+
+  .main-nav ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .main-nav__link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--tk-space-2);
+    color: var(--text-muted);
+    transition:
+      transform var(--tk-dur-press) var(--tk-ease-out),
+      color var(--tk-dur-fast) ease;
+  }
+  .main-nav__link:active {
+    transform: scale(0.97);
+  }
+  .main-nav__link[aria-current="page"] {
+    color: var(--text);
+  }
+  /* The brand spark marks where you are. */
+  .main-nav__link::before {
+    content: "";
+    width: 0.4rem;
+    height: 0.4rem;
+    background: transparent;
+  }
+  .main-nav__link[aria-current="page"]::before {
+    background: var(--accent);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .main-nav__link:hover {
+      color: var(--text);
+    }
+  }
+
+  .main-nav--top {
+    display: none;
+  }
+  @media (min-width: 1024px) {
+    .main-nav--top {
+      display: block;
+    }
+    .main-nav--top ul {
+      gap: var(--tk-space-6);
+    }
+    .main-nav--top .main-nav__link {
+      font-family: var(--tk-font-display);
+      font-weight: 700;
+      font-size: var(--tk-text-lg);
+      letter-spacing: -0.01em;
+      padding-block: var(--tk-space-2);
+    }
+  }
+
+  .main-nav--bottom ul {
+    justify-content: space-between;
+  }
+  .main-nav--bottom li {
+    flex: 1;
+  }
+  .main-nav--bottom .main-nav__link {
+    width: 100%;
+    min-height: 3rem;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--tk-space-1);
+    font-size: var(--tk-text-xs);
+    font-weight: 600;
+  }
+  @media (min-width: 1024px) {
+    .main-nav--bottom {
+      display: none;
+    }
+  }
+
+  .locale-switcher {
+    font-family: var(--tk-font-mono);
+    font-size: var(--tk-text-xs);
+    letter-spacing: 0.08em;
+    padding: var(--tk-space-2) var(--tk-space-3);
+    box-shadow: inset 0 0 0 1px var(--line);
+    transition: transform var(--tk-dur-press) var(--tk-ease-out);
+  }
+  .locale-switcher:active {
+    transform: scale(0.97);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .locale-switcher:hover {
+      box-shadow: inset 0 0 0 1px var(--text);
+    }
+  }
+
+  .site-main {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: var(--tk-space-8) var(--tk-space-4)
+      calc(var(--shell-bar-h) * 2 + var(--tk-space-12) + env(safe-area-inset-bottom));
+    outline: none;
+  }
+  @media (min-width: 1024px) {
+    .site-main {
+      padding-bottom: calc(var(--shell-bar-h) + var(--tk-space-16));
+    }
+  }
+
+  .site-bottom {
+    position: fixed;
+    inset: auto 0 0 0;
+    z-index: 40;
+    background: var(--bg);
+    border-top: 1px solid var(--line);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .player-bar {
+    display: flex;
+    align-items: center;
+    gap: var(--tk-space-3);
+    min-height: var(--shell-bar-h);
+    padding: 0 var(--tk-space-4);
+    border-bottom: 1px solid var(--line);
+  }
+  @media (min-width: 1024px) {
+    .player-bar {
+      border-bottom: 0;
+    }
+  }
+  .player-bar__spark {
+    flex: none;
+    width: 0.5rem;
+    height: 0.5rem;
+    box-shadow: inset 0 0 0 1px var(--text-muted);
+  }
+  .player-bar__text {
+    min-width: 0;
+    font-family: var(--tk-font-mono);
+    font-size: var(--tk-text-xs);
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .player-bar__hint {
+    display: none;
+  }
+  @media (min-width: 768px) {
+    .player-bar__hint {
+      display: inline;
+    }
+  }
+
+  .page-intro {
+    display: grid;
+    gap: var(--tk-space-12);
+  }
+  @media (min-width: 1024px) {
+    .page-intro {
+      grid-template-columns: 2fr 1fr;
+      align-items: end;
+      gap: var(--tk-space-16);
+      padding-top: var(--tk-space-16);
+    }
+  }
+  .page-intro__title {
+    font-family: var(--tk-font-display);
+    font-size: var(--tk-text-display);
+    font-weight: 800;
+    line-height: 0.9;
+    letter-spacing: -0.035em;
+    font-variation-settings:
+      "wdth" 75,
+      "opsz" 96;
+  }
+  .page-intro__lead {
+    margin-top: var(--tk-space-6);
+    max-width: 40ch;
+    font-size: var(--tk-text-xl);
+    line-height: 1.35;
+  }
+  .page-intro__empty {
+    display: grid;
+    gap: var(--tk-space-3);
+    padding-top: var(--tk-space-4);
+    border-top: 3px solid var(--scene);
+    color: var(--text-muted);
+    max-width: 40ch;
+  }
+  .page-intro__status {
+    font-family: var(--tk-font-mono);
+    font-size: var(--tk-text-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--scene);
+  }
+
+  /* Buttons ------------------------------------------------------------ */
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.75rem;
+    padding: 0 var(--tk-space-4);
+    font-weight: 600;
+    font-size: var(--tk-text-sm);
+    border: 0;
+    border-radius: var(--tk-radius-0);
+    cursor: pointer;
+    transition:
+      transform var(--tk-dur-press) var(--tk-ease-out),
+      box-shadow var(--tk-dur-fast) ease,
+      opacity var(--tk-dur-fast) ease;
+  }
+  .button:active:not(:disabled) {
+    transform: scale(0.97);
+  }
+  .button:disabled {
+    opacity: 0.6;
+    cursor: progress;
+  }
+  .button--primary {
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+  .button--quiet {
+    background: transparent;
+    color: var(--text);
+    min-height: 2.25rem;
+    padding: 0 var(--tk-space-3);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .button--quiet:hover {
+      box-shadow: inset 0 0 0 1px var(--line);
+    }
+  }
+
+  /* Auth pages ------------------------------------------------------------ */
+  .auth-page {
+    display: grid;
+    gap: var(--tk-space-12);
+  }
+  @media (min-width: 1024px) {
+    .auth-page {
+      grid-template-columns: 1.3fr 1fr;
+      gap: var(--tk-space-16);
+      padding-top: var(--tk-space-16);
+    }
+  }
+  .auth-page__title {
+    font-family: var(--tk-font-display);
+    font-size: var(--tk-text-3xl);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    font-variation-settings:
+      "wdth" 75,
+      "opsz" 96;
+  }
+  .auth-page__lead {
+    margin-top: var(--tk-space-4);
+    max-width: 40ch;
+    font-size: var(--tk-text-lg);
+    color: var(--text-muted);
+  }
+  .auth-page__body {
+    display: grid;
+    gap: var(--tk-space-8);
+    max-width: 28rem;
+  }
+  .auth-page__footer {
+    display: grid;
+    gap: var(--tk-space-2);
+    font-size: var(--tk-text-sm);
+    color: var(--text-muted);
+  }
+  .auth-page__footer a,
+  .auth-page__body > a {
+    color: var(--text);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .auth-form {
+    display: grid;
+    gap: var(--tk-space-6);
+    padding-top: var(--tk-space-6);
+    border-top: 3px solid var(--accent);
+  }
+  .auth-form .button--primary {
+    justify-self: start;
+    min-width: 10rem;
+  }
+
+  .field {
+    display: grid;
+    gap: var(--tk-space-2);
+  }
+  .field__label {
+    font-size: var(--tk-text-sm);
+    font-weight: 600;
+  }
+  .field__input {
+    min-height: 2.75rem;
+    padding: 0 var(--tk-space-3);
+    background: var(--bg-sunken);
+    color: var(--text);
+    border: 1px solid var(--line);
+    border-radius: var(--tk-radius-1);
+    font: inherit;
+    font-size: 1rem; /* 16px prevents iOS zoom on focus */
+  }
+  .field__input:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 0;
+    border-color: transparent;
+  }
+  .field__input[aria-invalid="true"] {
+    border-color: var(--signal);
+  }
+  .field__hint {
+    font-size: var(--tk-text-xs);
+    color: var(--text-muted);
+  }
+  .field__error,
+  .form-error {
+    font-size: var(--tk-text-sm);
+    color: var(--signal);
+  }
+  .form-error {
+    padding: var(--tk-space-3);
+    box-shadow: inset 3px 0 0 var(--signal);
+    background: var(--bg-sunken);
+  }
+  .field--checkbox {
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    column-gap: var(--tk-space-3);
+  }
+  .field--checkbox .field__error {
+    grid-column: 1 / -1;
+  }
+  .field__checkbox {
+    width: 1.25rem;
+    height: 1.25rem;
+    accent-color: var(--tk-lime);
+  }
+
+  /* Settings ------------------------------------------------------------- */
+  .settings-form {
+    display: grid;
+    gap: var(--tk-space-8);
+  }
+  .settings-form__group {
+    display: grid;
+    gap: var(--tk-space-4);
+    margin: 0;
+    padding: var(--tk-space-4) 0 0;
+    border: 0;
+    border-top: 3px solid var(--scene);
+  }
+  .settings-form__group legend {
+    padding: 0;
+    font-family: var(--tk-font-display);
+    font-size: var(--tk-text-xl);
+    font-weight: 700;
+  }
+  .field__textarea {
+    padding: var(--tk-space-3);
+    min-height: 7rem;
+    resize: vertical;
+  }
+  .form-status {
+    padding: var(--tk-space-3);
+    box-shadow: inset 3px 0 0 var(--accent);
+    background: var(--bg-sunken);
+    font-size: var(--tk-text-sm);
+  }
+  .settings-profile-link {
+    margin-top: var(--tk-space-6);
+    font-size: var(--tk-text-sm);
+    color: var(--text-muted);
+  }
+  .settings-profile-link a {
+    color: var(--text);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  /* Public profile ------------------------------------------------------- */
+  .profile {
+    display: grid;
+    gap: var(--tk-space-4);
+    max-width: 48rem;
+    padding-top: var(--tk-space-12);
+  }
+  .profile__handle {
+    font-family: var(--tk-font-mono);
+    font-size: var(--tk-text-sm);
+    color: var(--scene);
+  }
+  .profile__name {
+    font-family: var(--tk-font-display);
+    font-size: var(--tk-text-display);
+    font-weight: 800;
+    line-height: 0.9;
+    letter-spacing: -0.035em;
+    font-variation-settings:
+      "wdth" 75,
+      "opsz" 96;
+    overflow-wrap: anywhere;
+  }
+  .profile__bio {
+    max-width: 60ch;
+    font-size: var(--tk-text-lg);
+    white-space: pre-line;
+  }
+  .profile__meta {
+    font-family: var(--tk-font-mono);
+    font-size: var(--tk-text-xs);
+    color: var(--text-muted);
+  }
+
+  /* Two-factor sign-in ------------------------------------------------------ */
+  .mfa-step {
+    display: grid;
+    gap: var(--tk-space-6);
+  }
+  .mfa-qr {
+    width: 200px;
+    height: 200px;
+    padding: var(--tk-space-3);
+    background: #fff; /* QR codes need a light quiet zone in both themes */
+  }
+  .mfa-secret {
+    font-family: var(--tk-font-mono);
+    font-size: var(--tk-text-sm);
+    overflow-wrap: anywhere;
+    padding: var(--tk-space-3);
+    background: var(--bg-sunken);
+  }
+  .field__input--code {
+    max-width: 10rem;
+    font-family: var(--tk-font-mono);
+    letter-spacing: 0.3em;
+  }
+  .mfa-status {
+    display: grid;
+    gap: var(--tk-space-2);
+  }
+  .mfa-status__on,
+  .mfa-status__off {
+    padding-left: var(--tk-space-3);
+    font-weight: 600;
+  }
+  .mfa-status__on {
+    box-shadow: inset 3px 0 0 var(--accent);
+  }
+  .mfa-status__off {
+    box-shadow: inset 3px 0 0 var(--line);
+  }
+}

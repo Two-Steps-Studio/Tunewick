@@ -37,17 +37,16 @@ Configured in GitHub → Settings → Branches (or Rules → Rulesets) by a repo
 | ---- | ------- |
 | Require a pull request before merging | on |
 | Required approvals | 1 (when a second reviewer exists; until then 0 with PR still required) |
-| Require status checks to pass | on — CI checks added once CI exists (lint, typecheck, test, build) |
+| Require status checks to pass | on — required checks: `lint`, `typecheck`, `test`, `format:check`, `build`, `e2e`, `database` (workflow `.github/workflows/ci.yml`; `database` = migrations from zero + pgTAP + db lint) |
 | Require branch to be up to date before merging | on |
 | Block force pushes | on |
 | Restrict deletions | on |
 
-**Current state:** not yet configured — pending admin action (tracked in Guidon task
-"P0: GitHub repository + main/work branches + main protection"). Status checks become
-required once the CI workflow is introduced in Phase 3.
+**Current state:** CI workflow exists (M0.2). Branch protection must be enabled by a repository
+admin (pending, Guidon task "P0: GitHub repository + main/work branches + main protection").
+The repository is public, so branch protection and rulesets are available on the GitHub Free plan.
 
-Note: branch protection on private repositories requires a paid GitHub plan for
-organizations (Team) — verify the plan of `Two-Steps-Studio`.
+CI jobs are added by the tasks that introduce them (pgTAP in M0.3, audio worker tests in M3).
 
 ## Database changes
 

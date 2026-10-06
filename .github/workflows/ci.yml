@@ -1,0 +1,108 @@
+name: CI
+
+on:
+  push:
+    branches: [work, main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    name: ${{ matrix.task }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        task: [lint, typecheck, test, format:check]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm ${{ matrix.task }}
+
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - name: No server secrets in the client bundle
+        run: pnpm check:client-bundle
+
+  e2e:
+    name: e2e
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Start local Supabase (Postgres + Auth)
+        run: pnpm db:start
+      - run: pnpm db:env
+      - run: pnpm --filter @tunewick/web build
+      - run: pnpm --filter @tunewick/web exec playwright install --with-deps chromium
+      - run: pnpm e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: apps/web/playwright-report
+          retention-days: 7
+
+  database:
+    # Migrations from zero + pgTAP + db lint.
+    name: database
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 2.119.0
+      - run: supabase db start
+      - run: supabase db reset --local
+      - name: pgTAP tests
+        run: |
+          set -o pipefail
+          supabase test db 2>&1 | tee pgtap.log || {
+            # Surface failing assertions as annotations (visible without signing in).
+            grep -E "not ok|^#|ERROR|psql:" pgtap.log | head -40 | while IFS= read -r line; do
+              echo "::error title=pgTAP::$line"
+            done
+            exit 1
+          }
+      - run: supabase db lint --local --fail-on error
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Generated types are up to date
+        run: |
+          supabase gen types typescript --local --schema public > packages/shared/src/database.types.ts
+          pnpm exec prettier --write packages/shared/src/database.types.ts
+          git diff --exit-code -- packages/shared/src/database.types.ts || {
+            echo "::error title=database types::Run pnpm db:types and commit the result."
+            exit 1
+          }

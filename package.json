@@ -1,0 +1,34 @@
+{
+  "name": "tunewick",
+  "private": true,
+  "packageManager": "pnpm@10.28.2",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "dev": "pnpm --filter @tunewick/web dev",
+    "build": "pnpm -r --if-present build",
+    "lint": "pnpm -r --if-present lint",
+    "typecheck": "pnpm -r --if-present typecheck",
+    "test": "pnpm -r --if-present test",
+    "e2e": "pnpm --filter @tunewick/web e2e",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "db:start": "supabase start -x storage-api,imgproxy,realtime,edge-runtime,logflare,vector,supavisor",
+    "db:reset": "supabase db reset --local",
+    "db:test": "supabase test db",
+    "db:types": "supabase gen types typescript --local --schema public > packages/shared/src/database.types.ts && prettier --write packages/shared/src/database.types.ts",
+    "db:env": "node scripts/write-local-env.mjs",
+    "check:client-bundle": "node scripts/check-client-bundle.mjs",
+    "invites:create": "node scripts/create-invites.mjs",
+    "staff:grant": "node scripts/grant-role.mjs"
+  },
+  "devDependencies": {
+    "@supabase/supabase-js": "^2.117.2",
+    "fontkit": "^2.0.4",
+    "prettier": "^3.9.9",
+    "sharp": "^0.35.5",
+    "supabase": "^2.119.0",
+    "wawoff2": "^2.0.1"
+  }
+}

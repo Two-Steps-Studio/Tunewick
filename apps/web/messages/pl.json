@@ -1,0 +1,196 @@
+{
+  "Meta": {
+    "title": "Tunewick",
+    "description": "Odkrywaj więcej, słuchaj lepiej, bądź bliżej sceny."
+  },
+  "Shell": {
+    "skipToContent": "Przejdź do treści",
+    "mainNav": "Nawigacja główna",
+    "home": "Strona główna Tunewick",
+    "language": "Język",
+    "switchTo": "English"
+  },
+  "Nav": {
+    "discover": "Odkrywaj",
+    "scene": "Scena",
+    "search": "Szukaj",
+    "library": "Biblioteka"
+  },
+  "Player": {
+    "region": "Odtwarzacz",
+    "idle": "Nic teraz nie gra.",
+    "idleHint": "Odtwarzanie pojawi się razem z pierwszymi wydawnictwami."
+  },
+  "Discover": {
+    "title": "Odkrywaj",
+    "lead": "Muzyka niezależna, lokalne sceny i koncerty — z kontekstem, nie z nieskończonego feedu.",
+    "empty": "Nie ma tu jeszcze nic do odkrycia. Pierwsi artyści dołączą w zamkniętej becie na Śląsku i w GZM."
+  },
+  "Scene": {
+    "title": "Scena",
+    "lead": "Koncerty, kluby i miejsca w Twojej okolicy.",
+    "empty": "Nie ma jeszcze wydarzeń. Pokażemy tylko prawdziwe wydarzenia dodane przez artystów i miejsca."
+  },
+  "Search": {
+    "title": "Szukaj",
+    "lead": "Artyści, wydawnictwa, utwory, playlisty i wydarzenia.",
+    "empty": "Wyszukiwarka ruszy, gdy w katalogu pojawi się muzyka."
+  },
+  "Library": {
+    "title": "Biblioteka",
+    "lead": "Polubione utwory, wydawnictwa, playlisty i historia słuchania.",
+    "empty": "Biblioteka będzie dostępna po zalogowaniu. Konta uruchomimy wkrótce."
+  },
+  "NotFound": {
+    "title": "Nie ma takiej strony",
+    "back": "Wróć na stronę główną"
+  },
+  "Status": {
+    "inDevelopment": "W budowie"
+  },
+  "Account": {
+    "signIn": "Zaloguj się",
+    "signOut": "Wyloguj",
+    "signedInAs": "Zalogowano jako {name}",
+    "settings": "Konto"
+  },
+  "Auth": {
+    "fields": {
+      "email": "E-mail",
+      "password": "Hasło",
+      "newPassword": "Nowe hasło",
+      "confirmPassword": "Powtórz hasło",
+      "displayName": "Nazwa wyświetlana (opcjonalnie)",
+      "ageConfirmed": "Mam co najmniej 16 lat",
+      "inviteCode": "Kod zaproszenia"
+    },
+    "hints": {
+      "password": "Co najmniej 10 znaków.",
+      "inviteCode": "Tunewick jest w zamkniętej becie — konto założysz z kodem od nas lub od artysty."
+    },
+    "login": {
+      "title": "Zaloguj się",
+      "lead": "Wróć do swojej sceny.",
+      "submit": "Zaloguj się",
+      "noAccount": "Nie masz konta?",
+      "toSignup": "Załóż konto",
+      "forgot": "Nie pamiętasz hasła?"
+    },
+    "signup": {
+      "title": "Załóż konto",
+      "lead": "Odkrywaj niezależną muzykę i lokalne sceny.",
+      "submit": "Załóż konto",
+      "haveAccount": "Masz już konto?",
+      "toLogin": "Zaloguj się"
+    },
+    "reset": {
+      "title": "Nie pamiętasz hasła?",
+      "lead": "Podaj e-mail konta. Wyślemy link do ustawienia nowego hasła.",
+      "submit": "Wyślij link",
+      "back": "Wróć do logowania"
+    },
+    "update": {
+      "title": "Ustaw nowe hasło",
+      "lead": "Wybierz nowe hasło do swojego konta.",
+      "submit": "Zapisz hasło",
+      "expired": "Link do zmiany hasła wygasł lub został już użyty.",
+      "requestNew": "Poproś o nowy link"
+    },
+    "checkEmail": {
+      "title": "Sprawdź pocztę",
+      "signup": "Jeśli adres jest poprawny, wysłaliśmy na niego link do potwierdzenia konta. Kliknij go, aby dokończyć rejestrację.",
+      "reset": "Jeśli konto o tym adresie istnieje, wysłaliśmy na nie link do ustawienia nowego hasła.",
+      "back": "Wróć do logowania"
+    },
+    "errors": {
+      "invalidEmail": "Podaj poprawny adres e-mail.",
+      "passwordTooShort": "Hasło musi mieć co najmniej 10 znaków.",
+      "passwordTooLong": "Hasło może mieć najwyżej 72 znaki.",
+      "passwordRequired": "Podaj hasło.",
+      "passwordMismatch": "Hasła nie są takie same.",
+      "displayNameTooLong": "Nazwa może mieć najwyżej 80 znaków.",
+      "ageRequired": "Aby założyć konto, musisz mieć co najmniej 16 lat.",
+      "invalidCredentials": "Nieprawidłowy e-mail lub hasło.",
+      "emailNotConfirmed": "Najpierw potwierdź adres e-mail — link jest w wiadomości od nas.",
+      "weakPassword": "To hasło jest zbyt łatwe do odgadnięcia. Wybierz inne.",
+      "samePassword": "Nowe hasło musi być inne niż obecne.",
+      "rateLimited": "Zbyt wiele prób. Spróbuj ponownie za kilka minut.",
+      "linkInvalid": "Link jest nieprawidłowy lub wygasł.",
+      "unexpected": "Coś poszło nie tak. Spróbuj ponownie.",
+      "inviteRequired": "Wpisz kod zaproszenia.",
+      "inviteInvalid": "Ten kod jest nieprawidłowy, wygasł albo został już wykorzystany."
+    }
+  },
+  "Settings": {
+    "title": "Konto",
+    "lead": "Twój profil publiczny i ustawienia prywatne.",
+    "publicSection": "Profil publiczny",
+    "publicHint": "Te dane widzi każdy, kto otworzy Twój profil.",
+    "privateSection": "Ustawienia prywatne",
+    "privateHint": "Widzisz je tylko Ty.",
+    "fields": {
+      "handle": "Nazwa profilu (adres)",
+      "displayName": "Nazwa wyświetlana",
+      "bio": "O mnie",
+      "locale": "Język serwisu",
+      "visibility": "Kto widzi Twoją aktywność słuchania"
+    },
+    "hints": {
+      "handle": "Małe litery, cyfry i myślniki, 2–40 znaków. Adres profilu: tunewick.com/profil/nazwa",
+      "bio": "Do 500 znaków.",
+      "visibility": "Aktywność słuchania pojawi się w serwisie razem z funkcjami społecznościowymi. To ustawienie zadziała od ich startu."
+    },
+    "locales": {
+      "pl": "Polski",
+      "en": "English"
+    },
+    "visibility": {
+      "public": "Wszyscy",
+      "followers": "Obserwujący",
+      "private": "Tylko ja"
+    },
+    "submit": "Zapisz zmiany",
+    "saved": "Zapisano.",
+    "viewProfile": "Zobacz profil publiczny",
+    "noHandle": "Ustaw nazwę profilu, aby mieć publiczny adres.",
+    "errors": {
+      "handleInvalid": "Użyj 2–40 znaków: małe litery, cyfry i myślniki.",
+      "handleReserved": "Ta nazwa jest zarezerwowana. Wybierz inną.",
+      "handleTaken": "Ta nazwa jest już zajęta.",
+      "displayNameTooLong": "Nazwa może mieć najwyżej 80 znaków.",
+      "bioTooLong": "Opis może mieć najwyżej 500 znaków.",
+      "unexpected": "Nie udało się zapisać. Spróbuj ponownie."
+    }
+  },
+  "Profile": {
+    "memberSince": "Na Tunewick od {date}",
+    "empty": "Ten profil nie ma jeszcze opisu."
+  },
+  "Security": {
+    "title": "Bezpieczeństwo",
+    "lead": "Drugi składnik logowania chroni konto nawet wtedy, gdy ktoś pozna Twoje hasło.",
+    "link": "Bezpieczeństwo i logowanie dwuskładnikowe",
+    "staffNote": "Konta moderatorów i administratorów muszą mieć włączone logowanie dwuskładnikowe.",
+    "statusOn": "Logowanie dwuskładnikowe jest włączone.",
+    "statusOff": "Logowanie dwuskładnikowe jest wyłączone.",
+    "enable": "Włącz aplikację uwierzytelniającą",
+    "disable": "Wyłącz logowanie dwuskładnikowe",
+    "scan": "Zeskanuj kod w aplikacji uwierzytelniającej (np. Aegis, 2FAS, Google Authenticator) albo wpisz klucz ręcznie.",
+    "qrAlt": "Kod QR do dodania Tunewick w aplikacji uwierzytelniającej",
+    "secretLabel": "Klucz do wpisania ręcznie",
+    "code": "Kod z aplikacji (6 cyfr)",
+    "confirm": "Potwierdź i włącz",
+    "disableNeedsVerify": "Aby wyłączyć drugi składnik, najpierw potwierdź logowanie kodem z aplikacji.",
+    "verify": {
+      "title": "Potwierdź logowanie",
+      "lead": "Wpisz 6-cyfrowy kod z aplikacji uwierzytelniającej.",
+      "submit": "Potwierdź"
+    },
+    "errors": {
+      "codeInvalid": "Nieprawidłowy lub wygasły kod. Spróbuj z nowym kodem z aplikacji.",
+      "codeFormat": "Kod ma 6 cyfr.",
+      "rateLimited": "Zbyt wiele prób. Spróbuj ponownie za chwilę.",
+      "unexpected": "Coś poszło nie tak. Spróbuj ponownie."
+    }
+  }
+}

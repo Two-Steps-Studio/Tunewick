@@ -1,0 +1,8 @@
+pnpm-lock.yaml
+.next
+node_modules
+.agents
+skills-lock.json
+docs
+design/brand-board.html
+supabase/.temp

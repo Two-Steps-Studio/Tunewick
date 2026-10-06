@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="pl">
+  <body
+    style="
+      margin: 0;
+      padding: 32px 16px;
+      background: #f2ebdd;
+      color: #171515;
+      font-family: Arial, sans-serif;
+    "
+  >
+    <div style="max-width: 520px; margin: 0 auto">
+      <p style="font-size: 28px; font-weight: 800; letter-spacing: -0.03em; margin: 0 0 32px">
+        tunewick
+      </p>
+      <h1 style="font-size: 20px; margin: 0 0 12px">Ustaw nowe hasło</h1>
+      <p style="line-height: 1.5; margin: 0 0 24px">
+        Otrzymaliśmy prośbę o zmianę hasła do Twojego konta Tunewick. Link jest ważny przez godzinę.
+      </p>
+      <p style="margin: 0 0 32px">
+        <a
+          href="{{ .SiteURL }}/api/auth/confirm?token_hash={{ .TokenHash }}&type=recovery&next=/update-password"
+          style="
+            display: inline-block;
+            background: #171515;
+            color: #d8ff3e;
+            padding: 14px 20px;
+            text-decoration: none;
+            font-weight: 700;
+          "
+          >Ustaw nowe hasło</a
+        >
+      </p>
+      <hr style="border: 0; border-top: 1px solid #c9c1b3; margin: 0 0 24px" />
+      <h2 style="font-size: 16px; margin: 0 0 8px">Reset your password</h2>
+      <p style="line-height: 1.5; margin: 0 0 16px">
+        We received a request to reset the password of your Tunewick account. The link is valid for
+        one hour.
+      </p>
+      <p style="font-size: 12px; color: #6e6762; line-height: 1.5">
+        Jeśli to nie Ty, zignoruj tę wiadomość — hasło się nie zmieni. / If this wasn't you, ignore
+        this email — your password stays the same.
+      </p>
+    </div>
+  </body>
+</html>
