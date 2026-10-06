@@ -56,13 +56,15 @@ export default async function ManageArtistPage({
 
       <div className="auth-page__body">
         {myRole !== "member" ? (
-          <>
-            <h2 className="section-title">{t("manage.info")}</h2>
+          <section className="settings-form__group" aria-labelledby="info">
+            <h2 id="info" className="section-title">
+              {t("manage.info")}
+            </h2>
             <ArtistInfoForm
               artistId={artist.id}
               values={{ name: artist.name, bio: artist.bio, formedYear: artist.formed_year }}
             />
-          </>
+          </section>
         ) : null}
 
         <section className="settings-form__group" aria-labelledby="members">
@@ -73,7 +75,10 @@ export default async function ManageArtistPage({
             {members.map((m) => (
               <li key={m.user_id} className="artist-list__item">
                 <span className="artist-list__name">
-                  {m.profile?.display_name ?? (m.profile?.handle ? `@${m.profile.handle}` : "—")}
+                  {m.user_id === user.id
+                    ? t("manage.you")
+                    : (m.profile?.display_name ??
+                      (m.profile?.handle ? `@${m.profile.handle}` : t("manage.noName")))}
                 </span>
                 <span className="field__hint">
                   {t(`roles.${m.role}`)}

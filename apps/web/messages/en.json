@@ -252,7 +252,9 @@
       "requestVerification": "Request verification",
       "save": "Save",
       "saved": "Saved.",
-      "viewPublic": "View public profile"
+      "viewPublic": "View public profile",
+      "you": "You",
+      "noName": "Account without a profile name"
     },
     "errors": {
       "nameRequired": "Enter the artist name.",

@@ -76,7 +76,7 @@ export function ArtistInfoForm({
   const err = useErrors();
   const [state, action] = useActionState(updateArtist.bind(null, artistId), initial);
   return (
-    <form action={action} className="settings-form__group">
+    <form action={action} className="form-stack">
       <FormMessage error={err(state.error)} saved={state.saved ? t("manage.saved") : undefined} />
       <InputField
         name="name"
@@ -108,7 +108,7 @@ export function InviteMemberForm({ artistId }: { artistId: string }) {
   const err = useErrors();
   const [state, action] = useActionState(inviteMember.bind(null, artistId), initial);
   return (
-    <form action={action} className="artist-invite">
+    <form action={action} className="form-stack">
       <FormMessage error={err(state.error)} />
       <InputField
         name="handle"
@@ -159,7 +159,7 @@ export function VerificationForm({ artistId }: { artistId: string }) {
   const err = useErrors();
   const [state, action] = useActionState(requestVerification.bind(null, artistId), initial);
   return (
-    <form action={action} className="auth-form">
+    <form action={action} className="form-stack">
       <FormMessage error={err(state.error)} saved={state.saved ? t("manage.saved") : undefined} />
       <TextareaField
         name="evidence"

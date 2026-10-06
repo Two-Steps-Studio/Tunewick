@@ -621,9 +621,13 @@ body {
   .artist-list__create {
     justify-self: start;
   }
-  .artist-invite {
+  /* A plain vertical form inside a section (no top rule of its own). */
+  .form-stack {
     display: grid;
-    gap: var(--tk-space-4);
+    gap: var(--tk-space-6);
+  }
+  .form-stack > .button {
+    justify-self: start;
   }
   .artist-member__remove {
     display: contents;

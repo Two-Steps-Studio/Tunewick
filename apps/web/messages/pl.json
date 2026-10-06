@@ -252,7 +252,9 @@
       "requestVerification": "Wyślij prośbę o weryfikację",
       "save": "Zapisz",
       "saved": "Zapisano.",
-      "viewPublic": "Zobacz profil publiczny"
+      "viewPublic": "Zobacz profil publiczny",
+      "you": "Ty",
+      "noName": "Konto bez nazwy profilu"
     },
     "errors": {
       "nameRequired": "Podaj nazwę artysty.",
