@@ -4,6 +4,7 @@ import { getPathname, Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { requireUser } from "@/modules/auth";
 import { MyArtists } from "@/modules/artists";
+import { PlanSummary } from "@/modules/plans";
 import { getMyAccount, SettingsForm } from "@/modules/users";
 
 export async function generateMetadata({
@@ -56,6 +57,7 @@ export default async function SettingsPage({ params }: PageProps<"/[locale]/sett
             activityVisibility: settings.activity_visibility,
           }}
         />
+        <PlanSummary />
         <MyArtists userId={user.id} />
       </div>
     </section>

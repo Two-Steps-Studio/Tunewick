@@ -1,5 +1,5 @@
 import { expect, type Page, test } from "@playwright/test";
-import { createConfirmedUser, enableMfa, grantRole, solidPng } from "./helpers";
+import { createConfirmedUser, enableMfa, grantPremium, grantRole, solidPng } from "./helpers";
 
 // The whole path to listeners: artist → moderator (role + MFA) → anonymous listener.
 // Needs local S3 and the audio worker (pnpm media:start, pnpm worker:start).
@@ -29,7 +29,7 @@ function toneWav(seconds: number) {
 }
 
 async function readyRelease(page: Page) {
-  await createConfirmedUser(page, "publish-artist");
+  const email = await createConfirmedUser(page, "publish-artist");
   const slug = `pub-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 5)}`;
   await page.goto("/artysci/nowy");
   // Unique per run: the local database is shared with other (and earlier) test runs.
@@ -74,7 +74,7 @@ async function readyRelease(page: Page) {
     /^Gotowe: nocna-zmiana\.wav/,
     { timeout: 90_000 },
   );
-  return slug;
+  return { slug, email };
 }
 
 test.describe("review and publishing", () => {
@@ -84,7 +84,7 @@ test.describe("review and publishing", () => {
     page,
     browser,
   }) => {
-    const slug = await readyRelease(page);
+    const { slug, email } = await readyRelease(page);
     const editor = page.url();
     const submission = `Familok ${slug} — Szychta`;
 
@@ -169,6 +169,19 @@ test.describe("review and publishing", () => {
     await expect(listener).toHaveURL(/\/szukaj\?q=nocna\+zmiana$/);
     await listener.getByRole("button", { name: "Odtwórz: Nocna zmiana" }).first().click();
     await expect(bar.getByText("Nocna zmiana")).toBeVisible();
+
+    // Premium (from the database, granted server-side) unlocks the lossless variant.
+    await page.goto("/ustawienia");
+    await expect(page.getByText(/^Free — /)).toBeVisible();
+    grantPremium(email, 30);
+    await page.reload();
+    await expect(page.getByText(/^Premium do \d{1,2} \S+ \d{4}/)).toBeVisible();
+    await expect(page.getByText("Przyznane przez zespół Tunewick: e2e")).toBeVisible();
+    await page.goto(`/artysci/${slug}/wydawnictwa/szychta`);
+    await page.getByRole("button", { name: "Odtwórz: Nocna zmiana" }).click();
+    const artistBar = page.getByRole("region", { name: "Odtwarzacz" });
+    await expect(artistBar.locator(".quality-chip")).toContainText("Lossless");
+    expect(await page.content()).toContain("lossless.flac");
 
     await anonymous.close();
     await staffContext.close();

@@ -189,6 +189,59 @@ export type Database = {
           },
         ];
       };
+      entitlements: {
+        Row: {
+          created_at: string;
+          ends_at: string | null;
+          granted_by: string | null;
+          id: string;
+          plan_code: string;
+          revoked_at: string | null;
+          revoked_by: string | null;
+          revoked_reason: string | null;
+          source: Database["public"]["Enums"]["entitlement_source"];
+          source_ref: string | null;
+          starts_at: string;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          ends_at?: string | null;
+          granted_by?: string | null;
+          id?: string;
+          plan_code: string;
+          revoked_at?: string | null;
+          revoked_by?: string | null;
+          revoked_reason?: string | null;
+          source: Database["public"]["Enums"]["entitlement_source"];
+          source_ref?: string | null;
+          starts_at?: string;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string;
+          ends_at?: string | null;
+          granted_by?: string | null;
+          id?: string;
+          plan_code?: string;
+          revoked_at?: string | null;
+          revoked_by?: string | null;
+          revoked_reason?: string | null;
+          source?: Database["public"]["Enums"]["entitlement_source"];
+          source_ref?: string | null;
+          starts_at?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "entitlements_plan_code_fkey";
+            columns: ["plan_code"];
+            isOneToOne: false;
+            referencedRelation: "plans";
+            referencedColumns: ["code"];
+          },
+        ];
+      };
       feature_flags: {
         Row: {
           description: string | null;
@@ -344,6 +397,30 @@ export type Database = {
           id?: string;
           name?: string;
           slug?: string;
+        };
+        Relationships: [];
+      };
+      plans: {
+        Row: {
+          code: string;
+          features: NonNullable<Json>;
+          max_quality_tier: Database["public"]["Enums"]["quality_tier"];
+          name: string;
+          rank: number;
+        };
+        Insert: {
+          code: string;
+          features?: NonNullable<Json>;
+          max_quality_tier: Database["public"]["Enums"]["quality_tier"];
+          name: string;
+          rank: number;
+        };
+        Update: {
+          code?: string;
+          features?: NonNullable<Json>;
+          max_quality_tier?: Database["public"]["Enums"]["quality_tier"];
+          name?: string;
+          rank?: number;
         };
         Relationships: [];
       };
@@ -913,8 +990,16 @@ export type Database = {
       accept_artist_membership: { Args: { artist: string }; Returns: undefined };
       access_invite_is_valid: { Args: { code: string }; Returns: boolean };
       add_track: { Args: { release: string; title: string }; Returns: string };
+      admin_grant_entitlement: {
+        Args: { days: number; note: string; plan: string; target_user: string };
+        Returns: string;
+      };
       admin_grant_role: {
         Args: { role: Database["public"]["Enums"]["app_role"]; target_user: string };
+        Returns: undefined;
+      };
+      admin_revoke_entitlement: {
+        Args: { entitlement: string; reason: string };
         Returns: undefined;
       };
       admin_revoke_role: {
@@ -1142,6 +1227,17 @@ export type Database = {
       is_reserved_handle: { Args: { candidate: string }; Returns: boolean };
       is_staff: { Args: Record<PropertyKey, never>; Returns: boolean };
       move_track: { Args: { direction: number; track: string }; Returns: undefined };
+      my_plan: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          ends_at: string;
+          max_quality_tier: Database["public"]["Enums"]["quality_tier"];
+          plan_code: string;
+          plan_name: string;
+          source: Database["public"]["Enums"]["entitlement_source"];
+          source_ref: string;
+        }[];
+      };
       release_is_public: { Args: { release: string }; Returns: boolean };
       release_playback: {
         Args: { release: string };
@@ -1185,6 +1281,16 @@ export type Database = {
       search_normalize: { Args: { value: string }; Returns: string };
       set_release_genres: { Args: { genre_ids: number[]; release: string }; Returns: undefined };
       submit_release: { Args: { release: string }; Returns: undefined };
+      system_grant_entitlement: {
+        Args: {
+          days: number;
+          note: string;
+          plan: string;
+          source: Database["public"]["Enums"]["entitlement_source"];
+          target_email: string;
+        };
+        Returns: string;
+      };
       system_grant_role: {
         Args: { role: Database["public"]["Enums"]["app_role"]; target_email: string };
         Returns: string;
@@ -1208,6 +1314,7 @@ export type Database = {
         | "mixing_engineer"
         | "mastering_engineer"
         | "other";
+      entitlement_source: "promo" | "beta" | "admin" | "referral" | "subscription";
       image_kind: "release_artwork" | "artist_image";
       quality_tier: "data_saver" | "high" | "lossless" | "hires";
       release_artist_role: "primary" | "featured";
@@ -1361,6 +1468,7 @@ export const Constants = {
         "mastering_engineer",
         "other",
       ],
+      entitlement_source: ["promo", "beta", "admin", "referral", "subscription"],
       image_kind: ["release_artwork", "artist_image"],
       quality_tier: ["data_saver", "high", "lossless", "hires"],
       release_artist_role: ["primary", "featured"],

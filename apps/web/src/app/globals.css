@@ -1133,6 +1133,20 @@ body {
     box-shadow: inset 3px 0 0 var(--line);
   }
 
+  .plan-status {
+    display: grid;
+    gap: var(--tk-space-2);
+  }
+  .plan-status__free,
+  .plan-status__premium {
+    padding-left: var(--tk-space-3);
+    font-weight: 600;
+    box-shadow: inset 3px 0 0 var(--line);
+  }
+  .plan-status__premium {
+    box-shadow: inset 3px 0 0 var(--accent);
+  }
+
   /* Artists --------------------------------------------------------------- */
   .section-title {
     font-family: var(--tk-font-display);

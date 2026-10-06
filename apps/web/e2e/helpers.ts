@@ -113,6 +113,24 @@ export function grantRole(email: string, role: "moderator" | "admin") {
   );
 }
 
+/** Grants Premium in the local database (the same script support uses). */
+export function grantPremium(email: string, days = 30) {
+  execFileSync(
+    "node",
+    [
+      "../../scripts/grant-plan.mjs",
+      "--local",
+      "--email",
+      email,
+      "--days",
+      String(days),
+      "--note",
+      "e2e",
+    ],
+    { stdio: "pipe" },
+  );
+}
+
 /** A valid solid-colour PNG (RGB, 8-bit) built with zlib only — for image upload tests. */
 export function solidPng(width: number, height: number, [r, g, b]: [number, number, number]) {
   const crcTable = Array.from({ length: 256 }, (_, n) => {

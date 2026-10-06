@@ -284,6 +284,21 @@ size)` (JPEG/PNG/WebP, ≤ 25 MB, 10 per owner per hour), `complete_image_upload
 `abandon_image_upload`; worker: `claim_image_upload`, `finish_image_upload`, `fail_image_upload`.
 `release_readiness` now also requires an accepted cover (`artwork`).
 
+## Plans and entitlements (implemented, M9.1)
+
+`public.plans` (`free` rank 0 → `high`; `premium` rank 1 → `hires`) and `public.entitlements`
+(`source` enum promo/beta/admin/referral/subscription, `source_ref`, `starts_at`, `ends_at` null =
+for life, `revoked_at`/`revoked_reason`/`revoked_by`; never deleted). Users read their own rows;
+admins with aal2 read all. Nobody writes the table directly.
+`private.effective_plan(user)` picks the highest-ranked active plan and follows back-to-back
+entitlements for the end date; `public.my_plan()` exposes it to the caller (anonymous → free).
+`private.grant_entitlement(...)` is the single grant path (per-user advisory lock; time-limited
+grants start where the current run ends; `already_lifetime` hint when the plan is already for
+life; audited). Wrappers: `admin_grant_entitlement(user, plan, days | null, note)` and
+`admin_revoke_entitlement(id, reason)` (admin + aal2, audited), `system_grant_entitlement(email,
+plan, days, source, note)` (service role, `scripts/grant-plan.mjs`). The web app's
+`listenerEntitlement()` is `my_plan().max_quality_tier`.
+
 ## Search (implemented, M6.2)
 
 `public.search_normalize(text)` = lower(unaccent(text)) (immutable wrapper; "Łódź" → "lodz") with

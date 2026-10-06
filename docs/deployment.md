@@ -137,6 +137,11 @@ then run `node scripts/create-invites.mjs ...` in the same window.
    ```
 3. Create beta invites in batches (`--count 50 --max-uses 1 --expires-days 30 --label "beta artists"`).
    Codes are printed once; only hashes are stored.
+4. Optional Premium for beta testers (Lossless/Hi-Res), audited:
+
+   ```bash
+   SUPABASE_URL=... SUPABASE_SECRET_KEY=... node scripts/grant-plan.mjs --email <tester> --days 90 --source beta --note "beta 2026"
+   ```
 
 ## 5. Checklist after each deploy
 

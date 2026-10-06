@@ -683,5 +683,20 @@
       "wielkopolskie": "wielkopolskie",
       "zachodniopomorskie": "zachodniopomorskie"
     }
+  },
+  "Plan": {
+    "title": "Plan",
+    "free": "Free — słuchasz w jakości High.",
+    "until": "{plan} do {date}",
+    "lifetime": "{plan} na zawsze",
+    "freeQuality": "Cały katalog, bez reklam i bez limitów pomijania. Lossless i Hi-Res są w Premium — w becie dostępne z kodów promocyjnych.",
+    "premiumQuality": "Odtwarzacz wybiera Lossless lub Hi-Res, jeśli utwór ma taką wersję i Twoje urządzenie ją obsłuży.",
+    "source": {
+      "promo": "Z kodu: {ref}",
+      "beta": "Dla testerów bety: {ref}",
+      "admin": "Przyznane przez zespół Tunewick: {ref}",
+      "referral": "Za polecenie: {ref}",
+      "subscription": "Subskrypcja"
+    }
   }
 }

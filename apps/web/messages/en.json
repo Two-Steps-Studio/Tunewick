@@ -683,5 +683,20 @@
       "wielkopolskie": "Greater Poland",
       "zachodniopomorskie": "West Pomeranian"
     }
+  },
+  "Plan": {
+    "title": "Plan",
+    "free": "Free — you listen in High quality.",
+    "until": "{plan} until {date}",
+    "lifetime": "{plan} for life",
+    "freeQuality": "The whole catalog, no ads and no skip limits. Lossless and Hi-Res are in Premium — during the beta through promo codes.",
+    "premiumQuality": "The player picks Lossless or Hi-Res when a track has it and your device can play it.",
+    "source": {
+      "promo": "From code: {ref}",
+      "beta": "For beta testers: {ref}",
+      "admin": "Granted by the Tunewick team: {ref}",
+      "referral": "For a referral: {ref}",
+      "subscription": "Subscription"
+    }
   }
 }
