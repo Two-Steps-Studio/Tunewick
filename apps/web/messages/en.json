@@ -272,5 +272,108 @@
       "forbidden": "You are not allowed to do this.",
       "unexpected": "Could not save. Please try again."
     }
+  },
+  "Releases": {
+    "list": {
+      "title": "Releases",
+      "empty": "No releases yet.",
+      "create": "New release",
+      "edit": "Edit"
+    },
+    "create": {
+      "title": "New release",
+      "lead": "Start with the title and type. Tracks, credits and genres come next.",
+      "submit": "Create draft"
+    },
+    "editor": {
+      "title": "{title}",
+      "details": "Details",
+      "tracks": "Tracks",
+      "genres": "Genres",
+      "genresHint": "Choose up to 3 genres.",
+      "save": "Save",
+      "saved": "Saved.",
+      "addTrack": "Add track",
+      "trackTitle": "Track title",
+      "moveUp": "Move up",
+      "moveDown": "Move down",
+      "deleteTrack": "Delete track",
+      "noTracks": "Add the first track.",
+      "credits": "Credits",
+      "addCredit": "Add credit",
+      "deleteCredit": "Remove",
+      "readOnly": "This release is no longer a draft — editing is locked.",
+      "deleteDraft": "Delete draft",
+      "back": "Back to the artist profile",
+      "aiMissing": "Declare AI involvement before submitting for review."
+    },
+    "fields": {
+      "title": "Title",
+      "slug": "Release address",
+      "type": "Type",
+      "releaseDate": "Release date",
+      "explicit": "Explicit content",
+      "aiContent": "Artificial intelligence involvement",
+      "territories": "Availability",
+      "upc": "UPC/EAN code (optional)",
+      "pLine": "℗ line (recording)",
+      "cLine": "© line (release)",
+      "isrc": "ISRC (optional)",
+      "creditName": "Name or alias",
+      "creditRole": "Role",
+      "creditDetail": "Details (e.g. instrument)"
+    },
+    "types": {
+      "single": "Single",
+      "ep": "EP",
+      "album": "Album",
+      "compilation": "Compilation",
+      "live": "Live"
+    },
+    "statuses": {
+      "draft": "Draft",
+      "processing": "Processing",
+      "in_review": "In review",
+      "approved": "Approved",
+      "published": "Published",
+      "rejected": "Needs changes",
+      "taken_down": "Taken down"
+    },
+    "ai": {
+      "unknown": "Not declared (required before submitting)",
+      "human": "No AI — made by people",
+      "ai_assisted": "AI-assisted",
+      "ai_generated": "AI-generated"
+    },
+    "territories": {
+      "WORLD": "Worldwide",
+      "EU": "European Union",
+      "PL": "Poland only"
+    },
+    "creditRoles": {
+      "producer": "Producer",
+      "songwriter": "Songwriter",
+      "composer": "Composer",
+      "lyricist": "Lyricist",
+      "performer": "Performer",
+      "mixing_engineer": "Mixing engineer",
+      "mastering_engineer": "Mastering engineer",
+      "other": "Other role"
+    },
+    "errors": {
+      "titleRequired": "Enter a title.",
+      "titleTooLong": "The title can have at most 200 characters.",
+      "slugInvalid": "Use 1–80 characters: lowercase letters, digits and hyphens.",
+      "slugTaken": "This artist already has a release with this address.",
+      "dateInvalid": "Enter a valid date.",
+      "upcInvalid": "UPC/EAN has 12 or 13 digits.",
+      "lineTooLong": "At most 200 characters.",
+      "isrcInvalid": "ISRC looks like PLABC2600001.",
+      "nameRequired": "Enter a name or alias.",
+      "tooManyGenres": "At most 3 genres.",
+      "notEditable": "This release can no longer be edited.",
+      "forbidden": "You are not allowed to do this.",
+      "unexpected": "Could not save. Please try again."
+    }
   }
 }

@@ -56,8 +56,9 @@ export async function updateArtist(
   _prev: ArtistFormState,
   formData: FormData,
 ): Promise<ArtistFormState> {
-  const parsed = updateArtistSchema.safeParse(fields(formData, ["name", "bio", "formedYear"]));
-  if (!parsed.success) return { fieldErrors: firstErrors(parsed.error.issues) };
+  const values = fields(formData, ["name", "bio", "formedYear"]);
+  const parsed = updateArtistSchema.safeParse(values);
+  if (!parsed.success) return { fieldErrors: firstErrors(parsed.error.issues), values };
 
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase
@@ -65,9 +66,9 @@ export async function updateArtist(
     .update({ name: parsed.data.name, bio: parsed.data.bio, formed_year: parsed.data.formedYear })
     .eq("id", artistId)
     .select("id");
-  if (error) return failure(error);
+  if (error) return failure(error, values);
   // RLS silently filters rows the user may not edit.
-  if (!data?.length) return { error: "forbidden" };
+  if (!data?.length) return { error: "forbidden", values };
   revalidatePath("/", "layout");
   return { saved: true };
 }

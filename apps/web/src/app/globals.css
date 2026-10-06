@@ -415,6 +415,8 @@ body {
     font-weight: 600;
   }
   .field__input {
+    width: 100%;
+    min-width: 0; /* long select options must not widen the column */
     min-height: 2.75rem;
     padding: 0 var(--tk-space-3);
     background: var(--bg-sunken);
@@ -631,5 +633,107 @@ body {
   }
   .artist-member__remove {
     display: contents;
+  }
+
+  /* Utilities --------------------------------------------------------------- */
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  .button--danger {
+    color: var(--signal);
+  }
+
+  /* Release editor ------------------------------------------------------------ */
+  .genre-picker {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--tk-space-2);
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  .genre-picker legend {
+    margin-bottom: var(--tk-space-3);
+  }
+  .genre-picker__option {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--tk-space-2);
+    min-height: 2.5rem;
+    padding: 0 var(--tk-space-3);
+    box-shadow: inset 0 0 0 1px var(--line);
+    cursor: pointer;
+  }
+  .genre-picker__option:has(input:checked) {
+    box-shadow: inset 0 0 0 2px var(--scene);
+  }
+  .genre-picker__option input {
+    accent-color: var(--tk-purple);
+  }
+  .track-list {
+    display: grid;
+    gap: var(--tk-space-2);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .track-item {
+    border-bottom: 1px solid var(--line);
+    padding-bottom: var(--tk-space-2);
+  }
+  .track-item__head {
+    display: flex;
+    align-items: center;
+    gap: var(--tk-space-3);
+    min-height: 2.75rem;
+  }
+  .track-item__number {
+    width: 2ch;
+    font-family: var(--tk-font-mono);
+    font-size: var(--tk-text-sm);
+    color: var(--text-muted);
+    text-align: right;
+  }
+  .track-item__title {
+    flex: 1;
+    min-width: 0;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+  }
+  .track-item__actions {
+    display: flex;
+  }
+  .track-item__actions .button {
+    min-width: 2.75rem;
+    padding: 0;
+  }
+  .track-item__actions .button:disabled {
+    opacity: 0.3;
+    cursor: default;
+  }
+  .track-item__details {
+    margin-left: calc(2ch + var(--tk-space-3));
+  }
+  .track-item__details summary {
+    cursor: pointer;
+    font-size: var(--tk-text-sm);
+    color: var(--text-muted);
+    padding: var(--tk-space-2) 0;
+  }
+  .track-item__details[open] {
+    display: grid;
+    gap: var(--tk-space-4);
+    padding-bottom: var(--tk-space-4);
+  }
+  .track-item__subtitle {
+    font-size: var(--tk-text-sm);
+    font-weight: 700;
   }
 }

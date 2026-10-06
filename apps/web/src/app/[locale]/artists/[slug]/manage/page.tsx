@@ -11,6 +11,7 @@ import {
   VerificationForm,
 } from "@/modules/artists";
 import { requireUser } from "@/modules/auth";
+import { ArtistReleaseList } from "@/modules/catalog";
 
 export const metadata: Metadata = { robots: { index: false } };
 
@@ -66,6 +67,8 @@ export default async function ManageArtistPage({
             />
           </section>
         ) : null}
+
+        <ArtistReleaseList artist={{ id: artist.id, slug: artist.slug }} />
 
         <section className="settings-form__group" aria-labelledby="members">
           <h2 id="members" className="section-title">

@@ -25,18 +25,7 @@ export interface ArtistFormState {
 
 const name = z.string().trim().min(1, { error: "nameRequired" }).max(120, { error: "nameTooLong" });
 
-/** Suggests a profile address from a name: "Zespół Ćma" → "zespol-cma". */
-export function slugify(input: string): string {
-  return input
-    .normalize("NFD")
-    .replace(/\p{Diacritic}/gu, "")
-    .replace(/ł/g, "l")
-    .replace(/Ł/g, "l")
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "")
-    .slice(0, 60);
-}
+export { slugify } from "@/lib/slug";
 
 export const createArtistSchema = z.object({
   name,

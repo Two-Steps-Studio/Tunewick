@@ -81,21 +81,21 @@ export function ArtistInfoForm({
       <InputField
         name="name"
         label={t("fields.name")}
-        defaultValue={values.name}
+        defaultValue={state.values?.name ?? values.name}
         error={err(state.fieldErrors?.name)}
         required
       />
       <TextareaField
         name="bio"
         label={t("fields.bio")}
-        defaultValue={values.bio ?? ""}
+        defaultValue={state.values?.bio ?? values.bio ?? ""}
         error={err(state.fieldErrors?.bio)}
       />
       <InputField
         name="formedYear"
         label={t("fields.formedYear")}
         inputMode="numeric"
-        defaultValue={values.formedYear?.toString() ?? ""}
+        defaultValue={state.values?.formedYear ?? values.formedYear?.toString() ?? ""}
         error={err(state.fieldErrors?.formedYear)}
       />
       <Submit>{t("manage.save")}</Submit>

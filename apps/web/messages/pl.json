@@ -272,5 +272,108 @@
       "forbidden": "Nie masz uprawnień do tej operacji.",
       "unexpected": "Nie udało się zapisać. Spróbuj ponownie."
     }
+  },
+  "Releases": {
+    "list": {
+      "title": "Wydawnictwa",
+      "empty": "Nie ma jeszcze wydawnictw.",
+      "create": "Nowe wydawnictwo",
+      "edit": "Edytuj"
+    },
+    "create": {
+      "title": "Nowe wydawnictwo",
+      "lead": "Zacznij od tytułu i rodzaju. Utwory, twórców i gatunki dodasz w następnym kroku.",
+      "submit": "Utwórz szkic"
+    },
+    "editor": {
+      "title": "{title}",
+      "details": "Szczegóły",
+      "tracks": "Utwory",
+      "genres": "Gatunki",
+      "genresHint": "Wybierz do 3 gatunków.",
+      "save": "Zapisz",
+      "saved": "Zapisano.",
+      "addTrack": "Dodaj utwór",
+      "trackTitle": "Tytuł utworu",
+      "moveUp": "W górę",
+      "moveDown": "W dół",
+      "deleteTrack": "Usuń utwór",
+      "noTracks": "Dodaj pierwszy utwór.",
+      "credits": "Twórcy",
+      "addCredit": "Dodaj twórcę",
+      "deleteCredit": "Usuń",
+      "readOnly": "To wydawnictwo nie jest już szkicem — edycja jest zablokowana.",
+      "deleteDraft": "Usuń szkic",
+      "back": "Wróć do profilu artysty",
+      "aiMissing": "Określ udział AI przed wysłaniem do weryfikacji."
+    },
+    "fields": {
+      "title": "Tytuł",
+      "slug": "Adres wydawnictwa",
+      "type": "Rodzaj",
+      "releaseDate": "Data wydania",
+      "explicit": "Treści dla dorosłych (explicit)",
+      "aiContent": "Udział sztucznej inteligencji",
+      "territories": "Dostępność",
+      "upc": "Kod UPC/EAN (opcjonalnie)",
+      "pLine": "Linia ℗ (nagranie)",
+      "cLine": "Linia © (wydawnictwo)",
+      "isrc": "ISRC (opcjonalnie)",
+      "creditName": "Imię i nazwisko lub pseudonim",
+      "creditRole": "Rola",
+      "creditDetail": "Szczegóły (np. instrument)"
+    },
+    "types": {
+      "single": "Singiel",
+      "ep": "EP",
+      "album": "Album",
+      "compilation": "Kompilacja",
+      "live": "Koncert"
+    },
+    "statuses": {
+      "draft": "Szkic",
+      "processing": "Przetwarzanie",
+      "in_review": "Weryfikacja",
+      "approved": "Zatwierdzone",
+      "published": "Opublikowane",
+      "rejected": "Do poprawy",
+      "taken_down": "Zdjęte"
+    },
+    "ai": {
+      "unknown": "Nie określono (wymagane przed wysłaniem)",
+      "human": "Bez AI — utworzone przez ludzi",
+      "ai_assisted": "Z pomocą AI",
+      "ai_generated": "Wygenerowane przez AI"
+    },
+    "territories": {
+      "WORLD": "Cały świat",
+      "EU": "Unia Europejska",
+      "PL": "Tylko Polska"
+    },
+    "creditRoles": {
+      "producer": "Producent",
+      "songwriter": "Autor piosenki",
+      "composer": "Kompozytor",
+      "lyricist": "Autor tekstu",
+      "performer": "Wykonawca",
+      "mixing_engineer": "Realizator miksu",
+      "mastering_engineer": "Realizator masteringu",
+      "other": "Inna rola"
+    },
+    "errors": {
+      "titleRequired": "Podaj tytuł.",
+      "titleTooLong": "Tytuł może mieć najwyżej 200 znaków.",
+      "slugInvalid": "Użyj 1–80 znaków: małe litery, cyfry i myślniki.",
+      "slugTaken": "To wydawnictwo artysty ma już taki adres.",
+      "dateInvalid": "Podaj poprawną datę.",
+      "upcInvalid": "Kod UPC/EAN ma 12 lub 13 cyfr.",
+      "lineTooLong": "Najwyżej 200 znaków.",
+      "isrcInvalid": "ISRC ma format np. PLABC2600001.",
+      "nameRequired": "Podaj imię lub pseudonim.",
+      "tooManyGenres": "Najwyżej 3 gatunki.",
+      "notEditable": "Tego wydawnictwa nie można już edytować.",
+      "forbidden": "Nie masz uprawnień do tej operacji.",
+      "unexpected": "Nie udało się zapisać. Spróbuj ponownie."
+    }
   }
 }

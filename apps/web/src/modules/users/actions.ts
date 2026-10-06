@@ -17,13 +17,13 @@ export async function updateSettings(
   _prev: SettingsFormState,
   formData: FormData,
 ): Promise<SettingsFormState> {
-  const parsed = settingsSchema.safeParse({
-    handle: formData.get("handle") ?? "",
-    displayName: formData.get("displayName") ?? "",
-    bio: formData.get("bio") ?? "",
-    locale: formData.get("locale"),
-    activityVisibility: formData.get("activityVisibility"),
-  });
+  const values = Object.fromEntries(
+    ["handle", "displayName", "bio", "locale", "activityVisibility"].map((n) => [
+      n,
+      String(formData.get(n) ?? ""),
+    ]),
+  );
+  const parsed = settingsSchema.safeParse(values);
   if (!parsed.success) {
     const fieldErrors: SettingsFormState["fieldErrors"] = {};
     for (const issue of parsed.error.issues) {
@@ -32,7 +32,9 @@ export async function updateSettings(
         fieldErrors[field] = issue.message as NonNullable<SettingsFormState["error"]>;
       }
     }
-    return Object.keys(fieldErrors).length ? { fieldErrors } : { error: "unexpected" };
+    return Object.keys(fieldErrors).length
+      ? { fieldErrors, values }
+      : { error: "unexpected", values };
   }
 
   const supabase = await createSupabaseServerClient();
@@ -46,14 +48,14 @@ export async function updateSettings(
     .eq("id", auth.user.id);
   if (profile.error) {
     const fieldErrors = profileErrorField(profile.error);
-    return fieldErrors ? { fieldErrors } : { error: "unexpected" };
+    return fieldErrors ? { fieldErrors, values } : { error: "unexpected", values };
   }
 
   const settings = await supabase
     .from("profile_settings")
     .update({ locale: input.locale, activity_visibility: input.activityVisibility })
     .eq("user_id", auth.user.id);
-  if (settings.error) return { error: "unexpected" };
+  if (settings.error) return { error: "unexpected", values };
 
   // A new language preference also switches the interface right away.
   if (input.locale !== (await getLocale())) {

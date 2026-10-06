@@ -96,7 +96,7 @@ export function SettingsForm({ values }: { values: Values }) {
             <input
               id={p.id}
               name="handle"
-              defaultValue={values.handle ?? ""}
+              defaultValue={state.values?.handle ?? values.handle ?? ""}
               autoComplete="username"
               autoCapitalize="none"
               spellCheck={false}
@@ -111,7 +111,7 @@ export function SettingsForm({ values }: { values: Values }) {
             <input
               id={p.id}
               name="displayName"
-              defaultValue={values.displayName ?? ""}
+              defaultValue={state.values?.displayName ?? values.displayName ?? ""}
               aria-describedby={p.describedBy}
               aria-invalid={p.invalid}
               className="field__input"
@@ -124,7 +124,7 @@ export function SettingsForm({ values }: { values: Values }) {
               id={p.id}
               name="bio"
               rows={4}
-              defaultValue={values.bio ?? ""}
+              defaultValue={state.values?.bio ?? values.bio ?? ""}
               aria-describedby={p.describedBy}
               aria-invalid={p.invalid}
               className="field__input field__textarea"
@@ -138,7 +138,13 @@ export function SettingsForm({ values }: { values: Values }) {
         <p className="field__hint">{t("privateHint")}</p>
         <Field label={t("fields.locale")}>
           {(p) => (
-            <select id={p.id} name="locale" defaultValue={values.locale} className="field__input">
+            <select
+              key={state.values?.locale ?? values.locale}
+              id={p.id}
+              name="locale"
+              defaultValue={state.values?.locale ?? values.locale}
+              className="field__input"
+            >
               <option value="pl">{t("locales.pl")}</option>
               <option value="en">{t("locales.en")}</option>
             </select>
@@ -147,9 +153,10 @@ export function SettingsForm({ values }: { values: Values }) {
         <Field label={t("fields.visibility")} hint={t("hints.visibility")}>
           {(p) => (
             <select
+              key={state.values?.activityVisibility ?? values.activityVisibility}
               id={p.id}
               name="activityVisibility"
-              defaultValue={values.activityVisibility}
+              defaultValue={state.values?.activityVisibility ?? values.activityVisibility}
               aria-describedby={p.describedBy}
               className="field__input"
             >

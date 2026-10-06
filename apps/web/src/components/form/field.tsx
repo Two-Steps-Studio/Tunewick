@@ -93,6 +93,9 @@ export function SelectField({
         {label}
       </label>
       <select
+        // React does not update a select's default option on re-render, and React 19 resets
+        // forms after an action — remount when the default changes so the reset restores it.
+        key={String(select.defaultValue)}
         id={id}
         {...select}
         aria-invalid={error ? true : undefined}
@@ -145,5 +148,27 @@ export function Submit({
     >
       {children}
     </button>
+  );
+}
+
+export function CheckboxField({ label, error, ...input }: Omit<FieldProps, "hint"> & InputProps) {
+  const id = useId();
+  return (
+    <div className="field field--checkbox">
+      <input
+        id={id}
+        type="checkbox"
+        {...input}
+        aria-invalid={error ? true : undefined}
+        aria-describedby={error ? `${id}-error` : undefined}
+        className="field__checkbox"
+      />
+      <label htmlFor={id}>{label}</label>
+      {error ? (
+        <p id={`${id}-error`} className="field__error">
+          {error}
+        </p>
+      ) : null}
+    </div>
   );
 }

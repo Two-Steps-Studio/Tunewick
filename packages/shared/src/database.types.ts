@@ -628,6 +628,7 @@ export type Database = {
     Functions: {
       accept_artist_membership: { Args: { artist: string }; Returns: undefined };
       access_invite_is_valid: { Args: { code: string }; Returns: boolean };
+      add_track: { Args: { release: string; title: string }; Returns: string };
       admin_grant_role: {
         Args: { role: Database["public"]["Enums"]["app_role"]; target_user: string };
         Returns: undefined;
@@ -644,6 +645,7 @@ export type Database = {
         Returns: number;
       };
       create_artist: { Args: { name: string; slug: string }; Returns: string };
+      delete_track: { Args: { track: string }; Returns: undefined };
       has_app_role: {
         Args: { required: Database["public"]["Enums"]["app_role"] };
         Returns: boolean;
@@ -663,6 +665,7 @@ export type Database = {
       is_feature_enabled: { Args: { flag: string }; Returns: boolean };
       is_reserved_handle: { Args: { candidate: string }; Returns: boolean };
       is_staff: { Args: Record<PropertyKey, never>; Returns: boolean };
+      move_track: { Args: { direction: number; track: string }; Returns: undefined };
       release_is_public: { Args: { release: string }; Returns: boolean };
       remove_artist_member: { Args: { artist: string; member: string }; Returns: undefined };
       request_artist_verification: {
@@ -673,6 +676,7 @@ export type Database = {
         Args: { required: Database["public"]["Enums"]["app_role"] };
         Returns: undefined;
       };
+      set_release_genres: { Args: { genre_ids: number[]; release: string }; Returns: undefined };
       system_grant_role: {
         Args: { role: Database["public"]["Enums"]["app_role"]; target_email: string };
         Returns: string;

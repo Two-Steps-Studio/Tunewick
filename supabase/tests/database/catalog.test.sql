@@ -43,13 +43,13 @@ select lives_ok($$select accept_artist_membership((select id from ids where name
   'member accepts the invitation');
 insert into releases (artist_id, slug, title, type)
 values ((select id from ids where name = 'artist'), 'pierwsza-epka', 'Pierwsza EPka', 'ep');
-insert into ids values ('release', (select id from releases where slug = 'pierwsza-epka'));
-select is((select status::text from releases where slug = 'pierwsza-epka'), 'draft', 'new release is a draft');
-select is((select created_by from releases where slug = 'pierwsza-epka'),
+insert into ids values ('release', (select id from releases where slug = 'pierwsza-epka' and created_by = '00000000-0000-0000-0000-0000000000f2'));
+select is((select status::text from releases where id = (select id from ids where name = 'release')), 'draft', 'new release is a draft');
+select is((select created_by from releases where id = (select id from ids where name = 'release')),
   '00000000-0000-0000-0000-0000000000f2'::uuid, 'created_by defaults to the member');
 
 select throws_ok(
-  $$update releases set status = 'published' where slug = 'pierwsza-epka'$$,
+  $$update releases set status = 'published' where id = (select id from ids where name = 'release')$$,
   '42501', null, 'members cannot change status directly');
 
 insert into tracks (release_id, track_number, title)
@@ -80,7 +80,7 @@ select throws_ok(
 
 -- ---------------------------------------------------------------- outsider (f3)
 set local request.jwt.claims = '{"sub": "00000000-0000-0000-0000-0000000000f3", "role": "authenticated"}';
-select is((select count(*)::int from releases where slug = 'pierwsza-epka'), 0, 'outsiders do not see drafts');
+select is((select count(*)::int from releases where id = (select id from ids where name = 'release')), 0, 'outsiders do not see drafts');
 update artists set name = 'Przejęte' where slug = 'zespol-testowy';
 select is((select name from artists where slug = 'zespol-testowy'), 'Zespół Testowy',
   'outsiders cannot edit artists');
@@ -91,22 +91,22 @@ select throws_ok(
 
 -- ---------------------------------------------------------------- moderator (f4)
 set local request.jwt.claims = '{"sub": "00000000-0000-0000-0000-0000000000f4", "role": "authenticated"}';
-select is((select count(*)::int from releases where slug = 'pierwsza-epka'), 1, 'moderators see drafts');
+select is((select count(*)::int from releases where id = (select id from ids where name = 'release')), 1, 'moderators see drafts');
 select is((select count(*)::int from rights_declarations), 1, 'moderators see declarations');
 
 -- ---------------------------------------------------------------- anonymous
 set local role anon;
 set local request.jwt.claims = '{"role": "anon"}';
-select is((select count(*)::int from releases where slug = 'pierwsza-epka'), 0, 'anonymous visitors do not see drafts');
+select is((select count(*)::int from releases where id = (select id from ids where name = 'release')), 0, 'anonymous visitors do not see drafts');
 
 -- Publishing happens server-side (review flow); simulate it as the owner of the tables.
 reset role;
-update releases set status = 'published', publish_at = now() + interval '1 day' where slug = 'pierwsza-epka';
+update releases set status = 'published', publish_at = now() + interval '1 day' where id = (select id from ids where name = 'release');
 set local role anon;
 set local request.jwt.claims = '{"role": "anon"}';
-select is((select count(*)::int from releases where slug = 'pierwsza-epka'), 0, 'scheduled releases stay hidden');
+select is((select count(*)::int from releases where id = (select id from ids where name = 'release')), 0, 'scheduled releases stay hidden');
 reset role;
-update releases set publish_at = now() - interval '1 minute' where slug = 'pierwsza-epka';
+update releases set publish_at = now() - interval '1 minute' where id = (select id from ids where name = 'release');
 set local role anon;
 set local request.jwt.claims = '{"role": "anon"}';
 select is((select count(*)::int from tracks where release_id = (select id from ids where name = 'release')),
@@ -115,8 +115,8 @@ select is((select count(*)::int from tracks where release_id = (select id from i
 -- Members cannot edit a published release.
 set local role authenticated;
 set local request.jwt.claims = '{"sub": "00000000-0000-0000-0000-0000000000f2", "role": "authenticated"}';
-update releases set title = 'Zmieniona po publikacji' where slug = 'pierwsza-epka';
-select is((select title from releases where slug = 'pierwsza-epka'), 'Pierwsza EPka',
+update releases set title = 'Zmieniona po publikacji' where id = (select id from ids where name = 'release');
+select is((select title from releases where id = (select id from ids where name = 'release')), 'Pierwsza EPka',
   'published releases are not editable by members');
 
 -- ---------------------------------------------------------------- owner again
