@@ -55,10 +55,12 @@ export const updateArtistSchema = z.object({
     .transform((v) => (v === "" ? null : Number(v))),
   voivodeship: z
     .string()
+    .default("")
     .refine((v) => v === "" || isVoivodeship(v), { error: "voivodeshipInvalid" })
     .transform((v) => (v === "" ? null : (v as Voivodeship))),
   city: z
     .string()
+    .default("")
     .trim()
     .max(80, { error: "cityTooLong" })
     .transform((v) => (v === "" ? null : v)),
