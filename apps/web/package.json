@@ -9,7 +9,8 @@
     "lint": "eslint",
     "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest run",
-    "e2e": "playwright test"
+    "e2e": "playwright test",
+    "perf:budget": "node scripts/perf-budget.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",

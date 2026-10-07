@@ -247,6 +247,21 @@ preserves relative levels inside a release.
   trigram-indexed expression. Foreign keys read by hot paths or cascades got indexes; audit-only
   columns (`created_by`, `reviewed_by`, …) stay unindexed on purpose — they are only touched when
   an account is deleted.
+- Page budget (M11.6): `pnpm --filter @tunewick/web perf:budget` loads key pages from a running
+  production build in Chromium emulating a mid-range phone on 4G (Pixel 7 viewport, 4x CPU
+  slowdown, 9 Mb/s, 150 ms RTT, cold cache) and fails over LCP 2.5 s or 250 kB of compressed JS.
+  First run (local server, so without real network distance to Vercel and Supabase):
+
+  | Page | LCP | JS (compressed) |
+  | --- | --- | --- |
+  | `/` | 840 ms | 166 kB |
+  | `/scena` | 664 ms | 165 kB |
+  | `/szukaj` | 596 ms | 166 kB |
+  | `/logowanie` | 700 ms | 162 kB |
+  | `/biblioteka` | 704 ms | 169 kB |
+
+  Most of the JS is the React/Next runtime and the persistent player shared by every page. Repeat
+  against the production URL after deploy for numbers that include real latency.
 
 ## 12. Cost estimate (order of magnitude, closed beta)
 
