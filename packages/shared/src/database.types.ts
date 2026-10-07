@@ -1711,6 +1711,17 @@ export type Database = {
           user_id: string;
         }[];
       };
+      admin_playback_summary: {
+        Args: { days?: number };
+        Returns: {
+          errors: number;
+          first_audio_p50_ms: number;
+          first_audio_p90_ms: number;
+          starts: number;
+          tier: Database["public"]["Enums"]["quality_tier"];
+          top_error: string;
+        }[];
+      };
       admin_revoke_entitlement: {
         Args: { entitlement: string; reason: string };
         Returns: undefined;
@@ -2067,6 +2078,17 @@ export type Database = {
         }[];
       };
       remove_artist_member: { Args: { artist: string; member: string }; Returns: undefined };
+      report_playback: {
+        Args: {
+          browser?: string;
+          error_code?: string;
+          first_audio_ms?: number;
+          outcome: string;
+          strategy?: string;
+          tier?: Database["public"]["Enums"]["quality_tier"];
+        };
+        Returns: undefined;
+      };
       request_artist_verification: {
         Args: { artist: string; evidence: Json; note?: string };
         Returns: string;

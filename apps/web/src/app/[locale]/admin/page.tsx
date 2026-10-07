@@ -31,7 +31,7 @@ export default async function AdminPage({ params, searchParams }: PageProps<"/[l
   const filter = AUDIT_FILTERS.includes(filterParam as AuditFilter)
     ? (filterParam as AuditFilter)
     : null;
-  const { staff, flags, audit } = await getAdminOverview(filter);
+  const { staff, flags, audit, playback } = await getAdminOverview(filter);
   const t = await getTranslations("Admin");
   const format = await getFormatter();
 
@@ -110,6 +110,46 @@ export default async function AdminPage({ params, searchParams }: PageProps<"/[l
               </li>
             ))}
           </ul>
+        </section>
+
+        <section className="settings-form__group" aria-labelledby="playback">
+          <h2 id="playback" className="section-title">
+            {t("playback")}
+          </h2>
+          <p className="field__hint">{t("playbackLead")}</p>
+          {playback.length === 0 ? (
+            <p className="field__hint">{t("playbackEmpty")}</p>
+          ) : (
+            <table className="admin-table">
+              <thead>
+                <tr>
+                  <th scope="col">{t("playbackTier")}</th>
+                  <th scope="col">{t("playbackStarts")}</th>
+                  <th scope="col">{t("playbackP50")}</th>
+                  <th scope="col">{t("playbackP90")}</th>
+                  <th scope="col">{t("playbackErrors")}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {playback.map((row) => (
+                  <tr key={row.tier ?? "none"}>
+                    <th scope="row">{row.tier ?? "—"}</th>
+                    <td>{row.starts}</td>
+                    <td className={row.first_audio_p50_ms > 1000 ? "admin-table__over" : undefined}>
+                      {row.first_audio_p50_ms === null ? "—" : `${row.first_audio_p50_ms} ms`}
+                    </td>
+                    <td>
+                      {row.first_audio_p90_ms === null ? "—" : `${row.first_audio_p90_ms} ms`}
+                    </td>
+                    <td>
+                      {row.errors}
+                      {row.top_error ? ` (${row.top_error})` : ""}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </section>
 
         <section className="settings-form__group" aria-labelledby="audit">

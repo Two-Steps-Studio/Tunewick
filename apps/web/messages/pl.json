@@ -1064,7 +1064,15 @@
       "not_allowed": "Nie masz uprawnień do tej zmiany.",
       "already_lifetime": "Ta osoba ma już Premium na zawsze.",
       "failed": "Nie udało się. Spróbuj ponownie."
-    }
+    },
+    "playback": "Odtwarzanie (7 dni)",
+    "playbackLead": "Czas do pierwszego dźwięku i błędy odtwarzacza, bez danych osób. Cel: mediana poniżej 1 s dla High.",
+    "playbackEmpty": "Brak danych z ostatnich 7 dni.",
+    "playbackTier": "Jakość",
+    "playbackStarts": "Starty",
+    "playbackP50": "Mediana",
+    "playbackP90": "90%",
+    "playbackErrors": "Błędy"
   },
   "Events": {
     "badge": "Koncert",

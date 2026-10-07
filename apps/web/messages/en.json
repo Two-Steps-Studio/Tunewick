@@ -1064,7 +1064,15 @@
       "not_allowed": "You are not allowed to make this change.",
       "already_lifetime": "This person already has Premium for life.",
       "failed": "That did not work. Please try again."
-    }
+    },
+    "playback": "Playback (7 days)",
+    "playbackLead": "Time to first audio and player errors, without personal data. Target: median under 1 s for High.",
+    "playbackEmpty": "No data from the last 7 days.",
+    "playbackTier": "Quality",
+    "playbackStarts": "Starts",
+    "playbackP50": "Median",
+    "playbackP90": "90%",
+    "playbackErrors": "Errors"
   },
   "Events": {
     "badge": "Gig",

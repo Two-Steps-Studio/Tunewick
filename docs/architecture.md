@@ -223,6 +223,10 @@ preserves relative levels inside a release.
 - Self-hosted, subset fonts.
 - Postgres: indexes defined with each migration; query plans reviewed for discovery/search queries.
 - Budgets: home LCP < 2.5 s on mid-range mobile 4G; time-to-first-audio < 1 s for cached High tier.
+- Measured (M11): signed-in players report time to first audio (loading → playing) and player
+  errors to `private.playback_metrics` — day, tier, strategy, browser family only, no user id;
+  rate-limited per account by a separate hourly counter. `/admin` shows starts, median and p90
+  per tier for the last 7 days and flags a median over 1 s.
 
 ## 12. Cost estimate (order of magnitude, closed beta)
 

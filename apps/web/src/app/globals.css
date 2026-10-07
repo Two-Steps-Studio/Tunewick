@@ -1469,6 +1469,21 @@ body {
     text-transform: uppercase;
     color: var(--danger, var(--text));
   }
+  .admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--tk-text-sm);
+    font-variant-numeric: tabular-nums;
+  }
+  .admin-table th,
+  .admin-table td {
+    padding: var(--tk-space-2);
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+  }
+  .admin-table__over {
+    font-weight: 700;
+  }
   .revoke-form {
     display: flex;
     flex-wrap: wrap;
