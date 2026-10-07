@@ -927,7 +927,10 @@
     "subjects": {
       "artist": "profil artysty",
       "release": "wydawnictwo",
-      "playlist": "playlistę"
+      "playlist": "playlistę",
+      "event": "koncert",
+      "venue": "miejsce",
+      "profile": "profil"
     },
     "reasons": {
       "copyright": "Naruszenie praw autorskich",
@@ -981,7 +984,10 @@
         "takedown_release": "Zdjęcie wydawnictwa",
         "suspend_artist": "Zawieszenie profilu artysty",
         "hide_playlist": "Ukrycie playlisty",
-        "dismiss": "Oddalenie zgłoszenia"
+        "dismiss": "Oddalenie zgłoszenia",
+        "remove_event": "Usunięcie koncertu ze Sceny",
+        "clear_venue_details": "Usunięcie adresu i strony miejsca",
+        "reset_profile": "Wyczyszczenie nazwy i opisu profilu"
       },
       "statement": "Uzasadnienie (zobaczy je właściciel treści)",
       "statementHint": "Co postanowiono i dlaczego, prostym językiem — co najmniej 20 znaków.",

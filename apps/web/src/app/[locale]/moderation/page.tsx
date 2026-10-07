@@ -13,6 +13,7 @@ import {
   getOpenReports,
   getPendingAppeals,
   ModerateReportForm,
+  SubjectLink,
 } from "@/modules/reports";
 import { EventReviewForm, getPendingEvents } from "@/modules/events";
 
@@ -134,32 +135,7 @@ export default async function ModerationPage({ params }: PageProps<"/[locale]/mo
             <ul className="promo-codes">
               {reports.map((item) => (
                 <li key={item.report.id} className="promo-codes__item report-item">
-                  {item.subject?.releaseSlug && item.subject.artistSlug ? (
-                    <Link
-                      className="artist-list__name"
-                      href={{
-                        pathname: "/artists/[slug]/releases/[release]",
-                        params: {
-                          slug: item.subject.artistSlug,
-                          release: item.subject.releaseSlug,
-                        },
-                      }}
-                    >
-                      {item.subject.title}
-                    </Link>
-                  ) : item.subject?.artistSlug ? (
-                    <Link
-                      className="artist-list__name"
-                      href={{
-                        pathname: "/artists/[slug]",
-                        params: { slug: item.subject.artistSlug },
-                      }}
-                    >
-                      {item.subject.title}
-                    </Link>
-                  ) : (
-                    <span className="artist-list__name">{item.subject?.title ?? "—"}</span>
-                  )}
+                  <SubjectLink subject={item.subject} />
                   <span className="field__hint">
                     {tReports(`subjects.${item.report.subject_type}`)} ·{" "}
                     {tReports("queue.count", { count: item.reports.length })}
@@ -201,32 +177,7 @@ export default async function ModerationPage({ params }: PageProps<"/[locale]/mo
             <ul className="promo-codes">
               {appeals.map((item) => (
                 <li key={item.id} className="promo-codes__item">
-                  {item.subject?.releaseSlug && item.subject.artistSlug ? (
-                    <Link
-                      className="artist-list__name"
-                      href={{
-                        pathname: "/artists/[slug]/releases/[release]",
-                        params: {
-                          slug: item.subject.artistSlug,
-                          release: item.subject.releaseSlug,
-                        },
-                      }}
-                    >
-                      {item.subject.title}
-                    </Link>
-                  ) : item.subject?.artistSlug ? (
-                    <Link
-                      className="artist-list__name"
-                      href={{
-                        pathname: "/artists/[slug]",
-                        params: { slug: item.subject.artistSlug },
-                      }}
-                    >
-                      {item.subject.title}
-                    </Link>
-                  ) : (
-                    <span className="artist-list__name">{item.subject?.title ?? "—"}</span>
-                  )}
+                  <SubjectLink subject={item.subject} />
                   <span className="field__hint">
                     {tReports(`moderation.actions.${item.action as "takedown_release"}`)} ·{" "}
                     {tReports(`reasons.${item.reason}`)}

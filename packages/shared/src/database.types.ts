@@ -2324,7 +2324,7 @@ export type Database = {
         "draft" | "processing" | "in_review" | "approved" | "published" | "rejected" | "taken_down";
       release_type: "single" | "ep" | "album" | "compilation" | "live";
       report_reason: "copyright" | "illegal" | "hate" | "impersonation" | "spam" | "other";
-      report_subject: "artist" | "release" | "playlist";
+      report_subject: "artist" | "release" | "playlist" | "event" | "venue" | "profile";
       track_artist_role: "main" | "featured" | "remixer";
       visibility_level: "public" | "followers" | "private";
       voivodeship:
@@ -2497,7 +2497,7 @@ export const Constants = {
       ],
       release_type: ["single", "ep", "album", "compilation", "live"],
       report_reason: ["copyright", "illegal", "hate", "impersonation", "spam", "other"],
-      report_subject: ["artist", "release", "playlist"],
+      report_subject: ["artist", "release", "playlist", "event", "venue", "profile"],
       track_artist_role: ["main", "featured", "remixer"],
       visibility_level: ["public", "followers", "private"],
       voivodeship: [

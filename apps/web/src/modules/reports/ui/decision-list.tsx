@@ -1,5 +1,5 @@
 import { getFormatter, getTranslations } from "next-intl/server";
-import { getDecisions } from "../queries";
+import { type DecisionFilter, getDecisions } from "../queries";
 import { AppealForm } from "./forms";
 
 /** Moderation decisions about the owner's content, with the statement of reasons and appeals. */
@@ -7,7 +7,7 @@ export async function DecisionList({
   filter,
   canAppeal,
 }: {
-  filter: { artistId: string } | { playlistId: string };
+  filter: DecisionFilter;
   canAppeal: boolean;
 }) {
   const decisions = await getDecisions(filter);

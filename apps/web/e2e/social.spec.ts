@@ -5,10 +5,16 @@ function uniqueHandle(prefix: string) {
   return `${prefix}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`;
 }
 
-async function setProfile(page: Page, handle: string, name: string) {
+async function setProfile(
+  page: Page,
+  handle: string,
+  name: string,
+  visibility?: "public" | "followers" | "private",
+) {
   await page.goto("/ustawienia");
   await page.getByLabel("Nazwa profilu (adres)").fill(handle);
   await page.getByLabel("Nazwa wyświetlana").fill(name);
+  if (visibility) await page.getByLabel("Kto widzi Twoją aktywność").selectOption(visibility);
   await page.getByRole("button", { name: "Zapisz zmiany" }).click();
   await expect(page.getByRole("status")).toHaveText("Zapisano.");
 }
@@ -83,10 +89,7 @@ test("follow a person to see their activity; a block ends it both ways", async (
 test("visitors see public activity only when the person chose it", async ({ page, browser }) => {
   await createConfirmedUser(page, "social-public");
   const handle = uniqueHandle("jawna");
-  await setProfile(page, handle, "Jawna Osoba");
-  await page.getByLabel("Kto widzi Twoją aktywność").selectOption("public");
-  await page.getByRole("button", { name: "Zapisz zmiany" }).click();
-  await expect(page.getByRole("status")).toHaveText("Zapisano.");
+  await setProfile(page, handle, "Jawna Osoba", "public");
 
   const anonymous = await browser.newContext({ locale: "pl-PL" });
   const visitor = await anonymous.newPage();

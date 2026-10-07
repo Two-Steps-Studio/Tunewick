@@ -927,7 +927,10 @@
     "subjects": {
       "artist": "artist profile",
       "release": "release",
-      "playlist": "playlist"
+      "playlist": "playlist",
+      "event": "gig",
+      "venue": "venue",
+      "profile": "profile"
     },
     "reasons": {
       "copyright": "Copyright infringement",
@@ -981,7 +984,10 @@
         "takedown_release": "Release taken down",
         "suspend_artist": "Artist profile suspended",
         "hide_playlist": "Playlist hidden",
-        "dismiss": "Report dismissed"
+        "dismiss": "Report dismissed",
+        "remove_event": "Gig removed from the Scene",
+        "clear_venue_details": "Venue address and website removed",
+        "reset_profile": "Profile name and bio cleared"
       },
       "statement": "Statement of reasons (the owner will read it)",
       "statementHint": "What was decided and why, in plain words — at least 20 characters.",

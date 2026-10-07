@@ -5,6 +5,7 @@ import type { Locale } from "@/i18n/routing";
 import { requireUser } from "@/modules/auth";
 import { MyArtists } from "@/modules/artists";
 import { PlanSummary } from "@/modules/plans";
+import { DecisionList } from "@/modules/reports";
 import { BlockedUsers } from "@/modules/social";
 import { getMyAccount, PrivacySection, SettingsForm } from "@/modules/users";
 
@@ -61,6 +62,7 @@ export default async function SettingsPage({ params }: PageProps<"/[locale]/sett
         <PlanSummary />
         <MyArtists userId={user.id} />
         <BlockedUsers />
+        <DecisionList filter={{ ownerId: user.id }} canAppeal />
         <PrivacySection />
       </div>
     </section>

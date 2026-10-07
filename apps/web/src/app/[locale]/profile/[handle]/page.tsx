@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { getOptionalUser } from "@/modules/auth";
 import { BlockButton, FollowButton, getRelationship, ProfileActivity } from "@/modules/social";
@@ -29,6 +30,7 @@ export default async function ProfilePage({ params }: PageProps<"/[locale]/profi
 
   const t = await getTranslations("Profile");
   const tSocial = await getTranslations("Social");
+  const tReports = await getTranslations("Reports");
   const format = await getFormatter();
   const since = format.dateTime(new Date(profile.created_at), { month: "long", year: "numeric" });
 
@@ -51,6 +53,13 @@ export default async function ProfilePage({ params }: PageProps<"/[locale]/profi
         </div>
       ) : null}
       <ProfileActivity profileId={profile.id} visible={relationship.activity_visible} own={own} />
+      {own ? null : (
+        <p className="report-link">
+          <Link href={{ pathname: "/report", query: { typ: "profile", id: profile.id } }}>
+            {tReports("link")}
+          </Link>
+        </p>
+      )}
     </section>
   );
 }

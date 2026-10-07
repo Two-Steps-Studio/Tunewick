@@ -103,3 +103,58 @@ test("a report leads to a reasoned decision, an appeal and a reversal by another
   await mod1Context.close();
   await mod2Context.close();
 });
+
+test("an impersonating profile is reported, reset, and its owner can appeal from Settings", async ({
+  page,
+  browser,
+}) => {
+  test.setTimeout(120_000);
+  const handle = `podszywka-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 5)}`;
+  await createConfirmedUser(page, "report-profile");
+  await page.goto("/ustawienia");
+  await page.getByLabel("Nazwa profilu (adres)").fill(handle);
+  await page.getByLabel("Nazwa wyświetlana").fill("Oficjalny Zespół");
+  await page.getByRole("button", { name: "Zapisz zmiany" }).click();
+  await expect(page.getByRole("status")).toHaveText("Zapisano.");
+
+  const reporterContext = await browser.newContext({ locale: "pl-PL" });
+  const reporter = await reporterContext.newPage();
+  await createConfirmedUser(reporter, "reporter-profile");
+  await reporter.goto(`/profil/${handle}`);
+  await reporter.getByRole("link", { name: "Zgłoś naruszenie" }).click();
+  await expect(reporter.getByText("Zgłaszasz: profil „Oficjalny Zespół”")).toBeVisible();
+  await reporter.getByLabel("Powód").selectOption("impersonation");
+  await reporter.getByLabel("Opis").fill("Ta osoba podaje się za nasz zespół.");
+  await reporter.getByRole("button", { name: "Wyślij zgłoszenie" }).click();
+  await expect(reporter.getByRole("main").getByRole("status")).toHaveText(
+    "Dziękujemy. Zgłoszenie trafiło do moderatorów.",
+  );
+
+  const modContext = await browser.newContext({ locale: "pl-PL" });
+  const mod = await modContext.newPage();
+  grantRole(await createConfirmedUser(mod, "report-profile-mod"), "moderator");
+  await mod.goto("/moderacja");
+  await enableMfa(mod);
+  await mod.goto("/moderacja");
+  const item = mod.locator(".report-item", { has: mod.locator(`a[href="/profil/${handle}"]`) });
+  await expect(item.getByLabel("Decyzja")).toHaveValue("reset_profile");
+  const statement = "Profil podawał się za zespół, którego nie reprezentuje — nazwa wyczyszczona.";
+  await item.getByLabel("Uzasadnienie (zobaczy je właściciel treści)").fill(statement);
+  await item.getByRole("button", { name: "Zapisz decyzję" }).click();
+  await expect(item).toHaveCount(0);
+  expect((await reporter.goto(`/profil/${handle}`))?.status()).toBe(404);
+
+  await page.goto("/ustawienia");
+  await expect(page.getByLabel("Nazwa profilu (adres)")).toHaveValue("");
+  const decisions = page.locator("section", {
+    has: page.getByRole("heading", { name: "Decyzje moderacji" }),
+  });
+  await expect(decisions.getByText("Wyczyszczenie nazwy i opisu profilu")).toBeVisible();
+  await expect(decisions.getByText(statement)).toBeVisible();
+  await decisions.getByLabel("Odwołanie").fill("To mój zespół, mogę to potwierdzić.");
+  await decisions.getByRole("button", { name: "Wyślij odwołanie" }).click();
+  await expect(decisions.getByText(/odwołanie w toku/)).toBeVisible();
+
+  await reporterContext.close();
+  await modContext.close();
+});

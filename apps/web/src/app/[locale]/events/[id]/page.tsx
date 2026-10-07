@@ -24,6 +24,7 @@ export default async function EventPage({ params }: PageProps<"/[locale]/events/
   const { event, lineup } = data;
   const t = await getTranslations("Events");
   const tPlaces = await getTranslations("Places");
+  const tReports = await getTranslations("Reports");
   const format = await getFormatter();
 
   const entitlement = await listenerEntitlement();
@@ -142,6 +143,13 @@ export default async function EventPage({ params }: PageProps<"/[locale]/events/
           })}
         </ul>
       </section>
+      {event.status === "published" || event.status === "cancelled" ? (
+        <p className="report-link">
+          <Link href={{ pathname: "/report", query: { typ: "event", id: event.id } }}>
+            {tReports("link")}
+          </Link>
+        </p>
+      ) : null}
     </article>
   );
 }

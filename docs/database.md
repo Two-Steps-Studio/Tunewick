@@ -432,3 +432,13 @@ table: a profile shows events marked "Byłem przy tym" and public playlists thro
 direction. A block ends follows both ways (trigger) and a follow across a block is refused by the
 insert policy. `profile_relationship` returns real follower counts; who follows whom is readable
 only by the two people involved.
+
+## Reports about gigs, venues and people (implemented, M8.3)
+
+`report_subject` gained `event`, `venue` and `profile` (migration
+`20261007120000_report_more_subjects.sql`). Actions stay proportionate and reversible on appeal:
+`remove_event` (status → rejected), `clear_venue_details` (address and website removed; the venue
+stays because its gigs belong to artists) and `reset_profile` (handle, display name and bio
+cleared; on reversal the handle returns only if nobody took it). Event decisions belong to the
+event's artist; venue decisions to the person who added the venue; profile decisions to the
+person — they read them and appeal in Settings.

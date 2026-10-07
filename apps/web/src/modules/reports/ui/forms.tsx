@@ -97,6 +97,9 @@ const ACTIONS: Record<ReportSubject, ModerationAction[]> = {
   release: ["takedown_release", "dismiss"],
   artist: ["suspend_artist", "dismiss"],
   playlist: ["hide_playlist", "dismiss"],
+  event: ["remove_event", "dismiss"],
+  venue: ["clear_venue_details", "dismiss"],
+  profile: ["reset_profile", "dismiss"],
 };
 
 export function ModerateReportForm({

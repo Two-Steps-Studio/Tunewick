@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { EventList, getVenue } from "@/modules/events";
 
@@ -19,6 +20,7 @@ export default async function VenuePage({ params }: PageProps<"/[locale]/venues/
   if (!data) notFound();
   const { venue, upcoming, past } = data;
   const t = await getTranslations("Venues");
+  const tReports = await getTranslations("Reports");
   const tPlaces = await getTranslations("Places");
 
   return (
@@ -61,6 +63,11 @@ export default async function VenuePage({ params }: PageProps<"/[locale]/venues/
           <EventList events={past} />
         </section>
       ) : null}
+      <p className="report-link">
+        <Link href={{ pathname: "/report", query: { typ: "venue", id: venue.id } }}>
+          {tReports("link")}
+        </Link>
+      </p>
     </section>
   );
 }
