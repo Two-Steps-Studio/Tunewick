@@ -8,6 +8,7 @@ import { DecisionList } from "@/modules/reports";
 import { cancelEvent, EventForm, getManagedEvents } from "@/modules/events";
 import {
   ArtistInfoForm,
+  ArtistListening,
   getArtistForManagement,
   InviteMemberForm,
   RemoveMemberButton,
@@ -188,6 +189,7 @@ export default async function ManageArtistPage({
             <EventForm artistId={artist.id} />
           </section>
         ) : null}
+        <ArtistListening artistId={artist.id} />
         <DecisionList
           filter={{ artistId: artist.id }}
           canAppeal={data.myRole === "owner" || data.myRole === "manager"}

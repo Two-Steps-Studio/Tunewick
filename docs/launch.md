@@ -59,6 +59,6 @@
 ## 5. Known gaps (tracked in Guidon)
 
 - Reports on events and tracks; user blocking; follows between listeners; transparency report.
-- Payouts aggregation (`listening_monthly_artist_shares`, D2) — before any paid plan.
+- ☑ Payouts base (D2): `listening_monthly_artist_shares`, closed monthly by the pg_cron job `listening-shares` (04:00 on the 2nd). A payout policy document is still required before any paid plan.
 - Playback telemetry and performance budgets (home LCP < 2.5 s, first audio < 1 s) measured on
   production.

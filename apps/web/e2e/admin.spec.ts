@@ -31,6 +31,7 @@ test("an admin manages staff roles and grants Premium; everything is in the audi
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Administracja");
   await expect(page.getByText("closed_beta")).toBeVisible();
   await expect(page.getByRole("heading", { name: "Odtwarzanie (7 dni)" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /^Słuchanie: / })).toBeVisible();
 
   // Staff role by profile handle.
   const staff = page.locator("section.settings-form__group", {

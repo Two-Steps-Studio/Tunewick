@@ -384,6 +384,14 @@
       "sharedAudience": "{count, plural, few {# osoby obserwują oboje} many {# osób obserwuje oboje} other {# osoby obserwują oboje}}",
       "sameCity": "Też z: {city}",
       "playedTogether": "Grali razem: {event}"
+    },
+    "listening": {
+      "title": "Słuchacze",
+      "lead": "Zamknięte miesiące. Odtworzenie liczy się od 30 sekund; soundchecki się nie liczą.",
+      "empty": "Pierwszy miesiąc zamknie się 2. dnia kolejnego miesiąca.",
+      "month": "Miesiąc",
+      "listeners": "Słuchacze",
+      "plays": "Odtworzenia"
     }
   },
   "Releases": {
@@ -1078,7 +1086,14 @@
     "playbackStarts": "Starty",
     "playbackP50": "Mediana",
     "playbackP90": "90%",
-    "playbackErrors": "Błędy"
+    "playbackErrors": "Błędy",
+    "shares": "Słuchanie: {month}",
+    "sharesLead": "Podstawa przyszłych wypłat user-centric (D2). Odtworzenie liczy się od 30 s, bez soundchecków. Dziś nic z tego nie jest wypłacane.",
+    "sharesEmpty": "Ten miesiąc nie został jeszcze zamknięty albo nikt nie słuchał.",
+    "sharesArtist": "Artysta",
+    "sharesListeners": "Słuchacze",
+    "sharesPlays": "Odtworzenia",
+    "sharesHours": "Godziny"
   },
   "Events": {
     "badge": "Koncert",

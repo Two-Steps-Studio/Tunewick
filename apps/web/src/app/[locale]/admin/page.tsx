@@ -31,7 +31,7 @@ export default async function AdminPage({ params, searchParams }: PageProps<"/[l
   const filter = AUDIT_FILTERS.includes(filterParam as AuditFilter)
     ? (filterParam as AuditFilter)
     : null;
-  const { staff, flags, audit, playback } = await getAdminOverview(filter);
+  const { staff, flags, audit, playback, shares } = await getAdminOverview(filter);
   const t = await getTranslations("Admin");
   const format = await getFormatter();
 
@@ -145,6 +145,48 @@ export default async function AdminPage({ params, searchParams }: PageProps<"/[l
                       {row.errors}
                       {row.top_error ? ` (${row.top_error})` : ""}
                     </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </section>
+
+        <section className="settings-form__group" aria-labelledby="shares">
+          <h2 id="shares" className="section-title">
+            {t("shares", {
+              month: format.dateTime(new Date(`${shares.month}T12:00:00Z`), {
+                month: "long",
+                year: "numeric",
+              }),
+            })}
+          </h2>
+          <p className="field__hint">{t("sharesLead")}</p>
+          {shares.rows.length === 0 ? (
+            <p className="field__hint">{t("sharesEmpty")}</p>
+          ) : (
+            <table className="admin-table">
+              <thead>
+                <tr>
+                  <th scope="col">{t("sharesArtist")}</th>
+                  <th scope="col">{t("sharesListeners")}</th>
+                  <th scope="col">{t("sharesPlays")}</th>
+                  <th scope="col">{t("sharesHours")}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {shares.rows.map((row) => (
+                  <tr key={row.artist_id}>
+                    <th scope="row">
+                      <Link
+                        href={{ pathname: "/artists/[slug]", params: { slug: row.artist_slug } }}
+                      >
+                        {row.artist_name}
+                      </Link>
+                    </th>
+                    <td>{row.listeners}</td>
+                    <td>{row.qualified_plays}</td>
+                    <td>{row.hours}</td>
                   </tr>
                 ))}
               </tbody>

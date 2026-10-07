@@ -42,6 +42,10 @@ test("the only owner of an artist profile hands it over first", async ({ page })
   await page.getByLabel("Adres profilu").fill(slug);
   await page.getByRole("button", { name: "Załóż profil" }).click();
   await expect(page).toHaveURL(new RegExp(`/artysci/${slug}/zarzadzaj$`));
+  // No closed month yet: the listener numbers say so instead of showing zeros.
+  await expect(
+    page.getByText("Pierwszy miesiąc zamknie się 2. dnia kolejnego miesiąca."),
+  ).toBeVisible();
 
   await page.goto("/ustawienia");
   const data = page.locator("section", { has: page.getByRole("heading", { name: "Twoje dane" }) });

@@ -442,3 +442,14 @@ stays because its gigs belong to artists) and `reset_profile` (handle, display n
 cleared; on reversal the handle returns only if nobody took it). Event decisions belong to the
 event's artist; venue decisions to the person who added the venue; profile decisions to the
 person — they read them and appeal in Settings.
+
+## Monthly listening shares (implemented, D2 base)
+
+`listening_monthly_artist_shares` (migration `20261007150000_listening_shares.sql`): one row per
+listener, month and artist with qualified plays (≥ 30 s, never soundchecks) and time. Closed by
+the pg_cron job `listening-shares` on the 2nd for the previous month; `aggregate_listening_month`
+is idempotent while raw events exist. Listeners read their own rows (and get them in the data
+export); artist teams see listeners and plays per closed month (`artist_monthly_listening`);
+admins see the month per artist (`admin_listening_shares`). On account deletion the rows are
+detached (`user_id` null) so totals survive without the person — to be confirmed with legal L4.
+Nothing is paid from this yet.

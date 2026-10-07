@@ -384,6 +384,14 @@
       "sharedAudience": "{count, plural, other {# people follow both}}",
       "sameCity": "Also from: {city}",
       "playedTogether": "Played together: {event}"
+    },
+    "listening": {
+      "title": "Listeners",
+      "lead": "Closed months. A play counts from 30 seconds; soundchecks never count.",
+      "empty": "The first month closes on the 2nd of the next month.",
+      "month": "Month",
+      "listeners": "Listeners",
+      "plays": "Plays"
     }
   },
   "Releases": {
@@ -1078,7 +1086,14 @@
     "playbackStarts": "Starts",
     "playbackP50": "Median",
     "playbackP90": "90%",
-    "playbackErrors": "Errors"
+    "playbackErrors": "Errors",
+    "shares": "Listening: {month}",
+    "sharesLead": "The base for future user-centric payouts (D2). A play counts from 30 s, soundchecks excluded. Nothing is paid out from this today.",
+    "sharesEmpty": "This month is not closed yet, or nobody listened.",
+    "sharesArtist": "Artist",
+    "sharesListeners": "Listeners",
+    "sharesPlays": "Plays",
+    "sharesHours": "Hours"
   },
   "Events": {
     "badge": "Gig",

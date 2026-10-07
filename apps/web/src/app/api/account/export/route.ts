@@ -48,6 +48,7 @@ export async function GET() {
     memberships,
     userFollows,
     blocks,
+    shares,
   ] = await Promise.all([
     supabase.from("profiles").select("handle, display_name, bio, created_at").eq("id", user.id),
     supabase.from("profile_settings").select("*").eq("user_id", user.id),
@@ -85,6 +86,9 @@ export async function GET() {
       .select("follower_id, followee_id, created_at")
       .or(`follower_id.eq.${user.id},followee_id.eq.${user.id}`),
     supabase.from("user_blocks").select("blocked_id, created_at"),
+    supabase
+      .from("listening_monthly_artist_shares")
+      .select("month, artist_id, qualified_plays, ms_played"),
   ]);
 
   const body = {
@@ -110,6 +114,7 @@ export async function GET() {
     people_you_follow: own(userFollows)?.filter((f) => f.follower_id === user.id),
     people_following_you: own(userFollows)?.filter((f) => f.followee_id === user.id),
     blocked_people: own(blocks),
+    monthly_listening_by_artist: own(shares),
   };
 
   return new NextResponse(JSON.stringify(body, null, 2), {

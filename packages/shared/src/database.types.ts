@@ -634,6 +634,44 @@ export type Database = {
           },
         ];
       };
+      listening_monthly_artist_shares: {
+        Row: {
+          artist_id: string;
+          computed_at: string;
+          id: number;
+          month: string;
+          ms_played: number;
+          qualified_plays: number;
+          user_id: string | null;
+        };
+        Insert: {
+          artist_id: string;
+          computed_at?: string;
+          id?: never;
+          month: string;
+          ms_played: number;
+          qualified_plays: number;
+          user_id?: string | null;
+        };
+        Update: {
+          artist_id?: string;
+          computed_at?: string;
+          id?: never;
+          month?: string;
+          ms_played?: number;
+          qualified_plays?: number;
+          user_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "listening_monthly_artist_shares_artist_id_fkey";
+            columns: ["artist_id"];
+            isOneToOne: false;
+            referencedRelation: "artists";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       moderation_decisions: {
         Row: {
           action: string;
@@ -1777,6 +1815,17 @@ export type Database = {
           user_id: string;
         }[];
       };
+      admin_listening_shares: {
+        Args: { month: string };
+        Returns: {
+          artist_id: string;
+          artist_name: string;
+          artist_slug: string;
+          hours: number;
+          listeners: number;
+          qualified_plays: number;
+        }[];
+      };
       admin_playback_summary: {
         Args: { days?: number };
         Returns: {
@@ -1812,6 +1861,14 @@ export type Database = {
       };
       artist_copyright_strikes: { Args: { artist: string }; Returns: number };
       artist_follower_count: { Args: { artist: string }; Returns: number };
+      artist_monthly_listening: {
+        Args: { artist: string };
+        Returns: {
+          listeners: number;
+          month: string;
+          qualified_plays: number;
+        }[];
+      };
       begin_audio_upload: {
         Args: { file_name: string; size_bytes: number; track: string };
         Returns: {
