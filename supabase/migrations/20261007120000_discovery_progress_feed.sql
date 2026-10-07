@@ -466,6 +466,37 @@ grant execute on function public.discover_candidates(text, text, boolean, intege
 -- ---------------------------------------------------------------------------
 -- The caller's taste: raw affinity signals (normalized in the app) + what to avoid repeating.
 -- ---------------------------------------------------------------------------
+/** Per-track taste signals of a listener (likes, saves, recent listens, skips). */
+create function private.taste_signals(listener uuid)
+returns table (track_id uuid, artist_id uuid, w numeric)
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select x.track_id, x.artist_id, sum(x.w) from (
+    select l.track_id, r.artist_id, 3.0 as w from public.track_likes l
+      join public.tracks t on t.id = l.track_id join public.releases r on r.id = t.release_id
+      where l.user_id = listener
+    union all
+    select s.track_id, r.artist_id, 3.0 from public.track_saves s
+      join public.tracks t on t.id = s.track_id join public.releases r on r.id = t.release_id
+      where s.user_id = listener
+    union all
+    select e.track_id, e.artist_id,
+      case when e.completed then 1.5 when e.ms_played >= 30000 then 1.0 when e.ms_played >= 15000 then 0.5 else -0.5 end
+    from public.listening_events e
+    where e.user_id = listener and e.started_at > now() - interval '90 days'
+    union all
+    select pe.track_id, pe.artist_id, -1.0 from private.product_events pe
+    where pe.user_id = listener and pe.name = 'song_skipped' and pe.created_at > now() - interval '60 days'
+      and pe.track_id is not null and pe.artist_id is not null
+  ) x
+  group by x.track_id, x.artist_id;
+$$;
+
+revoke execute on function private.taste_signals(uuid) from public, anon, authenticated;
+
 create function public.my_taste()
 returns jsonb
 language plpgsql
@@ -483,29 +514,35 @@ begin
     'preferences', (
       select to_jsonb(lp) - 'user_id' - 'created_at' - 'updated_at'
       from public.listener_preferences lp where lp.user_id = me),
-    -- Positive and negative signals per track, summed per genre/artist/country in the app.
-    'signals', coalesce((
-      select jsonb_agg(jsonb_build_object('track', s.track_id, 'artist', s.artist_id, 'w', s.w))
-      from (
-        select x.track_id, x.artist_id, sum(x.w) as w from (
-          select l.track_id, r.artist_id, 3.0 as w from public.track_likes l
-            join public.tracks t on t.id = l.track_id join public.releases r on r.id = t.release_id where l.user_id = me
+    -- Affinities from likes and saves (+3), listens (+0.5 … +1.5, short ones −0.5), skips (−1),
+    -- follows (+5 per artist) and onboarding genres (+3), summed per artist, genre and country.
+    'artists', coalesce((select jsonb_agg(jsonb_build_object('id', a.artist_id, 'w', a.w)) from (
+        select artist_id, sum(w) as w from (
+          select s.artist_id, s.w from private.taste_signals(me) s
           union all
-          select s.track_id, r.artist_id, 3.0 from public.track_saves s
-            join public.tracks t on t.id = s.track_id join public.releases r on r.id = t.release_id where s.user_id = me
+          select f.artist_id, 5.0 from public.artist_follows f where f.user_id = me
+        ) x group by artist_id order by abs(sum(w)) desc limit 300) a), '[]'::jsonb),
+    'genres', coalesce((select jsonb_agg(jsonb_build_object('id', g.genre_id, 'w', g.w)) from (
+        select genre_id, sum(w) as w from (
+          select coalesce(rg.genre_id, ag.genre_id) as genre_id, s.w
+          from private.taste_signals(me) s
+          join public.tracks t on t.id = s.track_id
+          left join public.release_genres rg on rg.release_id = t.release_id
+          left join public.artist_genres ag on rg.genre_id is null and ag.artist_id = s.artist_id
           union all
-          select e.track_id, e.artist_id,
-            case when e.completed then 1.5 when e.ms_played >= 30000 then 1.0 when e.ms_played >= 15000 then 0.5 else -0.5 end
-          from public.listening_events e
-          where e.user_id = me and e.started_at > now() - interval '90 days'
+          select ag.genre_id, 2.0 from public.artist_follows f
+          join public.artist_genres ag on ag.artist_id = f.artist_id where f.user_id = me
           union all
-          select pe.track_id, pe.artist_id, -1.0 from private.product_events pe
-          where pe.user_id = me and pe.name = 'song_skipped' and pe.created_at > now() - interval '60 days' and pe.track_id is not null
-        ) x
-        group by x.track_id, x.artist_id
-        order by max(x.w) desc
-        limit 500
-      ) s), '[]'::jsonb),
+          select unnest(lp.genre_ids), 3.0 from public.listener_preferences lp where lp.user_id = me
+        ) x where genre_id is not null group by genre_id) g), '[]'::jsonb),
+    'countries', coalesce((select jsonb_agg(jsonb_build_object('code', c.country_code, 'w', c.w)) from (
+        select a.country_code, sum(s.w) as w from private.taste_signals(me) s
+        join public.artists a on a.id = s.artist_id
+        where a.country_code is not null group by a.country_code) c), '[]'::jsonb),
+    'skipped', coalesce((
+      select jsonb_agg(distinct pe.track_id) from private.product_events pe
+      where pe.user_id = me and pe.name = 'song_skipped' and pe.created_at > now() - interval '30 days'
+        and pe.track_id is not null), '[]'::jsonb),
     'followed_artists', coalesce((select jsonb_agg(f.artist_id) from public.artist_follows f where f.user_id = me), '[]'::jsonb),
     -- Artists followed by listeners who share at least one follow with the caller.
     'co_followed', coalesce((

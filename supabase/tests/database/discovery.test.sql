@@ -3,7 +3,7 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set search_path = public, extensions;
 
-select plan(44);
+select plan(47);
 
 insert into auth.users (id, email, raw_app_meta_data, aud, role)
 values
@@ -124,6 +124,11 @@ select is((my_progress() ->> 'current_streak')::int, 1, 'a day with a discovery 
 select is((my_progress() ->> 'today_artists')::int, 2, 'goal progress: artists discovered today');
 select is((my_progress() ->> 'points_total')::int, 14 + 14 + 1 + 2 + 3, 'points add up');
 select ok((select bool_or(code = 'first_discovery') from user_achievements), 'First Discovery is unlocked');
+select ok((select (g ->> 'w')::numeric > 0 from jsonb_array_elements(my_taste() -> 'genres') g
+  where (g ->> 'id')::smallint = (select id from genres where slug = 'techno')), 'taste: genres from what was heard (artist genres as fallback)');
+select ok((select (a ->> 'w')::numeric >= 3 from jsonb_array_elements(my_taste() -> 'artists') a
+  where (a ->> 'id')::uuid = (select id from ids where name = 'pl')), 'taste: saves and listens build artist affinity');
+select is(jsonb_array_length(my_taste() -> 'heard'), 3, 'taste: discovered tracks are known, so the feed does not repeat them');
 select is((my_records() -> 'most_songs_day' ->> 'value')::int, 3, 'records: most songs discovered in a day');
 
 -- Rankings: only listeners with a handle who did not opt out.
