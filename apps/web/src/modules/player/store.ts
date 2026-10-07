@@ -2,6 +2,7 @@
 
 import { useSyncExternalStore } from "react";
 import { IDLE_STATE, PlayerEngine } from "./engine/engine";
+import { type ListenAwards, reportAwards } from "@/modules/notices";
 import { ListeningTracker } from "./listening";
 import type { PlayerState } from "./types";
 
@@ -24,8 +25,8 @@ export function usePlayerState(): PlayerState {
 let reporting = false;
 
 /**
- * Sends listens of this tab to the server (signed-in listeners only — the server checks again).
- * keepalive lets the last listen leave even while the page is closing.
+ * Sends listens of this tab to the server (signed-in listeners only — the server checks again)
+ * and shows what they earned. keepalive lets the last listen leave even while the page is closing.
  */
 export function startListeningReports() {
   if (reporting || typeof window === "undefined") return;
@@ -36,7 +37,10 @@ export function startListeningReports() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(listen),
       keepalive: true,
-    }).catch(() => undefined);
+    })
+      .then(async (response) => (response.ok ? ((await response.json()) as ListenAwards) : null))
+      .then(reportAwards)
+      .catch(() => undefined);
   });
   const player = getPlayer();
   player.subscribe(() => tracker.update(player.getState()));

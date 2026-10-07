@@ -73,7 +73,10 @@ export type ReasonCode =
   | "new_release"
   | "new_genre"
   | "new_country"
-  | "wildcard";
+  | "wildcard"
+  /** Pinned by the request: a shared link, or "Discover this artist". */
+  | "shared"
+  | "artist_spotlight";
 
 export interface Reason {
   code: ReasonCode;
@@ -322,30 +325,37 @@ export function rankFeed(
   const genreCount = new Map<number, number>();
   const genreLimit = Math.max(1, Math.floor(FEED.maxGenreShare * options.size));
 
-  const fits = (item: Scored, strict: boolean) => {
+  /** 2 = artist spacing and genre share, 1 = artist spacing only, 0 = anything unused. */
+  type Level = 0 | 1 | 2;
+  const fits = (item: Scored, level: Level) => {
     if (used.has(item.candidate.trackId)) return false;
-    if (!strict) return true;
+    if (level === 0) return true;
     const recent = picked.slice(-(FEED.artistSpacing - 1));
     if (recent.some((p) => p.candidate.artistId === item.candidate.artistId)) return false;
+    if (level === 1) return true;
     const genre = item.candidate.genreIds[0];
     return genre === undefined || (genreCount.get(genre) ?? 0) < genreLimit;
   };
 
-  const best = (items: Scored[], key: "score" | "exploreScore") => {
-    for (const strict of [true, false]) {
-      let winner: Scored | null = null;
-      for (const item of items) {
-        if (fits(item, strict) && (!winner || item[key] > winner[key])) winner = item;
-      }
-      if (winner) return winner;
+  const best = (items: Scored[], key: "score" | "exploreScore", level: Level) => {
+    let winner: Scored | null = null;
+    for (const item of items) {
+      if (fits(item, level) && (!winner || item[key] > winner[key])) winner = item;
     }
-    return null;
+    return winner;
   };
 
   const explorationPool = pool.filter((item) => item.exploration);
   while (picked.length < Math.min(options.size, pool.length)) {
     const explore = share > 0 && random() < share;
-    const choice = (explore ? best(explorationPool, "exploreScore") : null) ?? best(pool, "score");
+    // Diversity first: relax the rules (genre share, then artist spacing) only when no
+    // candidate keeps them.
+    const choice =
+      (explore ? best(explorationPool, "exploreScore", 2) : null) ??
+      best(pool, "score", 2) ??
+      (explore ? best(explorationPool, "exploreScore", 1) : null) ??
+      best(pool, "score", 1) ??
+      best(pool, "score", 0);
     if (!choice) break;
     const asExploration = explore && choice.exploration;
     picked.push(asExploration ? choice : { ...choice, exploration: false });

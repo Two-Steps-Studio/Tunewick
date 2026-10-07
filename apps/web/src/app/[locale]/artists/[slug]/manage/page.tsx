@@ -6,13 +6,17 @@ import { getPathname, Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import {
   ArtistInfoForm,
+  ArtistReachForm,
   getArtistForManagement,
+  getArtistReach,
   InviteMemberForm,
   RemoveMemberButton,
   VerificationForm,
 } from "@/modules/artists";
 import { requireUser } from "@/modules/auth";
 import { ArtistReleaseList } from "@/modules/catalog";
+import { countryName } from "@/lib/intl";
+import { getCountryCodes, getGenres } from "@/modules/discover";
 
 export const metadata: Metadata = { robots: { index: false } };
 
@@ -38,9 +42,12 @@ export default async function ManageArtistPage({
   const t = await getTranslations("Artists");
   const { artist, myRole, members } = data;
   const isOwner = myRole === "owner";
-  const [photo, photoUpload] = await Promise.all([
+  const [photo, photoUpload, reach, genres, countries] = await Promise.all([
     getImageSources(artist.image_id),
     myRole !== "member" ? getLatestImageUpload("artist_image", artist.id) : null,
+    getArtistReach(artist.id),
+    getGenres(locale),
+    getCountryCodes(),
   ]);
   const canRequest =
     myRole !== "member" &&
@@ -75,6 +82,28 @@ export default async function ManageArtistPage({
                 voivodeship: artist.voivodeship,
                 city: artist.city,
               }}
+            />
+          </section>
+        ) : null}
+
+        {myRole !== "member" ? (
+          <section className="settings-form__group" aria-labelledby="reach">
+            <h2 id="reach" className="section-title">
+              {t("manage.reach")}
+            </h2>
+            <ArtistReachForm
+              artistId={artist.id}
+              values={{
+                country: artist.country_code,
+                region: artist.region,
+                languages: artist.languages,
+                genres: reach.genres.map((g) => g.id),
+                links: reach.links.map((l) => l.url),
+              }}
+              countries={countries
+                .map((c) => ({ code: c.code, name: countryName(c.code, locale) }))
+                .sort((a, b) => a.name.localeCompare(b.name, locale))}
+              genres={genres}
             />
           </section>
         ) : null}

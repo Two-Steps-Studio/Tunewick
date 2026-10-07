@@ -1825,6 +1825,13 @@ export type Database = {
           isSetofReturn: false;
         };
       };
+      browse_countries: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          artists: number;
+          country_code: string;
+        }[];
+      };
       can_edit_release: { Args: { release: string }; Returns: boolean };
       can_view_audio_upload: { Args: { upload: string }; Returns: boolean };
       can_view_image: { Args: { image: string }; Returns: boolean };
@@ -1916,11 +1923,16 @@ export type Database = {
       decide_report: { Args: { decision: string; report: string }; Returns: undefined };
       delete_track: { Args: { track: string }; Returns: undefined };
       discover_artists: {
-        Args: { max_results?: number; region?: Database["public"]["Enums"]["voivodeship"] };
+        Args: {
+          country?: string;
+          max_results?: number;
+          region?: Database["public"]["Enums"]["voivodeship"];
+        };
         Returns: {
           artist_id: string;
           artist_slug: string;
           city: string;
+          country_code: string;
           first_release_at: string;
           image_id: string;
           name: string;
@@ -1965,12 +1977,17 @@ export type Database = {
         }[];
       };
       discover_releases: {
-        Args: { max_results?: number; region?: Database["public"]["Enums"]["voivodeship"] };
+        Args: {
+          country?: string;
+          max_results?: number;
+          region?: Database["public"]["Enums"]["voivodeship"];
+        };
         Returns: {
           artist_name: string;
           artist_slug: string;
           artwork_image_id: string;
           city: string;
+          country_code: string;
           is_debut: boolean;
           publish_at: string;
           release_id: string;
@@ -2030,7 +2047,7 @@ export type Database = {
       move_playlist_track: { Args: { item: string; to_index: number }; Returns: undefined };
       move_track: { Args: { direction: number; track: string }; Returns: undefined };
       my_discovery_stats: {
-        Args: { since?: string };
+        Args: { period?: string };
         Returns: {
           countries: number;
           follows: number;

@@ -11,6 +11,11 @@ export type ArtistErrorCode =
   | "yearInvalid"
   | "voivodeshipInvalid"
   | "cityTooLong"
+  | "countryInvalid"
+  | "regionTooLong"
+  | "languagesInvalid"
+  | "genresTooMany"
+  | "linksInvalid"
   | "handleNotFound"
   | "evidenceRequired"
   | "evidenceInvalid"
@@ -64,6 +69,81 @@ export const updateArtistSchema = z.object({
     .max(80, { error: "cityTooLong" })
     .optional()
     .transform((v) => (v ? v : null)),
+});
+
+export const LINK_KINDS = [
+  "website",
+  "instagram",
+  "tiktok",
+  "youtube",
+  "bandcamp",
+  "soundcloud",
+  "spotify",
+  "x",
+  "facebook",
+  "other",
+] as const;
+export type LinkKind = (typeof LINK_KINDS)[number];
+
+const LINK_HOSTS: [RegExp, LinkKind][] = [
+  [/(^|\.)instagram\.com$/, "instagram"],
+  [/(^|\.)tiktok\.com$/, "tiktok"],
+  [/(^|\.)(youtube\.com|youtu\.be)$/, "youtube"],
+  [/(^|\.)bandcamp\.com$/, "bandcamp"],
+  [/(^|\.)soundcloud\.com$/, "soundcloud"],
+  [/(^|\.)spotify\.com$/, "spotify"],
+  [/(^|\.)(x\.com|twitter\.com)$/, "x"],
+  [/(^|\.)facebook\.com$/, "facebook"],
+];
+
+/** What a link is, from its host ("https://odkrycie.bandcamp.com" → bandcamp). */
+export function linkKind(url: string): LinkKind {
+  const host = new URL(url).hostname.toLowerCase();
+  return LINK_HOSTS.find(([pattern]) => pattern.test(host))?.[1] ?? "website";
+}
+
+/** Where the artist is from and what they make: country, region, languages, genres, links. */
+export const artistReachSchema = z.object({
+  country: z
+    .string()
+    .trim()
+    .refine((v) => v === "" || /^[A-Z]{2}$/.test(v), { error: "countryInvalid" })
+    .transform((v) => (v === "" ? null : v)),
+  region: z
+    .string()
+    .trim()
+    .max(80, { error: "regionTooLong" })
+    .transform((v) => (v === "" ? null : v)),
+  languages: z
+    .string()
+    .transform((v) => [
+      ...new Set(
+        v
+          .toLowerCase()
+          .split(/[\s,;]+/)
+          .filter(Boolean),
+      ),
+    ])
+    .refine((list) => list.length <= 8 && list.every((l) => /^[a-z]{2,3}$/.test(l)), {
+      error: "languagesInvalid",
+    }),
+  genres: z.array(z.coerce.number().int().positive()).max(5, { error: "genresTooMany" }),
+  links: z
+    .string()
+    .transform((v) =>
+      v
+        .split(/\r?\n/)
+        .map((line) => line.trim())
+        .filter(Boolean),
+    )
+    .refine(
+      (list) =>
+        list.length <= 10 &&
+        list.every(
+          (url) => /^https:\/\/[^\s]+$/.test(url) && url.length <= 300 && URL.canParse(url),
+        ),
+      { error: "linksInvalid" },
+    ),
 });
 
 export const inviteSchema = z.object({

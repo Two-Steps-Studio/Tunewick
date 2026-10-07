@@ -1,5 +1,10 @@
 # Discovery & Recommendations
 
+> **Update 2026-10-07:** the Discover feed (scoring per track, personalization/exploration mix,
+> modes For You / Global / Nearby / New / Rising) is specified and implemented per
+> [discovery-expansion.md](discovery-expansion.md) §4; the transparency rules below still apply
+> (every feed item carries a reason code).
+
 > Status: **v0.1 specification for MVP.** MVP discovery is **rule- and graph-based with explicit
 > reasons**. Machine-learned models come later and must keep the same transparency contract.
 

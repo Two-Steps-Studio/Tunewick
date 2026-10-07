@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import {
   artistDbError,
+  artistReachSchema,
+  linkKind,
   createArtistSchema,
   slugify,
   updateArtistSchema,
@@ -89,5 +91,49 @@ describe("artist location", () => {
     const base = { name: "X", bio: "", formedYear: "" };
     expect(updateArtistSchema.safeParse({ ...base, voivodeship: "gzm" }).success).toBe(false);
     expect(updateArtistSchema.safeParse({ ...base, city: "a".repeat(81) }).success).toBe(false);
+  });
+});
+
+describe("artistReachSchema", () => {
+  const base = {
+    country: "DE",
+    region: "Berlin",
+    languages: "de, EN de",
+    genres: ["3"],
+    links: "",
+  };
+
+  it("accepts a country, languages as codes and up to five genres", () => {
+    const parsed = artistReachSchema.parse(base);
+    expect(parsed).toMatchObject({
+      country: "DE",
+      region: "Berlin",
+      languages: ["de", "en"],
+      genres: [3],
+    });
+    expect(artistReachSchema.parse({ ...base, country: "", region: "" })).toMatchObject({
+      country: null,
+      region: null,
+    });
+  });
+
+  it("rejects names instead of codes and too many genres", () => {
+    expect(artistReachSchema.safeParse({ ...base, languages: "Polish" }).success).toBe(false);
+    expect(artistReachSchema.safeParse({ ...base, country: "Germany" }).success).toBe(false);
+    expect(
+      artistReachSchema.safeParse({ ...base, genres: ["1", "2", "3", "4", "5", "6"] }).success,
+    ).toBe(false);
+  });
+
+  it("takes https links one per line and knows what they are", () => {
+    const parsed = artistReachSchema.parse({
+      ...base,
+      links:
+        "https://odkrycie.bandcamp.com\n\nhttps://www.instagram.com/odkrycie\nhttps://odkrycie.pl",
+    });
+    expect(parsed.links.map(linkKind)).toEqual(["bandcamp", "instagram", "website"]);
+    expect(artistReachSchema.safeParse({ ...base, links: "http://insecure.example" }).success).toBe(
+      false,
+    );
   });
 });

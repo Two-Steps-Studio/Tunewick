@@ -155,11 +155,24 @@ test.describe("review and publishing", () => {
     await expect(bar.locator(".quality-chip")).toContainText("High");
     await expect(bar.getByRole("button", { name: "Pauza" })).toBeVisible();
 
-    // Discover lists it with the reason it is there: the artist's first release.
-    await listener.goto("/");
+    // Browse lists it with the reason it is there: the artist's first release.
+    await listener.goto("/przegladaj");
     const card = listener.locator(".release-card", { hasText: `Familok ${slug}` });
     await expect(card.getByRole("link", { name: "Szychta" })).toBeVisible();
     await expect(card.getByText(/^Debiut · /)).toBeVisible();
+
+    // A shared song: public page with the preview (no account), then into Discover with it first.
+    await listener.goto(`/artysci/${slug}`);
+    await listener.getByRole("link", { name: "Nocna zmiana" }).click();
+    await expect(listener).toHaveURL(new RegExp(`/song/${slug}/nocna-zmiana-[a-z2-9]{10}$`));
+    await expect(listener.getByRole("heading", { level: 1 })).toHaveText("Nocna zmiana");
+    await expect(
+      listener.getByRole("button", { name: "Odtwórz fragment: Nocna zmiana" }),
+    ).toBeVisible();
+    await listener.getByRole("link", { name: "Odkrywaj więcej na Tunewick" }).click();
+    const first = listener.locator(".feed-card").first();
+    await expect(first.getByRole("heading", { level: 2 })).toHaveText("Nocna zmiana");
+    await expect(first.getByText("Ktoś Ci to udostępnił")).toBeVisible();
 
     // Search finds the newly published music — no Polish characters needed.
     await listener.goto(`/szukaj?q=${encodeURIComponent(`familok ${slug}`)}`);

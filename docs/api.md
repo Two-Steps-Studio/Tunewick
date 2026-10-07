@@ -37,3 +37,17 @@
 | `POST /api/v1/webhooks/*` | Future payment provider webhooks (signature-verified). |
 
 Media itself is served by `media.tunewick.com` (Cloudflare Worker) — see architecture.md §6.4.
+
+## 4. Implemented endpoints (Discover, M13)
+
+| Endpoint | Purpose |
+| --- | --- |
+| `GET /api/discover/feed?mode&seed&exclude&start&artist&locale` | A page of the Discover feed (signed preview URLs; `private, no-store`). Works for visitors |
+| `POST /api/discover/events` | Batched product events (≤ 50). Visitors' events are accepted and dropped |
+| `POST /api/discover/share` | `{ trackId, channel }` → share points (once per song and day) |
+| `POST /api/listen` | One listen (`context: player | preview`) → `{ awards, achievements }` |
+| `GET /api/progress` | Today's progress for in-app celebrations (goals, streak) |
+| `GET /api/cards/song/{code}?format=story|square&locale` | Share card PNG (1080×1920 / 1080×1080) |
+| `GET /api/cards/week?format&locale` | The signed-in listener's weekly card |
+
+Song pages `/song/{artist}/{title}-{code}` also serve an Open Graph image.

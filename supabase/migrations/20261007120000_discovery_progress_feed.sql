@@ -4,9 +4,9 @@
 -- be tested, explained and replaced without a migration.
 
 -- ---------------------------------------------------------------------------
--- Listening stats for a period (null = all time)
+-- Listening stats for a period: 'week' / 'month' (local, listener's time zone) or 'all'
 -- ---------------------------------------------------------------------------
-create function public.my_discovery_stats(since timestamptz default null)
+create function public.my_discovery_stats(period text default 'all')
 returns table (
   listening_ms bigint,
   plays integer,
@@ -25,17 +25,23 @@ returns table (
 )
 language sql
 stable
-security invoker
+security definer
 set search_path = ''
 as $$
-  with me as (select (select auth.uid()) as id),
+  with me as (
+    select (select auth.uid()) as id,
+      case my_discovery_stats.period
+        when 'week' then date_trunc('week', now() at time zone private.listener_tz((select auth.uid()))) at time zone private.listener_tz((select auth.uid()))
+        when 'month' then date_trunc('month', now() at time zone private.listener_tz((select auth.uid()))) at time zone private.listener_tz((select auth.uid()))
+      end as since
+  ),
   ev as (
     select e.* from public.listening_events e, me
-    where e.user_id = me.id and (my_discovery_stats.since is null or e.started_at >= my_discovery_stats.since)
+    where e.user_id = me.id and (me.since is null or e.started_at >= me.since)
   ),
   dp as (
     select p.* from public.discovery_points p, me
-    where p.user_id = me.id and (my_discovery_stats.since is null or p.created_at >= my_discovery_stats.since)
+    where p.user_id = me.id and (me.since is null or p.created_at >= me.since)
   )
   select
     coalesce((select sum(ev.ms_played) from ev), 0)::bigint,
@@ -51,13 +57,13 @@ as $$
     (select count(*) from dp where dp.kind = 'new_country')::integer,
     coalesce((select sum(dp.points) from dp), 0)::integer,
     (select count(*) from public.track_saves s, me
-      where s.user_id = me.id and (my_discovery_stats.since is null or s.created_at >= my_discovery_stats.since))::integer,
+      where s.user_id = me.id and (me.since is null or s.created_at >= me.since))::integer,
     (select count(*) from public.artist_follows f, me
-      where f.user_id = me.id and (my_discovery_stats.since is null or f.created_at >= my_discovery_stats.since))::integer;
+      where f.user_id = me.id and (me.since is null or f.created_at >= me.since))::integer;
 $$;
 
-revoke execute on function public.my_discovery_stats(timestamptz) from public, anon;
-grant execute on function public.my_discovery_stats(timestamptz) to authenticated;
+revoke execute on function public.my_discovery_stats(text) from public, anon;
+grant execute on function public.my_discovery_stats(text) to authenticated;
 
 -- ---------------------------------------------------------------------------
 -- Progress: points, today/this week (listener's time zone), streaks, averages for adaptive
@@ -713,3 +719,108 @@ $$;
 
 revoke execute on function public.onboarding_artists(smallint[], text, integer) from public;
 grant execute on function public.onboarding_artists(smallint[], text, integer) to anon, authenticated;
+
+-- ---------------------------------------------------------------------------
+-- Browse (the former Discover home): new music filtered by country, and by voivodeship within
+-- Poland. Same rules as before (newest first, one release per artist, true reasons).
+-- ---------------------------------------------------------------------------
+drop function public.discover_releases(public.voivodeship, integer);
+drop function public.discover_artists(public.voivodeship, integer);
+
+/** Newest public releases, at most one per artist (the artist's newest), newest first. */
+create function public.discover_releases(
+  region public.voivodeship default null,
+  max_results integer default 12,
+  country text default null
+)
+returns table (
+  release_id uuid,
+  release_slug text,
+  title text,
+  release_type public.release_type,
+  publish_at timestamptz,
+  artwork_image_id uuid,
+  artist_name text,
+  artist_slug text,
+  city text,
+  voivodeship public.voivodeship,
+  is_debut boolean,
+  country_code text
+)
+language sql
+stable
+security invoker
+set search_path = ''
+as $$
+  with public_releases as (
+    select r.*, a.name as artist_name, a.slug as artist_slug, a.city, a.voivodeship, a.country_code,
+      row_number() over (partition by r.artist_id order by r.publish_at desc) as newest,
+      count(*) over (partition by r.artist_id) as release_count
+    from public.releases r
+    join public.artists a on a.id = r.artist_id
+    where r.status = 'published' and r.publish_at <= now() and a.status = 'active'
+      and (discover_releases.region is null or a.voivodeship = discover_releases.region)
+      and (discover_releases.country is null or a.country_code = discover_releases.country)
+  )
+  select p.id, p.slug::text, p.title, p.type, p.publish_at, p.artwork_image_id, p.artist_name,
+    p.artist_slug::text, p.city, p.voivodeship, p.release_count = 1, p.country_code
+  from public_releases p
+  where p.newest = 1
+  order by p.publish_at desc
+  limit least(greatest(discover_releases.max_results, 1), 48);
+$$;
+
+/** Artists by their first public release (newest debuts first). */
+create function public.discover_artists(
+  region public.voivodeship default null,
+  max_results integer default 12,
+  country text default null
+)
+returns table (
+  artist_id uuid,
+  artist_slug text,
+  name text,
+  image_id uuid,
+  city text,
+  voivodeship public.voivodeship,
+  verification_status public.artist_verification,
+  first_release_at timestamptz,
+  release_count integer,
+  country_code text
+)
+language sql
+stable
+security invoker
+set search_path = ''
+as $$
+  select a.id, a.slug::text, a.name, a.image_id, a.city, a.voivodeship, a.verification_status,
+    min(r.publish_at), count(r.id)::integer, a.country_code
+  from public.artists a
+  join public.releases r on r.artist_id = a.id and r.status = 'published' and r.publish_at <= now()
+  where a.status = 'active'
+    and (discover_artists.region is null or a.voivodeship = discover_artists.region)
+    and (discover_artists.country is null or a.country_code = discover_artists.country)
+  group by a.id
+  order by min(r.publish_at) desc
+  limit least(greatest(discover_artists.max_results, 1), 48);
+$$;
+
+/** Countries that have public music (for the Browse filter), with how many artists. */
+create function public.browse_countries()
+returns table (country_code text, artists integer)
+language sql
+stable
+security invoker
+set search_path = ''
+as $$
+  select a.country_code, count(distinct a.id)::integer
+  from public.artists a
+  where a.status = 'active' and a.country_code is not null
+    and exists (select 1 from public.releases r where r.artist_id = a.id and r.status = 'published' and r.publish_at <= now())
+  group by a.country_code
+  order by count(distinct a.id) desc, a.country_code;
+$$;
+
+grant execute on function public.discover_releases(public.voivodeship, integer, text) to anon, authenticated;
+grant execute on function public.discover_artists(public.voivodeship, integer, text) to anon, authenticated;
+grant execute on function public.browse_countries() to anon, authenticated;

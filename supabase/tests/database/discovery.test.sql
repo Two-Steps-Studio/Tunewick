@@ -3,7 +3,7 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set search_path = public, extensions;
 
-select plan(47);
+select plan(50);
 
 insert into auth.users (id, email, raw_app_meta_data, aud, role)
 values
@@ -74,6 +74,9 @@ select is((select preview_start_ms from track_previews(array[(select id from ids
   'the artist''s soundcheck is the preview window');
 select is((select count(*)::int from track_previews(array[(select id from ids where name = 't_draft')])), 0,
   'unreleased tracks have no preview');
+select is((select array_agg(title) from discover_releases(country => 'DE')), array['Erste'], 'browse filters by country');
+select is((select array_agg(country_code order by country_code) from browse_countries()), array['DE', 'PL'],
+  'browse lists countries that have public music');
 select is((select count(*)::int from similar_artists((select id from ids where name = 'pl'))), 0,
   'no similarity without shared genres or listeners');
 
@@ -117,6 +120,7 @@ select is((select (a ->> 'points')::int from jsonb_array_elements(
 
 select is((select array[unique_songs, unique_artists, new_songs, new_artists, new_countries, saves]
   from my_discovery_stats()), array[3, 2, 3, 2, 2, 1], 'listening stats count what was really heard');
+select is((select new_songs from my_discovery_stats('week')), 3, 'stats for this week');
 select is((select plays from my_discovery_stats()), 3, 'plays are full-player listens of ≥ 30 s (previews are not plays)');
 select is((select array_agg(t.title) from my_recent_tracks() r join tracks t on t.id = r.track_id), array['Dwa', 'Jeden'],
   'recently played lists player listens only');

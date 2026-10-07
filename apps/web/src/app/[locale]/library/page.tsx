@@ -78,12 +78,24 @@ export default async function LibraryPage({ params }: PageProps<"/[locale]/libra
       entitlement,
     )
   ).filter((track): track is PlayerTrack => track !== null);
+  const savedQueue = (
+    await getPlayableQueue(
+      library.saved.map((track) => ({
+        id: track.id,
+        title: track.title,
+        releaseId: track.release.id,
+        artistName: track.release.artist.name,
+      })),
+      entitlement,
+    )
+  ).filter((track): track is PlayerTrack => track !== null);
   const images = await getImageSourcesMany(
     [...library.releases.map((r) => r.artwork_image_id), ...library.artists.map((a) => a.image_id)],
     320,
   );
   const empty =
     !library.tracks.length &&
+    !library.saved.length &&
     !library.releases.length &&
     !library.artists.length &&
     !playlists.length &&
@@ -186,6 +198,69 @@ export default async function LibraryPage({ params }: PageProps<"/[locale]/libra
                     <span />
                   )}
                   <LibraryButton kind="track" id={track.id} initial name={track.title} />
+                </li>
+              );
+            })}
+          </ol>
+        </section>
+      ) : null}
+
+      {library.saved.length ? (
+        <section aria-labelledby="saved" className="discover__section">
+          <h2 id="saved" className="section-title">
+            {t("saved.title")}
+          </h2>
+          <p className="field__hint">{t("saved.lead")}</p>
+          {savedQueue.length ? (
+            <p>
+              <PlayButton
+                tracks={savedQueue}
+                index={0}
+                entitlement={entitlement}
+                label={t("saved.play")}
+                className="button button--primary"
+              >
+                {t("saved.play")}
+              </PlayButton>
+            </p>
+          ) : null}
+          <ol className="release-tracks">
+            {library.saved.map((track) => {
+              const index = savedQueue.findIndex((p) => p.id === track.id);
+              return (
+                <li key={track.id} className="release-tracks__item">
+                  <span className="release-tracks__number">{index === -1 ? "" : index + 1}</span>
+                  <span className="release-tracks__title">
+                    {track.title}
+                    <span className="library-track__by">
+                      <Link
+                        href={{
+                          pathname: "/artists/[slug]",
+                          params: { slug: track.release.artist.slug },
+                        }}
+                      >
+                        {track.release.artist.name}
+                      </Link>
+                    </span>
+                  </span>
+                  <span className="release-tracks__duration">
+                    {track.duration_ms ? formatDuration(track.duration_ms) : ""}
+                  </span>
+                  {index !== -1 ? (
+                    <PlayButton
+                      tracks={savedQueue}
+                      index={index}
+                      entitlement={entitlement}
+                      label={t("playTrack", { title: track.title })}
+                      className="player-button release-tracks__play"
+                    >
+                      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                        <path d="M7 4.5v15l12-7.5z" fill="currentColor" />
+                      </svg>
+                    </PlayButton>
+                  ) : (
+                    <span />
+                  )}
                 </li>
               );
             })}

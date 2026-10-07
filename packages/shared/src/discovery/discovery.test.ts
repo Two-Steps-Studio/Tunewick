@@ -118,6 +118,30 @@ describe("rankFeed", () => {
     expect(rock / feed.length).toBeLessThanOrEqual(0.4);
   });
 
+  it("never lets an experiment slot repeat the artist just played when others exist", () => {
+    const pool = [
+      candidate("a1", { artistId: "a", genreIds: [7], listeners30d: 0 }),
+      candidate("a2", { artistId: "a", genreIds: [7], listeners30d: 0 }),
+      ...Array.from({ length: 6 }, (_, i) =>
+        candidate(`k${i}`, { artistId: `k${i}`, genreIds: [1] }),
+      ),
+    ];
+    const listener = taste({ genres: new Map([[1, 5]]), countries: new Map([["DE", 5]]) });
+    for (let seed = 1; seed <= 30; seed++) {
+      const feed = rankFeed(pool, listener, {
+        mode: "for_you",
+        size: 8,
+        seed,
+        now: NOW,
+        explorationShare: 0.5,
+      });
+      const artists = feed.map((item) => pool.find((c) => c.trackId === item.trackId)!.artistId);
+      artists.forEach((artist, i) =>
+        expect(artists.slice(Math.max(0, i - 3), i)).not.toContain(artist),
+      );
+    }
+  });
+
   it("mixes in experiments at roughly the configured share", () => {
     const known = Array.from({ length: 60 }, (_, i) =>
       candidate(`k${i}`, { genreIds: [1], artistId: `k${i}` }),

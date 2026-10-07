@@ -361,3 +361,30 @@ artists, released releases and their tracks — members never see their drafts i
 exact name 1.0, prefix 0.9, word prefix 0.8, substring 0.6, trigram similarity (> 0.3) × 0.7;
 up to `max_results` (≤ 20) per kind; LIKE wildcards in the query are literal; < 2 characters
 returns nothing. Playlists, events and venues join when they exist.
+
+## Discovery expansion (implemented, M13 — docs/discovery-expansion.md)
+
+Migrations `20261007100000_global_model`, `20261007110000_discovery_ledger`,
+`20261007120000_discovery_progress_feed`.
+
+| Table / column | Purpose |
+| --- | --- |
+| `countries` | ISO 3166-1 alpha-2 (+ XK) with a UN macro-region; names rendered by the client (`Intl.DisplayNames`) |
+| `artists.country_code`, `region`, `languages` | Where an artist is from (a voivodeship implies `PL`); ISO 639 language codes |
+| `artist_genres` (≤ 5), `artist_links` (≤ 10, https) | What the artist makes; links on the public page. Owners/managers edit |
+| `listener_preferences` | Country, optional city, content languages, genres, discovery mode, exploration share, hide explicit, ranking opt-out, time zone, onboarded. Private |
+| `tracks.public_code` | Random, immutable share code (`/song/{artist}/{title}-{code}`) |
+| `listening_events.context` | `player` or `preview` (previews never count as payout plays) |
+| `track_saves` | "Saved from Discover" crate (Like stays `track_likes`) |
+| `discovery_point_rules` | Points and rolling-24 h caps per award kind; admin-editable |
+| `discovery_points` | The ledger; unique `(user, kind, award_key)`; written only by `private.award` |
+| `achievements`, `user_achievements` | Definitions as rows (metric + threshold); unlocks evaluated in the database |
+| `private.product_events` | Product analytics, signed-in only, no IP/UA, 180-day retention (`private.prune_product_events`) |
+| `reports` | Song/release/artist/user reports; staff decide via `decide_report` (MFA, audited) |
+
+Functions: `record_listen` (now with `context`, returns awards), `record_share`, `record_events`,
+`refresh_my_achievements`, `my_discovery_stats(period)`, `my_progress`, `my_records`,
+`my_weekly_recap`, `discovery_leaderboard`, `my_ranking`, `discover_candidates`, `my_taste`,
+`track_previews`, `similar_artists`, `artist_top_tracks`, `onboarding_artists`,
+`browse_countries`; `discover_releases`/`discover_artists` gained a `country` filter.
+pgTAP: `supabase/tests/database/discovery.test.sql`.

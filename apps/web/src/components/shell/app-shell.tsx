@@ -3,6 +3,7 @@ import { Link } from "@/i18n/navigation";
 import { getOptionalUser, isStaff, SignOutButton } from "@/modules/auth";
 import { LocaleSwitcher } from "./locale-switcher";
 import { MainNav } from "./main-nav";
+import { ProgressNotices } from "@/modules/notices";
 import { PlayerBar } from "@/modules/player";
 import { Wordmark } from "./wordmark";
 
@@ -47,6 +48,7 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
         {children}
       </main>
       <div className="site-bottom">
+        <ProgressNotices />
         <PlayerBar reportListens={user !== null} />
         <MainNav variant="bottom" />
       </div>

@@ -135,3 +135,24 @@ the feed works on mobile widths (snap scroll, 44 px targets), previews preload o
 unload behind, Like/Save/Follow/Share work, `en`/`pl` complete, a new account with no history gets
 a non-empty feed when public music exists, stats/score/points/streak/goals/ranking are computed
 from the ledger.
+
+## 8. Status (2026-10-07)
+
+Implemented in this change: all of P0 and the P1 items marked ✅ above.
+
+Verified: migrations from zero + pgTAP (`discovery.test.sql`, 50 assertions) + `db lint`; unit tests
+for ranking/progress (`packages/shared/src/discovery`); typecheck, lint, build; E2E smoke (feed,
+onboarding, browse, You, rankings in both languages, no horizontal scroll); a manual run on a local
+catalog (8 artists, 7 countries): preview playback with preload and auto-advance, awards
+(+14 for a new song/artist/genre/country), like/save/follow, You page, rankings, shared song page,
+Open Graph and story/square cards.
+
+Known gaps / next:
+
+- Guidon tasks for M13 must be created from §3 (no Guidon access from the implementation session).
+- Previews use AAC only (as the delivery tiers do); a browser without AAC shows "can't play the
+  preview" — a FLAC/Opus preview variant would need a worker change.
+- Saving shows no "+2" notice yet (the award is recorded); co-listening (item–item) signals and
+  per-listener weight tuning are P1.
+- `discover_candidates` aggregates 30 days of events per request — fine for the beta catalog; a
+  materialized view refreshed every few minutes is the step before public launch.

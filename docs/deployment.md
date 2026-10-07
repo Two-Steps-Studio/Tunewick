@@ -154,3 +154,12 @@ then run `node scripts/create-invites.mjs ...` in the same window.
 - `/` and `/en` load; `/logowanie` shows the form.
 - Sign-up email arrives and the link lands on `/api/auth/confirm` → signed in.
 - Vercel → Logs: no `error` level entries for the new deployment.
+
+## 6. Discovery expansion (M13)
+
+- Run `select private.prune_product_events();` daily (Supabase cron / scheduled function) — 180-day
+  retention of product analytics.
+- Keep `select private.create_listening_partition(...)` monthly as before (previews are listens too).
+- Share cards and Open Graph images are rendered by the web app (`next/og`); covers are converted
+  from WebP with `sharp` (an explicit dependency of `apps/web`).
+- Point values and caps: edit `discovery_point_rules` (admin) — no deploy needed.

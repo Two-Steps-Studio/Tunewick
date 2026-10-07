@@ -4,7 +4,7 @@ test.describe("search", () => {
   test("explains short queries and empty results honestly", async ({ page }) => {
     await page.goto("/szukaj");
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("Szukaj");
-    await expect(page.getByText(/Niezależni artyści z całej Polski/)).toBeVisible();
+    await expect(page.getByText(/Niezależni artyści z całego świata/)).toBeVisible();
 
     await page.getByRole("searchbox", { name: "Szukaj artystów, wydawnictw i utworów" }).fill("x");
     await page.getByRole("button", { name: "Szukaj" }).click();

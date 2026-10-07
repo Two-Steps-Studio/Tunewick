@@ -2,10 +2,16 @@ import { expect, test } from "@playwright/test";
 
 const pages = [
   { path: "/", heading: "Odkrywaj", lang: "pl" },
+  { path: "/przegladaj", heading: "Przeglądaj", lang: "pl" },
+  { path: "/ty", heading: "Ty", lang: "pl" },
+  { path: "/rankingi", heading: "Rankingi", lang: "pl" },
   { path: "/scena", heading: "Scena", lang: "pl" },
   { path: "/szukaj", heading: "Szukaj", lang: "pl" },
   { path: "/biblioteka", heading: "Biblioteka", lang: "pl" },
   { path: "/en", heading: "Discover", lang: "en" },
+  { path: "/en/browse", heading: "Browse", lang: "en" },
+  { path: "/en/you", heading: "You", lang: "en" },
+  { path: "/en/rankings", heading: "Rankings", lang: "en" },
   { path: "/en/scene", heading: "Scene", lang: "en" },
   { path: "/en/search", heading: "Search", lang: "en" },
   { path: "/en/library", heading: "Library", lang: "en" },
@@ -26,9 +32,12 @@ for (const { path, heading, lang } of pages) {
 test("navigation marks the current page and keeps the player region", async ({ page }) => {
   await page.goto("/");
   const nav = page.getByRole("navigation", { name: "Nawigacja główna" });
-  await nav.getByRole("link", { name: "Scena" }).click();
-  await expect(page).toHaveURL(/\/scena$/);
-  await expect(nav.getByRole("link", { name: "Scena" })).toHaveAttribute("aria-current", "page");
+  await nav.getByRole("link", { name: "Przeglądaj" }).click();
+  await expect(page).toHaveURL(/\/przegladaj$/);
+  await expect(nav.getByRole("link", { name: "Przeglądaj" })).toHaveAttribute(
+    "aria-current",
+    "page",
+  );
   await expect(page.getByRole("region", { name: "Odtwarzacz" })).toBeVisible();
 });
 
@@ -64,16 +73,14 @@ test.describe("locale detection", () => {
   });
 });
 
-test("discover narrows to a voivodeship and says when it has nothing yet", async ({ page }) => {
-  await page.goto("/");
-  const regions = page.getByRole("navigation", { name: "Region" });
-  await expect(regions.getByRole("link", { name: "Cała Polska" })).toHaveAttribute(
-    "aria-current",
-    "page",
-  );
+test("browse narrows Poland to a voivodeship and says when it has nothing yet", async ({
+  page,
+}) => {
+  await page.goto("/przegladaj?country=PL");
+  const regions = page.getByRole("navigation", { name: "Województwo" });
   // No E2E fixture ever uses Lubuskie.
   await regions.getByRole("link", { name: "Lubuskie" }).click();
-  await expect(page).toHaveURL(/\/\?woj=lubuskie$/);
+  await expect(page).toHaveURL(/\/przegladaj\?country=PL&woj=lubuskie$/);
   await expect(regions.getByRole("link", { name: "Lubuskie" })).toHaveAttribute(
     "aria-current",
     "page",
@@ -81,4 +88,19 @@ test("discover narrows to a voivodeship and says when it has nothing yet", async
   await expect(
     page.getByText("Z województwa lubuskie nie ma jeszcze opublikowanej muzyki."),
   ).toBeVisible();
+});
+
+test("a first visit asks what to discover; skipping opens the feed", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.getByRole("heading", { name: "Co chcesz odkrywać?" })).toBeVisible();
+  await page.getByText("Rock", { exact: true }).click();
+  await page.getByRole("button", { name: "Zacznij odkrywać" }).click();
+  await expect(page.getByRole("navigation", { name: "Co odkrywać" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Dla Ciebie" })).toHaveAttribute(
+    "aria-pressed",
+    "true",
+  );
+  // The choice is remembered (a cookie for visitors): the next visit goes straight to the feed.
+  await page.goto("/");
+  await expect(page.getByRole("navigation", { name: "Co odkrywać" })).toBeVisible();
 });
