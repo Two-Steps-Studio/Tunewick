@@ -43,9 +43,9 @@ select lives_ok($$select submit_report('profile', '00000000-0000-0000-0000-00000
 
 -- Moderator decisions: proportionate, matching the subject.
 set local request.jwt.claims = '{"sub": "00000000-0000-0000-0000-000000000aa3", "role": "authenticated", "aal": "aal2"}';
-insert into ids select 'r_event', id from reports where subject_type = 'event';
-insert into ids select 'r_venue', id from reports where subject_type = 'venue';
-insert into ids select 'r_profile', id from reports where subject_type = 'profile';
+insert into ids select 'r_event', id from reports where subject_id = (select id from ids where name = 'event');
+insert into ids select 'r_venue', id from reports where subject_id = (select id from ids where name = 'venue');
+insert into ids select 'r_profile', id from reports where subject_id = '00000000-0000-0000-0000-000000000aa5';
 select throws_ok($$select moderate_report((select id from ids where name = 'r_event'), 'reset_profile', 'To nie pasuje do zgłoszonej treści.')$$,
   '22023', null, 'the action must fit the subject');
 select lives_ok($$select moderate_report((select id from ids where name = 'r_event'), 'remove_event', 'Wydarzenie nie istnieje — potwierdzone z klubem.')$$,
@@ -62,13 +62,13 @@ select lives_ok($$select moderate_report((select id from ids where name = 'r_pro
 -- The person reads the statement of reasons and appeals; another moderator reverses it.
 set local request.jwt.claims = '{"sub": "00000000-0000-0000-0000-000000000aa5", "role": "authenticated"}';
 select is((select handle::text from profiles where id = '00000000-0000-0000-0000-000000000aa5'), null, 'the handle is cleared');
-select is((select statement from moderation_decisions where subject_type = 'profile'),
+select is((select statement from moderation_decisions where subject_id = '00000000-0000-0000-0000-000000000aa5'),
   'Profil podszywał się pod zespół — nazwa i opis wyczyszczone.', 'the person sees why');
-select lives_ok($$select appeal_moderation_decision((select id from moderation_decisions where subject_type = 'profile'), 'Jestem w tym zespole, mogę to udowodnić.')$$,
+select lives_ok($$select appeal_moderation_decision((select id from moderation_decisions where subject_id = '00000000-0000-0000-0000-000000000aa5'), 'Jestem w tym zespole, mogę to udowodnić.')$$,
   'and appeals');
 
 set local request.jwt.claims = '{"sub": "00000000-0000-0000-0000-000000000aa4", "role": "authenticated", "aal": "aal2"}';
-select decide_appeal((select id from moderation_decisions where subject_type = 'profile'), 'reverse', 'Członkostwo potwierdzone przez artystę.');
+select decide_appeal((select id from moderation_decisions where subject_id = '00000000-0000-0000-0000-000000000aa5'), 'reverse', 'Członkostwo potwierdzone przez artystę.');
 select is((select handle::text || '|' || display_name from profiles where id = '00000000-0000-0000-0000-000000000aa5'),
   'falszywy-zespol|Oficjalny Zespół', 'a reversed decision restores the profile');
 
