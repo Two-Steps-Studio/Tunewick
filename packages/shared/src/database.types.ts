@@ -1531,6 +1531,72 @@ export type Database = {
           },
         ];
       };
+      user_blocks: {
+        Row: {
+          blocked_id: string;
+          blocker_id: string;
+          created_at: string;
+        };
+        Insert: {
+          blocked_id: string;
+          blocker_id?: string;
+          created_at?: string;
+        };
+        Update: {
+          blocked_id?: string;
+          blocker_id?: string;
+          created_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "user_blocks_blocked_id_fkey";
+            columns: ["blocked_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "user_blocks_blocker_id_fkey";
+            columns: ["blocker_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      user_follows: {
+        Row: {
+          created_at: string;
+          followee_id: string;
+          follower_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          followee_id: string;
+          follower_id?: string;
+        };
+        Update: {
+          created_at?: string;
+          followee_id?: string;
+          follower_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "user_follows_followee_id_fkey";
+            columns: ["followee_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "user_follows_follower_id_fkey";
+            columns: ["follower_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       user_roles: {
         Row: {
           created_at: string;
@@ -2003,6 +2069,15 @@ export type Database = {
       };
       move_playlist_track: { Args: { item: string; to_index: number }; Returns: undefined };
       move_track: { Args: { direction: number; track: string }; Returns: undefined };
+      my_blocked_users: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          blocked_at: string;
+          display_name: string;
+          handle: string;
+          id: string;
+        }[];
+      };
       my_deletion_blockers: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -2028,6 +2103,36 @@ export type Database = {
           last_played_at: string;
           plays: number;
           track_id: string;
+        }[];
+      };
+      profile_attended_events: {
+        Args: { profile: string };
+        Returns: {
+          event_id: string;
+          marked_at: string;
+          starts_at: string;
+          title: string;
+          venue_city: string;
+          venue_name: string;
+        }[];
+      };
+      profile_playlists: {
+        Args: { profile: string };
+        Returns: {
+          id: string;
+          title: string;
+          track_count: number;
+          updated_at: string;
+        }[];
+      };
+      profile_relationship: {
+        Args: { profile: string };
+        Returns: {
+          activity_visible: boolean;
+          followers: number;
+          following: number;
+          i_blocked: boolean;
+          i_follow: boolean;
         }[];
       };
       record_listen: {

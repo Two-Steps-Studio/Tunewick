@@ -41,13 +41,13 @@ test.describe("account settings and public profile", () => {
     await page.getByLabel("Nazwa profilu (adres)").fill(handle);
     await page.getByLabel("Nazwa wyświetlana").fill("Basista z Gliwic");
     await page.getByLabel("O mnie").fill("Gram na basie w dwóch zespołach.");
-    await page.getByLabel("Kto widzi Twoją aktywność słuchania").selectOption("private");
+    await page.getByLabel("Kto widzi Twoją aktywność").selectOption("private");
     await page.getByRole("button", { name: "Zapisz zmiany" }).click();
     await expect(page.getByRole("status")).toHaveText("Zapisano.");
 
     await page.reload();
     await expect(page.getByLabel("Nazwa profilu (adres)")).toHaveValue(handle);
-    await expect(page.getByLabel("Kto widzi Twoją aktywność słuchania")).toHaveValue("private");
+    await expect(page.getByLabel("Kto widzi Twoją aktywność")).toHaveValue("private");
 
     // An anonymous visitor sees only public fields.
     const anonymous = await browser.newContext({ locale: "pl-PL" });

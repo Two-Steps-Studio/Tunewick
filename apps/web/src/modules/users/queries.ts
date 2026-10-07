@@ -23,7 +23,7 @@ export async function getPublicProfile(handle: string) {
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase
     .from("profiles")
-    .select("handle, display_name, bio, created_at")
+    .select("id, handle, display_name, bio, created_at")
     .eq("handle", handle.toLowerCase())
     .maybeSingle();
   if (error) throw error;

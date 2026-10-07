@@ -1254,6 +1254,38 @@ body {
     color: var(--text-muted);
   }
 
+  /* Profile activity and blocked people (M8.2) ------------------------------- */
+  .profile-activity {
+    display: grid;
+    gap: var(--tk-space-3);
+    padding-top: var(--tk-space-8);
+  }
+  .profile-activity__title {
+    font-size: var(--tk-text-sm);
+    font-weight: 700;
+    padding-top: var(--tk-space-2);
+  }
+  .profile-activity__list,
+  .blocked-users {
+    display: grid;
+    gap: var(--tk-space-2);
+  }
+  .profile-activity__list li {
+    display: grid;
+    gap: var(--tk-space-1);
+  }
+  .profile-activity__meta {
+    font-size: var(--tk-text-xs);
+    color: var(--text-muted);
+  }
+  .blocked-users__item {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--tk-space-3);
+  }
+
   /* Two-factor sign-in ------------------------------------------------------ */
   .mfa-step {
     display: grid;

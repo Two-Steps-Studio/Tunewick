@@ -30,7 +30,7 @@ select is(
      and table_name not in (
        'profiles', 'profile_settings', 'artists', 'releases', 'release_artists', 'release_genres', 'tracks',
        'track_artists', 'credits', 'track_likes', 'release_likes', 'artist_follows', 'playlists',
-       'playlist_tracks', 'listening_events', 'event_attendance'
+       'playlist_tracks', 'listening_events', 'event_attendance', 'user_follows', 'user_blocks'
      )),
   '{}'::text[], 'authenticated can update/delete only the reviewed tables');
 

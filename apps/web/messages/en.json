@@ -227,12 +227,12 @@
       "displayName": "Display name",
       "bio": "About me",
       "locale": "Language",
-      "visibility": "Who can see your listening activity"
+      "visibility": "Who sees your activity"
     },
     "hints": {
       "handle": "Lowercase letters, digits and hyphens, 2–40 characters. Profile address: tunewick.com/en/profile/name",
       "bio": "Up to 500 characters.",
-      "visibility": "Listening activity arrives together with social features. This setting applies from their launch."
+      "visibility": "Who sees gigs you marked (\"I was there\") and your public playlists on your profile."
     },
     "locales": {
       "pl": "Polski",
@@ -1172,5 +1172,31 @@
       "staff": "Tunewick staff accounts are removed by an administrator — the role must be revoked first.",
       "failed": "Could not delete the account. Please try again."
     }
+  },
+  "Social": {
+    "followShort": "Follow",
+    "following": "Following",
+    "follow": "Follow {name}",
+    "unfollow": "Unfollow {name}",
+    "followFailed": "Could not save. Try again.",
+    "followers": "{count, plural, one {1 follower} other {# followers}}",
+    "followingCount": "{count, plural, =0 {follows nobody} other {follows #}}",
+    "block": "Block",
+    "blockQuestion": "Block {name}? You will stop following each other and will not see each other's activity.",
+    "blockYes": "Yes, block",
+    "cancel": "Cancel",
+    "unblock": "Unblock",
+    "unblockNamed": "Unblock {name}",
+    "blockedTitle": "Blocked people",
+    "blockedLead": "These people cannot follow you or see your activity. You do not see theirs either.",
+    "noName": "Unnamed account",
+    "activityTitle": "Activity",
+    "activityHidden": "This person's activity is visible only to people they choose.",
+    "activityOwn": "This is how people you allow see your activity. Change it in Settings.",
+    "attended": "I was there",
+    "attendedEmpty": "No gigs marked yet.",
+    "playlists": "Public playlists",
+    "playlistsEmpty": "No public playlists.",
+    "trackCount": "{count, plural, =0 {no tracks} one {1 track} other {# tracks}}"
   }
 }

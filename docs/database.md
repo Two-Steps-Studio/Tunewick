@@ -50,7 +50,7 @@ graph_edges (derived)      feature_flags, access_invites, waitlist      private.
 | `user_roles` | `user_id`, `role (moderator, admin)`, `granted_by` | Platform roles. "listener" is implicit. No writes through the Data API; changes audited. ✅ implemented (M0.3). |
 | `consents` | `user_id`, `purpose (analytics, marketing, personalization)`, `granted`, `policy_version`, `created_at` | Append-only history; latest row per purpose wins. |
 | `data_requests` | `user_id`, `type (export, delete)`, `status`, `requested_at`, `completed_at` | GDPR flows. |
-| `blocks` | `blocker_id`, `blocked_id` | Hides users from each other's activity. |
+| `user_blocks` | `blocker_id`, `blocked_id` | Hides users from each other's activity; ends follows both ways. |
 
 ### 3.2 Artists
 
@@ -222,7 +222,7 @@ Every policy is covered by pgTAP tests in `supabase/tests/` (a policy without a 
 | Player, quality selection, gapless | `audio_variants`, `release_loudness`, `tracks.segue_into_next`, `player_sessions` |
 | Library, history, playlists | `track_likes`, `release_likes`, `artist_follows`, `listening_events`, `playlists`, `playlist_tracks` |
 | Discovery, related | `graph_edges`, `listening_events`, `artist_follows` |
-| Social | `user_follows`, `activity`, `blocks` |
+| Social | `user_follows`, `user_blocks` |
 | Events, "Byłem przy tym" | `cities`, `venues`, `events`, `event_lineup`, `event_attendance` |
 | Music Graph | catalog + `credits` + `event_lineup` → `graph_edges` |
 | Entitlements, promo codes | `plans`, `entitlements`, `promo_campaigns`, `private.promo_codes`, `promo_redemptions` |
@@ -421,3 +421,14 @@ artists, released releases and their tracks — members never see their drafts i
 exact name 1.0, prefix 0.9, word prefix 0.8, substring 0.6, trigram similarity (> 0.3) × 0.7;
 up to `max_results` (≤ 20) per kind; LIKE wildcards in the query are literal; < 2 characters
 returns nothing. Playlists, events and venues join when they exist.
+
+## People following people, activity and blocking (implemented, M8.2)
+
+`user_follows` and `user_blocks` (migration `20261007110000_social.sql`). Activity is not a
+table: a profile shows events marked "Byłem przy tym" and public playlists through
+`profile_attended_events` / `profile_playlists`, which return rows only when
+`private.can_view_activity(owner)` allows it — the owner, anyone for `public`, followers for
+`followers` (the default), nobody else for `private`, and never across a block in either
+direction. A block ends follows both ways (trigger) and a follow across a block is refused by the
+insert policy. `profile_relationship` returns real follower counts; who follows whom is readable
+only by the two people involved.

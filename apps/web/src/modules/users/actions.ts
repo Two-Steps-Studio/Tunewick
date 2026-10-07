@@ -62,7 +62,9 @@ export async function updateSettings(
     (await cookies()).set("NEXT_LOCALE", input.locale, { path: "/", sameSite: "lax" });
     redirect({ href: "/settings", locale: input.locale });
   }
-  return { saved: true };
+  // The form resets to its defaults after the action: keep the saved values as those defaults,
+  // or a second save without a reload would send the stale ones.
+  return { saved: true, values };
 }
 
 export interface DeleteAccountState {

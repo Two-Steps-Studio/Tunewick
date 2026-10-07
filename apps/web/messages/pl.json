@@ -227,12 +227,12 @@
       "displayName": "Nazwa wyświetlana",
       "bio": "O mnie",
       "locale": "Język serwisu",
-      "visibility": "Kto widzi Twoją aktywność słuchania"
+      "visibility": "Kto widzi Twoją aktywność"
     },
     "hints": {
       "handle": "Małe litery, cyfry i myślniki, 2–40 znaków. Adres profilu: tunewick.com/profil/nazwa",
       "bio": "Do 500 znaków.",
-      "visibility": "Aktywność słuchania pojawi się w serwisie razem z funkcjami społecznościowymi. To ustawienie zadziała od ich startu."
+      "visibility": "Kto widzi na Twoim profilu oznaczone koncerty („Byłem przy tym”) i publiczne playlisty."
     },
     "locales": {
       "pl": "Polski",
@@ -1172,5 +1172,31 @@
       "staff": "Konta zespołu Tunewick usuwa administrator — najpierw trzeba odebrać rolę.",
       "failed": "Nie udało się usunąć konta. Spróbuj ponownie."
     }
+  },
+  "Social": {
+    "followShort": "Obserwuj",
+    "following": "Obserwujesz",
+    "follow": "Obserwuj: {name}",
+    "unfollow": "Przestań obserwować: {name}",
+    "followFailed": "Nie udało się zapisać. Spróbuj ponownie.",
+    "followers": "{count, plural, =0 {0 obserwujących} one {1 osoba obserwuje} few {# osoby obserwują} many {# osób obserwuje} other {# osoby obserwują}}",
+    "followingCount": "{count, plural, =0 {nikogo nie obserwuje} one {obserwuje 1 osobę} few {obserwuje # osoby} many {obserwuje # osób} other {obserwuje # osoby}}",
+    "block": "Zablokuj",
+    "blockQuestion": "Zablokować: {name}? Przestaniecie się nawzajem obserwować i nie zobaczycie swojej aktywności.",
+    "blockYes": "Tak, zablokuj",
+    "cancel": "Anuluj",
+    "unblock": "Odblokuj",
+    "unblockNamed": "Odblokuj: {name}",
+    "blockedTitle": "Zablokowane osoby",
+    "blockedLead": "Te osoby nie mogą Cię obserwować ani widzieć Twojej aktywności. Ty też nie widzisz ich aktywności.",
+    "noName": "Konto bez nazwy",
+    "activityTitle": "Aktywność",
+    "activityHidden": "Aktywność tej osoby jest widoczna tylko dla wybranych osób.",
+    "activityOwn": "Tak widzą Twoją aktywność osoby, którym na to pozwalasz. Zmienisz to w Ustawieniach.",
+    "attended": "Byłem przy tym",
+    "attendedEmpty": "Brak oznaczonych koncertów.",
+    "playlists": "Publiczne playlisty",
+    "playlistsEmpty": "Brak publicznych playlist.",
+    "trackCount": "{count, plural, =0 {bez utworów} one {1 utwór} few {# utwory} many {# utworów} other {# utworu}}"
   }
 }
