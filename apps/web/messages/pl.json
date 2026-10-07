@@ -71,7 +71,8 @@
       "firstRelease": "Pierwsze wydawnictwo {when} · {count, plural, one {# wydawnictwo} few {# wydawnictwa} many {# wydawnictw} other {# wydawnictwa}}"
     },
     "soundcheck": "Soundcheck {seconds} s",
-    "soundcheckLabel": "Posłuchaj fragmentu: {title} — {artist}"
+    "soundcheckLabel": "Posłuchaj fragmentu: {title} — {artist}",
+    "accountDeleted": "Konto zostało usunięte. Dziękujemy za wspólny czas w Tunewick."
   },
   "Scene": {
     "title": "Scena",
@@ -1145,5 +1146,23 @@
     "upcoming": "Nadchodzące",
     "noUpcoming": "Na razie nic tu nie zaplanowano.",
     "past": "Tu grali"
+  },
+  "Privacy": {
+    "title": "Twoje dane",
+    "exportLead": "Pobierz wszystko, co Tunewick o Tobie przechowuje: konto, profil, plan, polubienia, playlisty, historię słuchania i koncertów, zgłoszenia — w jednym pliku JSON.",
+    "export": "Pobierz moje dane",
+    "deleteLead": "Usunięcie konta kasuje profil, ustawienia, polubienia, playlisty, historię i plan. Oświadczenia o prawach do wydanej muzyki zostają jako dowód — bez Twoich danych.",
+    "blocked": "Najpierw przekaż innej osobie albo usuń profile artystów, których jesteś jedynym właścicielem:",
+    "delete": "Usuń konto",
+    "deleteWarning": "Tego nie da się cofnąć. Aby potwierdzić, wpisz adres e-mail konta.",
+    "confirmEmail": "Adres e-mail konta",
+    "deleteForever": "Usuń konto na zawsze",
+    "cancel": "Anuluj",
+    "errors": {
+      "email_mismatch": "To nie jest adres e-mail tego konta.",
+      "sole_owner": "Najpierw przekaż albo usuń profile artystów, których jesteś jedynym właścicielem.",
+      "staff": "Konta zespołu Tunewick usuwa administrator — najpierw trzeba odebrać rolę.",
+      "failed": "Nie udało się usunąć konta. Spróbuj ponownie."
+    }
   }
 }

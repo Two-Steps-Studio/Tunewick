@@ -1233,7 +1233,7 @@ export type Database = {
           cmo_memberships: string[];
           controls_composition: boolean;
           declared_at: string;
-          declared_by: string;
+          declared_by: string | null;
           id: string;
           owns_master: boolean;
           release_id: string;
@@ -1247,7 +1247,7 @@ export type Database = {
           cmo_memberships?: string[];
           controls_composition: boolean;
           declared_at?: string;
-          declared_by?: string;
+          declared_by?: string | null;
           id?: string;
           owns_master: boolean;
           release_id: string;
@@ -1261,7 +1261,7 @@ export type Database = {
           cmo_memberships?: string[];
           controls_composition?: boolean;
           declared_at?: string;
-          declared_by?: string;
+          declared_by?: string | null;
           id?: string;
           owns_master?: boolean;
           release_id?: string;
@@ -1907,6 +1907,7 @@ export type Database = {
         Args: { decision: string; note: string; outcome: string };
         Returns: undefined;
       };
+      delete_my_account: { Args: { confirm_email: string }; Returns: undefined };
       delete_track: { Args: { track: string }; Returns: undefined };
       discover_artists: {
         Args: { max_results?: number; region?: Database["public"]["Enums"]["voivodeship"] };
@@ -1991,6 +1992,14 @@ export type Database = {
       };
       move_playlist_track: { Args: { item: string; to_index: number }; Returns: undefined };
       move_track: { Args: { direction: number; track: string }; Returns: undefined };
+      my_deletion_blockers: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          artist_id: string;
+          name: string;
+          slug: string;
+        }[];
+      };
       my_plan: {
         Args: Record<PropertyKey, never>;
         Returns: {

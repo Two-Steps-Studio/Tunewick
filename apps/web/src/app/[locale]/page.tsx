@@ -28,7 +28,9 @@ export default async function DiscoverPage({ params, searchParams }: PageProps<"
   const tPlaces = await getTranslations("Places");
   const tReleases = await getTranslations("Releases");
   const format = await getFormatter();
-  const region = parseRegion((await searchParams).woj);
+  const query = await searchParams;
+  const region = parseRegion(query.woj);
+  const accountDeleted = query.konto === "usuniete";
   const { releases, artists } = await getDiscover(region);
   const entitlement = await listenerEntitlement();
   const soundchecks = await getSoundchecks(
@@ -66,6 +68,11 @@ export default async function DiscoverPage({ params, searchParams }: PageProps<"
         <p className="discover__lead">{t("leadPoland")}</p>
       </header>
 
+      {accountDeleted ? (
+        <p role="status" className="form-status">
+          {t("accountDeleted")}
+        </p>
+      ) : null}
       <nav aria-label={t("regionLabel")} className="region-filter">
         <Link
           href="/"

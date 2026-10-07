@@ -29,3 +29,11 @@ export async function getPublicProfile(handle: string) {
   if (error) throw error;
   return data;
 }
+
+/** Artist profiles that would be left without an owner if the account were deleted. */
+export async function getDeletionBlockers() {
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase.rpc("my_deletion_blockers");
+  if (error) throw error;
+  return data ?? [];
+}

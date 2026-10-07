@@ -71,7 +71,8 @@
       "firstRelease": "First release {when} · {count, plural, one {# release} other {# releases}}"
     },
     "soundcheck": "Soundcheck {seconds} s",
-    "soundcheckLabel": "Hear an excerpt: {title} — {artist}"
+    "soundcheckLabel": "Hear an excerpt: {title} — {artist}",
+    "accountDeleted": "Your account has been deleted. Thank you for being with us."
   },
   "Scene": {
     "title": "Scene",
@@ -1145,5 +1146,23 @@
     "upcoming": "Upcoming",
     "noUpcoming": "Nothing planned here yet.",
     "past": "Played here"
+  },
+  "Privacy": {
+    "title": "Your data",
+    "exportLead": "Download everything Tunewick keeps about you: account, profile, plan, likes, playlists, listening and gig history, reports — in one JSON file.",
+    "export": "Download my data",
+    "deleteLead": "Deleting your account erases your profile, settings, likes, playlists, history and plan. Rights declarations for released music stay as evidence — without your data.",
+    "blocked": "First hand over or delete the artist profiles you are the only owner of:",
+    "delete": "Delete account",
+    "deleteWarning": "This cannot be undone. To confirm, type the account's email address.",
+    "confirmEmail": "Account email address",
+    "deleteForever": "Delete my account forever",
+    "cancel": "Cancel",
+    "errors": {
+      "email_mismatch": "That is not this account's email address.",
+      "sole_owner": "First hand over or delete the artist profiles you are the only owner of.",
+      "staff": "Tunewick staff accounts are removed by an administrator — the role must be revoked first.",
+      "failed": "Could not delete the account. Please try again."
+    }
   }
 }

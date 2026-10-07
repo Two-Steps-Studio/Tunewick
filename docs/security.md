@@ -87,6 +87,13 @@
 - **Visibility controls:** listening activity, likes and attendance each have public / followers / private settings. Default for new users: followers.
 - **Consent:** analytics and personalization based on consent (`consents` table, versioned). Strictly necessary data only without consent. Cookie banner with equal-weight "reject" option, no dark patterns.
 - **Rights:** export (JSON of profile, playlists, likes, history, attendance), deletion, rectification through `data_requests`. Self-service in settings.
+  ✅ Implemented (M11): Settings → "Your data". **Export** `GET /api/account/export` builds one JSON
+  file with the person's own session (RLS decides what is theirs; listening history paged).
+  **Deletion** `delete_my_account(confirm_email)`: the typed email must match; staff accounts are
+  removed by an admin (roles first); the sole owner of an artist profile hands it over or deletes it
+  first (`my_deletion_blockers`). Personal data cascades away; rights declarations stay as evidence
+  with `declared_by = null`; the audit log keeps only the account id. Rectification: the settings
+  and artist forms.
 - **Retention:** see database.md §6.
 - **Processors (EU regions):** Supabase, Vercel, Cloudflare, Fly.io, Sentry, email provider. DPAs to be signed; records of processing maintained.
 - **Minors:** community features (public activity, following) limited by age policy once L5 is decided.
