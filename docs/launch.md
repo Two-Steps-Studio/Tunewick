@@ -17,9 +17,9 @@
 - ☐ Cloudflare R2: `tunewick-ingest` and `tunewick-media` buckets, CORS, scoped token; Vercel
   `MEDIA_*` vars (deployment.md §3a). Until then uploads say "coming soon".
 - ☐ Fly.io audio worker in `waw`/`fra` with the secret key and R2 vars (deployment.md §3b).
-- ☐ Monthly job: `select private.create_listening_partition((now() + interval '2 months')::date);`
-  (pg_cron in Supabase, or a scheduled worker task). Partitions exist 15 months ahead of the
-  migration date; rows fall into the default partition after that.
+- ☑ Listening partitions: a pg_cron job (`listening-partitions`, 03:15 on the 1st) keeps three
+  months ahead and moves rows that landed in the default partition (migration
+  `20261007140000`). Check once after the production update: `select * from cron.job;`
 - ☐ Error monitoring (Sentry EU or equivalent) — needs an account; not wired yet.
 - ☐ GitHub branch protection on `main`: required checks incl. `worker`.
 
