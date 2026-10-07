@@ -175,7 +175,8 @@
       "lead": "Odkrywaj niezależną muzykę i lokalne sceny.",
       "submit": "Załóż konto",
       "haveAccount": "Masz już konto?",
-      "toLogin": "Zaloguj się"
+      "toLogin": "Zaloguj się",
+      "legal": "Zakładając konto, akceptujesz <terms>Regulamin</terms>. Jak przetwarzamy dane, opisuje <privacy>Polityka prywatności</privacy>."
     },
     "reset": {
       "title": "Nie pamiętasz hasła?",
@@ -548,7 +549,8 @@
         "ai": "AI",
         "yes": "Tak",
         "no": "Nie"
-      }
+      },
+      "readTerms": "Przeczytaj Regulamin dla artystów"
     },
     "readiness": {
       "title": "Gotowość do wysłania",
@@ -1181,7 +1183,7 @@
     "exportLead": "Pobierz wszystko, co Tunewick o Tobie przechowuje: konto, profil, plan, polubienia, playlisty, historię słuchania i koncertów, zgłoszenia — w jednym pliku JSON.",
     "export": "Pobierz moje dane",
     "deleteLead": "Usunięcie konta kasuje profil, ustawienia, polubienia, playlisty, historię i plan. Oświadczenia o prawach do wydanej muzyki zostają jako dowód — bez Twoich danych.",
-    "blocked": "Najpierw przekaż innej osobie albo usuń profile artystów, których jesteś jedynym właścicielem:",
+    "blocked": "Najpierw dodaj innego właściciela do profili artystów, których jesteś jedynym właścicielem, albo napisz do nas, żeby je usunąć:",
     "delete": "Usuń konto",
     "deleteWarning": "Tego nie da się cofnąć. Aby potwierdzić, wpisz adres e-mail konta.",
     "confirmEmail": "Adres e-mail konta",
@@ -1219,5 +1221,12 @@
     "playlists": "Publiczne playlisty",
     "playlistsEmpty": "Brak publicznych playlist.",
     "trackCount": "{count, plural, =0 {bez utworów} one {1 utwór} few {# utwory} many {# utworów} other {# utworu}}"
+  },
+  "Legal": {
+    "nav": "Dokumenty",
+    "terms": "Regulamin",
+    "artistTerms": "Regulamin dla artystów",
+    "privacy": "Polityka prywatności",
+    "contentPolicy": "Zasady treści i zgłoszeń"
   }
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { useActionState, useState } from "react";
 import {
   CheckboxField,
@@ -121,7 +122,12 @@ export function RightsForm({
         defaultChecked={v?.acceptTerms === "on"}
         error={err(state.fieldErrors?.acceptTerms)}
       />
-      <p className="field__hint">{t("rights.legalNote")}</p>
+      <p className="field__hint">
+        {t("rights.legalNote")}{" "}
+        <Link href="/artist-terms" target="_blank">
+          {t("rights.readTerms")}
+        </Link>
+      </p>
       <Submit>{t("rights.submit")}</Submit>
     </form>
   );

@@ -50,7 +50,7 @@ test("the only owner of an artist profile hands it over first", async ({ page })
   await page.goto("/ustawienia");
   const data = page.locator("section", { has: page.getByRole("heading", { name: "Twoje dane" }) });
   await expect(
-    data.getByText(/^Najpierw przekaż innej osobie albo usuń profile artystów/),
+    data.getByText(/^Najpierw dodaj innego właściciela do profili artystów/),
   ).toBeVisible();
   await expect(data.getByRole("link", { name: `Solo ${slug}` })).toBeVisible();
   await expect(data.getByRole("button", { name: "Usuń konto" })).toHaveCount(0);

@@ -1254,6 +1254,95 @@ body {
     color: var(--text-muted);
   }
 
+  /* Legal documents and site footer ---------------------------------------- */
+  .legal {
+    display: grid;
+    gap: var(--tk-space-8);
+    max-width: 44rem;
+    padding-top: var(--tk-space-8);
+  }
+  .legal__head {
+    display: grid;
+    gap: var(--tk-space-4);
+  }
+  .legal__title {
+    font-family: var(--tk-font-display);
+    font-size: var(--tk-text-display);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    overflow-wrap: anywhere;
+  }
+  .legal__lead {
+    font-size: var(--tk-text-lg);
+    max-width: 60ch;
+  }
+  .legal__draft {
+    padding: var(--tk-space-3) var(--tk-space-4);
+    border-left: 3px solid var(--signal);
+    background: var(--bg-sunken);
+    font-size: var(--tk-text-sm);
+  }
+  .legal__missing {
+    padding: 0 0.25em;
+    background: var(--signal);
+    color: var(--bg);
+    font-family: var(--tk-font-mono);
+    font-size: 0.9em;
+  }
+  .legal__contents {
+    display: grid;
+    gap: var(--tk-space-2);
+    font-size: var(--tk-text-sm);
+  }
+  .legal__contents-title {
+    font-family: var(--tk-font-mono);
+    font-size: var(--tk-text-xs);
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .legal__contents ol {
+    display: grid;
+    gap: var(--tk-space-1);
+  }
+  .legal__section {
+    display: grid;
+    gap: var(--tk-space-3);
+    max-width: 65ch;
+    scroll-margin-top: var(--tk-space-8);
+  }
+  .legal__section-title {
+    font-size: var(--tk-text-lg);
+    font-weight: 700;
+  }
+  .legal__section ul {
+    display: grid;
+    gap: var(--tk-space-2);
+    padding-left: 1.25em;
+    list-style: disc;
+  }
+  .legal a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .site-footer {
+    margin-top: var(--tk-space-16);
+    padding-top: var(--tk-space-6);
+    border-top: 1px solid var(--line);
+  }
+  .site-footer__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--tk-space-2) var(--tk-space-6);
+    font-size: var(--tk-text-sm);
+    color: var(--text-muted);
+  }
+  .site-footer__links a:hover {
+    color: var(--text);
+  }
+
   /* Profile activity and blocked people (M8.2) ------------------------------- */
   .profile-activity {
     display: grid;

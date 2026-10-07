@@ -175,7 +175,8 @@
       "lead": "Discover independent music and local scenes.",
       "submit": "Create account",
       "haveAccount": "Already have an account?",
-      "toLogin": "Sign in"
+      "toLogin": "Sign in",
+      "legal": "By creating an account you accept the <terms>Terms of Service</terms>. How we process data is described in the <privacy>Privacy Policy</privacy>."
     },
     "reset": {
       "title": "Forgot your password?",
@@ -548,7 +549,8 @@
         "ai": "AI",
         "yes": "Yes",
         "no": "No"
-      }
+      },
+      "readTerms": "Read the Artist Terms"
     },
     "readiness": {
       "title": "Ready to submit",
@@ -1181,7 +1183,7 @@
     "exportLead": "Download everything Tunewick keeps about you: account, profile, plan, likes, playlists, listening and gig history, reports — in one JSON file.",
     "export": "Download my data",
     "deleteLead": "Deleting your account erases your profile, settings, likes, playlists, history and plan. Rights declarations for released music stay as evidence — without your data.",
-    "blocked": "First hand over or delete the artist profiles you are the only owner of:",
+    "blocked": "First add another owner to the artist profiles you are the only owner of, or write to us to delete them:",
     "delete": "Delete account",
     "deleteWarning": "This cannot be undone. To confirm, type the account's email address.",
     "confirmEmail": "Account email address",
@@ -1219,5 +1221,12 @@
     "playlists": "Public playlists",
     "playlistsEmpty": "No public playlists.",
     "trackCount": "{count, plural, =0 {no tracks} one {1 track} other {# tracks}}"
+  },
+  "Legal": {
+    "nav": "Documents",
+    "terms": "Terms of Service",
+    "artistTerms": "Artist Terms",
+    "privacy": "Privacy Policy",
+    "contentPolicy": "Content and Reporting Policy"
   }
 }

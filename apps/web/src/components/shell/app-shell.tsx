@@ -1,6 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { getOptionalUser, isStaff, SignOutButton } from "@/modules/auth";
+import { LegalLinks } from "@/modules/legal";
 import { LocaleSwitcher } from "./locale-switcher";
 import { MainNav } from "./main-nav";
 import { PlayerBar } from "@/modules/player";
@@ -45,6 +46,7 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
       </header>
       <main id="main" tabIndex={-1} className="site-main">
         {children}
+        <LegalLinks />
       </main>
       <div className="site-bottom">
         <PlayerBar reportListens={user !== null} />

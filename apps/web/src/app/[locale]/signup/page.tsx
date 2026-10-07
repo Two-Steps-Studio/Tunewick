@@ -24,9 +24,17 @@ export default async function SignUpPage({ params }: PageProps<"/[locale]/signup
       title={t("title")}
       lead={t("lead")}
       footer={
-        <p>
-          {t("haveAccount")} <Link href="/login">{t("toLogin")}</Link>
-        </p>
+        <>
+          <p className="field__hint">
+            {t.rich("legal", {
+              terms: (chunks) => <Link href="/terms">{chunks}</Link>,
+              privacy: (chunks) => <Link href="/privacy">{chunks}</Link>,
+            })}
+          </p>
+          <p>
+            {t("haveAccount")} <Link href="/login">{t("toLogin")}</Link>
+          </p>
+        </>
       }
     >
       <SignUpForm inviteRequired={await isFeatureEnabled("closed_beta")} />
