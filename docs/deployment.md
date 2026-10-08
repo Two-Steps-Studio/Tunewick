@@ -176,6 +176,8 @@ then run `node scripts/create-invites.mjs ...` in the same window.
   Check: `select jobname, schedule from cron.job;`
 - Share cards and Open Graph images are rendered by the web app (`next/og`); covers are converted
   from WebP with `sharp` (an explicit dependency of `apps/web`).
+- The audio worker also renders share videos (`share_clips` queue): no new settings — it uses the
+  same Supabase key and buckets; the app writes cards into the ingest bucket with its own S3 keys.
 - Point values and caps: edit `discovery_point_rules` (admin) — no deploy needed. Weekly
   challenges: `discovery_challenges` (enable/disable or change targets between weeks; the running
   week's three are picked from the enabled ones).

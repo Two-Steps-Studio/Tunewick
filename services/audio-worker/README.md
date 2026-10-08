@@ -4,8 +4,9 @@ Python ingest pipeline for Tunewick masters: validate → analyse → loudness �
 transcode → package → verify, producing a JSON report. Specification:
 [docs/audio.md](../../docs/audio.md).
 
-Storage (R2), the job queue and fingerprinting are not wired yet (M3.2+); today the worker runs on
-local files.
+`python -m tunewick_audio worker` polls three Supabase queues — masters, images and share
+videos (`clips.py`: story card + preview → MP4) — with files in S3/R2 (`pnpm worker:start`
+locally). Fingerprinting is not wired yet.
 
 ```bash
 pnpm worker:test     # ruff + pytest inside the Docker image (Debian ffmpeg with libsoxr)

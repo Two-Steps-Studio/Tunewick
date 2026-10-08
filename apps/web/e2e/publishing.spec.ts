@@ -215,6 +215,21 @@ test.describe("review and publishing", () => {
     await expect(
       listener.getByRole("button", { name: "Odtwórz fragment: Nocna zmiana" }),
     ).toBeVisible();
+
+    // A video for stories: visitors are asked to sign in; a signed-in person gets the MP4 the
+    // worker renders from the story card and the preview.
+    const songPath = new URL(listener.url()).pathname;
+    await listener.getByRole("button", { name: "Udostępnij" }).click();
+    await listener.getByRole("button", { name: "Wideo do relacji (MP4)" }).click();
+    await expect(listener.getByText("Zaloguj się, żeby przygotować wideo.")).toBeVisible();
+    await listener.keyboard.press("Escape");
+    await page.goto(songPath);
+    await page.getByRole("button", { name: "Udostępnij" }).click();
+    await page.getByRole("button", { name: "Wideo do relacji (MP4)" }).click();
+    await expect(
+      page.getByRole("button", { name: "Wideo gotowe — udostępnij lub pobierz" }),
+    ).toBeVisible({ timeout: 90_000 });
+
     await listener.getByRole("link", { name: "Odkrywaj więcej na Tunewick" }).click();
     const first = listener.locator(".feed-card").first();
     await expect(first.getByRole("heading", { level: 2 })).toHaveText("Nocna zmiana");

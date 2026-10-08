@@ -11,6 +11,7 @@ export { DiscoverFeed } from "./ui/feed";
 export { Onboarding } from "./ui/onboarding";
 export { ShareButton } from "./ui/share-button";
 export { getSharedSong, parseSongSegment, type SharedSong } from "./song";
+export { renderSongCard } from "./song-card";
 export { SongPreview } from "./ui/song-preview";
 export { CARD_SIZES, type CardFormat, coverForCard, qrDataUrl, songCard, statsCard } from "./cards";
 export { ViewEvent } from "./ui/view-event";

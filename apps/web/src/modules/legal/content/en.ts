@@ -287,7 +287,7 @@ export const en: LegalContent = {
                 "Security, abuse prevention (limits, attempt blocking), service diagnostics and the staff activity log (Art. 6(1)(f) GDPR — legitimate interest).",
                 "Handling content reports, statements of reasons and appeals under the Digital Services Act (Art. 6(1)(c) GDPR — legal obligation).",
                 "Listening summaries for artists and future settlements (Art. 6(1)(b) and (f) GDPR).",
-                "Discover recommendations, points, goals, weekly challenges, streaks, records, achievements, discovery rankings and season results (quarters; only you see your final place, kept until you delete your account) — from your listening and reactions in the service (GDPR art. 6(1)(b) — contract); feed events also to improve recommendations (art. 6(1)(f)).",
+                "Discover recommendations, points, goals, weekly challenges, streaks, records, achievements, discovery rankings and season results (quarters; only you see your final place, kept until you delete your account), and when you request a song video for stories, that you requested it (for the hourly limit; the video itself is shared by everyone and holds no data about you) — from your listening and reactions in the service (GDPR art. 6(1)(b) — contract); feed events also to improve recommendations (art. 6(1)(f)).",
               ],
             },
             "We do not use your data for advertising, do not sell it and do not profile you for marketing. Recommendations make no decisions with legal effects on you.",

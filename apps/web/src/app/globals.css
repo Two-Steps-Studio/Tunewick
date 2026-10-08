@@ -2275,6 +2275,16 @@ body {
   .feed-menu__item:hover {
     background: var(--tk-n-700);
   }
+  .share-menu__item:disabled {
+    cursor: progress;
+    opacity: 0.75;
+  }
+  .share-menu__note {
+    max-width: 16rem;
+    padding: 0 var(--tk-space-3) var(--tk-space-2);
+    font-size: var(--tk-text-xs);
+    color: var(--text-muted);
+  }
 
   .report-dialog {
     max-width: min(30rem, calc(100vw - 2rem));

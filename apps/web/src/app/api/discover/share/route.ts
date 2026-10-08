@@ -4,7 +4,7 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 const shareSchema = z.object({
   trackId: z.uuid(),
-  channel: z.enum(["native", "copy", "card"]),
+  channel: z.enum(["native", "copy", "card", "video"]),
 });
 
 /** A share of a public song: points (once per song and day) for signed-in listeners. */

@@ -1342,7 +1342,16 @@
     "previewUnsupported": "This browser can't play the preview. Try another browser or Play full song.",
     "browse": "Browse new releases",
     "accountDeleted": "Your account has been deleted. Thank you for being with us.",
-    "report": "Report this release"
+    "report": "Report this release",
+    "clip": "Video for stories (MP4)",
+    "clipWorking": "Preparing the video…",
+    "clipReady": "Video ready — share or download",
+    "clipState": {
+      "failed": "The video could not be prepared. Try again in a moment.",
+      "unavailable": "No video is available for this song.",
+      "signin": "Sign in to prepare a video.",
+      "limit": "You have made many videos this hour — try again later."
+    }
   },
   "Onboarding": {
     "title": "Discovery preferences",

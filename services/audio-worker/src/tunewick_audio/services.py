@@ -8,6 +8,7 @@ import boto3
 import httpx
 from botocore.config import Config
 
+from .clips import ClipJob
 from .image_jobs import ImageJob
 from .jobs import Job
 
@@ -66,6 +67,29 @@ class SupabaseQueue:
     def fail_image(self, image_id: str) -> str:
         return self._call("fail_image_upload", {"image": image_id})
 
+    def claim_clip(self) -> ClipJob | None:
+        rows = self._call("claim_share_clip", {})
+        if not rows:
+            return None
+        row = rows[0]
+        return ClipJob(
+            row["id"],
+            row["track_id"],
+            row["card_key"],
+            row["audio_key"],
+            row["start_ms"],
+            row["duration_ms"],
+            row["attempts"],
+        )
+
+    def finish_clip(self, clip_id: str, object_key: str | None, size: int | None) -> str:
+        return self._call(
+            "finish_share_clip", {"clip": clip_id, "object_key": object_key, "bytes": size}
+        )
+
+    def fail_clip(self, clip_id: str) -> str:
+        return self._call("fail_share_clip", {"clip": clip_id})
+
 
 class S3Storage:
     def __init__(
@@ -101,6 +125,10 @@ class S3Storage:
 
     def download_master(self, key: str, path: str) -> None:
         self.s3.download_file(self.ingest, key, path)
+
+    def download_media(self, key: str, path: str) -> None:
+        """A delivery variant (e.g. the AAC a share clip is cut from)."""
+        self.s3.download_file(self.media, key, path)
 
     def upload_variant(self, path: str, key: str, content_type: str) -> None:
         self.s3.upload_file(

@@ -1650,6 +1650,68 @@ export type Database = {
         };
         Relationships: [];
       };
+      share_clips: {
+        Row: {
+          attempts: number;
+          bytes: number | null;
+          card_key: string;
+          claimed_at: string | null;
+          created_at: string;
+          design: number;
+          duration_ms: number;
+          finished_at: string | null;
+          id: string;
+          locale: string;
+          object_key: string | null;
+          requested_by: string | null;
+          start_ms: number;
+          status: Database["public"]["Enums"]["share_clip_status"];
+          track_id: string;
+        };
+        Insert: {
+          attempts?: number;
+          bytes?: number | null;
+          card_key: string;
+          claimed_at?: string | null;
+          created_at?: string;
+          design: number;
+          duration_ms: number;
+          finished_at?: string | null;
+          id?: string;
+          locale: string;
+          object_key?: string | null;
+          requested_by?: string | null;
+          start_ms: number;
+          status?: Database["public"]["Enums"]["share_clip_status"];
+          track_id: string;
+        };
+        Update: {
+          attempts?: number;
+          bytes?: number | null;
+          card_key?: string;
+          claimed_at?: string | null;
+          created_at?: string;
+          design?: number;
+          duration_ms?: number;
+          finished_at?: string | null;
+          id?: string;
+          locale?: string;
+          object_key?: string | null;
+          requested_by?: string | null;
+          start_ms?: number;
+          status?: Database["public"]["Enums"]["share_clip_status"];
+          track_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "share_clips_track_id_fkey";
+            columns: ["track_id"];
+            isOneToOne: false;
+            referencedRelation: "tracks";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       track_artists: {
         Row: {
           artist_id: string;
@@ -2370,6 +2432,18 @@ export type Database = {
           object_key: string;
         }[];
       };
+      claim_share_clip: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          attempts: number;
+          audio_key: string;
+          card_key: string;
+          duration_ms: number;
+          id: string;
+          start_ms: number;
+          track_id: string;
+        }[];
+      };
       compare_with: { Args: { days?: number; handle: string }; Returns: Json };
       complete_audio_upload: {
         Args: { upload: string };
@@ -2551,6 +2625,10 @@ export type Database = {
         Args: { image: string };
         Returns: Database["public"]["Enums"]["audio_upload_status"];
       };
+      fail_share_clip: {
+        Args: { clip: string };
+        Returns: Database["public"]["Enums"]["share_clip_status"];
+      };
       find_or_create_venue: {
         Args: {
           address?: string;
@@ -2568,6 +2646,10 @@ export type Database = {
       finish_image_upload: {
         Args: { image: string; result: Json };
         Returns: Database["public"]["Enums"]["audio_upload_status"];
+      };
+      finish_share_clip: {
+        Args: { bytes: number; clip: string; object_key: string };
+        Returns: Database["public"]["Enums"]["share_clip_status"];
       };
       has_app_role: {
         Args: { required: Database["public"]["Enums"]["app_role"] };
@@ -2696,6 +2778,17 @@ export type Database = {
         }[];
       };
       my_records: { Args: Record<PropertyKey, never>; Returns: Json };
+      my_share_clips: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          created_at: string;
+          duration_ms: number;
+          locale: string;
+          start_ms: number;
+          status: Database["public"]["Enums"]["share_clip_status"];
+          track_id: string;
+        }[];
+      };
       my_taste: { Args: Record<PropertyKey, never>; Returns: Json };
       my_weekly_recap: { Args: { weeks_ago?: number }; Returns: Json };
       onboarding_artists: {
@@ -2739,6 +2832,10 @@ export type Database = {
           i_blocked: boolean;
           i_follow: boolean;
         }[];
+      };
+      queue_share_clip: {
+        Args: { clip: string };
+        Returns: Database["public"]["Enums"]["share_clip_status"];
       };
       record_events: { Args: { events: Json }; Returns: number };
       record_listen: {
@@ -2806,6 +2903,21 @@ export type Database = {
         Args: { artist: string; evidence: Json; note?: string };
         Returns: string;
       };
+      request_share_clip: {
+        Args: {
+          design: number;
+          duration_ms: number;
+          locale: string;
+          start_ms: number;
+          track: string;
+        };
+        Returns: {
+          card_key: string;
+          id: string;
+          needs_card: boolean;
+          status: Database["public"]["Enums"]["share_clip_status"];
+        }[];
+      };
       require_staff: {
         Args: { required: Database["public"]["Enums"]["app_role"] };
         Returns: undefined;
@@ -2840,6 +2952,13 @@ export type Database = {
       };
       search_normalize: { Args: { value: string }; Returns: string };
       set_release_genres: { Args: { genre_ids: number[]; release: string }; Returns: undefined };
+      share_clip: {
+        Args: { clip: string };
+        Returns: {
+          object_key: string;
+          status: Database["public"]["Enums"]["share_clip_status"];
+        }[];
+      };
       submit_release: { Args: { release: string }; Returns: undefined };
       submit_report: {
         Args: {
@@ -2944,6 +3063,7 @@ export type Database = {
       release_type: "single" | "ep" | "album" | "compilation" | "live";
       report_reason: "copyright" | "illegal" | "hate" | "impersonation" | "spam" | "other";
       report_subject: "artist" | "release" | "playlist" | "event" | "venue" | "profile";
+      share_clip_status: "awaiting_card" | "queued" | "processing" | "ready" | "failed";
       track_artist_role: "main" | "featured" | "remixer";
       visibility_level: "public" | "followers" | "private";
       voivodeship:
@@ -3117,6 +3237,7 @@ export const Constants = {
       release_type: ["single", "ep", "album", "compilation", "live"],
       report_reason: ["copyright", "illegal", "hate", "impersonation", "spam", "other"],
       report_subject: ["artist", "release", "playlist", "event", "venue", "profile"],
+      share_clip_status: ["awaiting_card", "queued", "processing", "ready", "failed"],
       track_artist_role: ["main", "featured", "remixer"],
       visibility_level: ["public", "followers", "private"],
       voivodeship: [

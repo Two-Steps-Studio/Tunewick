@@ -1342,7 +1342,16 @@
     "previewUnsupported": "Ta przeglądarka nie odtworzy fragmentu. Spróbuj innej przeglądarki albo „Odtwórz cały utwór”.",
     "browse": "Przeglądaj nowości",
     "accountDeleted": "Konto zostało usunięte. Dziękujemy za wspólny czas w Tunewick.",
-    "report": "Zgłoś to wydawnictwo"
+    "report": "Zgłoś to wydawnictwo",
+    "clip": "Wideo do relacji (MP4)",
+    "clipWorking": "Przygotowujemy wideo…",
+    "clipReady": "Wideo gotowe — udostępnij lub pobierz",
+    "clipState": {
+      "failed": "Nie udało się przygotować wideo. Spróbuj ponownie za chwilę.",
+      "unavailable": "Wideo dla tego utworu nie jest dostępne.",
+      "signin": "Zaloguj się, żeby przygotować wideo.",
+      "limit": "W tej godzinie powstało już sporo Twoich filmów — spróbuj później."
+    }
   },
   "Onboarding": {
     "title": "Preferencje odkrywania",

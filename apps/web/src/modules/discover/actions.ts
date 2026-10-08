@@ -9,6 +9,7 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { getPlayableTracks, listenerEntitlement } from "@/modules/audio";
 import { getImageSourcesMany, type ImageSources } from "@/modules/images";
 import type { PlayerTrack } from "@/modules/player";
+import { clipState, startClip } from "./clips";
 import { VISITOR_COOKIE } from "./preferences";
 
 /**
@@ -200,4 +201,22 @@ export async function suggestArtists(
     countryCode: a.country_code,
     image: a.image_id ? (images.get(a.image_id) ?? null) : null,
   }));
+}
+
+const clipCode = z.string().regex(/^[a-z2-9]{10}$/);
+
+/** Starts (or finds) the share video of a song; see clips.ts. */
+export async function startShareClip(code: string, locale: string) {
+  if (!clipCode.safeParse(code).success) return { state: "unavailable" as const };
+  const lang = (routing.locales as readonly string[]).includes(locale)
+    ? (locale as (typeof routing.locales)[number])
+    : routing.defaultLocale;
+  return startClip(code, lang);
+}
+
+export async function getShareClip(id: string, code: string) {
+  if (!z.uuid().safeParse(id).success || !clipCode.safeParse(code).success) {
+    return { state: "unavailable" as const };
+  }
+  return clipState(id, code);
 }
