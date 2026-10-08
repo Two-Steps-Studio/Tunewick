@@ -136,13 +136,14 @@ export interface PreviewWindow {
 }
 
 /**
- * The part of a track the feed plays: the artist's soundcheck when set, otherwise 30 s from about
- * a third in. Short tracks play from the start.
+ * The part of a track the feed plays: the artist's soundcheck when set, else the best moment the
+ * audio analysis found, else 30 s from about a third in. Short tracks play from the start.
  */
 export function previewWindow(
   durationMs: number | null,
   soundcheckStartMs: number | null,
   soundcheckLengthMs: number | null,
+  suggestedStartMs: number | null = null,
 ): PreviewWindow {
   const duration = durationMs ?? 0;
   if (
@@ -157,6 +158,9 @@ export function previewWindow(
   }
   if (!duration) return { startMs: 0, lengthMs: PREVIEW.lengthMs, chosen: false };
   const length = Math.min(PREVIEW.lengthMs, duration);
+  if (suggestedStartMs !== null && suggestedStartMs >= 0 && suggestedStartMs + length <= duration) {
+    return { startMs: suggestedStartMs, lengthMs: length, chosen: false };
+  }
   const start =
     Math.round(Math.min(duration * PREVIEW.startFraction, duration - length) / 1000) * 1000;
   return { startMs: Math.max(0, start), lengthMs: length, chosen: false };

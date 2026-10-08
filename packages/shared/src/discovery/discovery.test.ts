@@ -292,6 +292,15 @@ describe("progress", () => {
       lengthMs: 30_000,
       chosen: false,
     });
+    // No choice: the analysed best moment; the artist's choice still wins over it.
+    expect(previewWindow(180_000, null, null, 72_000)).toEqual({
+      startMs: 72_000,
+      lengthMs: 30_000,
+      chosen: false,
+    });
+    expect(previewWindow(180_000, 10_000, 30_000, 72_000).startMs).toBe(10_000);
+    // A suggestion that would run past the end is ignored.
+    expect(previewWindow(180_000, null, null, 170_000).startMs).toBe(59_000);
     expect(previewWindow(20_000, null, null)).toEqual({
       startMs: 0,
       lengthMs: 20_000,

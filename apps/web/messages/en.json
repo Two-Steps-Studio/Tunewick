@@ -650,7 +650,8 @@
       "empty": "The file contains no audio.",
       "integrity": "The FLAC checksum doesn’t match its audio — the file is damaged.",
       "processing_failed": "We couldn’t process the file after several attempts. Please upload it again or contact us."
-    }
+    },
+    "bestMoment": "The analysis found the best moment at {start} (highlighted) — Discover previews start there until you set your own soundcheck start."
   },
   "Release": {
     "trackCount": "{count, plural, one {# track} other {# tracks}}",

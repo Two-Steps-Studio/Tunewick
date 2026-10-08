@@ -650,7 +650,8 @@
       "empty": "Plik nie zawiera dźwięku.",
       "integrity": "Suma kontrolna pliku FLAC nie zgadza się z zawartością — plik jest uszkodzony.",
       "processing_failed": "Nie udało się przetworzyć pliku mimo kilku prób. Prześlij go ponownie albo napisz do nas."
-    }
+    },
+    "bestMoment": "Najlepszy moment według analizy zaczyna się w {start} (zaznaczony na wykresie) — od niego startuje podgląd w Odkrywaj, dopóki nie ustawisz własnego początku soundchecku."
   },
   "Release": {
     "trackCount": "{count, plural, one {# utwór} few {# utwory} many {# utworów} other {# utworu}}",

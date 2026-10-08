@@ -149,7 +149,12 @@ async function previewSources(supabase: Supabase, trackIds: string[]) {
         if (url) sources.push({ tier: variant.tier, url });
       }
       result.set(row.track_id, {
-        window: previewWindow(row.duration_ms, row.preview_start_ms, row.preview_duration_ms),
+        window: previewWindow(
+          row.duration_ms,
+          row.preview_start_ms,
+          row.preview_duration_ms,
+          row.suggested_start_ms,
+        ),
         sources,
       });
     }),

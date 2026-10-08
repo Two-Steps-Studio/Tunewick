@@ -71,6 +71,7 @@ export async function getSharedSong(code: string, coverWidth = 1280) {
         row?.duration_ms ?? track.duration_ms,
         row?.preview_start_ms ?? null,
         row?.preview_duration_ms ?? null,
+        row?.suggested_start_ms ?? null,
       ),
       sources,
     },

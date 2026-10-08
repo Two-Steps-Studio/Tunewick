@@ -75,8 +75,9 @@ genre name columns. None of it is removed; it is generalized.
 
 ### P2 — advanced
 
-~~Friends comparison~~ (done), learned recommendation model and audio embeddings, automatic
-"best moment" detection in the worker (energy/novelty curve) and waveform, ~~seasonal rankings and
+~~Friends comparison~~ (done), learned recommendation model and audio embeddings, ~~automatic
+"best moment" detection in the worker (energy/novelty curve) and waveform~~ (done 2026-10-08,
+docs/audio.md §2.6), ~~seasonal rankings and
 challenges~~ (done 2026-10-08), creator tools and promotional clips (video render of
 the share card + preview audio), bot detection beyond rate rules (timing entropy, device
 fingerprints — only with legal review), personalized discovery campaigns.
@@ -150,6 +151,7 @@ Open Graph and story/square cards.
 Known gaps / next:
 
 - Guidon tasks for M13 must be created from §3 (no Guidon access from the implementation session).
+- Previews start at the artist's soundcheck, else the analysed best moment (audio.md §2.6).
 - Previews use AAC only (as the delivery tiers do); a browser without AAC shows "can't play the
   preview" — a FLAC/Opus preview variant would need a worker change.
 - ~~Per-listener weight tuning~~ — done 2026-10-08, see below.

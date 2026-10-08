@@ -1686,6 +1686,7 @@ export type Database = {
       track_audio_uploads: {
         Row: {
           attempts: number;
+          best_moment_ms: number | null;
           claimed_at: string | null;
           created_at: string;
           duration_ms: number | null;
@@ -1707,6 +1708,7 @@ export type Database = {
         };
         Insert: {
           attempts?: number;
+          best_moment_ms?: never;
           claimed_at?: string | null;
           created_at?: string;
           duration_ms?: number | null;
@@ -1728,6 +1730,7 @@ export type Database = {
         };
         Update: {
           attempts?: number;
+          best_moment_ms?: never;
           claimed_at?: string | null;
           created_at?: string;
           duration_ms?: number | null;
@@ -2273,6 +2276,7 @@ export type Database = {
         Args: { file_name: string; size_bytes: number; track: string };
         Returns: {
           attempts: number;
+          best_moment_ms: number | null;
           claimed_at: string | null;
           created_at: string;
           duration_ms: number | null;
@@ -2371,6 +2375,7 @@ export type Database = {
         Args: { upload: string };
         Returns: {
           attempts: number;
+          best_moment_ms: number | null;
           claimed_at: string | null;
           created_at: string;
           duration_ms: number | null;
@@ -2881,6 +2886,7 @@ export type Database = {
           duration_ms: number;
           preview_duration_ms: number;
           preview_start_ms: number;
+          suggested_start_ms: number;
           track_id: string;
           variants: Json;
         }[];

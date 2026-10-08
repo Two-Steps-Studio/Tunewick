@@ -456,5 +456,8 @@ quarter, own rows only; written by `private.close_last_season()`), `discovery_ch
 definitions; three per UTC week via `private.active_challenges`), `my_challenges()`, award kind
 `challenge` (trigger on `discovery_points`), achievements `challenger` and `season_star`; ranking
 periods `season` and `last_season`.
+Best moment (`20261008160000`): `track_audio_uploads.best_moment_ms` (generated from the worker
+report v2), `track_previews` returns it as `suggested_start_ms`, `release_soundchecks` (now
+security definer, public releases only) falls back to it before 0:00.
 pgTAP: `discovery.test.sql`, `compare_friends.test.sql`, `feed_outcomes.test.sql`,
 `seasons_challenges.test.sql`.

@@ -31,10 +31,20 @@ export interface TrackAudio {
   upsampledFrom: number | null;
   bitPadded: boolean;
   tiers: string[];
+  /** Suggested preview start from the analysis (reports v2+). */
+  bestMomentMs: number | null;
+  /** 200 peaks, 0–100 (reports v2+). */
+  waveform: number[];
 }
 
 type ReportShape = Partial<WorkerReport> & {
-  analysis?: (WorkerReport["analysis"] & { tiers?: Record<string, boolean> }) | null;
+  analysis?:
+    | (WorkerReport["analysis"] & {
+        tiers?: Record<string, boolean>;
+        best_moment?: { start_ms: number; duration_ms: number };
+        waveform?: number[];
+      })
+    | null;
 };
 
 /** Whether masters can be uploaded on this deployment (storage configured). */
@@ -79,6 +89,8 @@ function describe(row: {
     bitPadded: analysis?.flags?.includes("suspected_bit_padded") ?? false,
     // jsonb does not keep key order: list the tiers from lowest to highest.
     tiers: TIER_ORDER.filter((tier) => analysis?.tiers?.[tier]),
+    bestMomentMs: analysis?.best_moment?.start_ms ?? null,
+    waveform: Array.isArray(analysis?.waveform) ? analysis.waveform : [],
   };
 }
 

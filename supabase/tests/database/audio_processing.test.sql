@@ -3,7 +3,7 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set search_path = public, extensions;
 
-select plan(16);
+select plan(17);
 
 insert into auth.users (id, email, raw_app_meta_data, aud, role) values
   ('00000000-0000-0000-0000-0000000000d1', 'd1@test.local', '{"beta_bypass": "true"}', 'authenticated', 'authenticated'),
@@ -65,7 +65,8 @@ select is(
   finish_audio_upload(
     (select id from ids where name = 'up1'),
     '{"status": "accepted", "input": {"duration_s": 12.5},
-      "analysis": {"loudness": {"integrated_lufs": -14.2, "true_peak_dbtp": -1.1}}}',
+      "analysis": {"loudness": {"integrated_lufs": -14.2, "true_peak_dbtp": -1.1},
+        "best_moment": {"start_ms": 4000, "duration_ms": 8000, "method": "energy_novelty_v1"}}}',
     jsonb_build_array(
       jsonb_build_object('tier', 'high', 'codec', 'aac_lc', 'container', 'fmp4',
         'sample_rate', 48000, 'bit_depth', null, 'nominal_kbps', 256, 'bitrate_kbps', 262,
@@ -85,6 +86,9 @@ select is(
 select is(
   (select duration_ms from tracks where id = (select id from ids where name = 'track1')),
   12500, 'the track duration now comes from the audio');
+select is(
+  (select best_moment_ms from track_audio_uploads where id = (select id from ids where name = 'up1')),
+  4000, 'the suggested preview start is read from the report');
 select throws_ok(
   $$select finish_audio_upload((select id from ids where name = 'up1'), '{"status":"accepted"}', '[]')$$,
   '55000', null, 'a finished job cannot be finished again');
