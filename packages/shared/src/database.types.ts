@@ -1661,6 +1661,7 @@ export type Database = {
           duration_ms: number;
           finished_at: string | null;
           id: string;
+          last_requested_at: string;
           locale: string;
           object_key: string | null;
           requested_by: string | null;
@@ -1678,6 +1679,7 @@ export type Database = {
           duration_ms: number;
           finished_at?: string | null;
           id?: string;
+          last_requested_at?: string;
           locale: string;
           object_key?: string | null;
           requested_by?: string | null;
@@ -1695,6 +1697,7 @@ export type Database = {
           duration_ms?: number;
           finished_at?: string | null;
           id?: string;
+          last_requested_at?: string;
           locale?: string;
           object_key?: string | null;
           requested_by?: string | null;
@@ -1757,6 +1760,8 @@ export type Database = {
           integrated_lufs: number | null;
           object_key: string;
           processed_at: string | null;
+          reanalysis_attempts: number;
+          reanalysis_claimed_at: string | null;
           rejection_code: string | null;
           rejection_message: string | null;
           report: Json | null;
@@ -1779,6 +1784,8 @@ export type Database = {
           integrated_lufs?: number | null;
           object_key: string;
           processed_at?: string | null;
+          reanalysis_attempts?: number;
+          reanalysis_claimed_at?: string | null;
           rejection_code?: string | null;
           rejection_message?: string | null;
           report?: Json | null;
@@ -1801,6 +1808,8 @@ export type Database = {
           integrated_lufs?: number | null;
           object_key?: string;
           processed_at?: string | null;
+          reanalysis_attempts?: number;
+          reanalysis_claimed_at?: string | null;
           rejection_code?: string | null;
           rejection_message?: string | null;
           report?: Json | null;
@@ -2347,6 +2356,8 @@ export type Database = {
           integrated_lufs: number | null;
           object_key: string;
           processed_at: string | null;
+          reanalysis_attempts: number;
+          reanalysis_claimed_at: string | null;
           rejection_code: string | null;
           rejection_message: string | null;
           report: Json | null;
@@ -2414,6 +2425,14 @@ export type Database = {
       can_view_playlist: { Args: { playlist: string }; Returns: boolean };
       can_view_release: { Args: { release: string }; Returns: boolean };
       cancel_event: { Args: { event: string }; Returns: undefined };
+      claim_audio_reanalysis: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          codec: string;
+          id: string;
+          object_key: string;
+        }[];
+      };
       claim_audio_upload: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -2444,6 +2463,14 @@ export type Database = {
           track_id: string;
         }[];
       };
+      claim_storage_deletions: {
+        Args: { max_results?: number };
+        Returns: {
+          bucket: string;
+          id: number;
+          object_key: string;
+        }[];
+      };
       compare_with: { Args: { days?: number; handle: string }; Returns: Json };
       complete_audio_upload: {
         Args: { upload: string };
@@ -2458,6 +2485,8 @@ export type Database = {
           integrated_lufs: number | null;
           object_key: string;
           processed_at: string | null;
+          reanalysis_attempts: number;
+          reanalysis_claimed_at: string | null;
           rejection_code: string | null;
           rejection_message: string | null;
           report: Json | null;
@@ -2639,6 +2668,10 @@ export type Database = {
         };
         Returns: string;
       };
+      finish_audio_reanalysis: {
+        Args: { best_moment: Json; upload: string; waveform: Json };
+        Returns: boolean;
+      };
       finish_audio_upload: {
         Args: { report: Json; upload: string; variants?: Json };
         Returns: Database["public"]["Enums"]["audio_upload_status"];
@@ -2651,6 +2684,7 @@ export type Database = {
         Args: { bytes: number; clip: string; object_key: string };
         Returns: Database["public"]["Enums"]["share_clip_status"];
       };
+      finish_storage_deletions: { Args: { ids: number[] }; Returns: number };
       has_app_role: {
         Args: { required: Database["public"]["Enums"]["app_role"] };
         Returns: boolean;
