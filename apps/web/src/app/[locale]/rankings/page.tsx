@@ -4,6 +4,7 @@ import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { countryName, flagEmoji } from "@/lib/intl";
 import { getCountryCodes, getDiscoveryPreferences, ViewEvent } from "@/modules/discover";
+import { currentSeason } from "@tunewick/shared";
 import { getLeaderboard, type RankingPeriod } from "@/modules/progress";
 
 export async function generateMetadata({
@@ -14,7 +15,7 @@ export async function generateMetadata({
   return { title: t("title") };
 }
 
-const PERIODS: RankingPeriod[] = ["week", "month", "all"];
+const PERIODS: RankingPeriod[] = ["week", "month", "season", "last_season", "all"];
 const REGIONS = ["europe", "americas", "asia", "africa", "oceania"] as const;
 
 /**
@@ -44,6 +45,7 @@ export default async function RankingsPage({
     getCountryCodes(),
     getDiscoveryPreferences(),
   ]);
+  const season = currentSeason();
   const scopeName = country
     ? countryName(country, locale)
     : region
@@ -127,6 +129,14 @@ export default async function RankingsPage({
       <h2 className="section-title">
         {t("heading", { scope: scopeName, period: t(`periods.${period}`) })}
       </h2>
+      {period === "season" ? (
+        <p className="field__hint">
+          {t("seasonEnds", {
+            season: t("seasonName", { quarter: season.quarter, year: season.year }),
+            date: format.dateTime(season.endsAt, { dateStyle: "long", timeZone: "UTC" }),
+          })}
+        </p>
+      ) : null}
       {me ? (
         <p className="rankings__me">
           {t("you", {

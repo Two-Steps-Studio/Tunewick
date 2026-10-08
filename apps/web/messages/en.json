@@ -1472,7 +1472,9 @@
         "on_a_roll": "On a Roll",
         "unstoppable": "Unstoppable",
         "collector": "Collector",
-        "early_supporter": "Early Supporter"
+        "early_supporter": "Early Supporter",
+        "challenger": "Challenger",
+        "season_star": "Season Star"
       },
       "metrics": {
         "songs": "{count, plural, one {Discover your first song} other {Discover # songs}}",
@@ -1482,7 +1484,9 @@
         "longest_streak": "A {count}-day discovery streak",
         "deep_genre": "{count}+ artists from one genre",
         "early_supporter": "Discover an artist with under 25 followers who later passes 100",
-        "saves": "Save {count} songs"
+        "saves": "Save {count} songs",
+        "challenges": "Complete {count} weekly challenges",
+        "season_top10": "Finish a season in the top 10% of discoverers"
       },
       "unlocked": "Unlocked {date}",
       "locked": "Not yet"
@@ -1500,7 +1504,8 @@
         "new_country": "New country",
         "save": "Saving a song (once per song)",
         "full_listen": "Listening to a new discovery in full (once a day)",
-        "share": "Sharing a song (once a day per song)"
+        "share": "Sharing a song (once a day per song)",
+        "challenge": "A completed weekly challenge (once per challenge)"
       },
       "fair": "Points reward discovering, not hours of playback: replays, loops and quick skips earn nothing, and every kind of point has a daily cap."
     },
@@ -1513,7 +1518,30 @@
       "question": "What did you discover?"
     },
     "following": "People you follow",
-    "compareWith": "Compare"
+    "compareWith": "Compare",
+    "challenges": {
+      "title": "This week’s challenges",
+      "points": "+20 pts",
+      "hint": "The same three challenges for everyone, new every Monday. This set ends {date}.",
+      "names": {
+        "thirty_songs": "Discover {target} new songs",
+        "ten_artists": "Discover {target} new artists",
+        "three_genres": "Listen to {target} genres you have not heard yet",
+        "three_countries": "Discover music from {target} new countries",
+        "two_regions": "Discover artists from {target} different parts of the world",
+        "five_saves": "Save {target} songs you discovered",
+        "two_shares": "Share {target} songs with someone",
+        "five_full_listens": "Hear {target} fresh discoveries all the way through",
+        "small_artists": "Find {target} artists with at most 50 followers",
+        "five_days": "Discover something new on {target} days this week"
+      }
+    },
+    "seasons": {
+      "title": "Your seasons",
+      "name": "Season {quarter} · {year}",
+      "place": "#{rank} of {participants} · {points} pts",
+      "hint": "A season is a quarter. Your place counts every discoverer, including those who stay out of the public ranking — only you see it."
+    }
   },
   "Rankings": {
     "title": "Rankings",
@@ -1522,7 +1550,9 @@
     "periods": {
       "week": "This week",
       "month": "This month",
-      "all": "All time"
+      "all": "All time",
+      "season": "Season",
+      "last_season": "Last season"
     },
     "scope": "Where",
     "global": "Worldwide",
@@ -1544,7 +1574,9 @@
     "empty": "Nobody here yet this period. Be the first.",
     "discoveries": "{count, plural, one {# discovery} other {# discoveries}}",
     "points": "{points} pts",
-    "fair": "Weekly rankings reset every Monday (UTC). Shown: listeners with a profile name who did not opt out."
+    "fair": "Weekly rankings reset every Monday (UTC). Shown: listeners with a profile name who did not opt out.",
+    "seasonName": "Season {quarter} · {year}",
+    "seasonEnds": "{season} ends on {date}. That is when your final place is recorded."
   },
   "Notices": {
     "points": "+{points}",
@@ -1567,7 +1599,8 @@
     },
     "streak": "{days} day discovery streak",
     "roll": "You're on a roll! {count} discoveries today",
-    "achievement": "Achievement unlocked: {name}"
+    "achievement": "Achievement unlocked: {name}",
+    "challenge": "Challenge complete: {name}"
   },
   "Compare": {
     "title": "You vs {name}",

@@ -75,9 +75,9 @@ genre name columns. None of it is removed; it is generalized.
 
 ### P2 — advanced
 
-Friends comparison (needs user follows + visibility checks), learned recommendation model and
-audio embeddings, automatic "best moment" detection in the worker (energy/novelty curve) and
-waveform, seasonal rankings and challenges, creator tools and promotional clips (video render of
+~~Friends comparison~~ (done), learned recommendation model and audio embeddings, automatic
+"best moment" detection in the worker (energy/novelty curve) and waveform, ~~seasonal rankings and
+challenges~~ (done 2026-10-08), creator tools and promotional clips (video render of
 the share card + preview audio), bot detection beyond rate rules (timing entropy, device
 fingerprints — only with legal review), personalized discovery campaigns.
 
@@ -186,3 +186,20 @@ shown) with the listener's overall rate, shrinks it toward that rate with 20 pse
 square-roots the lift and clamps it to ×0.75…×1.33. Nothing changes below 40 songs shown or with no
 success at all. Applied in For You and Global only — Nearby/New/Rising are lenses the listener
 chose — and never to the exploration share, which stays the listener's setting.
+
+### Seasons and weekly challenges (2026-10-08)
+
+- **Seasons** are calendar quarters (UTC) — the same for every region, nothing to maintain. Rankings
+  gain "Season" and "Last season"; a daily pg_cron job closes the previous quarter into
+  `season_results`: every participant's final global place, points and percentile (counting also
+  listeners hidden from public rankings — the row is visible only to its owner, on You). A top-10 %
+  finish among at least 10 participants unlocks **Season Star**.
+- **Weekly challenges**: three per UTC week, the same for everyone (a shared topic is what makes
+  them social), picked deterministically from `discovery_challenges` (10 to start: new songs,
+  artists, genres, countries, world regions, saves, shares, full listens, artists with ≤ 50
+  followers, days with a discovery). Progress is counted from the ledger, so only real discoveries
+  count and every anti-abuse rule applies; a reached target pays 20 points (`challenge`, once per
+  challenge and week) through a trigger on `discovery_points`, so listens, saves and shares all
+  complete them. A fresh completion shows a notice; 10 completed unlock **Challenger**.
+- Why not personalized challenge targets: adaptive goals already cover "your pace"; challenges are
+  deliberately shared so friends can compare the same task. Staff tune targets in the table.

@@ -1,5 +1,8 @@
 export {
   getLeaderboard,
+  getMyChallenges,
+  getMySeasons,
+  type Challenge,
   getMyAchievements,
   getMyProgress,
   getMyRecords,

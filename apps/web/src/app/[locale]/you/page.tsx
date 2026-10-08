@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { seasonOf } from "@tunewick/shared";
 import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
@@ -9,6 +10,8 @@ import { ViewEvent } from "@/modules/discover";
 import { getMyFollowing } from "@/modules/social";
 import {
   getMyAchievements,
+  getMyChallenges,
+  getMySeasons,
   getMyProgress,
   getMyRecords,
   getMyStats,
@@ -64,14 +67,17 @@ export default async function YouPage({ params, searchParams }: PageProps<"/[loc
     ? (query.period as StatsPeriod)
     : "week";
   const format = await getFormatter();
-  const [progress, stats, records, recap, achievements, following] = await Promise.all([
-    getMyProgress(),
-    getMyStats(period),
-    getMyRecords(),
-    getMyWeeklyRecap(1),
-    getMyAchievements(),
-    getMyFollowing(),
-  ]);
+  const [progress, stats, records, recap, achievements, following, challenges, seasons] =
+    await Promise.all([
+      getMyProgress(),
+      getMyStats(period),
+      getMyRecords(),
+      getMyWeeklyRecap(1),
+      getMyAchievements(),
+      getMyFollowing(),
+      getMyChallenges(),
+      getMySeasons(),
+    ]);
   if (!progress) return null;
   const n = (value: number) => format.number(value);
   const unlocked = achievements.filter((a) => a.unlockedAt).length;
@@ -169,6 +175,40 @@ export default async function YouPage({ params, searchParams }: PageProps<"/[loc
         </ul>
         <p className="field__hint">{t("goals.hint")}</p>
       </section>
+
+      {challenges.length ? (
+        <section aria-labelledby="challenges" className="you__section">
+          <h2 id="challenges" className="section-title">
+            {t("challenges.title")}
+          </h2>
+          <ul className="goals">
+            {challenges.map((c) => {
+              const name = t(`challenges.names.${c.code as "thirty_songs"}`, { target: c.target });
+              return (
+                <li key={c.code} className="goal" data-done={c.completedAt ? true : undefined}>
+                  <span className="goal__period">{t("challenges.points")}</span>
+                  <span className="goal__name">{name}</span>
+                  <span className="goal__count">
+                    {n(c.progress)} / {n(c.target)}
+                    {c.completedAt ? (
+                      <span className="goal__done"> · {t("goals.done")}</span>
+                    ) : null}
+                  </span>
+                  <Meter value={c.progress} max={c.target} label={name} />
+                </li>
+              );
+            })}
+          </ul>
+          <p className="field__hint">
+            {t("challenges.hint", {
+              date: format.dateTime(new Date(challenges[0]!.endsAt), {
+                dateStyle: "medium",
+                timeStyle: "short",
+              }),
+            })}
+          </p>
+        </section>
+      ) : null}
 
       <section aria-labelledby="stats" className="you__section">
         <h2 id="stats" className="section-title">
@@ -321,6 +361,29 @@ export default async function YouPage({ params, searchParams }: PageProps<"/[loc
           </li>
         </ul>
       </section>
+
+      {seasons.length ? (
+        <section aria-labelledby="seasons" className="you__section">
+          <h2 id="seasons" className="section-title">
+            {t("seasons.title")}
+          </h2>
+          <ul className="records">
+            {seasons.map((s) => (
+              <li key={s.season_start}>
+                <span>{t("seasons.name", seasonOf(s.season_start))}</span>
+                <strong>
+                  {t("seasons.place", {
+                    rank: s.rank,
+                    participants: s.participants,
+                    points: n(s.points),
+                  })}
+                </strong>
+              </li>
+            ))}
+          </ul>
+          <p className="field__hint">{t("seasons.hint")}</p>
+        </section>
+      ) : null}
 
       <section aria-labelledby="achievements" className="you__section">
         <h2 id="achievements" className="section-title">

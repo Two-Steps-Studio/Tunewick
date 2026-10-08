@@ -332,6 +332,30 @@ export type Database = {
           },
         ];
       };
+      discovery_challenges: {
+        Row: {
+          code: string;
+          enabled: boolean;
+          metric: string;
+          target: number;
+          updated_at: string;
+        };
+        Insert: {
+          code: string;
+          enabled?: boolean;
+          metric: string;
+          target: number;
+          updated_at?: string;
+        };
+        Update: {
+          code?: string;
+          enabled?: boolean;
+          metric?: string;
+          target?: number;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       discovery_point_rules: {
         Row: {
           daily_cap: number;
@@ -1593,6 +1617,39 @@ export type Database = {
           },
         ];
       };
+      season_results: {
+        Row: {
+          created_at: string;
+          discoveries: number;
+          participants: number;
+          percentile: number;
+          points: number;
+          rank: number;
+          season_start: string;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          discoveries: number;
+          participants: number;
+          percentile: number;
+          points: number;
+          rank: number;
+          season_start: string;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string;
+          discoveries?: number;
+          participants?: number;
+          percentile?: number;
+          points?: number;
+          rank?: number;
+          season_start?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
       track_artists: {
         Row: {
           artist_id: string;
@@ -2540,6 +2597,17 @@ export type Database = {
           display_name: string;
           handle: string;
           id: string;
+        }[];
+      };
+      my_challenges: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          code: string;
+          completed_at: string;
+          ends_at: string;
+          metric: string;
+          progress: number;
+          target: number;
         }[];
       };
       my_deletion_blockers: {

@@ -101,3 +101,11 @@ test("a first visit asks what to discover; skipping opens the feed", async ({ pa
   await page.goto("/");
   await expect(page.getByRole("navigation", { name: "Co odkrywać" })).toBeVisible();
 });
+
+test("rankings have a season and say when it ends", async ({ page }) => {
+  await page.goto("/rankingi");
+  await page.getByRole("link", { name: "Sezon", exact: true }).click();
+  await expect(page).toHaveURL(/period=season/);
+  await expect(page.getByText(/Sezon \d\/\d{4} kończy się/)).toBeVisible();
+  await expect(page.getByRole("link", { name: "Poprzedni sezon" })).toBeVisible();
+});

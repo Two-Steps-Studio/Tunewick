@@ -67,6 +67,7 @@ export async function GET() {
     saves,
     achievements,
     productEvents,
+    seasons,
   ] = await Promise.all([
     supabase.from("profiles").select("handle, display_name, bio, created_at").eq("id", user.id),
     supabase.from("profile_settings").select("*").eq("user_id", user.id),
@@ -111,6 +112,9 @@ export async function GET() {
     supabase.from("track_saves").select("track_id, created_at"),
     supabase.from("user_achievements").select("code, unlocked_at"),
     supabase.rpc("my_product_events"),
+    supabase
+      .from("season_results")
+      .select("season_start, points, discoveries, rank, participants, percentile"),
   ]);
 
   const body = {
@@ -142,6 +146,7 @@ export async function GET() {
     discovery_points: points,
     achievements: own(achievements),
     discover_activity_events: own(productEvents),
+    season_results: own(seasons),
   };
 
   return new NextResponse(JSON.stringify(body, null, 2), {

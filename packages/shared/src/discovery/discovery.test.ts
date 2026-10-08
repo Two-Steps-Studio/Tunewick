@@ -3,11 +3,13 @@ import {
   diversity,
   discoveryScore,
   EMPTY_TASTE,
+  currentSeason,
   goalsFor,
   levelFor,
   MODE_WEIGHTS,
   previewWindow,
   rankFeed,
+  seasonOf,
   tuneWeights,
   TUNING,
   type Candidate,
@@ -356,5 +358,21 @@ describe("tuneWeights", () => {
     ]);
     expect(tuned.factors.artist).toBeGreaterThan(1);
     expect(tuned.factors.popularity).toBeLessThan(1);
+  });
+});
+
+describe("seasons", () => {
+  it("are calendar quarters in UTC", () => {
+    expect(currentSeason(new Date("2026-10-08T05:00:00Z"))).toEqual({
+      year: 2026,
+      quarter: 4,
+      endsAt: new Date("2027-01-01T00:00:00Z"),
+    });
+    expect(currentSeason(new Date("2026-03-31T23:59:59Z")).quarter).toBe(1);
+  });
+
+  it("name a closed season from its first day", () => {
+    expect(seasonOf("2026-07-01")).toEqual({ year: 2026, quarter: 3 });
+    expect(seasonOf("2027-01-01")).toEqual({ year: 2027, quarter: 1 });
   });
 });

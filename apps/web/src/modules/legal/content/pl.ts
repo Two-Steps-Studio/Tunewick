@@ -292,7 +292,7 @@ export const pl: LegalContent = {
                 "Bezpieczeństwo, zapobieganie nadużyciom (limity, blokady prób), diagnostyka działania serwisu i dziennik działań personelu (art. 6 ust. 1 lit. f RODO — prawnie uzasadniony interes).",
                 "Obsługa zgłoszeń treści, uzasadnień decyzji i odwołań zgodnie z aktem o usługach cyfrowych (DSA) (art. 6 ust. 1 lit. c RODO — obowiązek prawny).",
                 "Zestawienia słuchania dla artystów i przyszłe rozliczenia (art. 6 ust. 1 lit. b i f RODO).",
-                "Rekomendacje w Odkrywaj, punkty, cele, serie, rekordy, osiągnięcia i rankingi odkryć — z Twojego słuchania i reakcji w serwisie (art. 6 ust. 1 lit. b RODO — umowa); zdarzenia z feedu także do ulepszania rekomendacji (art. 6 ust. 1 lit. f RODO).",
+                "Rekomendacje w Odkrywaj, punkty, cele, wyzwania tygodnia, serie, rekordy, osiągnięcia, rankingi odkryć i wyniki sezonów (kwartałów; końcowe miejsce widzisz tylko Ty, przechowujemy je do usunięcia konta) — z Twojego słuchania i reakcji w serwisie (art. 6 ust. 1 lit. b RODO — umowa); zdarzenia z feedu także do ulepszania rekomendacji (art. 6 ust. 1 lit. f RODO).",
               ],
             },
             "Nie używamy Twoich danych do reklam, nie sprzedajemy ich i nie profilujemy Cię w celach marketingowych. Rekomendacje nie podejmują wobec Ciebie decyzji o skutkach prawnych.",

@@ -451,4 +451,10 @@ Functions: `record_listen` (returns awards; `soundcheck` marks previews), `recor
 `compare_with` (visibility via M8.2 `can_view_activity`), `my_product_events`,
 `my_feed_outcomes` (per-reason results of the last 60 days, input to per-listener weight tuning),
 `browse_countries`; `discover_releases`/`discover_artists` gained a `country` filter.
-pgTAP: `discovery.test.sql`, `compare_friends.test.sql`, `feed_outcomes.test.sql`.
+Seasons and challenges (`20261008150000`): `season_results` (final global place per closed
+quarter, own rows only; written by `private.close_last_season()`), `discovery_challenges` (public
+definitions; three per UTC week via `private.active_challenges`), `my_challenges()`, award kind
+`challenge` (trigger on `discovery_points`), achievements `challenger` and `season_star`; ranking
+periods `season` and `last_season`.
+pgTAP: `discovery.test.sql`, `compare_friends.test.sql`, `feed_outcomes.test.sql`,
+`seasons_challenges.test.sql`.

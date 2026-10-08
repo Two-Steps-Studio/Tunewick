@@ -4,6 +4,13 @@ import { createConfirmedUser, signIn } from "./helpers";
 
 test("a person downloads their data and deletes their account", async ({ page }) => {
   const email = await createConfirmedUser(page, "privacy");
+
+  // A new listener already sees this week's challenges, with no progress yet.
+  await page.goto("/ty");
+  const challenges = page.getByRole("region", { name: "Wyzwania tygodnia" });
+  await expect(challenges.getByRole("progressbar")).toHaveCount(3);
+  await expect(challenges.getByText("0 / ", { exact: false })).toHaveCount(3);
+
   await page.goto("/ustawienia");
   const data = page.locator("section", { has: page.getByRole("heading", { name: "Twoje dane" }) });
 
@@ -18,6 +25,7 @@ test("a person downloads their data and deletes their account", async ({ page })
   expect(exported).toHaveProperty("playlists");
   expect(exported).toHaveProperty("discovery_points");
   expect(exported).toHaveProperty("discovery_preferences");
+  expect(exported.season_results).toEqual([]);
 
   // Delete (art. 17): the email must match; afterwards the account cannot sign in.
   await data.getByRole("button", { name: "Usuń konto" }).click();

@@ -1472,7 +1472,9 @@
         "on_a_roll": "Passa",
         "unstoppable": "Nie do zatrzymania",
         "collector": "Kolekcjoner",
-        "early_supporter": "Wczesny fan"
+        "early_supporter": "Wczesny fan",
+        "challenger": "Pogromca wyzwań",
+        "season_star": "Gwiazda sezonu"
       },
       "metrics": {
         "songs": "{count, plural, one {Odkryj pierwszy utwór} few {Odkryj # utwory} other {Odkryj # utworów}}",
@@ -1482,7 +1484,9 @@
         "longest_streak": "Seria odkryć przez {count} dni",
         "deep_genre": "{count}+ artystów z jednego gatunku",
         "early_supporter": "Odkryj artystę z mniej niż 25 obserwującymi, który później przekroczy 100",
-        "saves": "Zapisz {count} utworów"
+        "saves": "Zapisz {count} utworów",
+        "challenges": "Ukończ {count} wyzwań tygodnia",
+        "season_top10": "Zakończ sezon w najlepszych 10% odkrywców"
       },
       "unlocked": "Zdobyte {date}",
       "locked": "Jeszcze nie"
@@ -1500,7 +1504,8 @@
         "new_country": "Nowy kraj",
         "save": "Zapisanie utworu (raz na utwór)",
         "full_listen": "Wysłuchanie nowego odkrycia w całości (raz dziennie)",
-        "share": "Udostępnienie utworu (raz dziennie na utwór)"
+        "share": "Udostępnienie utworu (raz dziennie na utwór)",
+        "challenge": "Ukończone wyzwanie tygodnia (raz na wyzwanie)"
       },
       "fair": "Punkty nagradzają odkrywanie, nie godziny odtwarzania: powtórki, zapętlanie i szybkie pomijanie nic nie dają, a każdy rodzaj punktów ma dzienny limit."
     },
@@ -1513,7 +1518,30 @@
       "question": "A co Ty odkryłeś/aś?"
     },
     "following": "Osoby, które obserwujesz",
-    "compareWith": "Porównaj"
+    "compareWith": "Porównaj",
+    "challenges": {
+      "title": "Wyzwania tygodnia",
+      "points": "+20 pkt",
+      "hint": "Te same trzy wyzwania dla wszystkich, nowe co poniedziałek. Ten zestaw kończy się {date}.",
+      "names": {
+        "thirty_songs": "Odkryj {target} nowych utworów",
+        "ten_artists": "Odkryj {target} nowych artystów",
+        "three_genres": "Posłuchaj {target} gatunków, których jeszcze nie znasz",
+        "three_countries": "Odkryj muzykę z {target} nowych krajów",
+        "two_regions": "Odkryj artystów z {target} różnych części świata",
+        "five_saves": "Zapisz {target} odkrytych utworów",
+        "two_shares": "Poleć komuś {target} utwory",
+        "five_full_listens": "Wysłuchaj w całości {target} świeżych odkryć",
+        "small_artists": "Znajdź {target} artystów, których obserwuje najwyżej 50 osób",
+        "five_days": "Odkrywaj coś nowego przez {target} dni tego tygodnia"
+      }
+    },
+    "seasons": {
+      "title": "Twoje sezony",
+      "name": "Sezon {quarter}/{year}",
+      "place": "{rank}. miejsce z {participants} · {points} pkt",
+      "hint": "Sezon to kwartał. Miejsce liczymy ze wszystkich odkrywców, także tych, którzy nie pokazują się w publicznym rankingu — widzisz je tylko Ty."
+    }
   },
   "Rankings": {
     "title": "Rankingi",
@@ -1522,7 +1550,9 @@
     "periods": {
       "week": "Ten tydzień",
       "month": "Ten miesiąc",
-      "all": "Od początku"
+      "all": "Od początku",
+      "season": "Sezon",
+      "last_season": "Poprzedni sezon"
     },
     "scope": "Gdzie",
     "global": "Cały świat",
@@ -1544,7 +1574,9 @@
     "empty": "W tym okresie nikogo tu jeszcze nie ma. Bądź pierwszy/a.",
     "discoveries": "{count, plural, one {# odkrycie} few {# odkrycia} many {# odkryć} other {# odkrycia}}",
     "points": "{points} pkt",
-    "fair": "Ranking tygodniowy zaczyna się od nowa w każdy poniedziałek (UTC). Widoczni: słuchacze z nazwą profilu, którzy nie wyłączyli rankingów."
+    "fair": "Ranking tygodniowy zaczyna się od nowa w każdy poniedziałek (UTC). Widoczni: słuchacze z nazwą profilu, którzy nie wyłączyli rankingów.",
+    "seasonName": "Sezon {quarter}/{year}",
+    "seasonEnds": "{season} kończy się {date}. Wtedy zapisujemy Twoje końcowe miejsce."
   },
   "Notices": {
     "points": "+{points}",
@@ -1567,7 +1599,8 @@
     },
     "streak": "Seria odkryć: {days} dni z rzędu",
     "roll": "Masz dobrą passę! {count} odkryć dzisiaj",
-    "achievement": "Nowe osiągnięcie: {name}"
+    "achievement": "Nowe osiągnięcie: {name}",
+    "challenge": "Wyzwanie ukończone: {name}"
   },
   "Compare": {
     "title": "Ty vs {name}",

@@ -161,3 +161,21 @@ export function previewWindow(
     Math.round(Math.min(duration * PREVIEW.startFraction, duration - length) / 1000) * 1000;
   return { startMs: Math.max(0, start), lengthMs: length, chosen: false };
 }
+
+/** The running season (a calendar quarter, UTC) and when it ends. */
+export function currentSeason(now = new Date()) {
+  const quarter = Math.floor(now.getUTCMonth() / 3);
+  return {
+    year: now.getUTCFullYear(),
+    quarter: quarter + 1,
+    endsAt: new Date(Date.UTC(now.getUTCFullYear(), quarter * 3 + 3, 1)),
+  };
+}
+
+/** "2026-07-01" → { year: 2026, quarter: 3 }. */
+export function seasonOf(start: string) {
+  return {
+    year: Number(start.slice(0, 4)),
+    quarter: Math.floor((Number(start.slice(5, 7)) - 1) / 3) + 1,
+  };
+}
