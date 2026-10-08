@@ -218,5 +218,8 @@ media bucket (`clips/<track>/<id>.mp4`); the menu polls until it is ready, then 
 share sheet with the file (or downloads it). Tables/functions: `share_clips`,
 `request_share_clip`, `queue_share_clip`, `share_clip`, worker `claim/finish/fail_share_clip`;
 the data export lists the clips a person requested (`my_share_clips`). A taken-down song's clip
-is no longer served. Known gap: stored MP4s are not deleted when a song is taken down or its
-soundcheck changes (the rows are; a storage sweep belongs with M11 retention).
+is no longer served. Clips are removed daily (`private.expire_share_clips`, pg_cron) when their song is no
+longer public, nobody asked for them in 90 days (e.g. after the soundcheck changed) or they never
+got going; their card and video go to the **storage sweep** (`private.storage_deletions`), which
+the worker empties (S3 DELETE, then `finish_storage_deletions`). The sweep is generic: replaced
+masters, images and deleted accounts' files can queue their objects the same way.

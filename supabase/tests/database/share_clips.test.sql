@@ -3,7 +3,7 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set search_path = public, extensions;
 
-select plan(18);
+select plan(23);
 
 insert into auth.users (id, email, raw_app_meta_data, aud, role)
 values
@@ -86,6 +86,24 @@ select lives_ok($$select request_share_clip((select id from ids where name = 'tr
   'up to ten new clips an hour');
 select throws_ok($$select * from request_share_clip((select id from ids where name = 'track'), 'pl', 9000, 30000, 1::smallint)$$,
   '54000', null, 'then the limit');
+
+
+-- Storage sweep: clips nobody asked for in 90 days (or of songs no longer public) are removed and
+-- their objects queued for the worker.
+set local role postgres;
+select is(private.expire_share_clips(), 0, 'fresh clips of a public song stay');
+update share_clips set last_requested_at = now() - interval '91 days' where id = (select id from ids where name = 'clip');
+select is(private.expire_share_clips(), 1, 'a clip nobody asked for in 90 days goes');
+select is((select string_agg(bucket || ':' || object_key, ' ' order by bucket) from private.storage_deletions
+  where object_key in ('clips/t/klip.mp4', 'clips/' || (select id from ids where name = 'clip') || '/card.png')),
+  'ingest:clips/' || (select id from ids where name = 'clip') || '/card.png media:clips/t/klip.mp4',
+  'its card and video are queued for deletion');
+set local role service_role;
+select is((select count(*)::int from claim_storage_deletions(500) d where d.object_key = 'clips/t/klip.mp4'), 1,
+  'the worker claims them');
+set local role postgres;
+select is(finish_storage_deletions(array(select id from private.storage_deletions where object_key = 'clips/t/klip.mp4')), 1,
+  'and clears them once deleted');
 
 select * from finish();
 rollback;

@@ -22,6 +22,8 @@ create table public.share_clips (
   attempts integer not null default 0,
   claimed_at timestamptz,
   created_at timestamptz not null default now(),
+  -- Every time someone asks for it; clips nobody asked for in 90 days are removed (storage sweep).
+  last_requested_at timestamptz not null default now(),
   finished_at timestamptz,
   unique (track_id, locale, start_ms, duration_ms, design)
 );
@@ -89,6 +91,7 @@ begin
     return;
   end if;
 
+  update public.share_clips c set last_requested_at = now() where c.id = clip.id;
   -- A failed clip is tried again from the start; a card that never arrived is asked for again.
   if clip.status = 'failed' then
     update public.share_clips c set status = 'awaiting_card', attempts = 0, requested_by = caller,

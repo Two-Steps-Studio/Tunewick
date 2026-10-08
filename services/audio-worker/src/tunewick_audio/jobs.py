@@ -133,14 +133,15 @@ def run_once(queue: Queue, storage: Storage) -> bool:
 
 
 def run_forever(queue: Queue, storage: Storage, poll_seconds: float) -> None:
-    """Audio first, then images, then share clips; sleeps only when every queue is empty."""
+    """Audio, images, share clips, then the storage sweep; sleeps only when all are idle."""
     from .clips import run_clip_once
     from .image_jobs import run_image_once
+    from .sweep import run_sweep_once
 
     log.info(json.dumps({"event": "worker_started", "poll_seconds": poll_seconds}))
     while True:
         busy = False
-        for step in (run_once, run_image_once, run_clip_once):
+        for step in (run_once, run_image_once, run_clip_once, run_sweep_once):
             try:
                 busy = step(queue, storage) or busy  # type: ignore[arg-type]
             except Exception:

@@ -178,6 +178,9 @@ then run `node scripts/create-invites.mjs ...` in the same window.
   from WebP with `sharp` (an explicit dependency of `apps/web`).
 - The audio worker also renders share videos (`share_clips` queue): no new settings — it uses the
   same Supabase key and buckets; the app writes cards into the ingest bucket with its own S3 keys.
+- The worker also empties the storage sweep (`private.storage_deletions`): its S3 key needs
+  DeleteObject on both buckets. Entries failing five times stay in the table — check
+  `select * from private.storage_deletions where attempts >= 5;` now and then.
 - Point values and caps: edit `discovery_point_rules` (admin) — no deploy needed. Weekly
   challenges: `discovery_challenges` (enable/disable or change targets between weeks; the running
   week's three are picked from the enabled ones).

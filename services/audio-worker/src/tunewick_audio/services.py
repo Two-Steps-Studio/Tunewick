@@ -11,6 +11,7 @@ from botocore.config import Config
 from .clips import ClipJob
 from .image_jobs import ImageJob
 from .jobs import Job
+from .sweep import Deletion
 
 
 def require(name: str) -> str:
@@ -90,6 +91,13 @@ class SupabaseQueue:
     def fail_clip(self, clip_id: str) -> str:
         return self._call("fail_share_clip", {"clip": clip_id})
 
+    def claim_deletions(self, limit: int) -> list[Deletion]:
+        rows = self._call("claim_storage_deletions", {"max_results": limit})
+        return [Deletion(row["id"], row["bucket"], row["object_key"]) for row in rows or []]
+
+    def finish_deletions(self, ids: list[int]) -> int:
+        return self._call("finish_storage_deletions", {"ids": ids})
+
 
 class S3Storage:
     def __init__(
@@ -125,6 +133,10 @@ class S3Storage:
 
     def download_master(self, key: str, path: str) -> None:
         self.s3.download_file(self.ingest, key, path)
+
+    def delete_object(self, bucket: str, key: str) -> None:
+        """Deletes an object (S3 DELETE succeeds for missing objects too)."""
+        self.s3.delete_object(Bucket=self.ingest if bucket == "ingest" else self.media, Key=key)
 
     def download_media(self, key: str, path: str) -> None:
         """A delivery variant (e.g. the AAC a share clip is cut from)."""
