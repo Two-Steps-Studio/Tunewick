@@ -500,7 +500,9 @@
       "cmoNoneExclusive": "“No, nobody is a member” cannot be combined with an organization.",
       "samplesDescriptionRequired": "Describe the samples and permissions.",
       "aiRequired": "Declare AI involvement.",
-      "termsRequired": "Accept the terms to submit the declaration."
+      "termsRequired": "Accept the terms to submit the declaration.",
+      "previewTime": "Write the start as m:ss, e.g. 1:05.",
+      "previewOutside": "The preview must fit inside the song (15–30 s)."
     },
     "rights": {
       "title": "Rights to this release",
@@ -567,6 +569,15 @@
         "not_allowed": "You can't submit this release.",
         "failed": "Something went wrong. Please try again."
       }
+    },
+    "preview": {
+      "title": "Discover preview",
+      "chosen": "Listeners hear {length} s from {start} — chosen by you.",
+      "automatic": "Automatic: {length} s from {start}. Pick the moment that represents the song best.",
+      "start": "Start (m:ss)",
+      "startHint": "Leave empty for the automatic excerpt.",
+      "length": "Length",
+      "seconds": "{s} seconds"
     }
   },
   "Audio": {

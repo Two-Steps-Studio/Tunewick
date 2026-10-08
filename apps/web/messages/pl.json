@@ -500,7 +500,9 @@
       "cmoNoneExclusive": "„Nie, nikt nie należy” nie może być zaznaczone razem z organizacją.",
       "samplesDescriptionRequired": "Opisz sample i zgody.",
       "aiRequired": "Określ udział AI.",
-      "termsRequired": "Aby złożyć oświadczenie, zaakceptuj warunki."
+      "termsRequired": "Aby złożyć oświadczenie, zaakceptuj warunki.",
+      "previewTime": "Wpisz początek jako m:ss, np. 1:05.",
+      "previewOutside": "Fragment musi zmieścić się w utworze (15–30 s)."
     },
     "rights": {
       "title": "Prawa do wydawnictwa",
@@ -567,6 +569,15 @@
         "not_allowed": "Nie możesz wysłać tego wydawnictwa.",
         "failed": "Coś poszło nie tak. Spróbuj ponownie."
       }
+    },
+    "preview": {
+      "title": "Fragment w Odkrywaj",
+      "chosen": "Słuchacze usłyszą {length} s od {start} — wybrane przez Ciebie.",
+      "automatic": "Automatycznie: {length} s od {start}. Wybierz moment, który najlepiej przedstawia utwór.",
+      "start": "Początek (m:ss)",
+      "startHint": "Zostaw puste, aby użyć fragmentu automatycznego.",
+      "length": "Długość",
+      "seconds": "{s} sekund"
     }
   },
   "Audio": {

@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import {
   creditSchema,
+  parseClock,
+  previewSchema,
   rightsSchema,
   genresSchema,
   releaseDbError,
@@ -102,5 +104,27 @@ describe("rightsSchema", () => {
     expect(issues({ ...valid, acceptTerms: undefined })).toContain("termsRequired");
     expect(issues({ ...valid, aiContent: "unknown" })).toContain("aiRequired");
     expect(issues({ ...valid, samples: "cleared" })).toContain("samplesDescriptionRequired");
+  });
+});
+
+describe("previewSchema", () => {
+  it("reads m:ss or seconds and keeps the preview inside the track", () => {
+    expect(parseClock("1:05")).toBe(65_000);
+    expect(parseClock("45")).toBe(45_000);
+    expect(parseClock("1:75")).toBeNull();
+    expect(previewSchema.parse({ start: "1:00", length: "20", durationMs: 180_000 })).toEqual({
+      startMs: 60_000,
+      lengthMs: 20_000,
+    });
+    expect(previewSchema.parse({ start: "", length: "30", durationMs: null })).toEqual({
+      startMs: null,
+      lengthMs: null,
+    });
+    expect(
+      previewSchema.safeParse({ start: "2:50", length: "20", durationMs: 180_000 }).success,
+    ).toBe(false);
+    expect(previewSchema.safeParse({ start: "0:10", length: "12", durationMs: null }).success).toBe(
+      false,
+    );
   });
 });

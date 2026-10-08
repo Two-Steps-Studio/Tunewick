@@ -2167,6 +2167,10 @@ export type Database = {
       };
       search_normalize: { Args: { value: string }; Returns: string };
       set_release_genres: { Args: { genre_ids: number[]; release: string }; Returns: undefined };
+      set_track_preview: {
+        Args: { length_ms: number; start_ms: number; track: string };
+        Returns: undefined;
+      };
       similar_artists: {
         Args: { artist: string; max_results?: number };
         Returns: {

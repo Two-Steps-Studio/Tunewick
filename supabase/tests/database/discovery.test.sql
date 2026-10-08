@@ -3,7 +3,7 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set search_path = public, extensions;
 
-select plan(50);
+select plan(54);
 
 insert into auth.users (id, email, raw_app_meta_data, aud, role)
 values
@@ -60,6 +60,21 @@ create temporary table code_before on commit drop as select public_code from tra
 update tracks set public_code = 'aaaaaaaaaa' where id = (select id from ids where name = 't1');
 select is((select public_code from tracks where id = (select id from ids where name = 't1')), (select public_code from code_before),
   'the public code never changes (shared links keep working)');
+
+-- The artist picks the preview, also after publishing; only inside the track and 15–30 s.
+set local role authenticated;
+set local request.jwt.claims = '{"sub": "00000000-0000-0000-0000-0000000000a1", "role": "authenticated"}';
+select lives_ok($$select set_track_preview((select id from ids where name = 't2'), 30000, 25000)$$,
+  'owners set a preview on a published track');
+select throws_ok($$select set_track_preview((select id from ids where name = 't2'), 170000, 20000)$$,
+  '22023', null, 'the preview stays inside the track');
+select throws_ok($$select set_track_preview((select id from ids where name = 't2'), 0, 5000)$$,
+  '22023', null, 'and lasts 15–30 s');
+set local request.jwt.claims = '{"sub": "00000000-0000-0000-0000-0000000000a2", "role": "authenticated"}';
+select throws_ok($$select set_track_preview((select id from ids where name = 't2'), 0, 20000)$$,
+  '42501', null, 'listeners cannot');
+set local role postgres;
+update tracks set soundcheck_start_ms = 60000, soundcheck_duration_ms = 20000 where id = (select id from ids where name = 't2');
 
 -- Feed functions are public and only show playable public tracks.
 set local role anon;
