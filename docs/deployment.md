@@ -47,6 +47,16 @@ pnpm exec supabase db push
 `link` asks for the database password from §1. `db push` lists the migrations before applying
 them. Never edit production schema in the dashboard — write a migration instead.
 
+Without a terminal: GitHub → Actions → **Database migrations** → Run workflow (from `main`).
+First with `apply` off — it lists applied and pending migrations and does a dry run — then with
+`apply` on. It needs repository (or `production` environment) secrets `SUPABASE_ACCESS_TOKEN`
+(supabase.com → Account → Access Tokens), `SUPABASE_DB_PASSWORD` (§1) and `SUPABASE_PROJECT_REF`
+(the id in `https://<ref>.supabase.co`). Add required reviewers to the `production` environment to
+make every run wait for approval.
+
+Order with a release that needs new tables: migrations first, then promote the Vercel deployment
+(an app built for a newer schema fails on an older database).
+
 ## 3. Vercel project
 
 Settings → General: Root Directory `apps/web`, framework Next.js, "Include files outside the root
