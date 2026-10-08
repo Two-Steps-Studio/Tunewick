@@ -13,9 +13,10 @@
   },
   "Nav": {
     "discover": "Odkrywaj",
-    "scene": "Scena",
+    "browse": "Przeglądaj",
     "search": "Szukaj",
-    "library": "Biblioteka"
+    "library": "Biblioteka",
+    "you": "Ty"
   },
   "Player": {
     "region": "Odtwarzacz",
@@ -53,23 +54,6 @@
       "stream_error": "Połączenie z serwerem audio zostało przerwane."
     }
   },
-  "Discover": {
-    "title": "Odkrywaj",
-    "lead": "Muzyka niezależna, lokalne sceny i koncerty — z kontekstem, nie z nieskończonego feedu.",
-    "empty": "Nie ma tu jeszcze nic do odkrycia. Pierwsi artyści — niezależni twórcy z całej Polski — dołączą w zamkniętej becie.",
-    "leadPoland": "Nowa muzyka małych, niezależnych artystów z całej Polski — od najnowszej. Bez algorytmu popularności: wszystko tu ma podany powód.",
-    "regionLabel": "Region",
-    "allPoland": "Cała Polska",
-    "emptyRegion": "Z województwa {region} nie ma jeszcze opublikowanej muzyki.",
-    "newReleases": "Nowe wydawnictwa",
-    "newArtists": "Nowi artyści",
-    "reason": {
-      "debut": "Debiut · {when}",
-      "new": "Nowość · {when}",
-      "released": "Wydane {when}",
-      "firstRelease": "Pierwsze wydawnictwo {when} · {count, plural, one {# wydawnictwo} few {# wydawnictwa} many {# wydawnictw} other {# wydawnictwa}}"
-    }
-  },
   "Scene": {
     "title": "Scena",
     "lead": "Koncerty, kluby i miejsca w Twojej okolicy.",
@@ -77,7 +61,7 @@
   },
   "Search": {
     "title": "Szukaj",
-    "lead": "Niezależni artyści z całej Polski — wpisz nazwę, tytuł albo fragment. Polskie znaki nie są potrzebne.",
+    "lead": "Niezależni artyści z całego świata — wpisz nazwę, tytuł albo fragment. Polskie znaki nie są potrzebne.",
     "empty": "Wyszukiwarka ruszy, gdy w katalogu pojawi się muzyka.",
     "titleFor": "„{query}” — szukaj",
     "label": "Szukaj artystów, wydawnictw i utworów",
@@ -122,6 +106,11 @@
       "clearConfirm": "Usunąć całą historię słuchania? Tego nie da się cofnąć.",
       "clearYes": "Tak, wyczyść",
       "clearNo": "Anuluj"
+    },
+    "saved": {
+      "title": "Zapisane z Odkrywaj",
+      "lead": "Utwory zapisane podczas odkrywania — wróć do nich, kiedy chcesz.",
+      "play": "Odtwórz zapisane"
     }
   },
   "NotFound": {
@@ -221,7 +210,7 @@
     "hints": {
       "handle": "Małe litery, cyfry i myślniki, 2–40 znaków. Adres profilu: tunewick.com/profil/nazwa",
       "bio": "Do 500 znaków.",
-      "visibility": "Aktywność słuchania pojawi się w serwisie razem z funkcjami społecznościowymi. To ustawienie zadziała od ich startu."
+      "visibility": "Kto może porównywać swoje odkrycia z Twoimi: wszyscy, tylko osoby, które obserwujesz, albo tylko Ty."
     },
     "locales": {
       "pl": "Polski",
@@ -229,7 +218,7 @@
     },
     "visibility": {
       "public": "Wszyscy",
-      "followers": "Obserwujący",
+      "followers": "Osoby, które obserwuję",
       "private": "Tylko ja"
     },
     "submit": "Zapisz zmiany",
@@ -247,7 +236,15 @@
   },
   "Profile": {
     "memberSince": "Na Tunewick od {date}",
-    "empty": "Ten profil nie ma jeszcze opisu."
+    "empty": "Ten profil nie ma jeszcze opisu.",
+    "follow": "Obserwuj: {name}",
+    "unfollow": "Przestań obserwować: {name}",
+    "followShort": "Obserwuj",
+    "following": "Obserwujesz",
+    "failed": "Nie udało się zapisać. Spróbuj ponownie.",
+    "followers": "{count, plural, =0 {Nikt jeszcze nie obserwuje} one {# obserwujący} few {# obserwujących} many {# obserwujących} other {# obserwującego}}",
+    "followingCount": "obserwuje: {count}",
+    "compare": "Porównaj swoje odkrycia z: {name}"
   },
   "Security": {
     "title": "Bezpieczeństwo",
@@ -301,13 +298,24 @@
       "note": "Wiadomość dla moderacji (opcjonalnie)",
       "city": "Miasto lub miejscowość",
       "voivodeship": "Województwo",
-      "voivodeshipNone": "— nie podano —"
+      "voivodeshipNone": "— nie podano —",
+      "country": "Kraj",
+      "countryNone": "— nie podano —",
+      "region": "Region",
+      "languages": "Języki, w których śpiewasz lub mówisz",
+      "genres": "Gatunki (do 5)",
+      "links": "Linki (jeden w wierszu)"
     },
     "hints": {
       "slug": "Małe litery, cyfry i myślniki. Adres: tunewick.com/artysci/adres",
       "evidence": "Np. oficjalna strona, Bandcamp, profil w mediach społecznościowych zespołu. Do 5 linków.",
       "handle": "Osoba musi mieć konto i ustawioną nazwę profilu.",
-      "city": "Skąd jesteście — np. Rzeszów, Gliwice, Suwałki. Pomaga słuchaczom znaleźć muzykę z ich okolicy."
+      "city": "Skąd jesteście — np. Rzeszów, Gliwice, Suwałki. Pomaga słuchaczom znaleźć muzykę z ich okolicy.",
+      "country": "Słuchacze odkrywają muzykę według kraju.",
+      "region": "Opcjonalnie, np. Bawaria, Katalonia, Teksas. W Polsce wystarczy województwo powyżej.",
+      "languages": "Kody języków po przecinku, np. pl, en, es.",
+      "genres": "Jaką muzykę tworzysz — feed używa tego, by znaleźć Twoich słuchaczy.",
+      "links": "Strona, Bandcamp, Instagram, TikTok, YouTube… tylko https, do 10."
     },
     "roles": {
       "owner": "Właściciel",
@@ -325,7 +333,17 @@
       "manage": "Zarządzaj profilem",
       "noBio": "Ten artysta nie dodał jeszcze opisu.",
       "noReleases": "Brak opublikowanych wydawnictw.",
-      "followers": "{count, plural, =0 {Nikt jeszcze nie obserwuje} one {# osoba obserwuje} few {# osoby obserwują} many {# osób obserwuje} other {# osoby obserwuje}}"
+      "followers": "{count, plural, =0 {Nikt jeszcze nie obserwuje} one {# osoba obserwuje} few {# osoby obserwują} many {# osób obserwuje} other {# osoby obserwuje}}",
+      "languages": "Śpiewa po: {languages}",
+      "discover": "Odkrywaj tego artystę",
+      "popular": "Popularne utwory",
+      "listeners": "{count, plural, one {# słuchacz} few {# słuchaczy} many {# słuchaczy} other {# słuchacza}} w tym miesiącu",
+      "newest": "Wydawnictwa",
+      "links": "Linki",
+      "similar": "Odkryj podobnych artystów",
+      "similarListeners": "{count, plural, one {# wspólny obserwujący} few {# wspólnych obserwujących} many {# wspólnych obserwujących} other {# wspólnego obserwującego}}",
+      "similarCountry": "Też z kraju: {country}",
+      "similarGenres": "Podobne gatunki"
     },
     "manage": {
       "title": "Zarządzaj: {name}",
@@ -343,7 +361,8 @@
       "viewPublic": "Zobacz profil publiczny",
       "you": "Ty",
       "noName": "Konto bez nazwy profilu",
-      "photo": "Zdjęcie artysty"
+      "photo": "Zdjęcie artysty",
+      "reach": "Skąd jesteś i co tworzysz"
     },
     "errors": {
       "nameRequired": "Podaj nazwę artysty.",
@@ -361,7 +380,24 @@
       "forbidden": "Nie masz uprawnień do tej operacji.",
       "unexpected": "Nie udało się zapisać. Spróbuj ponownie.",
       "voivodeshipInvalid": "Wybierz województwo z listy.",
-      "cityTooLong": "Nazwa miejscowości może mieć do 80 znaków."
+      "cityTooLong": "Nazwa miejscowości może mieć do 80 znaków.",
+      "countryInvalid": "Wybierz kraj z listy.",
+      "regionTooLong": "Region może mieć do 80 znaków.",
+      "languagesInvalid": "Użyj kodów języków, np. pl, en, es (do 8).",
+      "genresTooMany": "Wybierz do 5 gatunków.",
+      "linksInvalid": "Każdy link musi zaczynać się od https:// (do 10)."
+    },
+    "links": {
+      "website": "Strona",
+      "instagram": "Instagram",
+      "tiktok": "TikTok",
+      "youtube": "YouTube",
+      "bandcamp": "Bandcamp",
+      "soundcloud": "SoundCloud",
+      "spotify": "Spotify",
+      "x": "X",
+      "facebook": "Facebook",
+      "other": "Link"
     }
   },
   "Releases": {
@@ -472,7 +508,9 @@
       "cmoNoneExclusive": "„Nie, nikt nie należy” nie może być zaznaczone razem z organizacją.",
       "samplesDescriptionRequired": "Opisz sample i zgody.",
       "aiRequired": "Określ udział AI.",
-      "termsRequired": "Aby złożyć oświadczenie, zaakceptuj warunki."
+      "termsRequired": "Aby złożyć oświadczenie, zaakceptuj warunki.",
+      "previewTime": "Wpisz początek jako m:ss, np. 1:05.",
+      "previewOutside": "Fragment musi zmieścić się w utworze (15–30 s)."
     },
     "rights": {
       "title": "Prawa do wydawnictwa",
@@ -539,6 +577,15 @@
         "not_allowed": "Nie możesz wysłać tego wydawnictwa.",
         "failed": "Coś poszło nie tak. Spróbuj ponownie."
       }
+    },
+    "preview": {
+      "title": "Fragment w Odkrywaj",
+      "chosen": "Słuchacze usłyszą {length} s od {start} — wybrane przez Ciebie.",
+      "automatic": "Automatycznie: {length} s od {start}. Wybierz moment, który najlepiej przedstawia utwór.",
+      "start": "Początek (m:ss)",
+      "startHint": "Zostaw puste, aby użyć fragmentu automatycznego.",
+      "length": "Długość",
+      "seconds": "{s} sekund"
     }
   },
   "Audio": {
@@ -650,7 +697,21 @@
         "failed": "Coś poszło nie tak. Spróbuj ponownie."
       }
     },
-    "cover": "Okładka"
+    "cover": "Okładka",
+    "reports": {
+      "title": "Zgłoszenia ({count})",
+      "empty": "Brak otwartych zgłoszeń.",
+      "gone": "(już niedostępne)",
+      "subjects": {
+        "track": "Utwór",
+        "release": "Wydawnictwo",
+        "artist": "Artysta",
+        "user": "Użytkownik"
+      },
+      "actioned": "Podjęto działanie",
+      "dismissed": "Odrzuć",
+      "hint": "Działanie (zdjęcie treści, zawieszenie) wykonuje się na wydawnictwie lub artyście; tu zapisuje się decyzję w dzienniku audytu."
+    }
   },
   "Images": {
     "uploading": "Przesyłanie… {percent}%",
@@ -872,5 +933,362 @@
       "limit": "Masz już 200 playlist — to maksimum.",
       "failed": "Nie udało się zapisać. Spróbuj ponownie."
     }
+  },
+  "Browse": {
+    "title": "Przeglądaj",
+    "lead": "Nowa muzyka małych niezależnych artystów, od najnowszej — według kraju, a w Polsce także województwa. Bez algorytmu popularności: wszystko mówi, dlaczego tu jest.",
+    "empty": "Jeszcze nic tu nie ma. Pierwsi niezależni artyści dołączają w zamkniętej becie.",
+    "countryLabel": "Kraj",
+    "allCountries": "Wszystkie kraje",
+    "regionLabel": "Województwo",
+    "emptyRegion": "Z województwa {region} nie ma jeszcze opublikowanej muzyki.",
+    "emptyCountry": "Brak opublikowanej muzyki z kraju: {country}.",
+    "newReleases": "Nowe wydawnictwa",
+    "newArtists": "Nowi artyści",
+    "reason": {
+      "debut": "Debiut · {when}",
+      "new": "Nowość · {when}",
+      "released": "Wydane {when}",
+      "firstRelease": "Pierwsze wydawnictwo {when} · {count, plural, one {# wydawnictwo} few {# wydawnictwa} many {# wydawnictw} other {# wydawnictwa}}"
+    }
+  },
+  "Feed": {
+    "title": "Odkrywaj",
+    "description": "Odkrywaj nową niezależną muzykę — po 30 sekund naraz, z powodem, dla którego każdy utwór tu jest.",
+    "card": "utwór",
+    "modeLabel": "Co odkrywać",
+    "modes": {
+      "for_you": "Dla Ciebie",
+      "global": "Świat",
+      "nearby": "W okolicy",
+      "new": "Nowe",
+      "rising": "Na fali"
+    },
+    "preferences": "Preferencje",
+    "start": "Stuknij, aby zacząć",
+    "tapToPlay": "Stuknij okładkę, aby odtworzyć.",
+    "playPreview": "Odtwórz fragment: {title}",
+    "pausePreview": "Wstrzymaj fragment: {title}",
+    "previewProgress": "Postęp fragmentu",
+    "previewUnavailable": "Fragment nie jest jeszcze dostępny.",
+    "previewError": "Nie udało się odtworzyć fragmentu. Spróbuj następnego utworu.",
+    "previewPlaying": "Gra fragment",
+    "listenPreview": "Posłuchaj fragmentu",
+    "position": "{index} z {count}: {title} — {artist}",
+    "explicit": "Treści dla dorosłych",
+    "verified": "Zweryfikowany artysta",
+    "fromRelease": "Z wydawnictwa {title}",
+    "chosenExcerpt": "fragment wybrany przez artystę",
+    "save": "Zapisz",
+    "saved": "Zapisane",
+    "saveLabel": "Zapisz: {title}",
+    "unsave": "Usuń z zapisanych: {title}",
+    "signInToSave": "Zaloguj się",
+    "share": "Udostępnij",
+    "shareLabel": "Udostępnij: {title}",
+    "shareLink": "Udostępnij link",
+    "copied": "Skopiowano link",
+    "copyPrompt": "Skopiuj link:",
+    "shareText": "{title} — {artist}. Znalazłem/am to na Tunewick",
+    "cardStory": "Karta do relacji (9:16)",
+    "cardSquare": "Karta kwadratowa",
+    "more": "Więcej: {title}",
+    "moreShort": "Więcej",
+    "discoverArtist": "Odkrywaj: {artist}",
+    "playFull": "Odtwórz cały utwór",
+    "fullUnavailable": "Cały utwór nie jest teraz dostępny.",
+    "next": "Następny utwór",
+    "loading": "Szukam kolejnej muzyki…",
+    "failed": "Nie udało się wczytać kolejnych utworów.",
+    "retry": "Spróbuj ponownie",
+    "end": "To na razie wszystko w trybie {mode}. Spróbuj innej drogi:",
+    "empty": "Nie ma tu jeszcze muzyki. Spróbuj innego trybu — albo wróć wkrótce, nowi artyści dołączają co tydzień.",
+    "reason": {
+      "followed_artist": "Obserwujesz: {artist}",
+      "artist_you_like": "Więcej od artysty, którego lubisz",
+      "genre_you_like": "Bo lubisz: {genre}",
+      "listeners_like_you": "Słuchacze o podobnym guście słuchają tego artysty",
+      "loved_by_listeners": "Słuchacze dosłuchują i zapisują ten utwór",
+      "near_you": "Z kraju: {country}",
+      "popular": "Teraz popularne na Tunewick",
+      "rising": "Na fali w tym tygodniu",
+      "new_release": "Nowe wydawnictwo",
+      "new_genre": "Coś nowego dla Ciebie: {genre}",
+      "new_country": "Coś nowego dla Ciebie: muzyka z kraju {country}",
+      "wildcard": "Niespodzianka — coś, czego nie znasz",
+      "shared": "Ktoś Ci to udostępnił",
+      "artist_spotlight": "Odkrywasz: {artist}"
+    },
+    "previewUnsupported": "Ta przeglądarka nie odtworzy fragmentu. Spróbuj innej przeglądarki albo „Odtwórz cały utwór”."
+  },
+  "Onboarding": {
+    "title": "Preferencje odkrywania",
+    "lead": "Tunewick pokazuje muzykę, zanim stanie się popularna. Powiedz nam trochę o sobie — albo pomiń i zacznij słuchać.",
+    "question": "Co chcesz odkrywać?",
+    "language": "Język",
+    "country": "Kraj",
+    "countryHint": "Opcjonalnie. Do trybu „W okolicy” i rankingu Twojego kraju — nigdy dokładna lokalizacja.",
+    "noCountry": "Wolę nie podawać",
+    "genres": "Kilka gatunków, które lubisz",
+    "genresHint": "Wybierz trzy lub więcej — albo żaden, a zaskoczymy Cię.",
+    "artists": "Artyści, którzy mogą Ci się spodobać",
+    "artistsHint": "Obserwuj kilku — feed zacznie od nich.",
+    "artistsEmpty": "Brak propozycji dla tych wyborów.",
+    "artistsSignIn": "Zaloguj się później, aby obserwować artystów i zachować swoje odkrycia.",
+    "mode": "Od czego zacząć",
+    "more": "Więcej opcji",
+    "exploration": "Niespodzianki: {value}% feedu",
+    "explorationHint": "Udział utworów spoza Twoich zwykłych gatunków i krajów.",
+    "hideExplicit": "Ukryj utwory dla dorosłych",
+    "rankings": "Pokazuj mnie w publicznych rankingach (wymaga nazwy profilu)",
+    "submit": "Zacznij odkrywać",
+    "skip": "Pomiń",
+    "failed": "Nie udało się zapisać. Spróbuj ponownie."
+  },
+  "Report": {
+    "open": "Zgłoś",
+    "title": "Zgłoś: {name}",
+    "why": "Co jest nie tak?",
+    "categories": {
+      "copyright": "Wykorzystuje moją twórczość bez zgody (prawa autorskie)",
+      "inappropriate": "Nieodpowiednie lub szkodliwe treści",
+      "spam": "Spam lub wprowadzanie w błąd",
+      "impersonation": "Podszywa się pod kogoś",
+      "other": "Coś innego"
+    },
+    "details": "Szczegóły (opcjonalnie)",
+    "submit": "Wyślij zgłoszenie",
+    "cancel": "Anuluj",
+    "close": "Zamknij",
+    "sent": "Dziękujemy. Moderatorzy się tym zajmą.",
+    "errors": {
+      "signIn": "Zaloguj się, aby zgłosić.",
+      "limit": "Wysłano dziś wiele zgłoszeń. Spróbuj jutro.",
+      "failed": "Nie udało się wysłać. Spróbuj ponownie.",
+      "invalid": "Wybierz powód."
+    }
+  },
+  "Song": {
+    "badge": "Utwór",
+    "metaDescription": "Posłuchaj fragmentu „{title}” — {artist} na Tunewick: niezależna muzyka, zanim stanie się popularna.",
+    "coverAlt": "Okładka: {title} — {artist}",
+    "discoverMore": "Odkrywaj więcej na Tunewick",
+    "fullRelease": "Całe wydawnictwo: {title}",
+    "pitch": "Do słuchania nie potrzebujesz konta. Tunewick pokazuje niezależną muzykę, zanim stanie się popularna.",
+    "cardTagline": "Odkryte na Tunewick",
+    "cardCta": "Co odkryjesz Ty?"
+  },
+  "You": {
+    "title": "Ty",
+    "signedOut": "Zaloguj się, aby zbierać punkty odkryć, utrzymywać serię, bić rekordy i pojawiać się w rankingach.",
+    "signIn": "Zaloguj się",
+    "score": "Discovery Score",
+    "level": "Poziom odkrywcy {level}",
+    "levels": {
+      "new_listener": "Nowy słuchacz",
+      "explorer": "Odkrywca",
+      "music_hunter": "Łowca muzyki",
+      "music_explorer": "Muzyczny odkrywca",
+      "discoverer": "Odkrywca dźwięków",
+      "trendsetter": "Trendsetter",
+      "music_scout": "Muzyczny zwiadowca",
+      "global_explorer": "Globalny odkrywca"
+    },
+    "toNextLevel": "Postęp do poziomu {level}",
+    "toNextLevelPoints": "{score} do poziomu {level}",
+    "points": "Punkty odkryć",
+    "today": "Dziś",
+    "diversity": "Różnorodność",
+    "streak": "{count, plural, one {# dzień serii odkryć} few {# dni serii odkryć} many {# dni serii odkryć} other {# dnia serii odkryć}}",
+    "streakNone": "Odkryj dziś nowy utwór, aby zacząć serię.",
+    "streakBest": "rekord: {count, plural, one {# dzień} other {# dni}}",
+    "goals": {
+      "title": "Cele",
+      "daily": "Dziś",
+      "weekly": "Ten tydzień",
+      "done": "zrobione",
+      "names": {
+        "daily_artists": "Odkryj {target} nowych artystów",
+        "daily_songs": "Posłuchaj {target} nowych utworów",
+        "weekly_countries": "Odkryj muzykę z {target} krajów",
+        "weekly_artists": "Odkryj {target} nowych artystów"
+      },
+      "hint": "Cele dopasowują się do Twojego tempa — rosną trochę, gdy odkrywasz więcej, i nigdy nie wymagają godzin słuchania."
+    },
+    "stats": {
+      "title": "Statystyki słuchania",
+      "period": "Okres",
+      "periods": {
+        "week": "Ten tydzień",
+        "month": "Ten miesiąc",
+        "all": "Od początku"
+      },
+      "labels": {
+        "listening": "Czas słuchania",
+        "plays": "Odtworzenia",
+        "songs": "Utwory",
+        "artists": "Artyści",
+        "releases": "Albumy i EP-ki",
+        "genres": "Gatunki",
+        "countries": "Kraje",
+        "newArtists": "Nowi artyści",
+        "newSongs": "Nowe odkrycia",
+        "saves": "Zapisane utwory",
+        "follows": "Obserwowani artyści",
+        "points": "Punkty"
+      },
+      "hint": "Fragmenty liczą się do czasu słuchania; odtworzenia to słuchanie w odtwarzaczu przez co najmniej 30 sekund."
+    },
+    "recap": {
+      "title": "Twój tydzień",
+      "empty": "Podsumowanie tygodnia pojawi się po tygodniu z odkryciami.",
+      "week": "Tydzień od {date}",
+      "streak": "Seria (dni)",
+      "biggest": "Największe odkrycie:",
+      "topGenre": "Najczęściej słuchany gatunek:",
+      "percentile": "Odkryłeś/aś więcej muzyki niż {percentile}% słuchaczy Tunewick.",
+      "shareStory": "Udostępnij (relacja 9:16)",
+      "shareSquare": "Udostępnij (kwadrat)"
+    },
+    "records": {
+      "title": "Twoje rekordy",
+      "mostSongsDay": "Najwięcej utworów odkrytych jednego dnia",
+      "mostArtistsWeek": "Najwięcej artystów odkrytych w tygodniu",
+      "longestStreak": "Najdłuższa seria odkryć",
+      "countries": "Odkryte kraje",
+      "longestSession": "Najdłuższa sesja słuchania",
+      "days": "{count, plural, one {# dzień} other {# dni}}"
+    },
+    "achievements": {
+      "title": "Osiągnięcia ({unlocked}/{total})",
+      "names": {
+        "first_discovery": "Pierwsze odkrycie",
+        "curious_ears": "Ciekawskie uszy",
+        "crate_digger": "Kopacz w skrzyniach",
+        "explorer": "Odkrywca",
+        "genre_hunter": "Łowca gatunków",
+        "deep_diver": "Głębokie nurkowanie",
+        "world_traveler": "Podróżnik",
+        "global_explorer": "Globalny odkrywca",
+        "on_a_roll": "Passa",
+        "unstoppable": "Nie do zatrzymania",
+        "collector": "Kolekcjoner",
+        "early_supporter": "Wczesny fan"
+      },
+      "metrics": {
+        "songs": "{count, plural, one {Odkryj pierwszy utwór} few {Odkryj # utwory} other {Odkryj # utworów}}",
+        "artists": "Odkryj {count} artystów",
+        "genres": "Odkryj {count} gatunków",
+        "countries": "Odkryj muzykę z {count} krajów",
+        "longest_streak": "Seria odkryć przez {count} dni",
+        "deep_genre": "{count}+ artystów z jednego gatunku",
+        "early_supporter": "Odkryj artystę z mniej niż 25 obserwującymi, który później przekroczy 100",
+        "saves": "Zapisz {count} utworów"
+      },
+      "unlocked": "Zdobyte {date}",
+      "locked": "Jeszcze nie"
+    },
+    "more": "Więcej",
+    "rankings": "Rankingi",
+    "preferences": "Preferencje odkrywania",
+    "saved": "Zapisane utwory",
+    "rules": {
+      "title": "Jak działają punkty",
+      "kinds": {
+        "new_song": "Nowy utwór (15 s lub cały fragment)",
+        "new_artist": "Nowy artysta",
+        "new_genre": "Nowy gatunek",
+        "new_country": "Nowy kraj",
+        "save": "Zapisanie utworu (raz na utwór)",
+        "full_listen": "Wysłuchanie nowego odkrycia w całości (raz dziennie)",
+        "share": "Udostępnienie utworu (raz dziennie na utwór)"
+      },
+      "fair": "Punkty nagradzają odkrywanie, nie godziny odtwarzania: powtórki, zapętlanie i szybkie pomijanie nic nie dają, a każdy rodzaj punktów ma dzienny limit."
+    },
+    "card": {
+      "heading": "MÓJ TYDZIEŃ NA TUNEWICK",
+      "listening": "słuchania",
+      "songs": "utworów",
+      "artists": "nowych artystów",
+      "countries": "krajów",
+      "question": "A co Ty odkryłeś/aś?"
+    },
+    "following": "Osoby, które obserwujesz",
+    "compareWith": "Porównaj"
+  },
+  "Rankings": {
+    "title": "Rankingi",
+    "lead": "Najlepsi odkrywcy — według punktów odkryć: nowe utwory, artyści, gatunki i kraje. Sam czas słuchania nigdy nie wygrywa.",
+    "period": "Okres",
+    "periods": {
+      "week": "Ten tydzień",
+      "month": "Ten miesiąc",
+      "all": "Od początku"
+    },
+    "scope": "Gdzie",
+    "global": "Cały świat",
+    "regions": {
+      "europe": "Europa",
+      "americas": "Ameryki",
+      "asia": "Azja",
+      "africa": "Afryka",
+      "oceania": "Oceania"
+    },
+    "country": "Kraj",
+    "show": "Pokaż",
+    "heading": "{scope} · {period}",
+    "you": "Ty: #{rank} z {participants} · {points} pkt",
+    "percentile": "więcej niż {percentile}% słuchaczy",
+    "notListed": "Nie jesteś widoczny/a publicznie — ustaw nazwę profilu.",
+    "notRanked": "W tym okresie nie masz jeszcze punktów — odkryj coś nowego.",
+    "signIn": "Zaloguj się, aby zobaczyć swoje miejsce.",
+    "empty": "W tym okresie nikogo tu jeszcze nie ma. Bądź pierwszy/a.",
+    "discoveries": "{count, plural, one {# odkrycie} few {# odkrycia} many {# odkryć} other {# odkrycia}}",
+    "points": "{points} pkt",
+    "fair": "Ranking tygodniowy zaczyna się od nowa w każdy poniedziałek (UTC). Widoczni: słuchacze z nazwą profilu, którzy nie wyłączyli rankingów."
+  },
+  "Notices": {
+    "points": "+{points}",
+    "dismiss": "Zamknij",
+    "parts": {
+      "new_song": "Nowy utwór",
+      "new_artist": "Nowy artysta",
+      "new_genre": "Nowy gatunek",
+      "new_country": "Nowy kraj",
+      "country": "Muzyka z kraju {country}",
+      "save": "Zapisane",
+      "full_listen": "Całe wysłuchane",
+      "share": "Udostępnione"
+    },
+    "goal": {
+      "daily_artists": "Cel dnia zrobiony: {target} nowych artystów!",
+      "daily_songs": "Cel dnia zrobiony: {target} nowych utworów!",
+      "weekly_countries": "Cel tygodnia zrobiony: {target} krajów!",
+      "weekly_artists": "Cel tygodnia zrobiony: {target} nowych artystów!"
+    },
+    "streak": "Seria odkryć: {days} dni z rzędu",
+    "roll": "Masz dobrą passę! {count} odkryć dzisiaj",
+    "achievement": "Nowe osiągnięcie: {name}"
+  },
+  "Compare": {
+    "title": "Ty vs {name}",
+    "private": "{name} nie udostępnia Ci aktywności słuchania. Każdy wybiera to w ustawieniach: wszyscy, tylko osoby, które obserwuje, albo nikt.",
+    "back": "Wróć do: {name}",
+    "period": "Okres",
+    "periods": {
+      "week": "Ostatnie 7 dni",
+      "month": "Ostatnie 30 dni",
+      "all": "Od początku"
+    },
+    "you": "Ty",
+    "rows": {
+      "songs": "Utwory",
+      "artists": "Artyści",
+      "newArtists": "Nowi artyści",
+      "countries": "Kraje",
+      "listening": "Słuchanie",
+      "points": "Punkty odkryć"
+    },
+    "hint": "Widoczne dzięki ustawieniom prywatności tej osoby; Twoje ustawienie decyduje, co ona widzi o Tobie."
   }
 }

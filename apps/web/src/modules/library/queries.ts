@@ -42,7 +42,7 @@ export async function getArtistFollow(artistId: string) {
  */
 export async function getLibrary() {
   const supabase = await createSupabaseServerClient();
-  const [tracks, releases, artists] = await Promise.all([
+  const [tracks, releases, artists, saved] = await Promise.all([
     supabase
       .from("track_likes")
       .select(
@@ -62,10 +62,18 @@ export async function getLibrary() {
       .select("created_at, artist:artists(id, slug, name, image_id, city, voivodeship)")
       .order("created_at", { ascending: false })
       .limit(200),
+    supabase
+      .from("track_saves")
+      .select(
+        "created_at, track:tracks(id, title, duration_ms, track_number, release:releases(id, slug, title, status, publish_at, artist:artists!releases_artist_id_fkey(id, slug, name)))",
+      )
+      .order("created_at", { ascending: false })
+      .limit(200),
   ]);
   if (tracks.error) throw tracks.error;
   if (releases.error) throw releases.error;
   if (artists.error) throw artists.error;
+  if (saved.error) throw saved.error;
 
   const now = Date.now();
   const isPublic = (r: { status: string; publish_at: string | null } | null) =>
@@ -74,12 +82,28 @@ export async function getLibrary() {
     r.publish_at !== null &&
     Date.parse(r.publish_at) <= now;
 
+  const publicTracks = <
+    T extends {
+      track: {
+        release: { status: string; publish_at: string | null; artist: unknown | null } | null;
+      } | null;
+    },
+  >(
+    rows: T[],
+  ) =>
+    rows.flatMap((row) => {
+      const track = row.track as NonNullable<T["track"]> & {
+        release: NonNullable<NonNullable<T["track"]>["release"]>;
+      };
+      return track && track.release && isPublic(track.release) && track.release.artist
+        ? [{ ...track, release: { ...track.release, artist: track.release.artist! } }]
+        : [];
+    });
+
   return {
-    tracks: tracks.data.flatMap((row) =>
-      row.track && row.track.release && isPublic(row.track.release) && row.track.release.artist
-        ? [{ ...row.track, release: { ...row.track.release, artist: row.track.release.artist } }]
-        : [],
-    ),
+    tracks: publicTracks(tracks.data),
+    /** "Saved from Discover", newest first. */
+    saved: publicTracks(saved.data),
     releases: releases.data.flatMap((row) =>
       row.release && isPublic(row.release) && row.release.artist
         ? [{ ...row.release, artist: row.release.artist }]

@@ -17,6 +17,7 @@ import {
   removeMember,
   requestVerification,
   updateArtist,
+  updateArtistReach,
 } from "../actions";
 import { type ArtistFormState, slugify } from "../validation";
 
@@ -123,6 +124,90 @@ export function ArtistInfoForm({
           { value: "", label: t("fields.voivodeshipNone") },
           ...VOIVODESHIPS.map((v) => ({ value: v, label: tPlaces(`voivodeship.${v}`) })),
         ]}
+      />
+      <Submit>{t("manage.save")}</Submit>
+    </form>
+  );
+}
+
+/** Where the artist is from and what they make — what the Discover feed and filters use. */
+export function ArtistReachForm({
+  artistId,
+  values,
+  countries,
+  genres,
+}: {
+  artistId: string;
+  values: {
+    country: string | null;
+    region: string | null;
+    languages: string[];
+    genres: number[];
+    links: string[];
+  };
+  countries: { code: string; name: string }[];
+  genres: { id: number; name: string }[];
+}) {
+  const t = useTranslations("Artists");
+  const err = useErrors();
+  const [state, action] = useActionState(updateArtistReach.bind(null, artistId), initial);
+  return (
+    <form action={action} className="form-stack">
+      <FormMessage error={err(state.error)} saved={state.saved ? t("manage.saved") : undefined} />
+      <SelectField
+        name="country"
+        label={t("fields.country")}
+        hint={t("hints.country")}
+        defaultValue={state.values?.country ?? values.country ?? ""}
+        error={err(state.fieldErrors?.country)}
+        options={[
+          { value: "", label: t("fields.countryNone") },
+          ...countries.map((c) => ({ value: c.code, label: c.name })),
+        ]}
+      />
+      <InputField
+        name="region"
+        label={t("fields.region")}
+        hint={t("hints.region")}
+        autoComplete="address-level1"
+        defaultValue={state.values?.region ?? values.region ?? ""}
+        error={err(state.fieldErrors?.region)}
+      />
+      <InputField
+        name="languages"
+        label={t("fields.languages")}
+        hint={t("hints.languages")}
+        autoCapitalize="none"
+        spellCheck={false}
+        defaultValue={state.values?.languages ?? values.languages.join(", ")}
+        error={err(state.fieldErrors?.languages)}
+      />
+      <fieldset className="field">
+        <legend className="field__label">{t("fields.genres")}</legend>
+        <p className="field__hint">{t("hints.genres")}</p>
+        <div className="chip-row">
+          {genres.map((g) => (
+            <label key={g.id} className="chip">
+              <input
+                type="checkbox"
+                name="genres"
+                value={g.id}
+                defaultChecked={values.genres.includes(g.id)}
+              />
+              <span>{g.name}</span>
+            </label>
+          ))}
+        </div>
+        {state.fieldErrors?.genres ? (
+          <p className="field__error">{err(state.fieldErrors.genres)}</p>
+        ) : null}
+      </fieldset>
+      <TextareaField
+        name="links"
+        label={t("fields.links")}
+        hint={t("hints.links")}
+        defaultValue={state.values?.links ?? values.links.join("\n")}
+        error={err(state.fieldErrors?.links)}
       />
       <Submit>{t("manage.save")}</Submit>
     </form>

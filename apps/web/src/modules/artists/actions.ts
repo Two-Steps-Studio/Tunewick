@@ -7,6 +7,8 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 import {
   artistDbError,
   type ArtistFormState,
+  artistReachSchema,
+  linkKind,
   createArtistSchema,
   inviteSchema,
   updateArtistSchema,
@@ -75,6 +77,59 @@ export async function updateArtist(
   if (error) return failure(error, values);
   // RLS silently filters rows the user may not edit.
   if (!data?.length) return { error: "forbidden", values };
+  revalidatePath("/", "layout");
+  return { saved: true };
+}
+
+export async function updateArtistReach(
+  artistId: string,
+  _prev: ArtistFormState,
+  formData: FormData,
+): Promise<ArtistFormState> {
+  const values = fields(formData, ["country", "region", "languages", "links"]);
+  const parsed = artistReachSchema.safeParse({
+    ...values,
+    genres: formData.getAll("genres").map(String),
+  });
+  if (!parsed.success) return { fieldErrors: firstErrors(parsed.error.issues), values };
+
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase
+    .from("artists")
+    .update({
+      country_code: parsed.data.country,
+      region: parsed.data.region,
+      languages: parsed.data.languages,
+      // A voivodeship belongs to Poland only (the database clears it for other countries).
+      ...(parsed.data.country && parsed.data.country !== "PL" ? { voivodeship: null } : {}),
+    })
+    .eq("id", artistId)
+    .select("id");
+  if (error) return failure(error, values);
+  if (!data?.length) return { error: "forbidden", values };
+
+  // Genres and links are replaced as a whole (RLS: owners and managers).
+  const genres = await supabase.from("artist_genres").delete().eq("artist_id", artistId);
+  if (genres.error) return failure(genres.error, values);
+  if (parsed.data.genres.length) {
+    const { error: insertError } = await supabase
+      .from("artist_genres")
+      .insert(parsed.data.genres.map((genre_id) => ({ artist_id: artistId, genre_id })));
+    if (insertError) return failure(insertError, values);
+  }
+  const links = await supabase.from("artist_links").delete().eq("artist_id", artistId);
+  if (links.error) return failure(links.error, values);
+  if (parsed.data.links.length) {
+    const { error: insertError } = await supabase.from("artist_links").insert(
+      parsed.data.links.map((url, position) => ({
+        artist_id: artistId,
+        url,
+        kind: linkKind(url),
+        position,
+      })),
+    );
+    if (insertError) return failure(insertError, values);
+  }
   revalidatePath("/", "layout");
   return { saved: true };
 }

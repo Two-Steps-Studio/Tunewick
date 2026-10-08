@@ -8,7 +8,7 @@ export async function getArtistBySlug(slug: string) {
   const { data, error } = await supabase
     .from("artists")
     .select(
-      "id, slug, name, bio, formed_year, verification_status, status, image_id, voivodeship, city",
+      "id, slug, name, bio, formed_year, verification_status, status, image_id, voivodeship, city, country_code, region, languages",
     )
     .eq("slug", slug.toLowerCase())
     .maybeSingle();
@@ -80,4 +80,34 @@ export async function isArtistMember(artistId: string) {
   const { data, error } = await supabase.rpc("is_artist_member", { artist: artistId });
   if (error) throw error;
   return data === true;
+}
+
+/** Genres (ids, names in both languages) and links of an artist — public data. */
+export async function getArtistReach(artistId: string) {
+  const supabase = await createSupabaseServerClient();
+  const [genres, links] = await Promise.all([
+    supabase
+      .from("artist_genres")
+      .select("genre:genres(id, slug, name_pl, name_en)")
+      .eq("artist_id", artistId),
+    supabase.from("artist_links").select("kind, url").eq("artist_id", artistId).order("position"),
+  ]);
+  if (genres.error) throw genres.error;
+  if (links.error) throw links.error;
+  return {
+    genres: genres.data.flatMap((row) => (row.genre ? [row.genre] : [])),
+    links: links.data,
+  };
+}
+
+/** Popular songs (real listener counts) and similar artists, for the public page. */
+export async function getArtistDiscovery(artistId: string) {
+  const supabase = await createSupabaseServerClient();
+  const [top, similar] = await Promise.all([
+    supabase.rpc("artist_top_tracks", { artist: artistId, max_results: 5 }),
+    supabase.rpc("similar_artists", { artist: artistId, max_results: 8 }),
+  ]);
+  if (top.error) throw top.error;
+  if (similar.error) throw similar.error;
+  return { topTracks: top.data ?? [], similar: similar.data ?? [] };
 }

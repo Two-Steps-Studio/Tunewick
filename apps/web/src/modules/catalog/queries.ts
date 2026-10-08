@@ -40,17 +40,18 @@ export async function getReleaseForEditing(artistSlug: string, releaseSlug: stri
     .maybeSingle();
   if (!release) return null;
 
-  const [tracks, genres, allGenres] = await Promise.all([
+  const [tracks, genres, allGenres, manager] = await Promise.all([
     supabase
       .from("tracks")
       .select(
-        "id, disc_number, track_number, title, isrc, explicit, ai_content, credits (id, name, role, detail)",
+        "id, disc_number, track_number, title, isrc, explicit, ai_content, duration_ms, soundcheck_start_ms, soundcheck_duration_ms, credits (id, name, role, detail)",
       )
       .eq("release_id", release.id)
       .order("disc_number")
       .order("track_number"),
     supabase.from("release_genres").select("genre_id").eq("release_id", release.id),
     supabase.from("genres").select("id, slug, name_pl, name_en").order("id"),
+    supabase.rpc("is_artist_member", { artist: artist.id, roles: ["owner", "manager"] }),
   ]);
   if (tracks.error) throw tracks.error;
 
@@ -58,6 +59,8 @@ export async function getReleaseForEditing(artistSlug: string, releaseSlug: stri
     artist,
     release,
     editable: release.status === "draft" || release.status === "rejected",
+    /** Owners and managers choose the Discover preview, also after publishing. */
+    canSetPreview: manager.data === true,
     tracks: tracks.data,
     genreIds: (genres.data ?? []).map((g) => g.genre_id),
     allGenres: allGenres.data ?? [],

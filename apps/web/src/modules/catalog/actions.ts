@@ -10,6 +10,7 @@ import {
   fieldErrors,
   genresSchema,
   newReleaseSchema,
+  previewSchema,
   releaseDbError,
   releaseDetailsSchema,
   type ReleaseFormState,
@@ -165,6 +166,31 @@ export async function updateTrack(
     .select("id");
   if (error) return { ...releaseDbError(error), values };
   if (!data?.length) return { error: "notEditable", values };
+  refresh();
+  return { saved: true };
+}
+
+/** The Discover preview of a track (owners and managers, any release status). */
+export async function setTrackPreview(
+  trackId: string,
+  durationMs: number | null,
+  _prev: ReleaseFormState,
+  formData: FormData,
+): Promise<ReleaseFormState> {
+  const values = read(formData, ["start", "length"]);
+  const parsed = previewSchema.safeParse({ ...values, durationMs });
+  if (!parsed.success) return { fieldErrors: fieldErrors(parsed.error.issues), values };
+  const supabase = await createSupabaseServerClient();
+  const { error } = await supabase.rpc("set_track_preview", {
+    track: trackId,
+    // null clears the choice (automatic preview); generated RPC types do not model nullable args.
+    start_ms: parsed.data.startMs as number,
+    length_ms: parsed.data.lengthMs as number,
+  });
+  if (error) {
+    if (error.code === "22023") return { fieldErrors: { start: "previewOutside" }, values };
+    return { ...releaseDbError(error), values };
+  }
   refresh();
   return { saved: true };
 }

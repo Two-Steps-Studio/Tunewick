@@ -13,9 +13,10 @@
   },
   "Nav": {
     "discover": "Discover",
-    "scene": "Scene",
+    "browse": "Browse",
     "search": "Search",
-    "library": "Library"
+    "library": "Library",
+    "you": "You"
   },
   "Player": {
     "region": "Player",
@@ -53,23 +54,6 @@
       "stream_error": "The audio stream was interrupted."
     }
   },
-  "Discover": {
-    "title": "Discover",
-    "lead": "Independent music, local scenes and gigs — with context, not an endless feed.",
-    "empty": "There is nothing to discover yet. The first artists — independent musicians from all over Poland — join in the closed beta.",
-    "leadPoland": "New music from small independent artists across Poland — newest first. No popularity algorithm: everything here says why it is shown.",
-    "regionLabel": "Region",
-    "allPoland": "All of Poland",
-    "emptyRegion": "No published music from {region} Voivodeship yet.",
-    "newReleases": "New releases",
-    "newArtists": "New artists",
-    "reason": {
-      "debut": "Debut · {when}",
-      "new": "New · {when}",
-      "released": "Released {when}",
-      "firstRelease": "First release {when} · {count, plural, one {# release} other {# releases}}"
-    }
-  },
   "Scene": {
     "title": "Scene",
     "lead": "Gigs, clubs and venues around you.",
@@ -77,7 +61,7 @@
   },
   "Search": {
     "title": "Search",
-    "lead": "Independent artists from all over Poland — type a name, a title or part of it. Polish characters are optional.",
+    "lead": "Independent artists from everywhere — type a name, a title or part of it. Accents are optional.",
     "empty": "Search goes live once there is music in the catalog.",
     "titleFor": "“{query}” — search",
     "label": "Search artists, releases and tracks",
@@ -122,6 +106,11 @@
       "clearConfirm": "Delete your whole listening history? This cannot be undone.",
       "clearYes": "Yes, clear it",
       "clearNo": "Cancel"
+    },
+    "saved": {
+      "title": "Saved from Discover",
+      "lead": "Songs you saved while discovering — come back to them any time.",
+      "play": "Play saved"
     }
   },
   "NotFound": {
@@ -221,7 +210,7 @@
     "hints": {
       "handle": "Lowercase letters, digits and hyphens, 2–40 characters. Profile address: tunewick.com/en/profile/name",
       "bio": "Up to 500 characters.",
-      "visibility": "Listening activity arrives together with social features. This setting applies from their launch."
+      "visibility": "Who may compare their discoveries with yours: everyone, only people you follow, or only you."
     },
     "locales": {
       "pl": "Polski",
@@ -229,7 +218,7 @@
     },
     "visibility": {
       "public": "Everyone",
-      "followers": "Followers",
+      "followers": "People I follow",
       "private": "Only me"
     },
     "submit": "Save changes",
@@ -247,7 +236,15 @@
   },
   "Profile": {
     "memberSince": "On Tunewick since {date}",
-    "empty": "This profile has no description yet."
+    "empty": "This profile has no description yet.",
+    "follow": "Follow: {name}",
+    "unfollow": "Unfollow: {name}",
+    "followShort": "Follow",
+    "following": "Following",
+    "failed": "Could not save. Please try again.",
+    "followers": "{count, plural, =0 {No followers yet} one {# follower} other {# followers}}",
+    "followingCount": "follows {count}",
+    "compare": "Compare your discoveries with {name}"
   },
   "Security": {
     "title": "Security",
@@ -301,13 +298,24 @@
       "note": "Message for moderators (optional)",
       "city": "City or town",
       "voivodeship": "Voivodeship (region)",
-      "voivodeshipNone": "— not given —"
+      "voivodeshipNone": "— not given —",
+      "country": "Country",
+      "countryNone": "— not given —",
+      "region": "Region or state",
+      "languages": "Languages you sing or speak in",
+      "genres": "Genres (up to 5)",
+      "links": "Links (one per line)"
     },
     "hints": {
       "slug": "Lowercase letters, digits and hyphens. Address: tunewick.com/en/artists/address",
       "evidence": "E.g. official website, Bandcamp, the band social media profile. Up to 5 links.",
       "handle": "The person needs an account with a profile name.",
-      "city": "Where you're from — e.g. Rzeszów, Gliwice, Suwałki. Helps listeners find music from their area."
+      "city": "Where you're from — e.g. Rzeszów, Gliwice, Suwałki. Helps listeners find music from their area.",
+      "country": "Listeners discover music by country.",
+      "region": "Optional, e.g. Bavaria, Catalonia, Texas. In Poland the voivodeship above is enough.",
+      "languages": "Language codes separated by commas, e.g. pl, en, es.",
+      "genres": "What your music is — the feed uses it to find your listeners.",
+      "links": "Website, Bandcamp, Instagram, TikTok, YouTube… https only, up to 10."
     },
     "roles": {
       "owner": "Owner",
@@ -325,7 +333,17 @@
       "manage": "Manage profile",
       "noBio": "This artist has not added a description yet.",
       "noReleases": "No published releases.",
-      "followers": "{count, plural, =0 {No followers yet} one {# follower} other {# followers}}"
+      "followers": "{count, plural, =0 {No followers yet} one {# follower} other {# followers}}",
+      "languages": "Sings in: {languages}",
+      "discover": "Discover this artist",
+      "popular": "Popular songs",
+      "listeners": "{count, plural, one {# listener} other {# listeners}} this month",
+      "newest": "Releases",
+      "links": "Links",
+      "similar": "Discover similar artists",
+      "similarListeners": "{count, plural, one {# shared follower} other {# shared followers}}",
+      "similarCountry": "Also from {country}",
+      "similarGenres": "Similar genres"
     },
     "manage": {
       "title": "Manage: {name}",
@@ -343,7 +361,8 @@
       "viewPublic": "View public profile",
       "you": "You",
       "noName": "Account without a profile name",
-      "photo": "Artist photo"
+      "photo": "Artist photo",
+      "reach": "Where you're from and what you make"
     },
     "errors": {
       "nameRequired": "Enter the artist name.",
@@ -361,7 +380,24 @@
       "forbidden": "You are not allowed to do this.",
       "unexpected": "Could not save. Please try again.",
       "voivodeshipInvalid": "Choose a voivodeship from the list.",
-      "cityTooLong": "A place name can have up to 80 characters."
+      "cityTooLong": "A place name can have up to 80 characters.",
+      "countryInvalid": "Choose a country from the list.",
+      "regionTooLong": "A region can have up to 80 characters.",
+      "languagesInvalid": "Use language codes such as pl, en, es (up to 8).",
+      "genresTooMany": "Choose up to 5 genres.",
+      "linksInvalid": "Every link must start with https:// (up to 10)."
+    },
+    "links": {
+      "website": "Website",
+      "instagram": "Instagram",
+      "tiktok": "TikTok",
+      "youtube": "YouTube",
+      "bandcamp": "Bandcamp",
+      "soundcloud": "SoundCloud",
+      "spotify": "Spotify",
+      "x": "X",
+      "facebook": "Facebook",
+      "other": "Link"
     }
   },
   "Releases": {
@@ -472,7 +508,9 @@
       "cmoNoneExclusive": "“No, nobody is a member” cannot be combined with an organization.",
       "samplesDescriptionRequired": "Describe the samples and permissions.",
       "aiRequired": "Declare AI involvement.",
-      "termsRequired": "Accept the terms to submit the declaration."
+      "termsRequired": "Accept the terms to submit the declaration.",
+      "previewTime": "Write the start as m:ss, e.g. 1:05.",
+      "previewOutside": "The preview must fit inside the song (15–30 s)."
     },
     "rights": {
       "title": "Rights to this release",
@@ -539,6 +577,15 @@
         "not_allowed": "You can't submit this release.",
         "failed": "Something went wrong. Please try again."
       }
+    },
+    "preview": {
+      "title": "Discover preview",
+      "chosen": "Listeners hear {length} s from {start} — chosen by you.",
+      "automatic": "Automatic: {length} s from {start}. Pick the moment that represents the song best.",
+      "start": "Start (m:ss)",
+      "startHint": "Leave empty for the automatic excerpt.",
+      "length": "Length",
+      "seconds": "{s} seconds"
     }
   },
   "Audio": {
@@ -650,7 +697,21 @@
         "failed": "Something went wrong. Please try again."
       }
     },
-    "cover": "Cover"
+    "cover": "Cover",
+    "reports": {
+      "title": "Reports ({count})",
+      "empty": "No open reports.",
+      "gone": "(no longer available)",
+      "subjects": {
+        "track": "Song",
+        "release": "Release",
+        "artist": "Artist",
+        "user": "User"
+      },
+      "actioned": "Action taken",
+      "dismissed": "Dismiss",
+      "hint": "Taking action (takedown, suspension) is done on the release or artist; this records the decision in the audit log."
+    }
   },
   "Images": {
     "uploading": "Uploading… {percent}%",
@@ -872,5 +933,362 @@
       "limit": "You already have 200 playlists — that is the maximum.",
       "failed": "Could not save. Please try again."
     }
+  },
+  "Browse": {
+    "title": "Browse",
+    "lead": "New music from small independent artists, newest first — by country, and by region in Poland. No popularity algorithm here: everything says why it is shown.",
+    "empty": "There is nothing here yet. The first independent artists join in the closed beta.",
+    "countryLabel": "Country",
+    "allCountries": "All countries",
+    "regionLabel": "Region",
+    "emptyRegion": "No published music from {region} Voivodeship yet.",
+    "emptyCountry": "No published music from {country} yet.",
+    "newReleases": "New releases",
+    "newArtists": "New artists",
+    "reason": {
+      "debut": "Debut · {when}",
+      "new": "New · {when}",
+      "released": "Released {when}",
+      "firstRelease": "First release {when} · {count, plural, one {# release} other {# releases}}"
+    }
+  },
+  "Feed": {
+    "title": "Discover",
+    "description": "Discover new independent music, one 30-second preview at a time — with the reason every song is here.",
+    "card": "song",
+    "modeLabel": "What to discover",
+    "modes": {
+      "for_you": "For You",
+      "global": "Global",
+      "nearby": "Nearby",
+      "new": "New",
+      "rising": "Rising"
+    },
+    "preferences": "Preferences",
+    "start": "Tap to start",
+    "tapToPlay": "Tap the cover to play.",
+    "playPreview": "Play preview: {title}",
+    "pausePreview": "Pause preview: {title}",
+    "previewProgress": "Preview progress",
+    "previewUnavailable": "No preview available yet.",
+    "previewError": "The preview could not be played. Try the next song.",
+    "previewPlaying": "Playing the preview",
+    "listenPreview": "Listen to a preview",
+    "position": "{index} of {count}: {title} by {artist}",
+    "explicit": "Explicit",
+    "verified": "Verified artist",
+    "fromRelease": "From {title}",
+    "chosenExcerpt": "excerpt chosen by the artist",
+    "save": "Save",
+    "saved": "Saved",
+    "saveLabel": "Save: {title}",
+    "unsave": "Remove from saved: {title}",
+    "signInToSave": "Sign in",
+    "share": "Share",
+    "shareLabel": "Share: {title}",
+    "shareLink": "Share link",
+    "copied": "Link copied",
+    "copyPrompt": "Copy the link:",
+    "shareText": "{title} by {artist} — I found it on Tunewick",
+    "cardStory": "Story card (9:16)",
+    "cardSquare": "Square card",
+    "more": "More: {title}",
+    "moreShort": "More",
+    "discoverArtist": "Discover {artist}",
+    "playFull": "Play full song",
+    "fullUnavailable": "The full song is not available right now.",
+    "next": "Next song",
+    "loading": "Finding more music…",
+    "failed": "Could not load more songs.",
+    "retry": "Try again",
+    "end": "That's everything in {mode} for now. Try another way in:",
+    "empty": "No music here yet. Try another mode — or come back soon, new artists join every week.",
+    "reason": {
+      "followed_artist": "You follow {artist}",
+      "artist_you_like": "More from an artist you like",
+      "genre_you_like": "Because you like {genre}",
+      "listeners_like_you": "Listeners with your taste play this artist",
+      "loved_by_listeners": "Listeners finish and save this one",
+      "near_you": "From {country}",
+      "popular": "Popular on Tunewick right now",
+      "rising": "Rising this week",
+      "new_release": "New release",
+      "new_genre": "Something new for you: {genre}",
+      "new_country": "Something new for you: music from {country}",
+      "wildcard": "A wildcard — something you haven't heard",
+      "shared": "Shared with you",
+      "artist_spotlight": "Discovering {artist}"
+    },
+    "previewUnsupported": "This browser can't play the preview. Try another browser or Play full song."
+  },
+  "Onboarding": {
+    "title": "Discovery preferences",
+    "lead": "Tunewick shows you music before it gets popular. Tell us a little — or skip and start listening.",
+    "question": "What do you want to discover?",
+    "language": "Language",
+    "country": "Country",
+    "countryHint": "Optional. Used for “Nearby” and your country's ranking — never your exact location.",
+    "noCountry": "Rather not say",
+    "genres": "A few genres you like",
+    "genresHint": "Pick three or more — or none, and we'll surprise you.",
+    "artists": "Artists you might like",
+    "artistsHint": "Follow a few — the feed starts from them.",
+    "artistsEmpty": "No suggestions yet for these choices.",
+    "artistsSignIn": "Sign in later to follow artists and keep your discoveries.",
+    "mode": "Where to start",
+    "more": "More options",
+    "exploration": "Surprises: {value}% of the feed",
+    "explorationHint": "The share of songs outside your usual genres and countries.",
+    "hideExplicit": "Hide explicit songs",
+    "rankings": "Show me in public rankings (needs a profile name)",
+    "submit": "Start discovering",
+    "skip": "Skip",
+    "failed": "Could not save. Please try again."
+  },
+  "Report": {
+    "open": "Report",
+    "title": "Report: {name}",
+    "why": "What is wrong?",
+    "categories": {
+      "copyright": "It uses my work without permission (copyright)",
+      "inappropriate": "Inappropriate or harmful content",
+      "spam": "Spam or misleading",
+      "impersonation": "Pretends to be someone else",
+      "other": "Something else"
+    },
+    "details": "Details (optional)",
+    "submit": "Send report",
+    "cancel": "Cancel",
+    "close": "Close",
+    "sent": "Thank you. Moderators will review it.",
+    "errors": {
+      "signIn": "Sign in to report.",
+      "limit": "You have sent many reports today. Please try again tomorrow.",
+      "failed": "Could not send. Please try again.",
+      "invalid": "Choose a reason."
+    }
+  },
+  "Song": {
+    "badge": "Song",
+    "metaDescription": "Listen to a preview of {title} by {artist} on Tunewick — independent music before it gets popular.",
+    "coverAlt": "Cover: {title} — {artist}",
+    "discoverMore": "Discover more on Tunewick",
+    "fullRelease": "Full release: {title}",
+    "pitch": "No account needed to listen. Tunewick shows independent music before it gets popular.",
+    "cardTagline": "Discovered on Tunewick",
+    "cardCta": "What will you discover?"
+  },
+  "You": {
+    "title": "You",
+    "signedOut": "Sign in to collect discovery points, keep a streak, set records and appear in rankings.",
+    "signIn": "Sign in",
+    "score": "Discovery Score",
+    "level": "Discovery Level {level}",
+    "levels": {
+      "new_listener": "New Listener",
+      "explorer": "Explorer",
+      "music_hunter": "Music Hunter",
+      "music_explorer": "Music Explorer",
+      "discoverer": "Discoverer",
+      "trendsetter": "Trendsetter",
+      "music_scout": "Music Scout",
+      "global_explorer": "Global Explorer"
+    },
+    "toNextLevel": "Progress to level {level}",
+    "toNextLevelPoints": "{score} to level {level}",
+    "points": "Discovery Points",
+    "today": "Today",
+    "diversity": "Diversity",
+    "streak": "{count, plural, one {# day discovery streak} other {# day discovery streak}}",
+    "streakNone": "Discover a new song today to start a streak.",
+    "streakBest": "best: {count, plural, one {# day} other {# days}}",
+    "goals": {
+      "title": "Goals",
+      "daily": "Today",
+      "weekly": "This week",
+      "done": "done",
+      "names": {
+        "daily_artists": "Discover {target} new artists",
+        "daily_songs": "Listen to {target} new songs",
+        "weekly_countries": "Discover music from {target} countries",
+        "weekly_artists": "Discover {target} new artists"
+      },
+      "hint": "Goals follow your own pace — they grow a little when you discover more, and never ask for hours of listening."
+    },
+    "stats": {
+      "title": "Listening stats",
+      "period": "Period",
+      "periods": {
+        "week": "This week",
+        "month": "This month",
+        "all": "All time"
+      },
+      "labels": {
+        "listening": "Listening time",
+        "plays": "Plays",
+        "songs": "Songs",
+        "artists": "Artists",
+        "releases": "Albums & EPs",
+        "genres": "Genres",
+        "countries": "Countries",
+        "newArtists": "New artists",
+        "newSongs": "New discoveries",
+        "saves": "Songs saved",
+        "follows": "Artists followed",
+        "points": "Points"
+      },
+      "hint": "Previews count as listening time; plays are full-player listens of at least 30 seconds."
+    },
+    "recap": {
+      "title": "Your week",
+      "empty": "Your weekly recap appears after a week with some discoveries.",
+      "week": "Week of {date}",
+      "streak": "Streak (days)",
+      "biggest": "Biggest discovery:",
+      "topGenre": "Most played genre:",
+      "percentile": "You discovered more music than {percentile}% of Tunewick listeners.",
+      "shareStory": "Share (story 9:16)",
+      "shareSquare": "Share (square)"
+    },
+    "records": {
+      "title": "Your records",
+      "mostSongsDay": "Most songs discovered in one day",
+      "mostArtistsWeek": "Most artists discovered in one week",
+      "longestStreak": "Longest discovery streak",
+      "countries": "Countries discovered",
+      "longestSession": "Longest listening session",
+      "days": "{count, plural, one {# day} other {# days}}"
+    },
+    "achievements": {
+      "title": "Achievements ({unlocked}/{total})",
+      "names": {
+        "first_discovery": "First Discovery",
+        "curious_ears": "Curious Ears",
+        "crate_digger": "Crate Digger",
+        "explorer": "Explorer",
+        "genre_hunter": "Genre Hunter",
+        "deep_diver": "Deep Diver",
+        "world_traveler": "World Traveler",
+        "global_explorer": "Global Explorer",
+        "on_a_roll": "On a Roll",
+        "unstoppable": "Unstoppable",
+        "collector": "Collector",
+        "early_supporter": "Early Supporter"
+      },
+      "metrics": {
+        "songs": "{count, plural, one {Discover your first song} other {Discover # songs}}",
+        "artists": "Discover {count} artists",
+        "genres": "Discover {count} genres",
+        "countries": "Discover music from {count} countries",
+        "longest_streak": "A {count}-day discovery streak",
+        "deep_genre": "{count}+ artists from one genre",
+        "early_supporter": "Discover an artist with under 25 followers who later passes 100",
+        "saves": "Save {count} songs"
+      },
+      "unlocked": "Unlocked {date}",
+      "locked": "Not yet"
+    },
+    "more": "More",
+    "rankings": "Rankings",
+    "preferences": "Discovery preferences",
+    "saved": "Saved songs",
+    "rules": {
+      "title": "How points work",
+      "kinds": {
+        "new_song": "New song (15 s or a whole preview)",
+        "new_artist": "New artist",
+        "new_genre": "New genre",
+        "new_country": "New country",
+        "save": "Saving a song (once per song)",
+        "full_listen": "Listening to a new discovery in full (once a day)",
+        "share": "Sharing a song (once a day per song)"
+      },
+      "fair": "Points reward discovering, not hours of playback: replays, loops and quick skips earn nothing, and every kind of point has a daily cap."
+    },
+    "card": {
+      "heading": "MY TUNEWICK WEEK",
+      "listening": "listening",
+      "songs": "songs",
+      "artists": "new artists",
+      "countries": "countries",
+      "question": "What did you discover?"
+    },
+    "following": "People you follow",
+    "compareWith": "Compare"
+  },
+  "Rankings": {
+    "title": "Rankings",
+    "lead": "Top discoverers — ranked by discovery points: new songs, artists, genres and countries. Listening time alone never wins.",
+    "period": "Period",
+    "periods": {
+      "week": "This week",
+      "month": "This month",
+      "all": "All time"
+    },
+    "scope": "Where",
+    "global": "Worldwide",
+    "regions": {
+      "europe": "Europe",
+      "americas": "Americas",
+      "asia": "Asia",
+      "africa": "Africa",
+      "oceania": "Oceania"
+    },
+    "country": "Country",
+    "show": "Show",
+    "heading": "{scope} · {period}",
+    "you": "You: #{rank} of {participants} · {points} points",
+    "percentile": "more than {percentile}% of listeners",
+    "notListed": "You are not shown publicly — set a profile name.",
+    "notRanked": "No points in this period yet — discover something new.",
+    "signIn": "Sign in to see your place.",
+    "empty": "Nobody here yet this period. Be the first.",
+    "discoveries": "{count, plural, one {# discovery} other {# discoveries}}",
+    "points": "{points} pts",
+    "fair": "Weekly rankings reset every Monday (UTC). Shown: listeners with a profile name who did not opt out."
+  },
+  "Notices": {
+    "points": "+{points}",
+    "dismiss": "Dismiss",
+    "parts": {
+      "new_song": "New song",
+      "new_artist": "New artist",
+      "new_genre": "New genre",
+      "new_country": "New country",
+      "country": "Music from {country}",
+      "save": "Saved",
+      "full_listen": "Full listen",
+      "share": "Shared"
+    },
+    "goal": {
+      "daily_artists": "Daily goal completed: {target} new artists!",
+      "daily_songs": "Daily goal completed: {target} new songs!",
+      "weekly_countries": "Weekly goal completed: {target} countries!",
+      "weekly_artists": "Weekly goal completed: {target} new artists!"
+    },
+    "streak": "{days} day discovery streak",
+    "roll": "You're on a roll! {count} discoveries today",
+    "achievement": "Achievement unlocked: {name}"
+  },
+  "Compare": {
+    "title": "You vs {name}",
+    "private": "{name} does not share listening activity with you. People choose this in their settings: everyone, only people they follow, or nobody.",
+    "back": "Back to {name}",
+    "period": "Period",
+    "periods": {
+      "week": "Last 7 days",
+      "month": "Last 30 days",
+      "all": "All time"
+    },
+    "you": "You",
+    "rows": {
+      "songs": "Songs",
+      "artists": "Artists",
+      "newArtists": "New artists",
+      "countries": "Countries",
+      "listening": "Listening",
+      "points": "Discovery points"
+    },
+    "hint": "Shown because of their privacy setting; your own setting decides what they see of you."
   }
 }

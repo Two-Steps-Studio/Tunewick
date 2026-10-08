@@ -3,7 +3,7 @@ import { getFormatter, getTranslations, setRequestLocale } from "next-intl/serve
 import { getPathname, Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { isAdmin, requireStaff } from "@/modules/auth";
-import { getSubmissions } from "@/modules/moderation";
+import { decideReport, getOpenReports, getSubmissions } from "@/modules/moderation";
 
 export const metadata: Metadata = { robots: { index: false } };
 
@@ -19,7 +19,12 @@ export default async function ModerationPage({ params }: PageProps<"/[locale]/mo
   const t = await getTranslations("Moderation");
   const tReleases = await getTranslations("Releases");
   const format = await getFormatter();
-  const [submissions, admin] = await Promise.all([getSubmissions(), isAdmin()]);
+  const [submissions, admin, reports] = await Promise.all([
+    getSubmissions(),
+    isAdmin(),
+    getOpenReports(),
+  ]);
+  const tReport = await getTranslations("Report");
   const tPromo = await getTranslations("PromoAdmin");
 
   return (
@@ -62,6 +67,63 @@ export default async function ModerationPage({ params }: PageProps<"/[locale]/mo
             ))}
           </ul>
         )}
+
+        <section aria-labelledby="reports" className="settings-form__group">
+          <h2 id="reports" className="section-title">
+            {t("reports.title", { count: reports.length })}
+          </h2>
+          {reports.length === 0 ? (
+            <p className="field__hint">{t("reports.empty")}</p>
+          ) : (
+            <ul className="artist-list">
+              {reports.map((r) => (
+                <li key={r.id} className="artist-list__item report-item">
+                  <span className="artist-list__name">
+                    {r.artistSlug && r.releaseSlug ? (
+                      <Link
+                        href={{
+                          pathname: "/artists/[slug]/releases/[release]",
+                          params: { slug: r.artistSlug, release: r.releaseSlug },
+                        }}
+                      >
+                        {r.label ?? t("reports.gone")}
+                      </Link>
+                    ) : r.artistSlug ? (
+                      <Link href={{ pathname: "/artists/[slug]", params: { slug: r.artistSlug } }}>
+                        {r.label ?? t("reports.gone")}
+                      </Link>
+                    ) : r.handle ? (
+                      <Link href={{ pathname: "/profile/[handle]", params: { handle: r.handle } }}>
+                        {r.label}
+                      </Link>
+                    ) : (
+                      (r.label ?? t("reports.gone"))
+                    )}
+                  </span>
+                  <span className="field__hint">
+                    {t(`reports.subjects.${r.subject_type as "track"}`)} ·{" "}
+                    {tReport(`categories.${r.category as "copyright"}`)} ·{" "}
+                    {format.dateTime(new Date(r.created_at), { dateStyle: "medium" })}
+                  </span>
+                  {r.details ? <p className="report-item__details">{r.details}</p> : null}
+                  <div className="decision-form__buttons">
+                    <form action={decideReport.bind(null, r.id, "actioned")}>
+                      <button type="submit" className="button button--primary">
+                        {t("reports.actioned")}
+                      </button>
+                    </form>
+                    <form action={decideReport.bind(null, r.id, "dismissed")}>
+                      <button type="submit" className="button">
+                        {t("reports.dismissed")}
+                      </button>
+                    </form>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+          <p className="field__hint">{t("reports.hint")}</p>
+        </section>
       </div>
     </section>
   );

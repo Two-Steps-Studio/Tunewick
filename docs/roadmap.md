@@ -31,6 +31,7 @@
 | **M9 Entitlements & promotions** | 15 | Plans/entitlements, Premium gating of tiers, promo redemption, admin campaigns/codes/batches | M1 (can run parallel to M4+) |
 | **M10 Admin & moderation** | 16 | Moderation queues, reports, takedowns, verification review, audit viewer, flags | M2 |
 | **M11 Performance & observability** | 17 | Sentry, telemetry, budgets, query review, caching | ongoing |
+| **M13 Discovery expansion** | – | International data model, Discover feed with previews, recommendation scoring, onboarding, sharing + cards, stats, Discovery Score/Points/levels, goals, streaks, records, achievements, rankings, reports — [discovery-expansion.md](discovery-expansion.md) | M5, M6 |
 | **M12 Closed beta readiness** | 18 | Security review/pentest, legal items closed, GDPR flows, seeding small independent artists and venues from across Poland, launch checklist | all |
 
 Payments & subscriptions (Phase 14) are **after** the closed beta (decision D3).
@@ -50,4 +51,5 @@ Payments & subscriptions (Phase 14) are **after** the closed beta (decision D3).
 | 2026-10-05 | Uploads: lossless masters only (WAV/AIFF/FLAC/ALAC); MP3/AAC/other lossy rejected (audio.md §2.1). |
 | 2026-10-05 | Logo: concept B "Split" (first A "Wick", changed by owner the same day; design-system.md §5). Logo accent coral; lime stays the UI action color. |
 | 2026-10-05 | Branch protection on `main` and service accounts (Vercel, Supabase EU, Cloudflare R2, Fly.io, Sentry EU) approved; set up by owner. |
+| 2026-10-07 | Tunewick goes international: countries/languages in the data model, Discover feed is the home screen, discovery progress ranks discovery points, never listening time (discovery-expansion.md §2). |
 | 2026-10-05 | Legal review approved: ZAiKS, copyright and related rights, music licensing, liability for artist uploads, terms of service, takedown/notice policy, GDPR. |

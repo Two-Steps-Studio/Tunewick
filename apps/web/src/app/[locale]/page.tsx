@@ -1,164 +1,62 @@
-import { VOIVODESHIPS } from "@tunewick/shared";
+import { randomInt } from "node:crypto";
 import type { Metadata } from "next";
-import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
-import { Link } from "@/i18n/navigation";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
-import { getDiscover, parseRegion } from "@/modules/discover";
-import { Artwork, getImageSourcesMany } from "@/modules/images";
-
-const NEW_FOR_DAYS = 14;
+import {
+  DiscoverFeed,
+  getCountryOptions,
+  getDiscoveryPreferences,
+  getFeedPage,
+  getGenres,
+  Onboarding,
+} from "@/modules/discover";
 
 export async function generateMetadata({ params }: PageProps<"/[locale]">): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale: locale as Locale, namespace: "Discover" });
-  return { title: t("title") };
+  const t = await getTranslations({ locale: locale as Locale, namespace: "Feed" });
+  return { title: t("title"), description: t("description") };
 }
 
+const CODE = /^[a-z2-9]{10}$/;
+const SLUG = /^[a-z0-9-]{2,60}$/;
+
 /**
- * Discover: new music from small independent artists across Poland. Ordered by release date
- * only — there is no listening data yet, so nothing pretends to be "popular" or "for you".
- * Every item says why it is here.
+ * Discover — the center of Tunewick: a feed of previews, one song at a time, each with the reason
+ * it is here. First visit: one short screen of choices (or skip) so the first feed already fits.
  */
 export default async function DiscoverPage({ params, searchParams }: PageProps<"/[locale]">) {
   const { locale } = await params;
   setRequestLocale(locale as Locale);
-  const t = await getTranslations("Discover");
-  const tPlaces = await getTranslations("Places");
-  const tReleases = await getTranslations("Releases");
-  const format = await getFormatter();
-  const region = parseRegion((await searchParams).woj);
-  const { releases, artists } = await getDiscover(region);
-  const images = await getImageSourcesMany(
-    [...releases.map((r) => r.artwork_image_id), ...artists.map((a) => a.image_id)],
-    320,
-  );
-  const now = new Date();
+  const query = await searchParams;
+  const start = typeof query.start === "string" && CODE.test(query.start) ? query.start : undefined;
+  const artist =
+    typeof query.artist === "string" && SLUG.test(query.artist) ? query.artist : undefined;
+  const { preferences, signedIn } = await getDiscoveryPreferences();
 
-  const place = (city: string | null, voivodeship: string | null) =>
-    [
-      city,
-      voivodeship
-        ? tPlaces("voivodeshipShort", { name: tPlaces(`voivodeship.${voivodeship as "slaskie"}`) })
-        : null,
-    ]
-      .filter(Boolean)
-      .join(" · ");
+  if (!preferences.onboarded && !start && !artist) {
+    const t = await getTranslations("Onboarding");
+    const tFeed = await getTranslations("Feed");
+    const [genres, countries] = await Promise.all([getGenres(locale), getCountryOptions(locale)]);
+    return (
+      <section className="welcome">
+        <h1 className="welcome__title">{tFeed("title")}</h1>
+        <p className="welcome__lead">{t("lead")}</p>
+        <h2 className="welcome__question">{t("question")}</h2>
+        <Onboarding
+          genres={genres}
+          countries={countries}
+          initial={preferences}
+          signedIn={signedIn}
+        />
+      </section>
+    );
+  }
 
-  const releaseReason = (publishAt: string, isDebut: boolean) => {
-    const date = new Date(publishAt);
-    const fresh = now.getTime() - date.getTime() < NEW_FOR_DAYS * 24 * 60 * 60 * 1000;
-    const when = format.relativeTime(date, now);
-    if (isDebut) return t("reason.debut", { when });
-    return fresh ? t("reason.new", { when }) : t("reason.released", { when });
-  };
-
-  return (
-    <section className="discover">
-      <header className="discover__head">
-        <h1 className="discover__title">{t("title")}</h1>
-        <p className="discover__lead">{t("leadPoland")}</p>
-      </header>
-
-      <nav aria-label={t("regionLabel")} className="region-filter">
-        <Link
-          href="/"
-          className="region-filter__chip"
-          aria-current={region === null ? "page" : undefined}
-        >
-          {t("allPoland")}
-        </Link>
-        {VOIVODESHIPS.map((v) => (
-          <Link
-            key={v}
-            href={{ pathname: "/", query: { woj: v } }}
-            className="region-filter__chip"
-            aria-current={region === v ? "page" : undefined}
-          >
-            {tPlaces(`voivodeship.${v}`)}
-          </Link>
-        ))}
-      </nav>
-
-      {releases.length === 0 && artists.length === 0 ? (
-        <p className="discover__empty" role="status">
-          {region ? t("emptyRegion", { region: tPlaces(`voivodeship.${region}`) }) : t("empty")}
-        </p>
-      ) : null}
-
-      {releases.length ? (
-        <section aria-labelledby="new-releases" className="discover__section">
-          <h2 id="new-releases" className="section-title">
-            {t("newReleases")}
-          </h2>
-          <ul className="release-grid">
-            {releases.map((r) => (
-              <li key={r.release_id} className="release-card">
-                <Link
-                  href={{
-                    pathname: "/artists/[slug]/releases/[release]",
-                    params: { slug: r.artist_slug, release: r.release_slug },
-                  }}
-                  className="release-card__link"
-                >
-                  <Artwork
-                    image={r.artwork_image_id ? (images.get(r.artwork_image_id) ?? null) : null}
-                    alt=""
-                    sizes="(min-width: 1024px) 14rem, 45vw"
-                  />
-                  <span className="release-card__title">{r.title}</span>
-                </Link>
-                <span className="release-card__artist">
-                  <Link href={{ pathname: "/artists/[slug]", params: { slug: r.artist_slug } }}>
-                    {r.artist_name}
-                  </Link>
-                  {` · ${tReleases(`types.${r.release_type}`)}`}
-                </span>
-                <span className="release-card__reason">
-                  {releaseReason(r.publish_at, r.is_debut)}
-                </span>
-                {r.city || r.voivodeship ? (
-                  <span className="release-card__place">{place(r.city, r.voivodeship)}</span>
-                ) : null}
-              </li>
-            ))}
-          </ul>
-        </section>
-      ) : null}
-
-      {artists.length ? (
-        <section aria-labelledby="new-artists" className="discover__section">
-          <h2 id="new-artists" className="section-title">
-            {t("newArtists")}
-          </h2>
-          <ul className="artist-grid">
-            {artists.map((a) => (
-              <li key={a.artist_id} className="artist-card">
-                <Link
-                  href={{ pathname: "/artists/[slug]", params: { slug: a.artist_slug } }}
-                  className="artist-card__link"
-                >
-                  <Artwork
-                    image={a.image_id ? (images.get(a.image_id) ?? null) : null}
-                    alt=""
-                    sizes="8rem"
-                    className="artwork--round"
-                  />
-                  <span className="artist-card__name">{a.name}</span>
-                </Link>
-                <span className="release-card__reason">
-                  {t("reason.firstRelease", {
-                    when: format.relativeTime(new Date(a.first_release_at), now),
-                    count: a.release_count,
-                  })}
-                </span>
-                {a.city || a.voivodeship ? (
-                  <span className="release-card__place">{place(a.city, a.voivodeship)}</span>
-                ) : null}
-              </li>
-            ))}
-          </ul>
-        </section>
-      ) : null}
-    </section>
-  );
+  const page = await getFeedPage({
+    seed: randomInt(2 ** 30),
+    startCode: start,
+    artistSlug: artist,
+    locale,
+  });
+  return <DiscoverFeed initial={page} />;
 }
