@@ -157,9 +157,11 @@ then run `node scripts/create-invites.mjs ...` in the same window.
 
 ## 6. Discovery expansion (M13)
 
-- Run `select private.prune_product_events();` daily (Supabase cron / scheduled function) — 180-day
-  retention of product analytics.
-- Keep `select private.create_listening_partition(...)` monthly as before (previews are listens too).
+- Scheduled by migration `20261008130000_discovery_stats_cache` through **pg_cron** (enable the
+  extension in the Supabase project if it is off, then re-run the `do` block of that migration):
+  feed aggregates refresh every 5 minutes (`private.refresh_discovery_stats()`), product events
+  older than 180 days are pruned daily, listening partitions are created 14 months ahead monthly.
+  Check: `select jobname, schedule from cron.job;`
 - Share cards and Open Graph images are rendered by the web app (`next/og`); covers are converted
   from WebP with `sharp` (an explicit dependency of `apps/web`).
 - Point values and caps: edit `discovery_point_rules` (admin) — no deploy needed.

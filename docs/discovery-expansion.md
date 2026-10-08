@@ -153,8 +153,8 @@ Known gaps / next:
 - Previews use AAC only (as the delivery tiers do); a browser without AAC shows "can't play the
   preview" — a FLAC/Opus preview variant would need a worker change.
 - Per-listener weight tuning (from discovery success) is P1.
-- `discover_candidates` aggregates 30 days of events per request — fine for the beta catalog; a
-  materialized view refreshed every few minutes is the step before public launch.
+- Done 2026-10-08: feed aggregates are materialized views refreshed every 5 minutes by pg_cron
+  (`private.track_stats`, `private.track_country_listeners`).
 
 ### Update 2026-10-08
 

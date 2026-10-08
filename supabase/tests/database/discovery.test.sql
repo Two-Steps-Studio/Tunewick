@@ -3,7 +3,7 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set search_path = public, extensions;
 
-select plan(55);
+select plan(58);
 
 insert into auth.users (id, email, raw_app_meta_data, aud, role)
 values
@@ -123,6 +123,18 @@ insert into track_saves (track_id) values ((select id from ids where name = 't2'
 select is((select sum(points)::int from discovery_points where kind = 'save'), 2, 'unsave + save again pays once');
 select is(record_share((select id from ids where name = 't1'), 'copy'), 3, 'sharing pays');
 select is(record_share((select id from ids where name = 't1'), 'copy'), 0, 'sharing the same song again today does not');
+
+-- The feed reads cached aggregates: zero until the scheduled refresh, real counts after it.
+set local role anon;
+set local request.jwt.claims = '{"role": "anon"}';
+select is((select listeners_30d from discover_candidates() where title = 'Jeden'), 0, 'candidates use the cache (not yet refreshed)');
+set local role postgres;
+select lives_ok($$select private.refresh_discovery_stats()$$, 'the cache refreshes without blocking readers');
+set local role anon;
+set local request.jwt.claims = '{"role": "anon"}';
+select is((select listeners_30d from discover_candidates() where title = 'Jeden'), 1, 'after the refresh the listener counts');
+set local role authenticated;
+set local request.jwt.claims = '{"sub": "00000000-0000-0000-0000-0000000000a2", "role": "authenticated"}';
 
 -- Caps: a rule at its daily cap still records the discovery, with 0 points.
 set local role postgres;
