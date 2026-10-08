@@ -3,7 +3,7 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set search_path = public, extensions;
 
-select plan(17);
+select plan(21);
 
 insert into auth.users (id, email, raw_app_meta_data, aud, role) values
   ('00000000-0000-0000-0000-0000000000d1', 'd1@test.local', '{"beta_bypass": "true"}', 'authenticated', 'authenticated'),
@@ -92,6 +92,19 @@ select is(
 select throws_ok(
   $$select finish_audio_upload((select id from ids where name = 'up1'), '{"status":"accepted"}', '[]')$$,
   '55000', null, 'a finished job cannot be finished again');
+
+-- Backfill of report v2: an older report is re-analysed from its best variant (FLAC first).
+update track_audio_uploads set report = report - 'version' where id = (select id from ids where name = 'up1');
+update track_audio_uploads set reanalysis_attempts = 3 where status = 'accepted' and id <> (select id from ids where name = 'up1');
+select is((select row(id = (select id from ids where name = 'up1'), object_key, codec)::text from claim_audio_reanalysis()),
+  '(t,tracks/x/lossless.flac,flac)', 'an accepted v1 report is claimed with its lossless variant');
+select is((select count(*)::int from claim_audio_reanalysis()), 0, 'a claimed one is not handed out twice');
+select ok(finish_audio_reanalysis((select id from ids where name = 'up1'),
+  '{"start_ms": 2000, "duration_ms": 10000, "method": "energy_novelty_v1"}', '[0, 50, 100]'),
+  'the new analysis is stored');
+select is((select row(best_moment_ms, report ->> 'version', report -> 'analysis' -> 'loudness' ->> 'integrated_lufs')::text
+  from track_audio_uploads where id = (select id from ids where name = 'up1')),
+  '(2000,2,-14.2)', 'merged into the report (v2), the rest of the analysis kept');
 
 -- A crash: back to the queue, then failed after the third attempt
 select is(fail_audio_upload((select id from ids where name = 'up2'))::text, 'uploaded',

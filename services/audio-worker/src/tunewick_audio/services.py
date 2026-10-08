@@ -11,6 +11,7 @@ from botocore.config import Config
 from .clips import ClipJob
 from .image_jobs import ImageJob
 from .jobs import Job
+from .reanalysis import ReanalysisJob
 from .sweep import Deletion
 
 
@@ -90,6 +91,19 @@ class SupabaseQueue:
 
     def fail_clip(self, clip_id: str) -> str:
         return self._call("fail_share_clip", {"clip": clip_id})
+
+    def claim_reanalysis(self) -> ReanalysisJob | None:
+        rows = self._call("claim_audio_reanalysis", {})
+        if not rows:
+            return None
+        row = rows[0]
+        return ReanalysisJob(row["id"], row["object_key"], row["codec"])
+
+    def finish_reanalysis(self, upload_id: str, best_moment: dict, waveform: list[int]) -> bool:
+        return self._call(
+            "finish_audio_reanalysis",
+            {"upload": upload_id, "best_moment": best_moment, "waveform": waveform},
+        )
 
     def claim_deletions(self, limit: int) -> list[Deletion]:
         rows = self._call("claim_storage_deletions", {"max_results": limit})

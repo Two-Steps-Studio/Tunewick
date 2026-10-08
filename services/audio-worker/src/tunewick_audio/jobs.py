@@ -133,9 +133,10 @@ def run_once(queue: Queue, storage: Storage) -> bool:
 
 
 def run_forever(queue: Queue, storage: Storage, poll_seconds: float) -> None:
-    """Audio, images, share clips, then the storage sweep; sleeps only when all are idle."""
+    """Audio, images, share clips, the storage sweep, then backfills; sleeps when all are idle."""
     from .clips import run_clip_once
     from .image_jobs import run_image_once
+    from .reanalysis import run_reanalysis_once
     from .sweep import run_sweep_once
 
     log.info(json.dumps({"event": "worker_started", "poll_seconds": poll_seconds}))
@@ -147,5 +148,11 @@ def run_forever(queue: Queue, storage: Storage, poll_seconds: float) -> None:
             except Exception:
                 # Queue unreachable (network, Supabase restart): wait and try again.
                 log.exception(json.dumps({"event": "queue_error", "step": step.__name__}))
+        if not busy:
+            # Backfills only when nothing new is waiting.
+            try:
+                busy = run_reanalysis_once(queue, storage)  # type: ignore[arg-type]
+            except Exception:
+                log.exception(json.dumps({"event": "queue_error", "step": "run_reanalysis_once"}))
         if not busy:
             time.sleep(poll_seconds)
