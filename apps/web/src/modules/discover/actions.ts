@@ -30,15 +30,26 @@ export async function setFeedReaction(kind: "like" | "follow", id: string, on: b
   return { ok: true as const, on };
 }
 
-/** Save to (or remove from) the listener's crate. Returns the state the database now has. */
+/**
+ * Save to (or remove from) the listener's crate. Returns the state the database now has and the
+ * points the save earned (0 when the song was saved before — saving pays once per song).
+ */
 export async function setTrackSaved(trackId: string, on: boolean) {
-  if (!z.uuid().safeParse(trackId).success) return { ok: false as const, on: !on };
+  if (!z.uuid().safeParse(trackId).success) return { ok: false as const, on: !on, points: 0 };
   const supabase = await createSupabaseServerClient();
   const { error } = on
     ? await supabase.from("track_saves").insert({ track_id: trackId })
     : await supabase.from("track_saves").delete().eq("track_id", trackId);
-  if (error && error.code !== "23505") return { ok: false as const, on: !on };
-  return { ok: true as const, on };
+  if (error && error.code !== "23505") return { ok: false as const, on: !on, points: 0 };
+  if (!on || error) return { ok: true as const, on, points: 0 };
+  const { data } = await supabase
+    .from("discovery_points")
+    .select("points, created_at")
+    .eq("kind", "save")
+    .eq("award_key", trackId)
+    .maybeSingle();
+  const fresh = data && Date.now() - Date.parse(data.created_at) < 60_000;
+  return { ok: true as const, on, points: fresh ? data.points : 0 };
 }
 
 const preferencesSchema = z.object({

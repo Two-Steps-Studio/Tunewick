@@ -37,6 +37,7 @@ export interface Taste {
   genres: ReadonlyMap<number, number>;
   artists: ReadonlyMap<string, number>;
   countries: ReadonlyMap<string, number>;
+  /** Artists of listeners with a similar ear (shared follows and shared listening), by people. */
   coFollowed: ReadonlyMap<string, number>;
   followed: ReadonlySet<string>;
   heard: ReadonlySet<string>;

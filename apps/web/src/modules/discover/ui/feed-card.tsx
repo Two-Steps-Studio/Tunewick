@@ -4,6 +4,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { useState, useTransition } from "react";
 import { Link } from "@/i18n/navigation";
 import { countryName, flagEmoji } from "@/lib/intl";
+import { reportPoints } from "@/modules/notices";
 import { getPlayer } from "@/modules/player";
 import { getFullPlayback, setFeedReaction, setTrackSaved } from "../actions";
 import type { PreviewState } from "../preview-player";
@@ -263,7 +264,11 @@ export function FeedCard({
               text={t("save")}
               activeText={t("saved")}
               failedText={tLibrary("failed")}
-              onToggle={(on) => setTrackSaved(item.trackId, on)}
+              onToggle={async (on) => {
+                const result = await setTrackSaved(item.trackId, on);
+                if (result.ok && result.on) reportPoints(result.points, "save");
+                return result;
+              }}
               onChanged={(on) => on && onEvent("song_saved")}
             />
           ) : null}

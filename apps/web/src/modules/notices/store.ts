@@ -143,7 +143,7 @@ export function reportAwards(result: ListenAwards | null) {
   if (discovery) void celebrate();
 }
 
-/** Points for a share (no listen involved). */
-export function reportSharePoints(points: number) {
-  if (points > 0) push({ kind: "award", points, parts: ["share"] });
+/** Points for an action that is not a listen (share, save). */
+export function reportPoints(points: number, part: "share" | "save") {
+  if (points > 0) push({ kind: "award", points, parts: [part] });
 }

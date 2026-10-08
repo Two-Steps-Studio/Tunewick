@@ -6,7 +6,7 @@ import { getPathname } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { songSegment } from "@/lib/intl";
 import { slugify } from "@/lib/slug";
-import { reportSharePoints } from "@/modules/notices";
+import { reportPoints } from "@/modules/notices";
 import { Icon } from "./icons";
 
 export interface Shareable {
@@ -35,7 +35,7 @@ async function recordShare(trackId: string, channel: "native" | "copy" | "card")
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ trackId, channel }),
     });
-    if (response.ok) reportSharePoints(((await response.json()) as { points: number }).points);
+    if (response.ok) reportPoints(((await response.json()) as { points: number }).points, "share");
   } catch {}
 }
 

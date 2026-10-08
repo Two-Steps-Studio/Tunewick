@@ -3,7 +3,7 @@ export {
   type ListenAwards,
   type Notice,
   reportAwards,
-  reportSharePoints,
+  reportPoints,
   useCurrentNotice,
 } from "./store";
 export { ProgressNotices } from "./ui/progress-notices";

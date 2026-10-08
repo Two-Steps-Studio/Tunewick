@@ -3,7 +3,7 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set search_path = public, extensions;
 
-select plan(54);
+select plan(55);
 
 insert into auth.users (id, email, raw_app_meta_data, aud, role)
 values
@@ -147,6 +147,17 @@ select ok((select (g ->> 'w')::numeric > 0 from jsonb_array_elements(my_taste() 
   where (g ->> 'id')::smallint = (select id from genres where slug = 'techno')), 'taste: genres from what was heard (artist genres as fallback)');
 select ok((select (a ->> 'w')::numeric >= 3 from jsonb_array_elements(my_taste() -> 'artists') a
   where (a ->> 'id')::uuid = (select id from ids where name = 'pl')), 'taste: saves and listens build artist affinity');
+set local role postgres;
+insert into listening_events (user_id, track_id, release_id, artist_id, started_at, ms_played, completed)
+select u.id, t.track, t.release, t.artist, now() - interval '1 hour', 60000, false
+from (values ('00000000-0000-0000-0000-0000000000a1'::uuid), ('00000000-0000-0000-0000-0000000000a3'::uuid)) u(id),
+  (values ((select id from ids where name = 't1'), (select id from ids where name = 'r_pl'), (select id from ids where name = 'pl')),
+          ((select id from ids where name = 't3'), (select id from ids where name = 'r_de'), (select id from ids where name = 'de'))) t(track, release, artist);
+set local role authenticated;
+set local request.jwt.claims = '{"sub": "00000000-0000-0000-0000-0000000000a2", "role": "authenticated"}';
+select is((select (c ->> 'n')::int from jsonb_array_elements(my_taste() -> 'co_listened') c
+  where (c ->> 'artist')::uuid = (select id from ids where name = 'de')), 2,
+  'taste: two listeners who play the same artist also play Entdeckung — a similar-listener signal');
 select is(jsonb_array_length(my_taste() -> 'heard'), 3, 'taste: discovered tracks are known, so the feed does not repeat them');
 select is((my_records() -> 'most_songs_day' ->> 'value')::int, 3, 'records: most songs discovered in a day');
 

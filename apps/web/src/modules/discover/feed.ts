@@ -25,6 +25,7 @@ interface TasteJson {
   genres: { id: number; w: number }[];
   countries: { code: string; w: number }[];
   co_followed: { artist: string; n: number }[];
+  co_listened: { artist: string; n: number }[];
   followed_artists: string[];
   heard: string[];
   recently_shown: string[];
@@ -65,7 +66,11 @@ async function loadTaste(
     artists: new Map(taste.artists.map((a) => [a.id, Number(a.w)])),
     genres: new Map(taste.genres.map((g) => [g.id, Number(g.w)])),
     countries: new Map(taste.countries.map((c) => [c.code, Number(c.w)])),
-    coFollowed: new Map(taste.co_followed.map((c) => [c.artist, c.n])),
+    // Similar listeners: shared follows and shared listening, people counted once per signal.
+    coFollowed: [...taste.co_followed, ...taste.co_listened].reduce(
+      (map, c) => map.set(c.artist, (map.get(c.artist) ?? 0) + c.n),
+      new Map<string, number>(),
+    ),
     followed: new Set(taste.followed_artists),
     heard: new Set(taste.heard),
     recentlyShown: new Set(taste.recently_shown),
