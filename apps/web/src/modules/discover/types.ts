@@ -1,4 +1,4 @@
-import type { DiscoveryMode, Reason } from "@tunewick/shared";
+import type { DiscoveryMode, Journey, Reason, WhyLine } from "@tunewick/shared";
 import type { ImageSources } from "@/modules/images";
 
 /** One card of the Discover feed — everything the client needs, nothing private. */
@@ -23,6 +23,8 @@ export interface FeedItem {
     sources: { tier: "data_saver" | "high"; url: string }[];
   };
   reason: Reason;
+  /** "Why this song?": message keys and real values (Why namespace). */
+  why: WhyLine[];
   exploration: boolean;
   /** Library state for a signed-in listener; null for visitors. */
   liked: boolean | null;
@@ -38,6 +40,9 @@ export interface FeedPage {
   done: boolean;
   /** The seed of this page; the client asks for the next pages with seed + n. */
   seed: number;
+  /** The lens the feed is in (Surprise Me journey, "similar to"), kept for the next pages. */
+  journey: Journey | null;
+  similar: string | null;
 }
 
 /** Listener preferences (database for accounts, a cookie for visitors). */

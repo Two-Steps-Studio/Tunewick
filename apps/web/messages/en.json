@@ -1338,7 +1338,10 @@
       "new_country": "Something new for you: music from {country}",
       "wildcard": "A wildcard — something you haven't heard",
       "shared": "Shared with you",
-      "artist_spotlight": "Discovering {artist}"
+      "artist_spotlight": "Discovering {artist}",
+      "daily_discovery": "Your Daily Discovery",
+      "similar_to": "Similar to {title}",
+      "weekly_drop": "Weekly Drop · {section, select, new {new releases} new_artists {new artists} underground {underground} trending {trending} outside {outside your usual} other {picks}}"
     },
     "previewUnsupported": "This browser can't play the preview. Try another browser or Play full song.",
     "browse": "Browse new releases",
@@ -1353,7 +1356,20 @@
       "signin": "Sign in to prepare a video.",
       "limit": "You have made many videos this hour — try again later."
     },
-    "charts": "Charts"
+    "charts": "Charts",
+    "why": "Why?",
+    "similar": "Similar to this",
+    "today": "Today",
+    "clearLens": "Back to your feed",
+    "similarLens": "Similar",
+    "journeys": {
+      "surprise": "Surprise me",
+      "something_new": "Something new",
+      "outside_taste": "Outside my taste",
+      "underground": "Underground",
+      "global": "Global",
+      "similar_to_me": "Similar to me"
+    }
   },
   "Onboarding": {
     "title": "Discovery preferences",
@@ -1518,7 +1534,9 @@
         "full_listen": "Listening to a new discovery in full (once a day)",
         "share": "Sharing a song (once a day per song)",
         "challenge": "A completed weekly challenge (once per challenge)",
-        "underground": "An artist with fewer than 10,000 listeners (once per artist)"
+        "underground": "An artist with fewer than 10,000 listeners (once per artist)",
+        "daily_complete": "Completing your Daily Discovery (once a day)",
+        "weekly_complete": "Completing your Weekly Drop (once a week)"
       },
       "fair": "Points reward discovering, not hours of playback: replays, loops and quick skips earn nothing, and every kind of point has a daily cap."
     },
@@ -1740,5 +1758,99 @@
     "errorTitle": "Something went wrong",
     "errorText": "This part of TuneWick could not load. Your data is safe — try again.",
     "retry": "Try again"
+  },
+  "Why": {
+    "title": "Why this song?",
+    "note": "From your listening on TuneWick and public listener counts — no guesswork, no AI.",
+    "followed_artist": "You follow {artist}.",
+    "artist_you_like": "You’ve been listening to {artist} — here’s more of their music.",
+    "genre_you_like": "You often discover {genre}, and this is {genre} you haven’t heard yet.",
+    "genre_you_like_plain": "It’s close to the genres you discover most.",
+    "listeners_like_you": "People with a taste like yours listen to {artist}.",
+    "loved_by_listeners": "{percent}% of people who start it hear it to the end.",
+    "loved_by_listeners_plain": "People who find it tend to finish it and save it.",
+    "near_you": "It’s from {country}, where you are.",
+    "popular": "{listeners, plural, one {# person} other {# people}} listened to it this month.",
+    "rising": "{more, plural, one {# more listener} other {# more listeners}} this week than last.",
+    "new_release": "{days, plural, =0 {Released today.} one {Released yesterday.} other {Released # days ago.}}",
+    "new_genre": "{genre} is new for you — a step outside your usual.",
+    "new_country": "Music from {country} — a country you haven’t discovered yet.",
+    "shared": "Someone shared this song with you.",
+    "artist_spotlight": "You asked to discover {artist}.",
+    "daily_discovery": "It’s in your Daily Discovery — picked for you today.",
+    "weekly_drop": "It’s in your Weekly Drop: {section, select, new {new releases} new_artists {new artists} underground {underground} trending {trending} outside {outside your usual} other {this week’s picks}}.",
+    "similar_to": "It’s like “{title}”: same genres, or artists connected to it.",
+    "wildcard": "A wildcard — something different to keep your feed fresh.",
+    "first": "Hardly anyone has heard it yet — you could be one of the first.",
+    "small": "Only {listeners, plural, one {# listener} other {# listeners}} this month — a small artist worth finding.",
+    "growing": "Growing fast: {more, plural, one {# more listener} other {# more listeners}} this week."
+  },
+  "Today": {
+    "title": "Today",
+    "lead": "What will you discover today? Ten new songs picked for you, a weekly drop, and journeys when you want to be surprised.",
+    "loading": "Picking today’s music…",
+    "signedOut": "Sign in to get your Daily Discovery and Weekly Drop — they’re picked from what you’ve discovered so far. Surprise Me works without an account.",
+    "signIn": "Sign in",
+    "noDaily": "No new music to pick from right now — try a journey below or come back later.",
+    "progressLabel": "Discovered songs",
+    "progress": "{progress} of {target} discovered · +{xp} XP when done",
+    "completed": "Done — +{xp} XP. New picks tomorrow.",
+    "start": "Start",
+    "continue": "Continue",
+    "heard": "Discovered",
+    "daily": {
+      "kicker": "Daily Discovery",
+      "title": "Ten new songs for today",
+      "lead": "Picked from your listening, with a few steps outside it. Discover {target} to complete it."
+    },
+    "weekly": {
+      "kicker": "Weekly Drop",
+      "title": "This week’s drop",
+      "lead": "New releases, new artists, underground, what’s rising, and something outside your usual. Discover {target} to complete it."
+    },
+    "sections": {
+      "new": "New releases",
+      "new_artists": "New artists for you",
+      "underground": "Underground",
+      "trending": "Rising now",
+      "outside": "Outside your usual"
+    },
+    "surprise": {
+      "title": "Surprise me",
+      "lead": "Pick a direction — the feed starts right away."
+    },
+    "journeys": {
+      "surprise": {
+        "name": "Surprise me",
+        "text": "Anything good, wide open."
+      },
+      "something_new": {
+        "name": "Something new",
+        "text": "Fresh releases from artists you don’t know."
+      },
+      "outside_taste": {
+        "name": "Outside my taste",
+        "text": "Genres you’ve never chosen."
+      },
+      "underground": {
+        "name": "Underground",
+        "text": "Artists with under 10,000 listeners."
+      },
+      "global": {
+        "name": "Global",
+        "text": "Music from other countries."
+      },
+      "similar_to_me": {
+        "name": "Similar to me",
+        "text": "What people like you are discovering."
+      }
+    },
+    "moreLabel": "More to explore",
+    "more": {
+      "rising": "Rising this week →",
+      "underground": "Underground chart →",
+      "world": "Discover the world →",
+      "fresh": "Released in the last 24 hours →"
+    }
   }
 }

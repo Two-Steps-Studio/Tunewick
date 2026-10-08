@@ -95,7 +95,7 @@ test("a first visit asks what to discover; skipping opens the feed", async ({ pa
   await page.getByText("Rock", { exact: true }).click();
   await page.getByRole("button", { name: "Zacznij odkrywać" }).click();
   await expect(page.getByRole("navigation", { name: "Co odkrywać" })).toBeVisible();
-  await expect(page.getByRole("button", { name: "Dla Ciebie" })).toHaveAttribute(
+  await expect(page.getByRole("button", { name: "Dla Ciebie", exact: true })).toHaveAttribute(
     "aria-pressed",
     "true",
   );

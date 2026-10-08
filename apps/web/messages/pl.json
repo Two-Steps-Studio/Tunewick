@@ -1338,7 +1338,10 @@
       "new_country": "Coś nowego dla Ciebie: muzyka z kraju {country}",
       "wildcard": "Niespodzianka — coś, czego nie znasz",
       "shared": "Ktoś Ci to udostępnił",
-      "artist_spotlight": "Odkrywasz: {artist}"
+      "artist_spotlight": "Odkrywasz: {artist}",
+      "daily_discovery": "Twoje Daily Discovery",
+      "similar_to": "Podobne do: {title}",
+      "weekly_drop": "Weekly Drop · {section, select, new {nowe wydania} new_artists {nowi artyści} underground {underground} trending {na fali} outside {poza gustem} other {wybór}}"
     },
     "previewUnsupported": "Ta przeglądarka nie odtworzy fragmentu. Spróbuj innej przeglądarki albo „Odtwórz cały utwór”.",
     "browse": "Przeglądaj nowości",
@@ -1353,7 +1356,20 @@
       "signin": "Zaloguj się, żeby przygotować wideo.",
       "limit": "W tej godzinie powstało już sporo Twoich filmów — spróbuj później."
     },
-    "charts": "Listy"
+    "charts": "Listy",
+    "why": "Dlaczego?",
+    "similar": "Podobne do tego",
+    "today": "Dziś",
+    "clearLens": "Wróć do swojego feedu",
+    "similarLens": "Podobne",
+    "journeys": {
+      "surprise": "Zaskocz mnie",
+      "something_new": "Coś nowego",
+      "outside_taste": "Poza moim gustem",
+      "underground": "Underground",
+      "global": "Świat",
+      "similar_to_me": "Podobni do mnie"
+    }
   },
   "Onboarding": {
     "title": "Preferencje odkrywania",
@@ -1518,7 +1534,9 @@
         "full_listen": "Wysłuchanie nowego odkrycia w całości (raz dziennie)",
         "share": "Udostępnienie utworu (raz dziennie na utwór)",
         "challenge": "Ukończone wyzwanie tygodnia (raz na wyzwanie)",
-        "underground": "Artysta z mniej niż 10 000 słuchaczy (raz na artystę)"
+        "underground": "Artysta z mniej niż 10 000 słuchaczy (raz na artystę)",
+        "daily_complete": "Ukończone Daily Discovery (raz dziennie)",
+        "weekly_complete": "Ukończony Weekly Drop (raz w tygodniu)"
       },
       "fair": "Punkty nagradzają odkrywanie, nie godziny odtwarzania: powtórki, zapętlanie i szybkie pomijanie nic nie dają, a każdy rodzaj punktów ma dzienny limit."
     },
@@ -1740,5 +1758,99 @@
     "errorTitle": "Coś poszło nie tak",
     "errorText": "Ta część TuneWick się nie wczytała. Twoje dane są bezpieczne — spróbuj ponownie.",
     "retry": "Spróbuj ponownie"
+  },
+  "Why": {
+    "title": "Dlaczego ten utwór?",
+    "note": "Na podstawie Twojego słuchania w TuneWick i publicznej liczby słuchaczy — bez zgadywania i bez AI.",
+    "followed_artist": "Obserwujesz: {artist}.",
+    "artist_you_like": "Słuchasz ostatnio: {artist} — oto więcej tej muzyki.",
+    "genre_you_like": "Często odkrywasz {genre}, a tego utworu z tego gatunku jeszcze nie znasz.",
+    "genre_you_like_plain": "Jest blisko gatunków, które odkrywasz najczęściej.",
+    "listeners_like_you": "Osoby o podobnym guście słuchają: {artist}.",
+    "loved_by_listeners": "{percent}% osób, które go zaczynają, słucha do końca.",
+    "loved_by_listeners_plain": "Kto go znajdzie, zwykle słucha do końca i zapisuje.",
+    "near_you": "Pochodzi z kraju: {country} — tam, gdzie jesteś.",
+    "popular": "{listeners, plural, one {# osoba słuchała} few {# osoby słuchały} many {# osób słuchało} other {# osoby słuchało}} go w tym miesiącu.",
+    "rising": "{more, plural, one {# słuchacz więcej} few {# słuchaczy więcej} many {# słuchaczy więcej} other {# słuchacza więcej}} niż w zeszłym tygodniu.",
+    "new_release": "{days, plural, =0 {Wydany dzisiaj.} one {Wydany wczoraj.} few {Wydany # dni temu.} many {Wydany # dni temu.} other {Wydany # dnia temu.}}",
+    "new_genre": "{genre} to dla Ciebie coś nowego — krok poza to, czego zwykle słuchasz.",
+    "new_country": "Muzyka z kraju: {country} — stamtąd nie masz jeszcze żadnego odkrycia.",
+    "shared": "Ktoś Ci udostępnił ten utwór.",
+    "artist_spotlight": "Chcesz odkryć: {artist}.",
+    "daily_discovery": "Jest w Twoim Daily Discovery — wybrany dla Ciebie na dziś.",
+    "weekly_drop": "Jest w Twoim Weekly Drop: {section, select, new {nowe wydania} new_artists {nowi artyści} underground {underground} trending {na fali} outside {poza Twoim gustem} other {wybór tygodnia}}.",
+    "similar_to": "Jest podobny do „{title}”: te same gatunki albo powiązani artyści.",
+    "wildcard": "Niespodzianka — coś innego, żeby feed nie był przewidywalny.",
+    "first": "Prawie nikt go jeszcze nie słyszał — możesz być jedną z pierwszych osób.",
+    "small": "Tylko {listeners, plural, one {# słuchacz} few {# słuchaczy} many {# słuchaczy} other {# słuchacza}} w tym miesiącu — mały artysta, którego warto znaleźć.",
+    "growing": "Szybko rośnie: {more, plural, one {# słuchacz więcej} few {# słuchaczy więcej} many {# słuchaczy więcej} other {# słuchacza więcej}} w tym tygodniu."
+  },
+  "Today": {
+    "title": "Dziś",
+    "lead": "Co dziś odkryjesz? Dziesięć nowych utworów wybranych dla Ciebie, cotygodniowy drop i podróże, gdy chcesz dać się zaskoczyć.",
+    "loading": "Wybieramy dzisiejszą muzykę…",
+    "signedOut": "Zaloguj się, żeby dostawać Daily Discovery i Weekly Drop — wybieramy je na podstawie Twoich dotychczasowych odkryć. Surprise Me działa bez konta.",
+    "signIn": "Zaloguj się",
+    "noDaily": "Teraz nie ma z czego wybrać nowej muzyki — spróbuj podróży poniżej albo wróć później.",
+    "progressLabel": "Odkryte utwory",
+    "progress": "Odkryte: {progress} z {target} · +{xp} XP po ukończeniu",
+    "completed": "Gotowe — +{xp} XP. Nowy wybór jutro.",
+    "start": "Zaczynamy",
+    "continue": "Kontynuuj",
+    "heard": "Odkryty",
+    "daily": {
+      "kicker": "Daily Discovery",
+      "title": "Dziesięć nowych utworów na dziś",
+      "lead": "Wybrane na podstawie tego, czego słuchasz, z kilkoma krokami w bok. Odkryj {target}, żeby ukończyć."
+    },
+    "weekly": {
+      "kicker": "Weekly Drop",
+      "title": "Drop tego tygodnia",
+      "lead": "Nowe wydania, nowi artyści, underground, to, co zyskuje, i coś spoza Twojego gustu. Odkryj {target}, żeby ukończyć."
+    },
+    "sections": {
+      "new": "Nowe wydania",
+      "new_artists": "Nowi artyści dla Ciebie",
+      "underground": "Underground",
+      "trending": "Na fali",
+      "outside": "Poza Twoim gustem"
+    },
+    "surprise": {
+      "title": "Zaskocz mnie",
+      "lead": "Wybierz kierunek — feed rusza od razu."
+    },
+    "journeys": {
+      "surprise": {
+        "name": "Zaskocz mnie",
+        "text": "Cokolwiek dobrego, szeroko."
+      },
+      "something_new": {
+        "name": "Coś nowego",
+        "text": "Świeże wydania artystów, których nie znasz."
+      },
+      "outside_taste": {
+        "name": "Poza moim gustem",
+        "text": "Gatunki, których nigdy nie wybierasz."
+      },
+      "underground": {
+        "name": "Underground",
+        "text": "Artyści z mniej niż 10 000 słuchaczy."
+      },
+      "global": {
+        "name": "Świat",
+        "text": "Muzyka z innych krajów."
+      },
+      "similar_to_me": {
+        "name": "Podobni do mnie",
+        "text": "Co odkrywają osoby o podobnym guście."
+      }
+    },
+    "moreLabel": "Więcej do odkrycia",
+    "more": {
+      "rising": "Zyskujące w tym tygodniu →",
+      "underground": "Lista underground →",
+      "world": "Odkryj świat →",
+      "fresh": "Wydane w ostatnich 24 godzinach →"
+    }
   }
 }

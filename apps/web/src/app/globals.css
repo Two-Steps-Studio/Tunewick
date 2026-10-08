@@ -3186,3 +3186,268 @@ body {
     }
   }
 }
+
+@layer components {
+  /* Today, journeys, sets, Why (M14.3) ----------------------------------------- */
+  .feed-modes__chip--link + .feed-modes__chip--link {
+    margin-left: 0;
+  }
+  .feed-modes__chip--today {
+    background: var(--tk-lime);
+    color: var(--tk-graphite);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+  }
+  .feed-modes__chip--lens {
+    background: var(--tk-purple);
+    color: var(--tk-ivory);
+  }
+  .feed-card__reason {
+    border: 0;
+    background: transparent;
+    padding: 0;
+    cursor: pointer;
+    text-align: left;
+  }
+  .feed-card__why-hint {
+    margin-left: var(--tk-space-1);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    color: var(--tk-n-300);
+  }
+  .why-panel {
+    align-self: start;
+    display: grid;
+    gap: var(--tk-space-2);
+    padding: var(--tk-space-3) var(--tk-space-4);
+    background: rgb(23 21 21 / 0.86);
+    border-left: 3px solid var(--tk-coral);
+    color: var(--tk-ivory);
+    font-size: var(--tk-text-sm);
+    animation: menu-in var(--tk-dur-fast) var(--tk-ease-out);
+  }
+  .why-panel__title {
+    font-family: var(--tk-font-mono);
+    font-size: var(--tk-text-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--tk-lime);
+  }
+  .why-panel__lines {
+    display: grid;
+    gap: var(--tk-space-1);
+    margin: 0;
+    padding-left: var(--tk-space-4);
+  }
+  .why-panel__note {
+    font-size: var(--tk-text-xs);
+    color: var(--tk-n-300);
+  }
+
+  .today {
+    display: grid;
+    gap: var(--tk-space-8);
+    max-width: 52rem;
+  }
+  .today__head {
+    display: grid;
+    gap: var(--tk-space-2);
+  }
+  .today__date {
+    font-family: var(--tk-font-mono);
+    font-size: var(--tk-text-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .today__title {
+    font-family: var(--tk-font-display);
+    font-size: var(--tk-text-display);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 0.95;
+  }
+  .today__lead,
+  .today__hint {
+    color: var(--text-muted);
+    max-width: 38rem;
+  }
+  .today__signin,
+  .today__empty {
+    display: grid;
+    justify-items: start;
+    gap: var(--tk-space-3);
+    padding: var(--tk-space-6);
+    background: var(--bg-raised);
+  }
+  .today__section {
+    display: grid;
+    gap: var(--tk-space-3);
+  }
+  .today__heading {
+    font-family: var(--tk-font-display);
+    font-size: var(--tk-text-2xl);
+    font-weight: 800;
+  }
+  .today__more {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--tk-space-2) var(--tk-space-6);
+    font-size: var(--tk-text-sm);
+  }
+  .today__more a {
+    color: var(--accent);
+  }
+  .journeys {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr));
+    gap: var(--tk-space-3);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .journey {
+    display: grid;
+    align-content: end;
+    gap: var(--tk-space-1);
+    min-height: 7.5rem;
+    padding: var(--tk-space-4);
+    background: var(--bg-raised);
+    color: var(--text);
+    text-decoration: none;
+    transition: transform var(--tk-dur-fast) var(--tk-ease-out);
+  }
+  .journey:hover {
+    transform: translateY(-2px);
+  }
+  .journey[data-journey="surprise"] {
+    background: linear-gradient(140deg, var(--tk-coral) 0%, var(--tk-purple) 100%);
+    color: var(--tk-ivory);
+  }
+  .journey[data-journey="underground"] {
+    box-shadow: inset 0 0 0 1px var(--tk-lime);
+  }
+  .journey__name {
+    font-family: var(--tk-font-display);
+    font-size: var(--tk-text-xl);
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+  .journey__text {
+    font-size: var(--tk-text-sm);
+    opacity: 0.8;
+  }
+  .set-card {
+    display: grid;
+    gap: var(--tk-space-4);
+    padding: var(--tk-space-6);
+    background: linear-gradient(160deg, var(--tk-purple) 0%, var(--tk-graphite) 55%);
+    color: var(--tk-ivory);
+  }
+  .set-card[data-kind="weekly"] {
+    background: linear-gradient(160deg, #3a3535 0%, var(--tk-graphite) 60%);
+    box-shadow: inset 0 0 0 1px var(--tk-n-700);
+  }
+  .set-card__head {
+    display: grid;
+    gap: var(--tk-space-2);
+  }
+  .set-card__kicker {
+    font-family: var(--tk-font-mono);
+    font-size: var(--tk-text-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--tk-lime);
+  }
+  .set-card__title {
+    font-family: var(--tk-font-display);
+    font-size: var(--tk-text-2xl);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  .set-card__lead {
+    color: var(--tk-n-200);
+    font-size: var(--tk-text-sm);
+    max-width: 36rem;
+  }
+  .set-card__meter {
+    height: 6px;
+    background: rgb(242 235 221 / 0.15);
+    overflow: hidden;
+  }
+  .set-card__meter span {
+    display: block;
+    height: 100%;
+    background: var(--tk-lime);
+    transform-origin: left;
+    transition: transform var(--tk-dur-sheet) var(--tk-ease-out);
+  }
+  .set-card__status {
+    font-family: var(--tk-font-mono);
+    font-size: var(--tk-text-xs);
+    color: var(--tk-n-200);
+  }
+  .set-card[data-done] .set-card__status {
+    color: var(--tk-lime);
+  }
+  .set-card__start {
+    justify-self: start;
+  }
+  .set-card__group {
+    display: grid;
+    gap: var(--tk-space-2);
+  }
+  .set-card__section {
+    font-family: var(--tk-font-mono);
+    font-size: var(--tk-text-xs);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--tk-n-300);
+  }
+  .set-list {
+    display: grid;
+    gap: var(--tk-space-2);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .set-list__item {
+    display: grid;
+    grid-template-columns: 3rem minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--tk-space-3);
+  }
+  .set-list__item[data-heard] {
+    opacity: 0.6;
+  }
+  .set-list__art {
+    width: 3rem;
+  }
+  .set-list__main {
+    display: grid;
+    min-width: 0;
+  }
+  .set-list__title {
+    color: var(--tk-ivory);
+    font-weight: 600;
+    text-decoration: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .set-list__artist {
+    font-size: var(--tk-text-sm);
+    color: var(--tk-n-300);
+  }
+  .set-list__check {
+    color: var(--tk-lime);
+    font-weight: 700;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .journey,
+    .set-card__meter span {
+      transition: none;
+    }
+  }
+}

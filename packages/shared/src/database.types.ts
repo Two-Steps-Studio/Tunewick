@@ -458,6 +458,33 @@ export type Database = {
           },
         ];
       };
+      discovery_sets: {
+        Row: {
+          completed_at: string | null;
+          created_at: string;
+          items: NonNullable<Json>;
+          kind: string;
+          period_start: string;
+          user_id: string;
+        };
+        Insert: {
+          completed_at?: string | null;
+          created_at?: string;
+          items: NonNullable<Json>;
+          kind: string;
+          period_start: string;
+          user_id: string;
+        };
+        Update: {
+          completed_at?: string | null;
+          created_at?: string;
+          items?: NonNullable<Json>;
+          kind?: string;
+          period_start?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
       entitlements: {
         Row: {
           created_at: string;
@@ -2850,6 +2877,16 @@ export type Database = {
           slug: string;
         }[];
       };
+      my_discovery_set: {
+        Args: { kind: string };
+        Returns: {
+          completed_at: string;
+          items: Json;
+          period_start: string;
+          progress: number;
+          target: number;
+        }[];
+      };
       my_discovery_stats: {
         Args: { period?: string };
         Returns: {
@@ -3078,6 +3115,16 @@ export type Database = {
       review_release: {
         Args: { decision: string; note?: string; release: string };
         Returns: Database["public"]["Enums"]["release_status"];
+      };
+      save_discovery_set: {
+        Args: { chosen: Json; set_kind: string };
+        Returns: {
+          completed_at: string;
+          items: Json;
+          period_start: string;
+          progress: number;
+          target: number;
+        }[];
       };
       search_catalog: {
         Args: { max_results?: number; query: string };

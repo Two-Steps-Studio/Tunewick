@@ -72,3 +72,14 @@ states, mobile and desktop layouts, EN/PL, tests, and its line in §4.
   listener's country, city scenes, play-from-here queues (audio presigned only on tap), Discover the
   world; loading/error states (`components/feedback/segment-error.tsx`), links from the feed and
   Browse. pgTAP `charts.test.sql`, E2E smoke.
+- **M14.3 done** — `20261009120000_discovery_sets`: `discovery_sets` (per listener and local
+  day / ISO week, stored on first open — stable, completable), `save_discovery_set` /
+  `my_discovery_set`, completion trigger on the ledger (5 daily / 10 weekly discoveries →
+  `daily_complete` +100 XP, `weekly_complete` +250 XP, once per period). `@tunewick/shared`:
+  journeys (Surprise me, Something new, Outside my taste, Underground, Global, Similar to me) as
+  lenses on the feed ranking with fallback, `pickDaily` / `pickWeekly` (new releases, new artists,
+  underground, rising, outside your usual; avoids today's daily songs), `explain()` for "Why this
+  song?" (real signal + real numbers, "no AI" note). Feed: `?journey=`, `?similar=<code>` ("Similar
+  to this" from the card menu: genres + artist graph), `?set=daily|weekly`; reason chip opens the
+  Why panel. Page `/today` (`/dzis`) with loading/error states; "Today" chip leads the feed bar.
+  pgTAP `discovery_sets.test.sql`, unit tests, E2E `today.spec.ts`.

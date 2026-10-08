@@ -12,6 +12,7 @@ import type { FeedItem } from "../types";
 import { Icon } from "./icons";
 import { ShareButton } from "./share-button";
 import { ToggleAction } from "./toggle-action";
+import { WhyPanel } from "./why";
 
 function useReason(item: FeedItem) {
   const t = useTranslations("Feed.reason");
@@ -30,6 +31,10 @@ function useReason(item: FeedItem) {
     case "near_you":
     case "new_country":
       return country ? t(reason.code, { country }) : t("wildcard");
+    case "similar_to":
+      return t("similar_to", { title: reason.title ?? "" });
+    case "weekly_drop":
+      return t("weekly_drop", { section: reason.section ?? "" });
     default:
       return t(reason.code);
   }
@@ -64,6 +69,7 @@ export function FeedCard({
   const locale = useLocale();
   const reason = useReason(item);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [whyOpen, setWhyOpen] = useState(false);
   const [fullPending, startFull] = useTransition();
   const [fullFailed, setFullFailed] = useState(false);
 
@@ -118,14 +124,20 @@ export function FeedCard({
       </div>
 
       <div className="feed-card__body">
-        <p
+        <button
+          type="button"
           className={
             item.exploration ? "feed-card__reason feed-card__reason--explore" : "feed-card__reason"
           }
+          aria-expanded={whyOpen}
+          aria-controls={`why-${item.trackId}`}
+          onClick={() => setWhyOpen((open) => !open)}
         >
           <Icon name="spark" size={14} />
           <span>{reason}</span>
-        </p>
+          <span className="feed-card__why-hint">{t("why")}</span>
+        </button>
+        {whyOpen ? <WhyPanel id={`why-${item.trackId}`} lines={item.why} /> : null}
 
         <button
           type="button"
@@ -315,6 +327,12 @@ export function FeedCard({
             </button>
             {menuOpen ? (
               <div className="feed-menu__panel">
+                <Link
+                  className="feed-menu__item"
+                  href={{ pathname: "/", query: { similar: item.code } }}
+                >
+                  {t("similar")}
+                </Link>
                 <Link
                   className="feed-menu__item"
                   href={{ pathname: "/", query: { artist: item.artist.slug } }}

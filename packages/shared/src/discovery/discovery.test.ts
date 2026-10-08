@@ -12,6 +12,11 @@ import {
   seasonOf,
   tuneWeights,
   TUNING,
+  explain,
+  periodSeed,
+  pickDaily,
+  pickWeekly,
+  rankJourney,
   type Candidate,
   type Taste,
 } from ".";
@@ -383,5 +388,96 @@ describe("seasons", () => {
   it("name a closed season from its first day", () => {
     expect(seasonOf("2026-07-01")).toEqual({ year: 2026, quarter: 3 });
     expect(seasonOf("2027-01-01")).toEqual({ year: 2027, quarter: 1 });
+  });
+});
+
+describe("journeys", () => {
+  const pool = [
+    candidate("big", { listeners30d: 50_000, artistId: "a-big" }),
+    candidate("small", { listeners30d: 40, artistId: "a-small" }),
+    candidate("known", { listeners30d: 30, artistId: "a-known" }),
+    candidate("de", { countryCode: "DE", artistId: "a-de", genreIds: [7] }),
+    candidate("fresh", { publishAt: daysAgo(2), artistId: "a-fresh" }),
+  ];
+  const me = taste({
+    artists: new Map([["a-known", 5]]),
+    genres: new Map([[1, 4]]),
+    country: "PL",
+    heard: new Set(["heard"]),
+  });
+
+  it("underground keeps small artists the listener does not know, then fills from the feed", () => {
+    const items = rankJourney("underground", pool, me, { size: 2, seed: 1, now: NOW });
+    expect(items[0]?.trackId).not.toBe("big");
+    expect(items.map((i) => i.trackId)).not.toContain("known");
+    expect(rankJourney("underground", pool, me, { size: 5, seed: 1, now: NOW })).toHaveLength(5);
+  });
+
+  it("outside my taste avoids genres I like; global leaves my country; something new is recent", () => {
+    expect(rankJourney("outside_taste", pool, me, { size: 1, seed: 1, now: NOW })[0]?.trackId).toBe(
+      "de",
+    );
+    expect(rankJourney("global", pool, me, { size: 1, seed: 1, now: NOW })[0]?.trackId).toBe("de");
+    expect(rankJourney("something_new", pool, me, { size: 1, seed: 1, now: NOW })[0]?.trackId).toBe(
+      "fresh",
+    );
+  });
+
+  it("daily picks only unheard songs; weekly labels sections without repeats", () => {
+    const many = Array.from({ length: 40 }, (_, i) =>
+      candidate(`t${i}`, {
+        artistId: `a${i % 12}`,
+        genreIds: [i % 5],
+        listeners30d: i * 400,
+        publishAt: daysAgo(i),
+      }),
+    );
+    const daily = pickDaily([...many, candidate("heard")], me, 3, NOW);
+    expect(daily).toHaveLength(10);
+    expect(daily.map((d) => d.trackId)).not.toContain("heard");
+    const weekly = pickWeekly(many, me, 3, NOW);
+    expect(new Set(weekly.map((w) => w.trackId)).size).toBe(weekly.length);
+    expect(new Set(weekly.map((w) => w.section))).toEqual(
+      new Set(["new", "new_artists", "underground", "trending", "outside"]),
+    );
+  });
+
+  it("period seeds are stable per listener and period", () => {
+    expect(periodSeed("u1", "2026-10-08")).toBe(periodSeed("u1", "2026-10-08"));
+    expect(periodSeed("u1", "2026-10-08")).not.toBe(periodSeed("u1", "2026-10-09"));
+  });
+});
+
+describe("why this song", () => {
+  const facts = {
+    artist: "Hałda",
+    genre: "Indie",
+    country: "Poland",
+    listeners30d: 8000,
+    listeners7d: 10,
+    listenersPrev7d: 2,
+    completionRate: 0.72,
+    ageDays: 3,
+  };
+
+  it("explains the real signal, with numbers only when they are real", () => {
+    expect(explain({ code: "genre_you_like", genreId: 1 }, facts)[0]).toEqual({
+      key: "genre_you_like",
+      values: { artist: "Hałda", genre: "Indie", country: "Poland" },
+    });
+    expect(explain({ code: "loved_by_listeners" }, facts)[0]?.values.percent).toBe(72);
+    expect(explain({ code: "loved_by_listeners" }, { ...facts, listeners30d: 2 })[0]?.key).toBe(
+      "loved_by_listeners_plain",
+    );
+  });
+
+  it("adds that an artist is small, or that a song is growing fast", () => {
+    expect(
+      explain({ code: "popular" }, { ...facts, listeners30d: 20_000 }).map((l) => l.key),
+    ).toEqual(["popular", "growing"]);
+    expect(explain({ code: "new_release" }, facts).at(-1)).toEqual({
+      key: "small",
+      values: { listeners: 8000 },
+    });
   });
 });

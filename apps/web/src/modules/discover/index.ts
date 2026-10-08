@@ -1,5 +1,6 @@
 export { getDiscover, parseCountry, parseRegion } from "./queries";
 export { getFeedPage } from "./feed";
+export { getDiscoverySets, type DiscoverySetView } from "./sets";
 export {
   getCountryCodes,
   getCountryOptions,
