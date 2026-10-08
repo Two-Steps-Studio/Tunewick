@@ -107,7 +107,10 @@ Stored in the report as `analysis.best_moment` and `analysis.waveform`;
 `track_audio_uploads.best_moment_ms` is generated from it. The artist's soundcheck start always
 wins; otherwise Discover previews and release soundchecks start at the best moment (before v2
 reports: a third in, or 0:00 for soundchecks). The editor draws the waveform with the suggested
-30 s highlighted. Known limits: no beat or key analysis, so a long build-up that is loud but has
+30 s highlighted. Uploads processed before report v2 are backfilled by the worker when it is
+otherwise idle, newest first: it decodes the delivery variant (lossless FLAC, else AAC — masters
+may already be gone from ingest), computes the same two fields and merges them into the stored
+report (`claim/finish_audio_reanalysis`, three tries). Known limits: no beat or key analysis, so a long build-up that is loud but has
 no change can win over a quieter hook; a learned model (P2) would replace this, same report field.
 
 ## 3. Delivery tiers

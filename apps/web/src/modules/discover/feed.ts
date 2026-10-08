@@ -2,6 +2,11 @@ import "server-only";
 
 import {
   EMPTY_TASTE,
+  explain,
+  journeyPlan,
+  rankJourney,
+  type Journey,
+  type Reason,
   EXPLORING_MODES,
   FEED,
   MODE_WEIGHTS,
@@ -18,8 +23,10 @@ import {
 } from "@tunewick/shared";
 import { presignVariantGet } from "@/lib/media/storage";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { countryName } from "@/lib/intl";
 import { getImageSourcesMany } from "@/modules/images";
 import { getDiscoveryPreferences, getGenres } from "./preferences";
+import { ensureSet, type SetKind } from "./sets";
 import type { DiscoveryPreferences, FeedItem, FeedPage } from "./types";
 
 type Supabase = Awaited<ReturnType<typeof createSupabaseServerClient>>;
@@ -47,7 +54,7 @@ async function macroRegionOf(supabase: Supabase, country: string | null) {
 }
 
 /** The listener's taste: from the account's history, or from a visitor's onboarding choices. */
-async function loadTaste(
+export async function loadTaste(
   supabase: Supabase,
   preferences: DiscoveryPreferences,
   signedIn: boolean,
@@ -82,9 +89,10 @@ async function loadTaste(
   };
 }
 
-type CandidateRow = Database["public"]["Functions"]["discover_candidates"]["Returns"][number];
+export type CandidateRow =
+  Database["public"]["Functions"]["discover_candidates"]["Returns"][number];
 
-async function loadCandidates(
+export async function loadCandidates(
   supabase: Supabase,
   mode: DiscoveryMode,
   preferences: DiscoveryPreferences,
@@ -99,7 +107,7 @@ async function loadCandidates(
   return data ?? [];
 }
 
-function toCandidate(row: CandidateRow): Candidate {
+export function toCandidate(row: CandidateRow): Candidate {
   return {
     trackId: row.track_id,
     artistId: row.artist_id,
@@ -188,6 +196,12 @@ export interface FeedRequest {
   startCode?: string;
   /** "Discover this artist": their tracks first, then artists like them. */
   artistSlug?: string;
+  /** A Surprise Me journey instead of the listener's mode. */
+  journey?: Journey;
+  /** "Similar to this": songs like the one with this share code. */
+  similarCode?: string;
+  /** Play the listener's Daily Discovery / Weekly Drop first. */
+  set?: SetKind;
   locale: string;
 }
 
@@ -212,7 +226,8 @@ async function weightsFor(
 export async function getFeedPage(request: FeedRequest): Promise<FeedPage> {
   const supabase = await createSupabaseServerClient();
   const { preferences, signedIn } = await getDiscoveryPreferences();
-  const mode = request.mode ?? preferences.mode;
+  const plan = request.journey ? journeyPlan(request.journey, EMPTY_TASTE) : null;
+  const mode = plan?.mode ?? request.mode ?? preferences.mode;
   const size = request.size ?? FEED.pageSize;
   const exclude = new Set(request.exclude ?? []);
 
@@ -223,50 +238,78 @@ export async function getFeedPage(request: FeedRequest): Promise<FeedPage> {
     weightsFor(supabase, mode, signedIn),
   ]);
   const byId = new Map(rows.map((row) => [row.track_id, row]));
+  // The reason a pinned item was first picked for (sets), for "Why this song?".
+  const origin = new Map<string, Reason>();
 
-  // Pinned items come first: a shared song, or an artist's best tracks.
+  // Pinned items come first: a shared song, the listener's set, or an artist's best tracks.
   const pinned: RankedItem[] = [];
-  const pin = (row: CandidateRow, code: RankedItem["reason"]["code"]) => {
+  const pin = (row: CandidateRow, reason: Reason) => {
     if (exclude.has(row.track_id) || pinned.some((p) => p.trackId === row.track_id)) return;
-    pinned.push({ trackId: row.track_id, score: 0, exploration: false, reason: { code } });
+    pinned.push({ trackId: row.track_id, score: 0, exploration: false, reason });
   };
   if (request.startCode) {
     const start = rows.find((row) => row.public_code === request.startCode);
-    if (start) pin(start, "shared");
+    if (start) pin(start, { code: "shared" });
+  }
+  if (request.set && signedIn) {
+    const set = await ensureSet(supabase, request.set, rows, taste);
+    for (const item of set?.items ?? []) {
+      const row = byId.get(item.track_id);
+      if (!row || taste.heard.has(row.track_id)) continue;
+      pin(row, {
+        code: request.set === "daily" ? "daily_discovery" : "weekly_drop",
+        section: item.section,
+      });
+      if (item.reason) {
+        origin.set(row.track_id, {
+          code: item.reason as Reason["code"],
+          ...(item.genre_id ? { genreId: item.genre_id } : {}),
+          ...(item.country_code ? { countryCode: item.country_code } : {}),
+        });
+      }
+    }
   }
   let rankTaste = taste;
+  let similarTitle: string | null = null;
   if (request.artistSlug) {
     const own = rows
       .filter((row) => row.artist_slug === request.artistSlug)
       .sort((a, b) => b.listeners_30d - a.listeners_30d)
       .slice(0, 3);
-    own.forEach((row) => pin(row, "artist_spotlight"));
+    own.forEach((row) => pin(row, { code: "artist_spotlight" }));
     const artistId = own[0]?.artist_id;
-    if (artistId) {
-      // Then artists like them: the music graph (collaborations, shared credits, audience, gigs —
-      // M7) and the artist's own genres.
-      const { data: related } = await supabase.rpc("related_artists", {
-        artist: artistId,
-        max_results: 12,
-      });
-      const coFollowed = new Map(taste.coFollowed);
-      for (const r of related ?? []) {
-        coFollowed.set(r.artist_id, (coFollowed.get(r.artist_id) ?? 0) + 10 + r.score);
-      }
-      const genres = new Map(taste.genres);
-      for (const id of own[0]?.genre_ids ?? []) genres.set(id, (genres.get(id) ?? 0) + 5);
-      rankTaste = { ...taste, coFollowed, genres };
+    if (artistId)
+      rankTaste = await towardsArtist(supabase, taste, artistId, own[0]?.genre_ids ?? []);
+  } else if (request.similarCode) {
+    // "Similar to this": the song's genres and the artist's graph neighbours lead; the song
+    // itself is not repeated.
+    const base = rows.find((row) => row.public_code === request.similarCode);
+    if (base) {
+      similarTitle = base.title;
+      exclude.add(base.track_id);
+      rankTaste = await towardsArtist(supabase, taste, base.artist_id, base.genre_ids ?? []);
     }
   }
 
-  const ranked = rankFeed(rows.map(toCandidate), rankTaste, {
-    mode,
-    weights,
+  const rankOptions = {
     size: Math.max(0, size - pinned.length),
     seed: request.seed,
-    explorationShare: preferences.explorationShare,
     exclude: new Set([...exclude, ...pinned.map((p) => p.trackId)]),
-  });
+  };
+  const ranked = request.journey
+    ? rankJourney(request.journey, rows.map(toCandidate), rankTaste, rankOptions)
+    : rankFeed(rows.map(toCandidate), rankTaste, {
+        ...rankOptions,
+        mode,
+        weights,
+        explorationShare: request.similarCode ? 0.1 : preferences.explorationShare,
+      });
+  if (similarTitle) {
+    for (const item of ranked) {
+      origin.set(item.trackId, item.reason);
+      item.reason = { code: "similar_to", title: similarTitle };
+    }
+  }
   const page = [...pinned, ...ranked].slice(0, size);
   const trackIds = page.map((item) => item.trackId);
   const pageRows = page.map((item) => byId.get(item.trackId)!);
@@ -282,12 +325,14 @@ export async function getFeedPage(request: FeedRequest): Promise<FeedPage> {
       : Promise.resolve(null),
   ]);
   const genreById = new Map(genres.map((g) => [g.id, g]));
+  const now = Date.now();
 
   const items: FeedItem[] = page.map((item, index) => {
     const row = pageRows[index]!;
     const preview = previews.get(row.track_id);
     const window = preview?.window ?? previewWindow(row.duration_ms, null, null);
     const imageId = row.artwork_image_id ?? row.artist_image_id;
+    const why = whyFor(item.reason, origin.get(row.track_id), row, genreById, request.locale, now);
     return {
       trackId: row.track_id,
       code: row.public_code,
@@ -310,6 +355,7 @@ export async function getFeedPage(request: FeedRequest): Promise<FeedPage> {
       cover: imageId ? (covers.get(imageId) ?? null) : null,
       preview: { ...window, sources: preview?.sources ?? [] },
       reason: item.reason,
+      why,
       exploration: item.exploration,
       liked: library ? library.liked.has(row.track_id) : null,
       saved: library ? library.saved.has(row.track_id) : null,
@@ -317,5 +363,60 @@ export async function getFeedPage(request: FeedRequest): Promise<FeedPage> {
     };
   });
 
-  return { items, mode, signedIn, done: items.length < size, seed: request.seed };
+  return {
+    items,
+    mode,
+    signedIn,
+    done: items.length < size,
+    seed: request.seed,
+    journey: request.journey ?? null,
+    similar: similarTitle ? (request.similarCode ?? null) : null,
+  };
+}
+
+/** Taste leaning towards an artist: their graph neighbours (M7) and their genres. */
+async function towardsArtist(
+  supabase: Supabase,
+  taste: Taste,
+  artistId: string,
+  genreIds: number[],
+) {
+  const { data: related } = await supabase.rpc("related_artists", {
+    artist: artistId,
+    max_results: 12,
+  });
+  const coFollowed = new Map(taste.coFollowed);
+  for (const r of related ?? []) {
+    coFollowed.set(r.artist_id, (coFollowed.get(r.artist_id) ?? 0) + 10 + r.score);
+  }
+  const genres = new Map(taste.genres);
+  for (const id of genreIds) genres.set(id, (genres.get(id) ?? 0) + 5);
+  return { ...taste, coFollowed, genres };
+}
+
+/** "Why this song?" lines: the pin's own line (set, similar) and the signal that picked it. */
+function whyFor(
+  reason: Reason,
+  origin: Reason | undefined,
+  row: CandidateRow,
+  genreById: Map<number, { name: string }>,
+  locale: string,
+  now: number,
+) {
+  const genreId = (origin ?? reason).genreId ?? row.genre_ids?.[0];
+  const country = (origin ?? reason).countryCode ?? row.country_code;
+  const facts = {
+    artist: row.artist_name,
+    genre: genreId !== undefined ? (genreById.get(genreId)?.name ?? null) : null,
+    country: country ? countryName(country, locale) : null,
+    listeners30d: row.listeners_30d,
+    listeners7d: row.listeners_7d,
+    listenersPrev7d: row.listeners_prev_7d,
+    completionRate: row.completion_rate,
+    ageDays: Math.max(0, Math.round((now - Date.parse(row.publish_at)) / 86_400_000)),
+  };
+  const lines = explain(reason, facts);
+  if (!origin) return lines;
+  // The pin says where it comes from; the original signal says why it was picked.
+  return [lines[0]!, ...explain(origin, facts)];
 }

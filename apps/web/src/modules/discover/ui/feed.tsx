@@ -37,6 +37,8 @@ export function DiscoverFeed({ initial }: { initial: FeedPage }) {
   const locale = useLocale();
   const [items, setItems] = useState<FeedItem[]>(initial.items);
   const [mode, setMode] = useState<DiscoveryMode>(initial.mode);
+  // A lens on top of the mode (Surprise Me journey or "similar to"); a mode change clears it.
+  const [lens, setLens] = useState({ journey: initial.journey, similar: initial.similar });
   const [done, setDone] = useState(initial.done);
   const [loading, setLoading] = useState(false);
   const [failed, setFailed] = useState(false);
@@ -48,10 +50,10 @@ export function DiscoverFeed({ initial }: { initial: FeedPage }) {
   const container = useRef<HTMLDivElement>(null);
   const events = useRef<FeedEvent[]>([]);
   // Latest values for callbacks that outlive a render (observer, player, timers).
-  const latest = useRef({ items, mode, started, done, loading, failed, page: 1 });
+  const latest = useRef({ items, mode, lens, started, done, loading, failed, page: 1 });
   useEffect(() => {
-    Object.assign(latest.current, { items, mode, started, done, loading, failed });
-  }, [items, mode, started, done, loading, failed]);
+    Object.assign(latest.current, { items, mode, lens, started, done, loading, failed });
+  }, [items, mode, lens, started, done, loading, failed]);
 
   const preview = useSyncExternalStore(
     player?.subscribe ?? noopSubscribe,
@@ -110,6 +112,8 @@ export function DiscoverFeed({ initial }: { initial: FeedPage }) {
         seed: String(initial.seed + state.page),
         locale,
       });
+      if (state.lens.journey) params.set("journey", state.lens.journey);
+      if (state.lens.similar) params.set("similar", state.lens.similar);
       if (!reset && state.items.length) {
         params.set(
           "exclude",
@@ -161,11 +165,13 @@ export function DiscoverFeed({ initial }: { initial: FeedPage }) {
   }, []);
 
   const changeMode = (next: DiscoveryMode) => {
-    if (next === mode) return;
+    if (next === mode && !lens.journey && !lens.similar) return;
     player?.pause();
     player?.finishSession();
     setMode(next);
     latest.current.mode = next;
+    setLens({ journey: null, similar: null });
+    latest.current.lens = { journey: null, similar: null };
     setActive(0);
     setDone(false);
     container.current?.scrollTo({ top: 0 });
@@ -317,17 +323,34 @@ export function DiscoverFeed({ initial }: { initial: FeedPage }) {
     <section className="feed" aria-label={t("title")} onKeyDown={onKeyDown}>
       <h1 className="visually-hidden">{t("title")}</h1>
       <nav className="feed-modes" aria-label={t("modeLabel")}>
+        <Link href="/today" className="feed-modes__chip feed-modes__chip--today">
+          {t("today")}
+        </Link>
+        {lens.journey || lens.similar ? (
+          <button
+            type="button"
+            className="feed-modes__chip feed-modes__chip--lens"
+            aria-pressed="true"
+            onClick={() => changeMode(mode)}
+            aria-label={t("clearLens")}
+          >
+            {lens.journey ? t(`journeys.${lens.journey}`) : t("similarLens")} ×
+          </button>
+        ) : null}
         {DISCOVERY_MODES.map((m) => (
           <button
             key={m}
             type="button"
             className="feed-modes__chip"
-            aria-pressed={m === mode}
+            aria-pressed={m === mode && !lens.journey && !lens.similar}
             onClick={() => changeMode(m)}
           >
             {t(`modes.${m}`)}
           </button>
         ))}
+        <Link href="/charts" className="feed-modes__chip feed-modes__chip--link">
+          {t("charts")}
+        </Link>
         <Link href="/browse" className="feed-modes__chip feed-modes__chip--link">
           {t("browse")}
         </Link>

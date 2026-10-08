@@ -8,8 +8,11 @@ import boto3
 import httpx
 from botocore.config import Config
 
+from .clips import ClipJob
 from .image_jobs import ImageJob
 from .jobs import Job
+from .reanalysis import ReanalysisJob
+from .sweep import Deletion
 
 
 def require(name: str) -> str:
@@ -66,6 +69,49 @@ class SupabaseQueue:
     def fail_image(self, image_id: str) -> str:
         return self._call("fail_image_upload", {"image": image_id})
 
+    def claim_clip(self) -> ClipJob | None:
+        rows = self._call("claim_share_clip", {})
+        if not rows:
+            return None
+        row = rows[0]
+        return ClipJob(
+            row["id"],
+            row["track_id"],
+            row["card_key"],
+            row["audio_key"],
+            row["start_ms"],
+            row["duration_ms"],
+            row["attempts"],
+        )
+
+    def finish_clip(self, clip_id: str, object_key: str | None, size: int | None) -> str:
+        return self._call(
+            "finish_share_clip", {"clip": clip_id, "object_key": object_key, "bytes": size}
+        )
+
+    def fail_clip(self, clip_id: str) -> str:
+        return self._call("fail_share_clip", {"clip": clip_id})
+
+    def claim_reanalysis(self) -> ReanalysisJob | None:
+        rows = self._call("claim_audio_reanalysis", {})
+        if not rows:
+            return None
+        row = rows[0]
+        return ReanalysisJob(row["id"], row["object_key"], row["codec"])
+
+    def finish_reanalysis(self, upload_id: str, best_moment: dict, waveform: list[int]) -> bool:
+        return self._call(
+            "finish_audio_reanalysis",
+            {"upload": upload_id, "best_moment": best_moment, "waveform": waveform},
+        )
+
+    def claim_deletions(self, limit: int) -> list[Deletion]:
+        rows = self._call("claim_storage_deletions", {"max_results": limit})
+        return [Deletion(row["id"], row["bucket"], row["object_key"]) for row in rows or []]
+
+    def finish_deletions(self, ids: list[int]) -> int:
+        return self._call("finish_storage_deletions", {"ids": ids})
+
 
 class S3Storage:
     def __init__(
@@ -101,6 +147,14 @@ class S3Storage:
 
     def download_master(self, key: str, path: str) -> None:
         self.s3.download_file(self.ingest, key, path)
+
+    def delete_object(self, bucket: str, key: str) -> None:
+        """Deletes an object (S3 DELETE succeeds for missing objects too)."""
+        self.s3.delete_object(Bucket=self.ingest if bucket == "ingest" else self.media, Key=key)
+
+    def download_media(self, key: str, path: str) -> None:
+        """A delivery variant (e.g. the AAC a share clip is cut from)."""
+        self.s3.download_file(self.media, key, path)
 
     def upload_variant(self, path: str, key: str, content_type: str) -> None:
         self.s3.upload_file(

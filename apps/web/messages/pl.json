@@ -1270,7 +1270,8 @@
       "firstRelease": "Pierwsze wydawnictwo {when} · {count, plural, one {# wydawnictwo} few {# wydawnictwa} many {# wydawnictw} other {# wydawnictwa}}"
     },
     "soundcheck": "Soundcheck {seconds} s",
-    "soundcheckLabel": "Posłuchaj fragmentu: {title} — {artist}"
+    "soundcheckLabel": "Posłuchaj fragmentu: {title} — {artist}",
+    "charts": "Zobacz listy przebojów tygodnia →"
   },
   "Feed": {
     "title": "Odkrywaj",
@@ -1337,12 +1338,38 @@
       "new_country": "Coś nowego dla Ciebie: muzyka z kraju {country}",
       "wildcard": "Niespodzianka — coś, czego nie znasz",
       "shared": "Ktoś Ci to udostępnił",
-      "artist_spotlight": "Odkrywasz: {artist}"
+      "artist_spotlight": "Odkrywasz: {artist}",
+      "daily_discovery": "Twoje Daily Discovery",
+      "similar_to": "Podobne do: {title}",
+      "weekly_drop": "Weekly Drop · {section, select, new {nowe wydania} new_artists {nowi artyści} underground {underground} trending {na fali} outside {poza gustem} other {wybór}}"
     },
     "previewUnsupported": "Ta przeglądarka nie odtworzy fragmentu. Spróbuj innej przeglądarki albo „Odtwórz cały utwór”.",
     "browse": "Przeglądaj nowości",
     "accountDeleted": "Konto zostało usunięte. Dziękujemy za wspólny czas w Tunewick.",
-    "report": "Zgłoś to wydawnictwo"
+    "report": "Zgłoś to wydawnictwo",
+    "clip": "Wideo do relacji (MP4)",
+    "clipWorking": "Przygotowujemy wideo…",
+    "clipReady": "Wideo gotowe — udostępnij lub pobierz",
+    "clipState": {
+      "failed": "Nie udało się przygotować wideo. Spróbuj ponownie za chwilę.",
+      "unavailable": "Wideo dla tego utworu nie jest dostępne.",
+      "signin": "Zaloguj się, żeby przygotować wideo.",
+      "limit": "W tej godzinie powstało już sporo Twoich filmów — spróbuj później."
+    },
+    "charts": "Listy",
+    "why": "Dlaczego?",
+    "similar": "Podobne do tego",
+    "today": "Dziś",
+    "clearLens": "Wróć do swojego feedu",
+    "similarLens": "Podobne",
+    "journeys": {
+      "surprise": "Zaskocz mnie",
+      "something_new": "Coś nowego",
+      "outside_taste": "Poza moim gustem",
+      "underground": "Underground",
+      "global": "Świat",
+      "similar_to_me": "Podobni do mnie"
+    }
   },
   "Onboarding": {
     "title": "Preferencje odkrywania",
@@ -1395,8 +1422,8 @@
       "global_explorer": "Globalny odkrywca"
     },
     "toNextLevel": "Postęp do poziomu {level}",
-    "toNextLevelPoints": "{score} do poziomu {level}",
-    "points": "Punkty odkryć",
+    "toNextLevelPoints": "{score} XP do poziomu {level}",
+    "points": "XP",
     "today": "Dziś",
     "diversity": "Różnorodność",
     "streak": "{count, plural, one {# dzień serii odkryć} few {# dni serii odkryć} many {# dni serii odkryć} other {# dnia serii odkryć}}",
@@ -1435,7 +1462,7 @@
         "newSongs": "Nowe odkrycia",
         "saves": "Zapisane utwory",
         "follows": "Obserwowani artyści",
-        "points": "Punkty"
+        "points": "XP"
       },
       "hint": "Fragmenty liczą się do czasu słuchania; odtworzenia to słuchanie w odtwarzaczu przez co najmniej 30 sekund."
     },
@@ -1475,7 +1502,12 @@
         "collector": "Kolekcjoner",
         "early_supporter": "Wczesny fan",
         "challenger": "Pogromca wyzwań",
-        "season_star": "Gwiazda sezonu"
+        "season_star": "Gwiazda sezonu",
+        "globetrotter": "Obieżyświat",
+        "underground_hunter": "Łowca undergroundu",
+        "night_listener": "Nocny słuchacz",
+        "discovery_machine": "Maszyna odkryć",
+        "year_explorer": "Odkrywca roku"
       },
       "metrics": {
         "songs": "{count, plural, one {Odkryj pierwszy utwór} few {Odkryj # utwory} other {Odkryj # utworów}}",
@@ -1487,7 +1519,11 @@
         "early_supporter": "Odkryj artystę z mniej niż 25 obserwującymi, który później przekroczy 100",
         "saves": "Zapisz {count} utworów",
         "challenges": "Ukończ {count} wyzwań tygodnia",
-        "season_top10": "Zakończ sezon w najlepszych 10% odkrywców"
+        "season_top10": "Zakończ sezon w najlepszych 10% odkrywców",
+        "underground": "Odkryj {count} artystów z mniej niż 10 000 słuchaczy",
+        "night": "Słuchaj najwięcej między 22:00 a 5:00",
+        "best_week_songs": "Odkryj {count} utworów w jednym tygodniu",
+        "year_discovery_xp": "Zdobądź {count} XP za odkrycia w jednym roku"
       },
       "unlocked": "Zdobyte {date}",
       "locked": "Jeszcze nie"
@@ -1506,7 +1542,10 @@
         "save": "Zapisanie utworu (raz na utwór)",
         "full_listen": "Wysłuchanie nowego odkrycia w całości (raz dziennie)",
         "share": "Udostępnienie utworu (raz dziennie na utwór)",
-        "challenge": "Ukończone wyzwanie tygodnia (raz na wyzwanie)"
+        "challenge": "Ukończona misja (XP zależne od misji)",
+        "underground": "Artysta z mniej niż 10 000 słuchaczy (raz na artystę)",
+        "daily_complete": "Ukończone Daily Discovery (raz dziennie)",
+        "weekly_complete": "Ukończony Weekly Drop (raz w tygodniu)"
       },
       "fair": "Punkty nagradzają odkrywanie, nie godziny odtwarzania: powtórki, zapętlanie i szybkie pomijanie nic nie dają, a każdy rodzaj punktów ma dzienny limit."
     },
@@ -1520,29 +1559,14 @@
     },
     "following": "Osoby, które obserwujesz",
     "compareWith": "Porównaj",
-    "challenges": {
-      "title": "Wyzwania tygodnia",
-      "points": "+20 pkt",
-      "hint": "Te same trzy wyzwania dla wszystkich, nowe co poniedziałek. Ten zestaw kończy się {date}.",
-      "names": {
-        "thirty_songs": "Odkryj {target} nowych utworów",
-        "ten_artists": "Odkryj {target} nowych artystów",
-        "three_genres": "Posłuchaj {target} gatunków, których jeszcze nie znasz",
-        "three_countries": "Odkryj muzykę z {target} nowych krajów",
-        "two_regions": "Odkryj artystów z {target} różnych części świata",
-        "five_saves": "Zapisz {target} odkrytych utworów",
-        "two_shares": "Poleć komuś {target} utwory",
-        "five_full_listens": "Wysłuchaj w całości {target} świeżych odkryć",
-        "small_artists": "Znajdź {target} artystów, których obserwuje najwyżej 50 osób",
-        "five_days": "Odkrywaj coś nowego przez {target} dni tego tygodnia"
-      }
-    },
     "seasons": {
       "title": "Twoje sezony",
       "name": "Sezon {quarter}/{year}",
-      "place": "{rank}. miejsce z {participants} · {points} pkt",
+      "place": "{rank}. miejsce z {participants} · {points} XP",
       "hint": "Sezon to kwartał. Miejsce liczymy ze wszystkich odkrywców, także tych, którzy nie pokazują się w publicznym rankingu — widzisz je tylko Ty."
-    }
+    },
+    "scoreHint": "Discovery Score rośnie tylko za odkrycia — nowe utwory, artystów, gatunki, kraje i małe sceny — i jest wyższy, gdy odkrywasz różnorodnie. XP zbierasz za wszystko, co robisz w TuneWick; od XP zależy poziom.",
+    "missions": "Misje"
   },
   "Rankings": {
     "title": "Rankingi",
@@ -1567,20 +1591,20 @@
     "country": "Kraj",
     "show": "Pokaż",
     "heading": "{scope} · {period}",
-    "you": "Ty: #{rank} z {participants} · {points} pkt",
+    "you": "Ty: #{rank} z {participants} · {points} XP",
     "percentile": "więcej niż {percentile}% słuchaczy",
     "notListed": "Nie jesteś widoczny/a publicznie — ustaw nazwę profilu.",
     "notRanked": "W tym okresie nie masz jeszcze punktów — odkryj coś nowego.",
     "signIn": "Zaloguj się, aby zobaczyć swoje miejsce.",
     "empty": "W tym okresie nikogo tu jeszcze nie ma. Bądź pierwszy/a.",
     "discoveries": "{count, plural, one {# odkrycie} few {# odkrycia} many {# odkryć} other {# odkrycia}}",
-    "points": "{points} pkt",
+    "points": "{points} XP",
     "fair": "Ranking tygodniowy zaczyna się od nowa w każdy poniedziałek (UTC). Widoczni: słuchacze z nazwą profilu, którzy nie wyłączyli rankingów.",
     "seasonName": "Sezon {quarter}/{year}",
     "seasonEnds": "{season} kończy się {date}. Wtedy zapisujemy Twoje końcowe miejsce."
   },
   "Notices": {
-    "points": "+{points}",
+    "points": "+{points} XP",
     "dismiss": "Zamknij",
     "parts": {
       "new_song": "Nowy utwór",
@@ -1590,7 +1614,8 @@
       "country": "Muzyka z kraju {country}",
       "save": "Zapisane",
       "full_listen": "Całe wysłuchane",
-      "share": "Udostępnione"
+      "share": "Udostępnione",
+      "underground": "mała scena"
     },
     "goal": {
       "daily_artists": "Cel dnia zrobiony: {target} nowych artystów!",
@@ -1601,7 +1626,7 @@
     "streak": "Seria odkryć: {days} dni z rzędu",
     "roll": "Masz dobrą passę! {count} odkryć dzisiaj",
     "achievement": "Nowe osiągnięcie: {name}",
-    "challenge": "Wyzwanie ukończone: {name}"
+    "mission": "Misja ukończona: {name}"
   },
   "Compare": {
     "title": "Ty vs {name}",
@@ -1620,8 +1645,235 @@
       "newArtists": "Nowi artyści",
       "countries": "Kraje",
       "listening": "Słuchanie",
-      "points": "Punkty odkryć"
+      "points": "XP"
     },
     "hint": "Widoczne dzięki ustawieniom prywatności tej osoby; Twoje ustawienie decyduje, co ona widzi o Tobie."
+  },
+  "Charts": {
+    "title": "Listy przebojów",
+    "lead": "Czego ludzie słuchają i co odkrywają w tym tygodniu. Liczymy słuchaczy, a nie odtworzenia, więc zapętlanie i boty niczego nie zmieniają.",
+    "loading": "Ładujemy listy…",
+    "tabsLabel": "Lista",
+    "scopeLabel": "Gdzie",
+    "citiesLabel": "Sceny miast",
+    "artistChartsLabel": "Lista artystów",
+    "freshLabel": "Wydane",
+    "country": "Kraj…",
+    "genre": "Gatunek…",
+    "show": "Pokaż",
+    "play": "Graj od tego miejsca",
+    "playFrom": "Graj od: {title} — {artist}",
+    "discoverArtist": "Odkryj: {name}",
+    "new": "nowość",
+    "tabs": {
+      "top": "Top 100",
+      "rising": "Zyskujące",
+      "underground": "Underground",
+      "discovered": "Najczęściej odkrywane",
+      "saved": "Najczęściej zapisywane",
+      "shared": "Najczęściej udostępniane",
+      "artists": "Artyści",
+      "fresh": "Świeże",
+      "world": "Odkryj świat"
+    },
+    "scope": {
+      "global": "Cały świat",
+      "popularIn": "Popularne: {place}",
+      "from": "Muzyka: {place}",
+      "city": "Scena: {city}",
+      "genre": "{genre}"
+    },
+    "regions": {
+      "europe": "Europa",
+      "americas": "Ameryki",
+      "asia": "Azja",
+      "africa": "Afryka",
+      "oceania": "Oceania"
+    },
+    "about": {
+      "top": "Słuchacze z ostatnich 7 dni. „Popularne: …” liczy słuchaczy z tego miejsca — pokazujemy utwór, gdy słucha go tam co najmniej 3 osoby.",
+      "rising": "Utwory, które zyskały najwięcej słuchaczy w porównaniu z poprzednim tygodniem.",
+      "underground": "Najczęściej słuchane utwory artystów, którzy mają mniej niż 10 000 słuchaczy miesięcznie.",
+      "discovered": "Utwory, które w tym tygodniu najwięcej osób usłyszało po raz pierwszy — lista TuneWick.",
+      "saved": "Utwory najczęściej zapisywane w tym tygodniu.",
+      "shared": "Utwory najczęściej udostępniane w tym tygodniu."
+    },
+    "aboutArtists": {
+      "rising": "Artyści, którzy zyskali najwięcej słuchaczy w porównaniu z poprzednim tygodniem.",
+      "underground": "Artyści z mniej niż 10 000 słuchaczy miesięcznie, według słuchaczy w tym tygodniu.",
+      "new_listeners": "Artyści, których w tym tygodniu najwięcej osób usłyszało po raz pierwszy.",
+      "discovered": "Artyści odkryci w tym tygodniu przez najwięcej osób."
+    },
+    "artistCharts": {
+      "rising": "Zyskujący artyści",
+      "underground": "Artyści underground",
+      "new_listeners": "Najwięcej nowych słuchaczy",
+      "discovered": "Najczęściej odkrywani"
+    },
+    "values": {
+      "top": "{count, plural, one {# słuchacz} few {{value} słuchaczy} many {{value} słuchaczy} other {{value} słuchacza}}",
+      "rising": "{count, plural, one {+# słuchacz} few {+{value} słuchaczy} many {+{value} słuchaczy} other {+{value} słuchacza}}",
+      "underground": "{count, plural, one {# słuchacz} few {{value} słuchaczy} many {{value} słuchaczy} other {{value} słuchacza}}",
+      "discovered": "{count, plural, one {# odkrycie} few {{value} odkrycia} many {{value} odkryć} other {{value} odkrycia}}",
+      "saved": "{count, plural, one {# zapis} few {{value} zapisy} many {{value} zapisów} other {{value} zapisu}}",
+      "shared": "{count, plural, one {# udostępnienie} few {{value} udostępnienia} many {{value} udostępnień} other {{value} udostępnienia}}"
+    },
+    "artistValues": {
+      "rising": "{count, plural, one {+# słuchacz} few {+{value} słuchaczy} many {+{value} słuchaczy} other {+{value} słuchacza}}",
+      "underground": "{count, plural, one {# słuchacz} few {{value} słuchaczy} many {{value} słuchaczy} other {{value} słuchacza}}",
+      "new_listeners": "{count, plural, one {# nowy słuchacz} few {{value} nowych słuchaczy} many {{value} nowych słuchaczy} other {{value} nowego słuchacza}}",
+      "discovered": "{count, plural, one {# odkrycie} few {{value} odkrycia} many {{value} odkryć} other {{value} odkrycia}}"
+    },
+    "fresh": {
+      "h24": "Ostatnie 24 godziny",
+      "h168": "Ostatnie 7 dni",
+      "h720": "Ostatnie 30 dni"
+    },
+    "empty": {
+      "top": "Tu nie ma jeszcze listy — za mało słuchaczy w tym tygodniu.",
+      "rising": "Nic tu jeszcze nie zyskuje.",
+      "underground": "W tym tygodniu nie ma tu jeszcze utworów underground.",
+      "discovered": "Nikt jeszcze nie odkrył tu muzyki w tym tygodniu — bądź pierwszą osobą.",
+      "saved": "W tym tygodniu nikt tu jeszcze niczego nie zapisał.",
+      "shared": "W tym tygodniu nikt tu jeszcze niczego nie udostępnił."
+    },
+    "emptyArtists": "Na tej liście nie ma jeszcze artystów.",
+    "emptyFresh": "W tym czasie nie było tu nowych wydań.",
+    "emptyCta": "Odkrywaj muzykę",
+    "world": {
+      "title": "Odkryj świat",
+      "lead": "Najczęściej słuchany utwór z każdego kraju w tym tygodniu.",
+      "leadOutside": "Najczęściej słuchany utwór z każdego kraju w tym tygodniu — spoza kraju: {country}.",
+      "empty": "Muzyka z innych krajów pojawi się tu, gdy tylko ktoś zacznie jej słuchać."
+    }
+  },
+  "Segment": {
+    "errorTitle": "Coś poszło nie tak",
+    "errorText": "Ta część TuneWick się nie wczytała. Twoje dane są bezpieczne — spróbuj ponownie.",
+    "retry": "Spróbuj ponownie"
+  },
+  "Why": {
+    "title": "Dlaczego ten utwór?",
+    "note": "Na podstawie Twojego słuchania w TuneWick i publicznej liczby słuchaczy — bez zgadywania i bez AI.",
+    "followed_artist": "Obserwujesz: {artist}.",
+    "artist_you_like": "Słuchasz ostatnio: {artist} — oto więcej tej muzyki.",
+    "genre_you_like": "Często odkrywasz {genre}, a tego utworu z tego gatunku jeszcze nie znasz.",
+    "genre_you_like_plain": "Jest blisko gatunków, które odkrywasz najczęściej.",
+    "listeners_like_you": "Osoby o podobnym guście słuchają: {artist}.",
+    "loved_by_listeners": "{percent}% osób, które go zaczynają, słucha do końca.",
+    "loved_by_listeners_plain": "Kto go znajdzie, zwykle słucha do końca i zapisuje.",
+    "near_you": "Pochodzi z kraju: {country} — tam, gdzie jesteś.",
+    "popular": "{listeners, plural, one {# osoba słuchała} few {# osoby słuchały} many {# osób słuchało} other {# osoby słuchało}} go w tym miesiącu.",
+    "rising": "{more, plural, one {# słuchacz więcej} few {# słuchaczy więcej} many {# słuchaczy więcej} other {# słuchacza więcej}} niż w zeszłym tygodniu.",
+    "new_release": "{days, plural, =0 {Wydany dzisiaj.} one {Wydany wczoraj.} few {Wydany # dni temu.} many {Wydany # dni temu.} other {Wydany # dnia temu.}}",
+    "new_genre": "{genre} to dla Ciebie coś nowego — krok poza to, czego zwykle słuchasz.",
+    "new_country": "Muzyka z kraju: {country} — stamtąd nie masz jeszcze żadnego odkrycia.",
+    "shared": "Ktoś Ci udostępnił ten utwór.",
+    "artist_spotlight": "Chcesz odkryć: {artist}.",
+    "daily_discovery": "Jest w Twoim Daily Discovery — wybrany dla Ciebie na dziś.",
+    "weekly_drop": "Jest w Twoim Weekly Drop: {section, select, new {nowe wydania} new_artists {nowi artyści} underground {underground} trending {na fali} outside {poza Twoim gustem} other {wybór tygodnia}}.",
+    "similar_to": "Jest podobny do „{title}”: te same gatunki albo powiązani artyści.",
+    "wildcard": "Niespodzianka — coś innego, żeby feed nie był przewidywalny.",
+    "first": "Prawie nikt go jeszcze nie słyszał — możesz być jedną z pierwszych osób.",
+    "small": "Tylko {listeners, plural, one {# słuchacz} few {# słuchaczy} many {# słuchaczy} other {# słuchacza}} w tym miesiącu — mały artysta, którego warto znaleźć.",
+    "growing": "Szybko rośnie: {more, plural, one {# słuchacz więcej} few {# słuchaczy więcej} many {# słuchaczy więcej} other {# słuchacza więcej}} w tym tygodniu."
+  },
+  "Today": {
+    "title": "Dziś",
+    "lead": "Co dziś odkryjesz? Dziesięć nowych utworów wybranych dla Ciebie, cotygodniowy drop i podróże, gdy chcesz dać się zaskoczyć.",
+    "loading": "Wybieramy dzisiejszą muzykę…",
+    "signedOut": "Zaloguj się, żeby dostawać Daily Discovery i Weekly Drop — wybieramy je na podstawie Twoich dotychczasowych odkryć. Surprise Me działa bez konta.",
+    "signIn": "Zaloguj się",
+    "noDaily": "Teraz nie ma z czego wybrać nowej muzyki — spróbuj podróży poniżej albo wróć później.",
+    "progressLabel": "Odkryte utwory",
+    "progress": "Odkryte: {progress} z {target} · +{xp} XP po ukończeniu",
+    "completed": "Gotowe — +{xp} XP. Nowy wybór jutro.",
+    "start": "Zaczynamy",
+    "continue": "Kontynuuj",
+    "heard": "Odkryty",
+    "daily": {
+      "kicker": "Daily Discovery",
+      "title": "Dziesięć nowych utworów na dziś",
+      "lead": "Wybrane na podstawie tego, czego słuchasz, z kilkoma krokami w bok. Odkryj {target}, żeby ukończyć."
+    },
+    "weekly": {
+      "kicker": "Weekly Drop",
+      "title": "Drop tego tygodnia",
+      "lead": "Nowe wydania, nowi artyści, underground, to, co zyskuje, i coś spoza Twojego gustu. Odkryj {target}, żeby ukończyć."
+    },
+    "sections": {
+      "new": "Nowe wydania",
+      "new_artists": "Nowi artyści dla Ciebie",
+      "underground": "Underground",
+      "trending": "Na fali",
+      "outside": "Poza Twoim gustem"
+    },
+    "surprise": {
+      "title": "Zaskocz mnie",
+      "lead": "Wybierz kierunek — feed rusza od razu."
+    },
+    "journeys": {
+      "surprise": {
+        "name": "Zaskocz mnie",
+        "text": "Cokolwiek dobrego, szeroko."
+      },
+      "something_new": {
+        "name": "Coś nowego",
+        "text": "Świeże wydania artystów, których nie znasz."
+      },
+      "outside_taste": {
+        "name": "Poza moim gustem",
+        "text": "Gatunki, których nigdy nie wybierasz."
+      },
+      "underground": {
+        "name": "Underground",
+        "text": "Artyści z mniej niż 10 000 słuchaczy."
+      },
+      "global": {
+        "name": "Świat",
+        "text": "Muzyka z innych krajów."
+      },
+      "similar_to_me": {
+        "name": "Podobni do mnie",
+        "text": "Co odkrywają osoby o podobnym guście."
+      }
+    },
+    "moreLabel": "Więcej do odkrycia",
+    "more": {
+      "rising": "Zyskujące w tym tygodniu →",
+      "underground": "Lista underground →",
+      "world": "Odkryj świat →",
+      "fresh": "Wydane w ostatnich 24 godzinach →"
+    },
+    "missions": "Dzisiejsze misje",
+    "allMissions": "Wszystkie misje →"
+  },
+  "Missions": {
+    "empty": "Teraz nie ma misji — nowe zaczną się wkrótce.",
+    "cadence": {
+      "daily": "Dziś",
+      "weekly": "Ten tydzień",
+      "monthly": "Ten miesiąc",
+      "event": "Wydarzenie specjalne"
+    },
+    "ends": "do {date}",
+    "xp": "+{xp} XP",
+    "done": "Ukończona",
+    "progress": "{progress} / {target}",
+    "metrics": {
+      "new_songs": "{target, plural, one {Odkryj nowy utwór} few {Odkryj # nowe utwory} many {Odkryj # nowych utworów} other {Odkryj # nowego utworu}}",
+      "new_artists": "{target, plural, one {Odkryj artystę, którego nie znasz} few {Odkryj # artystów, których nie znasz} many {Odkryj # artystów, których nie znasz} other {Odkryj # artysty, których nie znasz}}",
+      "new_genres": "{target, plural, one {Poznaj nowy gatunek} few {Poznaj # nowe gatunki} many {Poznaj # nowych gatunków} other {Poznaj # nowego gatunku}}",
+      "new_countries": "{target, plural, one {Odkryj muzykę z nowego kraju} few {Odkryj muzykę z # nowych krajów} many {Odkryj muzykę z # nowych krajów} other {Odkryj muzykę z # nowego kraju}}",
+      "regions": "Odkryj artystów z {target} części świata",
+      "saves": "{target, plural, one {Zapisz odkryty utwór} few {Zapisz # odkryte utwory} many {Zapisz # odkrytych utworów} other {Zapisz # odkrytego utworu}}",
+      "shares": "{target, plural, one {Udostępnij utwór} few {Udostępnij # utwory} many {Udostępnij # utworów} other {Udostępnij # utworu}}",
+      "full_listens": "{target, plural, one {Wysłuchaj w całości świeżego odkrycia} few {Wysłuchaj w całości # świeże odkrycia} many {Wysłuchaj w całości # świeżych odkryć} other {Wysłuchaj w całości # świeżego odkrycia}}",
+      "small_artists": "{target, plural, one {Znajdź artystę, którego obserwuje najwyżej 50 osób} few {Znajdź # artystów, których obserwuje najwyżej 50 osób} many {Znajdź # artystów, których obserwuje najwyżej 50 osób} other {Znajdź # artysty, których obserwuje najwyżej 50 osób}}",
+      "days": "Odkrywaj coś nowego przez {target} dni",
+      "underground": "{target, plural, one {Znajdź artystę z mniej niż 10 tys. słuchaczy} few {Znajdź # artystów z mniej niż 10 tys. słuchaczy} many {Znajdź # artystów z mniej niż 10 tys. słuchaczy} other {Znajdź # artysty z mniej niż 10 tys. słuchaczy}}",
+      "artist_countries": "Odkryj artystów z {target} różnych krajów",
+      "daily_set": "Ukończ swoje Daily Discovery"
+    }
   }
 }

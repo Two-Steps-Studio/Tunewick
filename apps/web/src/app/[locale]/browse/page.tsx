@@ -71,6 +71,9 @@ export default async function BrowsePage({ params, searchParams }: PageProps<"/[
       <header className="discover__head">
         <h1 className="discover__title">{t("title")}</h1>
         <p className="discover__lead">{t("lead")}</p>
+        <Link href="/charts" className="discover__more">
+          {t("charts")}
+        </Link>
       </header>
 
       <nav aria-label={t("countryLabel")} className="region-filter">

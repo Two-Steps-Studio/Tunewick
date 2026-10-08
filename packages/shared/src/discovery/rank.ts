@@ -77,12 +77,19 @@ export type ReasonCode =
   | "wildcard"
   /** Pinned by the request: a shared link, or "Discover this artist". */
   | "shared"
-  | "artist_spotlight";
+  | "artist_spotlight"
+  /** From the listener's Daily Discovery / Weekly Drop, or "Similar to" a song. */
+  | "daily_discovery"
+  | "weekly_drop"
+  | "similar_to";
 
 export interface Reason {
   code: ReasonCode;
   genreId?: number;
   countryCode?: string;
+  /** The song a "similar to" item is like; the Weekly Drop section of a set item. */
+  title?: string;
+  section?: string;
 }
 
 export interface RankedItem {
@@ -102,6 +109,10 @@ export interface RankOptions {
   seed: number;
   now?: number;
   weights?: FeatureWeights;
+  /** Random jitter (default FEED.jitter); Surprise Me raises it. */
+  jitter?: number;
+  /** Only candidates passing this test (journeys, sets). */
+  filter?: (candidate: Candidate) => boolean;
 }
 
 export type Features = Record<keyof FeatureWeights, number>;
@@ -301,12 +312,13 @@ export function rankFeed(
     ? clamp(options.explorationShare ?? FEED.explorationShare, 0, 0.5)
     : 0;
 
+  const jitterSize = options.jitter ?? FEED.jitter;
   const pool: Scored[] = candidates
-    .filter((c) => !options.exclude?.has(c.trackId))
+    .filter((c) => !options.exclude?.has(c.trackId) && (options.filter?.(c) ?? true))
     .map((candidate) => {
       const f = features(candidate, taste, ctx);
       const exploration = share > 0 && isExploration(candidate, taste);
-      const jitter = (random() - 0.5) * FEED.jitter;
+      const jitter = (random() - 0.5) * jitterSize;
       const score = scoreOf(f, weights) + jitter;
       // Experiments favour the unknown and the undiscovered (low popularity), but still music
       // listeners finish and keep.

@@ -1,4 +1,4 @@
-import { isDiscoveryMode } from "@tunewick/shared";
+import { isDiscoveryMode, JOURNEYS } from "@tunewick/shared";
 import { type NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { routing } from "@/i18n/routing";
@@ -24,6 +24,11 @@ const querySchema = z.object({
     .string()
     .regex(/^[a-z0-9-]{2,60}$/)
     .optional(),
+  journey: z.enum(JOURNEYS).optional(),
+  similar: z
+    .string()
+    .regex(/^[a-z2-9]{10}$/)
+    .optional(),
   locale: z.enum(routing.locales).default(routing.defaultLocale),
 });
 
@@ -31,13 +36,15 @@ const querySchema = z.object({
 export async function GET(request: NextRequest) {
   const parsed = querySchema.safeParse(Object.fromEntries(request.nextUrl.searchParams));
   if (!parsed.success) return new NextResponse(null, { status: 400 });
-  const { mode, seed, exclude, start, artist, locale } = parsed.data;
+  const { mode, seed, exclude, start, artist, journey, similar, locale } = parsed.data;
   const page = await getFeedPage({
     mode: mode && isDiscoveryMode(mode) ? mode : undefined,
     seed,
     exclude,
     startCode: start,
     artistSlug: artist,
+    journey,
+    similarCode: similar,
     locale,
   });
   return NextResponse.json(page, { headers: { "Cache-Control": "private, no-store" } });

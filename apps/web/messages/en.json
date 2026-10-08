@@ -1270,7 +1270,8 @@
       "firstRelease": "First release {when} · {count, plural, one {# release} other {# releases}}"
     },
     "soundcheck": "Soundcheck {seconds} s",
-    "soundcheckLabel": "Hear an excerpt: {title} — {artist}"
+    "soundcheckLabel": "Hear an excerpt: {title} — {artist}",
+    "charts": "See this week’s charts →"
   },
   "Feed": {
     "title": "Discover",
@@ -1337,12 +1338,38 @@
       "new_country": "Something new for you: music from {country}",
       "wildcard": "A wildcard — something you haven't heard",
       "shared": "Shared with you",
-      "artist_spotlight": "Discovering {artist}"
+      "artist_spotlight": "Discovering {artist}",
+      "daily_discovery": "Your Daily Discovery",
+      "similar_to": "Similar to {title}",
+      "weekly_drop": "Weekly Drop · {section, select, new {new releases} new_artists {new artists} underground {underground} trending {trending} outside {outside your usual} other {picks}}"
     },
     "previewUnsupported": "This browser can't play the preview. Try another browser or Play full song.",
     "browse": "Browse new releases",
     "accountDeleted": "Your account has been deleted. Thank you for being with us.",
-    "report": "Report this release"
+    "report": "Report this release",
+    "clip": "Video for stories (MP4)",
+    "clipWorking": "Preparing the video…",
+    "clipReady": "Video ready — share or download",
+    "clipState": {
+      "failed": "The video could not be prepared. Try again in a moment.",
+      "unavailable": "No video is available for this song.",
+      "signin": "Sign in to prepare a video.",
+      "limit": "You have made many videos this hour — try again later."
+    },
+    "charts": "Charts",
+    "why": "Why?",
+    "similar": "Similar to this",
+    "today": "Today",
+    "clearLens": "Back to your feed",
+    "similarLens": "Similar",
+    "journeys": {
+      "surprise": "Surprise me",
+      "something_new": "Something new",
+      "outside_taste": "Outside my taste",
+      "underground": "Underground",
+      "global": "Global",
+      "similar_to_me": "Similar to me"
+    }
   },
   "Onboarding": {
     "title": "Discovery preferences",
@@ -1395,8 +1422,8 @@
       "global_explorer": "Global Explorer"
     },
     "toNextLevel": "Progress to level {level}",
-    "toNextLevelPoints": "{score} to level {level}",
-    "points": "Discovery Points",
+    "toNextLevelPoints": "{score} XP to level {level}",
+    "points": "XP",
     "today": "Today",
     "diversity": "Diversity",
     "streak": "{count, plural, one {# day discovery streak} other {# day discovery streak}}",
@@ -1435,7 +1462,7 @@
         "newSongs": "New discoveries",
         "saves": "Songs saved",
         "follows": "Artists followed",
-        "points": "Points"
+        "points": "XP"
       },
       "hint": "Previews count as listening time; plays are full-player listens of at least 30 seconds."
     },
@@ -1475,7 +1502,12 @@
         "collector": "Collector",
         "early_supporter": "Early Supporter",
         "challenger": "Challenger",
-        "season_star": "Season Star"
+        "season_star": "Season Star",
+        "globetrotter": "Globetrotter",
+        "underground_hunter": "Underground Hunter",
+        "night_listener": "Night Listener",
+        "discovery_machine": "Discovery Machine",
+        "year_explorer": "Year Explorer"
       },
       "metrics": {
         "songs": "{count, plural, one {Discover your first song} other {Discover # songs}}",
@@ -1487,7 +1519,11 @@
         "early_supporter": "Discover an artist with under 25 followers who later passes 100",
         "saves": "Save {count} songs",
         "challenges": "Complete {count} weekly challenges",
-        "season_top10": "Finish a season in the top 10% of discoverers"
+        "season_top10": "Finish a season in the top 10% of discoverers",
+        "underground": "Discover {count} artists with fewer than 10,000 listeners",
+        "night": "Do most of your listening between 10 pm and 5 am",
+        "best_week_songs": "Discover {count} songs in one week",
+        "year_discovery_xp": "Earn {count} discovery XP in one year"
       },
       "unlocked": "Unlocked {date}",
       "locked": "Not yet"
@@ -1506,7 +1542,10 @@
         "save": "Saving a song (once per song)",
         "full_listen": "Listening to a new discovery in full (once a day)",
         "share": "Sharing a song (once a day per song)",
-        "challenge": "A completed weekly challenge (once per challenge)"
+        "challenge": "A completed mission (its own XP)",
+        "underground": "An artist with fewer than 10,000 listeners (once per artist)",
+        "daily_complete": "Completing your Daily Discovery (once a day)",
+        "weekly_complete": "Completing your Weekly Drop (once a week)"
       },
       "fair": "Points reward discovering, not hours of playback: replays, loops and quick skips earn nothing, and every kind of point has a daily cap."
     },
@@ -1520,29 +1559,14 @@
     },
     "following": "People you follow",
     "compareWith": "Compare",
-    "challenges": {
-      "title": "This week’s challenges",
-      "points": "+20 pts",
-      "hint": "The same three challenges for everyone, new every Monday. This set ends {date}.",
-      "names": {
-        "thirty_songs": "Discover {target} new songs",
-        "ten_artists": "Discover {target} new artists",
-        "three_genres": "Listen to {target} genres you have not heard yet",
-        "three_countries": "Discover music from {target} new countries",
-        "two_regions": "Discover artists from {target} different parts of the world",
-        "five_saves": "Save {target} songs you discovered",
-        "two_shares": "Share {target} songs with someone",
-        "five_full_listens": "Hear {target} fresh discoveries all the way through",
-        "small_artists": "Find {target} artists with at most 50 followers",
-        "five_days": "Discover something new on {target} days this week"
-      }
-    },
     "seasons": {
       "title": "Your seasons",
       "name": "Season {quarter} · {year}",
-      "place": "#{rank} of {participants} · {points} pts",
+      "place": "#{rank} of {participants} · {points} XP",
       "hint": "A season is a quarter. Your place counts every discoverer, including those who stay out of the public ranking — only you see it."
-    }
+    },
+    "scoreHint": "Your Discovery Score grows only by discovering — new songs, artists, genres, countries and small scenes — and more when you discover widely. You earn XP for everything you do on TuneWick; your level follows XP.",
+    "missions": "Missions"
   },
   "Rankings": {
     "title": "Rankings",
@@ -1567,20 +1591,20 @@
     "country": "Country",
     "show": "Show",
     "heading": "{scope} · {period}",
-    "you": "You: #{rank} of {participants} · {points} points",
+    "you": "You: #{rank} of {participants} · {points} XP",
     "percentile": "more than {percentile}% of listeners",
     "notListed": "You are not shown publicly — set a profile name.",
     "notRanked": "No points in this period yet — discover something new.",
     "signIn": "Sign in to see your place.",
     "empty": "Nobody here yet this period. Be the first.",
     "discoveries": "{count, plural, one {# discovery} other {# discoveries}}",
-    "points": "{points} pts",
+    "points": "{points} XP",
     "fair": "Weekly rankings reset every Monday (UTC). Shown: listeners with a profile name who did not opt out.",
     "seasonName": "Season {quarter} · {year}",
     "seasonEnds": "{season} ends on {date}. That is when your final place is recorded."
   },
   "Notices": {
-    "points": "+{points}",
+    "points": "+{points} XP",
     "dismiss": "Dismiss",
     "parts": {
       "new_song": "New song",
@@ -1590,7 +1614,8 @@
       "country": "Music from {country}",
       "save": "Saved",
       "full_listen": "Full listen",
-      "share": "Shared"
+      "share": "Shared",
+      "underground": "small scene"
     },
     "goal": {
       "daily_artists": "Daily goal completed: {target} new artists!",
@@ -1601,7 +1626,7 @@
     "streak": "{days} day discovery streak",
     "roll": "You're on a roll! {count} discoveries today",
     "achievement": "Achievement unlocked: {name}",
-    "challenge": "Challenge complete: {name}"
+    "mission": "Mission complete: {name}"
   },
   "Compare": {
     "title": "You vs {name}",
@@ -1620,8 +1645,235 @@
       "newArtists": "New artists",
       "countries": "Countries",
       "listening": "Listening",
-      "points": "Discovery points"
+      "points": "XP"
     },
     "hint": "Shown because of their privacy setting; your own setting decides what they see of you."
+  },
+  "Charts": {
+    "title": "Charts",
+    "lead": "What people listen to and discover this week — counted in listeners, never plays, so loops and bots don’t move anything.",
+    "loading": "Loading charts…",
+    "tabsLabel": "Chart",
+    "scopeLabel": "Where",
+    "citiesLabel": "City scenes",
+    "artistChartsLabel": "Artist chart",
+    "freshLabel": "Released",
+    "country": "Country…",
+    "genre": "Genre…",
+    "show": "Show",
+    "play": "Play from here",
+    "playFrom": "Play from {title} by {artist}",
+    "discoverArtist": "Discover {name}",
+    "new": "new",
+    "tabs": {
+      "top": "Top 100",
+      "rising": "Rising",
+      "underground": "Underground",
+      "discovered": "Most discovered",
+      "saved": "Most saved",
+      "shared": "Most shared",
+      "artists": "Artists",
+      "fresh": "Fresh",
+      "world": "Discover the world"
+    },
+    "scope": {
+      "global": "Global",
+      "popularIn": "Popular in {place}",
+      "from": "Music from {place}",
+      "city": "{city} scene",
+      "genre": "{genre}"
+    },
+    "regions": {
+      "europe": "Europe",
+      "americas": "Americas",
+      "asia": "Asia",
+      "africa": "Africa",
+      "oceania": "Oceania"
+    },
+    "about": {
+      "top": "Listeners in the last 7 days. “Popular in …” counts listeners there — shown once at least 3 of them listen.",
+      "rising": "Songs gaining the most listeners compared with the week before.",
+      "underground": "The most listened songs by artists with fewer than 10,000 listeners a month.",
+      "discovered": "Songs most people heard for the first time this week — TuneWick’s own chart.",
+      "saved": "Songs saved to crates this week.",
+      "shared": "Songs shared this week."
+    },
+    "aboutArtists": {
+      "rising": "Artists gaining the most listeners compared with the week before.",
+      "underground": "Artists with fewer than 10,000 listeners a month, by listeners this week.",
+      "new_listeners": "Artists with the most people hearing them for the first time this week.",
+      "discovered": "Artists discovered by the most people this week."
+    },
+    "artistCharts": {
+      "rising": "Rising artists",
+      "underground": "Underground artists",
+      "new_listeners": "Most new listeners",
+      "discovered": "Most discovered"
+    },
+    "values": {
+      "top": "{count, plural, one {# listener} other {{value} listeners}}",
+      "rising": "{count, plural, one {+# listener} other {+{value} listeners}}",
+      "underground": "{count, plural, one {# listener} other {{value} listeners}}",
+      "discovered": "{count, plural, one {# discovery} other {{value} discoveries}}",
+      "saved": "{count, plural, one {# save} other {{value} saves}}",
+      "shared": "{count, plural, one {# share} other {{value} shares}}"
+    },
+    "artistValues": {
+      "rising": "{count, plural, one {+# listener} other {+{value} listeners}}",
+      "underground": "{count, plural, one {# listener} other {{value} listeners}}",
+      "new_listeners": "{count, plural, one {# new listener} other {{value} new listeners}}",
+      "discovered": "{count, plural, one {# discovery} other {{value} discoveries}}"
+    },
+    "fresh": {
+      "h24": "Last 24 hours",
+      "h168": "Last 7 days",
+      "h720": "Last 30 days"
+    },
+    "empty": {
+      "top": "No chart here yet — not enough listeners this week.",
+      "rising": "Nothing is rising here yet.",
+      "underground": "No underground songs here this week yet.",
+      "discovered": "Nobody discovered music here this week yet — be the first.",
+      "saved": "Nothing saved here this week yet.",
+      "shared": "Nothing shared here this week yet."
+    },
+    "emptyArtists": "No artists in this chart yet.",
+    "emptyFresh": "No new releases here in this time.",
+    "emptyCta": "Discover music",
+    "world": {
+      "title": "Discover the world",
+      "lead": "The most listened song from each country this week.",
+      "leadOutside": "The most listened song from each country this week — outside {country}.",
+      "empty": "Music from other countries will show up here as soon as people listen to it."
+    }
+  },
+  "Segment": {
+    "errorTitle": "Something went wrong",
+    "errorText": "This part of TuneWick could not load. Your data is safe — try again.",
+    "retry": "Try again"
+  },
+  "Why": {
+    "title": "Why this song?",
+    "note": "From your listening on TuneWick and public listener counts — no guesswork, no AI.",
+    "followed_artist": "You follow {artist}.",
+    "artist_you_like": "You’ve been listening to {artist} — here’s more of their music.",
+    "genre_you_like": "You often discover {genre}, and this is {genre} you haven’t heard yet.",
+    "genre_you_like_plain": "It’s close to the genres you discover most.",
+    "listeners_like_you": "People with a taste like yours listen to {artist}.",
+    "loved_by_listeners": "{percent}% of people who start it hear it to the end.",
+    "loved_by_listeners_plain": "People who find it tend to finish it and save it.",
+    "near_you": "It’s from {country}, where you are.",
+    "popular": "{listeners, plural, one {# person} other {# people}} listened to it this month.",
+    "rising": "{more, plural, one {# more listener} other {# more listeners}} this week than last.",
+    "new_release": "{days, plural, =0 {Released today.} one {Released yesterday.} other {Released # days ago.}}",
+    "new_genre": "{genre} is new for you — a step outside your usual.",
+    "new_country": "Music from {country} — a country you haven’t discovered yet.",
+    "shared": "Someone shared this song with you.",
+    "artist_spotlight": "You asked to discover {artist}.",
+    "daily_discovery": "It’s in your Daily Discovery — picked for you today.",
+    "weekly_drop": "It’s in your Weekly Drop: {section, select, new {new releases} new_artists {new artists} underground {underground} trending {trending} outside {outside your usual} other {this week’s picks}}.",
+    "similar_to": "It’s like “{title}”: same genres, or artists connected to it.",
+    "wildcard": "A wildcard — something different to keep your feed fresh.",
+    "first": "Hardly anyone has heard it yet — you could be one of the first.",
+    "small": "Only {listeners, plural, one {# listener} other {# listeners}} this month — a small artist worth finding.",
+    "growing": "Growing fast: {more, plural, one {# more listener} other {# more listeners}} this week."
+  },
+  "Today": {
+    "title": "Today",
+    "lead": "What will you discover today? Ten new songs picked for you, a weekly drop, and journeys when you want to be surprised.",
+    "loading": "Picking today’s music…",
+    "signedOut": "Sign in to get your Daily Discovery and Weekly Drop — they’re picked from what you’ve discovered so far. Surprise Me works without an account.",
+    "signIn": "Sign in",
+    "noDaily": "No new music to pick from right now — try a journey below or come back later.",
+    "progressLabel": "Discovered songs",
+    "progress": "{progress} of {target} discovered · +{xp} XP when done",
+    "completed": "Done — +{xp} XP. New picks tomorrow.",
+    "start": "Start",
+    "continue": "Continue",
+    "heard": "Discovered",
+    "daily": {
+      "kicker": "Daily Discovery",
+      "title": "Ten new songs for today",
+      "lead": "Picked from your listening, with a few steps outside it. Discover {target} to complete it."
+    },
+    "weekly": {
+      "kicker": "Weekly Drop",
+      "title": "This week’s drop",
+      "lead": "New releases, new artists, underground, what’s rising, and something outside your usual. Discover {target} to complete it."
+    },
+    "sections": {
+      "new": "New releases",
+      "new_artists": "New artists for you",
+      "underground": "Underground",
+      "trending": "Rising now",
+      "outside": "Outside your usual"
+    },
+    "surprise": {
+      "title": "Surprise me",
+      "lead": "Pick a direction — the feed starts right away."
+    },
+    "journeys": {
+      "surprise": {
+        "name": "Surprise me",
+        "text": "Anything good, wide open."
+      },
+      "something_new": {
+        "name": "Something new",
+        "text": "Fresh releases from artists you don’t know."
+      },
+      "outside_taste": {
+        "name": "Outside my taste",
+        "text": "Genres you’ve never chosen."
+      },
+      "underground": {
+        "name": "Underground",
+        "text": "Artists with under 10,000 listeners."
+      },
+      "global": {
+        "name": "Global",
+        "text": "Music from other countries."
+      },
+      "similar_to_me": {
+        "name": "Similar to me",
+        "text": "What people like you are discovering."
+      }
+    },
+    "moreLabel": "More to explore",
+    "more": {
+      "rising": "Rising this week →",
+      "underground": "Underground chart →",
+      "world": "Discover the world →",
+      "fresh": "Released in the last 24 hours →"
+    },
+    "missions": "Today’s missions",
+    "allMissions": "All missions →"
+  },
+  "Missions": {
+    "empty": "No missions right now — new ones start soon.",
+    "cadence": {
+      "daily": "Today",
+      "weekly": "This week",
+      "monthly": "This month",
+      "event": "Special event"
+    },
+    "ends": "ends {date}",
+    "xp": "+{xp} XP",
+    "done": "Done",
+    "progress": "{progress} / {target}",
+    "metrics": {
+      "new_songs": "{target, plural, one {Discover a new song} other {Discover # new songs}}",
+      "new_artists": "{target, plural, one {Discover an artist you’ve never heard} other {Discover # artists you’ve never heard}}",
+      "new_genres": "{target, plural, one {Explore a new genre} other {Explore # new genres}}",
+      "new_countries": "{target, plural, one {Discover music from a new country} other {Discover music from # new countries}}",
+      "regions": "Discover artists from {target} parts of the world",
+      "saves": "{target, plural, one {Save a song you discovered} other {Save # songs you discovered}}",
+      "shares": "{target, plural, one {Share a song} other {Share # songs}}",
+      "full_listens": "{target, plural, one {Hear a fresh discovery all the way through} other {Hear # fresh discoveries all the way through}}",
+      "small_artists": "{target, plural, one {Find an artist with at most 50 followers} other {Find # artists with at most 50 followers}}",
+      "days": "Discover something new on {target} days",
+      "underground": "{target, plural, one {Find an artist with fewer than 10k listeners} other {Find # artists with fewer than 10k listeners}}",
+      "artist_countries": "Discover artists from {target} different countries",
+      "daily_set": "Complete your Daily Discovery"
+    }
   }
 }

@@ -78,8 +78,8 @@ genre name columns. None of it is removed; it is generalized.
 ~~Friends comparison~~ (done), learned recommendation model and audio embeddings, ~~automatic
 "best moment" detection in the worker (energy/novelty curve) and waveform~~ (done 2026-10-08,
 docs/audio.md §2.6), ~~seasonal rankings and
-challenges~~ (done 2026-10-08), creator tools and promotional clips (video render of
-the share card + preview audio), bot detection beyond rate rules (timing entropy, device
+challenges~~ (done 2026-10-08), creator tools, ~~promotional clips (video render of
+the share card + preview audio)~~ (done 2026-10-08), bot detection beyond rate rules (timing entropy, device
 fingerprints — only with legal review), personalized discovery campaigns.
 
 ## 4. Recommendation (X5)
@@ -205,3 +205,21 @@ chose — and never to the exploration share, which stays the listener's setting
   complete them. A fresh completion shows a notice; 10 completed unlock **Challenger**.
 - Why not personalized challenge targets: adaptive goals already cover "your pace"; challenges are
   deliberately shared so friends can compare the same task. Staff tune targets in the table.
+
+### Video clips for stories (2026-10-08)
+
+The share menu offers **Video for stories (MP4)**: the 9:16 story card with the song's preview
+(the artist's soundcheck, else the best moment) and a lime progress bar — what Stories, Reels,
+TikTok and Shorts take. One clip per track, window, language and card design (`CLIP_DESIGN` in
+`modules/discover/clips.ts`), shared by everyone; only signed-in listeners can start a new one
+(10 an hour). The app renders the card into the ingest bucket (`clips/<id>/card.png`), the worker
+cuts the window from the track's 'high' AAC variant and muxes H.264 + AAC with `faststart` into the
+media bucket (`clips/<track>/<id>.mp4`); the menu polls until it is ready, then opens the phone's
+share sheet with the file (or downloads it). Tables/functions: `share_clips`,
+`request_share_clip`, `queue_share_clip`, `share_clip`, worker `claim/finish/fail_share_clip`;
+the data export lists the clips a person requested (`my_share_clips`). A taken-down song's clip
+is no longer served. Clips are removed daily (`private.expire_share_clips`, pg_cron) when their song is no
+longer public, nobody asked for them in 90 days (e.g. after the soundcheck changed) or they never
+got going; their card and video go to the **storage sweep** (`private.storage_deletions`), which
+the worker empties (S3 DELETE, then `finish_storage_deletions`). The sweep is generic: replaced
+masters, images and deleted accounts' files can queue their objects the same way.

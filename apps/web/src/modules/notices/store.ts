@@ -21,7 +21,7 @@ export type Notice =
   | { id: number; kind: "streak"; days: number }
   | { id: number; kind: "roll"; count: number }
   | { id: number; kind: "achievement"; code: string }
-  | { id: number; kind: "challenge"; code: string; target: number };
+  | { id: number; kind: "mission"; metric: string; target: number; xp: number };
 
 /** What one listen earned (record_listen). */
 export interface ListenAwards {
@@ -97,11 +97,18 @@ interface TodayProgress {
   todaySongs: number;
   currentStreak: number;
   goals: Goal[];
-  challenges: { code: string; target: number; completedAt: string | null; endsAt: string }[];
+  missions: {
+    code: string;
+    metric: string;
+    target: number;
+    xp: number;
+    completedAt: string | null;
+    endsAt: string;
+  }[];
 }
 
-/** A challenge completed this recently was completed by what the listener just did. */
-const FRESH_CHALLENGE_MS = 10 * 60_000;
+/** A mission completed this recently was completed by what the listener just did. */
+const FRESH_MISSION_MS = 10 * 60_000;
 
 let checking = false;
 
@@ -120,12 +127,11 @@ async function celebrate() {
         push({ kind: "goal", goal: goal.key, target: goal.target });
       }
     }
-    for (const challenge of today.challenges) {
+    for (const mission of today.missions) {
       const fresh =
-        challenge.completedAt &&
-        Date.now() - Date.parse(challenge.completedAt) < FRESH_CHALLENGE_MS;
-      if (fresh && firstToday(`challenge.${challenge.code}.${challenge.endsAt}`)) {
-        push({ kind: "challenge", code: challenge.code, target: challenge.target });
+        mission.completedAt && Date.now() - Date.parse(mission.completedAt) < FRESH_MISSION_MS;
+      if (fresh && firstToday(`mission.${mission.code}.${mission.endsAt}`)) {
+        push({ kind: "mission", metric: mission.metric, target: mission.target, xp: mission.xp });
       }
     }
     const milestone = ROLL_MILESTONES.filter((m) => today.todaySongs >= m).at(-1);
@@ -160,6 +166,6 @@ export function reportAwards(result: ListenAwards | null) {
 export function reportPoints(points: number, part: "share" | "save") {
   if (points <= 0) return;
   push({ kind: "award", points, parts: [part] });
-  // A save or share may complete a weekly challenge.
+  // A save or share may complete a mission.
   void celebrate();
 }

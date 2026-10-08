@@ -67,6 +67,18 @@ export async function presignIngestUpload(key: string): Promise<string> {
   return signed.url;
 }
 
+/** Writes a server-made file into the ingest bucket (e.g. the card a share clip is made from). */
+export async function putIngestObject(key: string, body: ArrayBuffer, contentType: string) {
+  const cfg = config();
+  if (!cfg) throw new Error("Media storage is not configured");
+  const response = await client(cfg).fetch(objectUrl(cfg, key), {
+    method: "PUT",
+    body,
+    headers: { "Content-Type": contentType },
+  });
+  if (!response.ok) throw new Error(`Storage PUT failed: ${response.status}`);
+}
+
 /** Size of an uploaded object in the ingest bucket, or null when it does not exist. */
 export async function ingestObjectSize(key: string): Promise<number | null> {
   const cfg = config();
@@ -84,11 +96,18 @@ const DAY_MS = 24 * 60 * 60 * 1000;
  * Short-lived GET URL for a delivery variant — members' preview of their own processed tracks.
  * Public playback will go through the media edge with playback tokens (docs/architecture.md §6.4).
  */
-export async function presignVariantGet(key: string): Promise<string | null> {
+export async function presignVariantGet(
+  key: string,
+  /** Download under this file name instead of playing inline. */
+  downloadName?: string,
+): Promise<string | null> {
   const cfg = config();
   if (!cfg?.mediaBucket) return null;
   const url = new URL(objectUrl(cfg, key, cfg.mediaBucket));
   url.searchParams.set("X-Amz-Expires", String(PREVIEW_URL_TTL_S));
+  if (downloadName) {
+    url.searchParams.set("response-content-disposition", `attachment; filename="${downloadName}"`);
+  }
   const signed = await client(cfg).sign(url.toString(), {
     method: "GET",
     aws: { signQuery: true },

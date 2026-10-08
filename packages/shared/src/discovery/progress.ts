@@ -17,9 +17,13 @@ export function diversity(genreCounts: readonly number[]): number {
   return Math.min(1, entropy / Math.log(DIVERSITY_REFERENCE_GENRES));
 }
 
-/** Discovery Score: lifetime points × 10, up to +25 % for diverse discovering. */
-export function discoveryScore(points: number, genreCounts: readonly number[]): number {
-  return Math.round(10 * Math.max(0, points) * (0.8 + 0.2 * diversity(genreCounts)));
+/**
+ * Discovery Score: XP earned by discovering (new songs, artists, genres, countries, underground
+ * finds, finished discoveries — not missions, saves or shares), up to +25 % for diverse
+ * discovering. Levels follow total XP (`levelFor`).
+ */
+export function discoveryScore(discoveryXp: number, genreCounts: readonly number[]): number {
+  return Math.round(Math.max(0, discoveryXp) * (0.8 + 0.2 * diversity(genreCounts)));
 }
 
 export interface Level {
@@ -32,6 +36,7 @@ export interface Level {
   progress: number;
 }
 
+/** Level for a total XP. */
 export function levelFor(score: number): Level {
   const { thresholds, titles, stepAfter } = LEVELS;
   const last = thresholds.length - 1;

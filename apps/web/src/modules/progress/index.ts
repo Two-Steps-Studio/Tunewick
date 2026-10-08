@@ -1,8 +1,9 @@
 export {
   getLeaderboard,
-  getMyChallenges,
+  getMyMissions,
   getMySeasons,
-  type Challenge,
+  type Mission,
+  type MissionCadence,
   getMyAchievements,
   getMyProgress,
   getMyRecords,
@@ -14,3 +15,4 @@ export {
   type StatsPeriod,
   type WeeklyRecap,
 } from "./queries";
+export { MissionList } from "./ui/missions";

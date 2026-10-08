@@ -10,7 +10,8 @@ import { ViewEvent } from "@/modules/discover";
 import { getMyFollowing } from "@/modules/social";
 import {
   getMyAchievements,
-  getMyChallenges,
+  getMyMissions,
+  MissionList,
   getMySeasons,
   getMyProgress,
   getMyRecords,
@@ -67,7 +68,7 @@ export default async function YouPage({ params, searchParams }: PageProps<"/[loc
     ? (query.period as StatsPeriod)
     : "week";
   const format = await getFormatter();
-  const [progress, stats, records, recap, achievements, following, challenges, seasons] =
+  const [progress, stats, records, recap, achievements, following, missions, seasons] =
     await Promise.all([
       getMyProgress(),
       getMyStats(period),
@@ -75,7 +76,7 @@ export default async function YouPage({ params, searchParams }: PageProps<"/[loc
       getMyWeeklyRecap(1),
       getMyAchievements(),
       getMyFollowing(),
-      getMyChallenges(),
+      getMyMissions(),
       getMySeasons(),
     ]);
   if (!progress) return null;
@@ -111,13 +112,13 @@ export default async function YouPage({ params, searchParams }: PageProps<"/[loc
             {t("level", { level: progress.level.level })} · {t(`levels.${progress.level.title}`)}
           </p>
           <Meter
-            value={progress.score - progress.level.floor}
+            value={progress.pointsTotal - progress.level.floor}
             max={progress.level.next - progress.level.floor}
             label={t("toNextLevel", { level: progress.level.level + 1 })}
           />
           <p className="score-card__hint">
             {t("toNextLevelPoints", {
-              score: n(progress.level.next - progress.score),
+              score: n(progress.level.next - progress.pointsTotal),
               level: progress.level.level + 1,
             })}
           </p>
@@ -135,6 +136,7 @@ export default async function YouPage({ params, searchParams }: PageProps<"/[loc
               <dd>{format.number(progress.diversity, { style: "percent" })}</dd>
             </div>
           </dl>
+          <p className="score-card__hint">{t("scoreHint")}</p>
         </div>
         <p className="streak" data-active={progress.currentStreak > 0 || undefined}>
           <span aria-hidden="true">🔥</span>{" "}
@@ -176,39 +178,12 @@ export default async function YouPage({ params, searchParams }: PageProps<"/[loc
         <p className="field__hint">{t("goals.hint")}</p>
       </section>
 
-      {challenges.length ? (
-        <section aria-labelledby="challenges" className="you__section">
-          <h2 id="challenges" className="section-title">
-            {t("challenges.title")}
-          </h2>
-          <ul className="goals">
-            {challenges.map((c) => {
-              const name = t(`challenges.names.${c.code as "thirty_songs"}`, { target: c.target });
-              return (
-                <li key={c.code} className="goal" data-done={c.completedAt ? true : undefined}>
-                  <span className="goal__period">{t("challenges.points")}</span>
-                  <span className="goal__name">{name}</span>
-                  <span className="goal__count">
-                    {n(c.progress)} / {n(c.target)}
-                    {c.completedAt ? (
-                      <span className="goal__done"> · {t("goals.done")}</span>
-                    ) : null}
-                  </span>
-                  <Meter value={c.progress} max={c.target} label={name} />
-                </li>
-              );
-            })}
-          </ul>
-          <p className="field__hint">
-            {t("challenges.hint", {
-              date: format.dateTime(new Date(challenges[0]!.endsAt), {
-                dateStyle: "medium",
-                timeStyle: "short",
-              }),
-            })}
-          </p>
-        </section>
-      ) : null}
+      <section aria-labelledby="missions" className="you__section">
+        <h2 id="missions" className="section-title">
+          {t("missions")}
+        </h2>
+        <MissionList missions={missions} />
+      </section>
 
       <section aria-labelledby="stats" className="you__section">
         <h2 id="stats" className="section-title">

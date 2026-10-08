@@ -97,6 +97,7 @@ export default async function SongPage({ params }: PageProps<"/[locale]/song/[ar
             title: data.track.title,
             durationMs: null,
             explicit: data.track.explicit,
+            why: [],
             artist: data.artist,
             release: data.release,
             countryCode: data.artist.countryCode,

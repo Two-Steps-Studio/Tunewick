@@ -1,6 +1,7 @@
 import { randomInt } from "node:crypto";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { isJourney } from "@tunewick/shared";
 import type { Locale } from "@/i18n/routing";
 import {
   DiscoverFeed,
@@ -31,6 +32,10 @@ export default async function DiscoverPage({ params, searchParams }: PageProps<"
   const start = typeof query.start === "string" && CODE.test(query.start) ? query.start : undefined;
   const artist =
     typeof query.artist === "string" && SLUG.test(query.artist) ? query.artist : undefined;
+  const journey = isJourney(query.journey) ? query.journey : undefined;
+  const similar =
+    typeof query.similar === "string" && CODE.test(query.similar) ? query.similar : undefined;
+  const set = query.set === "daily" || query.set === "weekly" ? query.set : undefined;
   const { preferences, signedIn } = await getDiscoveryPreferences();
   // After deleting an account (privacy flow) the person lands here; say it was done.
   const tFeed = await getTranslations("Feed");
@@ -41,7 +46,7 @@ export default async function DiscoverPage({ params, searchParams }: PageProps<"
       </p>
     ) : null;
 
-  if (!preferences.onboarded && !start && !artist) {
+  if (!preferences.onboarded && !start && !artist && !journey && !similar && !set) {
     const t = await getTranslations("Onboarding");
     const [genres, countries] = await Promise.all([getGenres(locale), getCountryOptions(locale)]);
     return (
@@ -64,6 +69,9 @@ export default async function DiscoverPage({ params, searchParams }: PageProps<"
     seed: randomInt(2 ** 30),
     startCode: start,
     artistSlug: artist,
+    journey,
+    similarCode: similar,
+    set,
     locale,
   });
   return (

@@ -334,25 +334,37 @@ export type Database = {
       };
       discovery_challenges: {
         Row: {
+          cadence: string;
           code: string;
           enabled: boolean;
+          ends_at: string | null;
           metric: string;
+          starts_at: string | null;
           target: number;
           updated_at: string;
+          xp: number;
         };
         Insert: {
+          cadence?: string;
           code: string;
           enabled?: boolean;
+          ends_at?: string | null;
           metric: string;
+          starts_at?: string | null;
           target: number;
           updated_at?: string;
+          xp?: number;
         };
         Update: {
+          cadence?: string;
           code?: string;
           enabled?: boolean;
+          ends_at?: string | null;
           metric?: string;
+          starts_at?: string | null;
           target?: number;
           updated_at?: string;
+          xp?: number;
         };
         Relationships: [];
       };
@@ -457,6 +469,33 @@ export type Database = {
             referencedColumns: ["id"];
           },
         ];
+      };
+      discovery_sets: {
+        Row: {
+          completed_at: string | null;
+          created_at: string;
+          items: NonNullable<Json>;
+          kind: string;
+          period_start: string;
+          user_id: string;
+        };
+        Insert: {
+          completed_at?: string | null;
+          created_at?: string;
+          items: NonNullable<Json>;
+          kind: string;
+          period_start: string;
+          user_id: string;
+        };
+        Update: {
+          completed_at?: string | null;
+          created_at?: string;
+          items?: NonNullable<Json>;
+          kind?: string;
+          period_start?: string;
+          user_id?: string;
+        };
+        Relationships: [];
       };
       entitlements: {
         Row: {
@@ -883,6 +922,39 @@ export type Database = {
           },
         ];
       };
+      listening_daily: {
+        Row: {
+          artists: number;
+          day: string;
+          hours: number[];
+          ms_played: number;
+          plays: number;
+          tracks: number;
+          updated_at: string;
+          user_id: string;
+        };
+        Insert: {
+          artists?: number;
+          day: string;
+          hours?: number[];
+          ms_played?: number;
+          plays?: number;
+          tracks?: number;
+          updated_at?: string;
+          user_id: string;
+        };
+        Update: {
+          artists?: number;
+          day?: string;
+          hours?: number[];
+          ms_played?: number;
+          plays?: number;
+          tracks?: number;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
       listening_events: {
         Row: {
           artist_id: string;
@@ -1142,21 +1214,36 @@ export type Database = {
         Row: {
           activity_visibility: Database["public"]["Enums"]["visibility_level"];
           age_confirmed_at: string | null;
+          badges_visibility: Database["public"]["Enums"]["visibility_level"];
           locale: string;
+          profile_public: boolean;
+          replay_visibility: Database["public"]["Enums"]["visibility_level"];
+          score_visibility: Database["public"]["Enums"]["visibility_level"];
+          stats_visibility: Database["public"]["Enums"]["visibility_level"];
           updated_at: string;
           user_id: string;
         };
         Insert: {
           activity_visibility?: Database["public"]["Enums"]["visibility_level"];
           age_confirmed_at?: string | null;
+          badges_visibility?: Database["public"]["Enums"]["visibility_level"];
           locale?: string;
+          profile_public?: boolean;
+          replay_visibility?: Database["public"]["Enums"]["visibility_level"];
+          score_visibility?: Database["public"]["Enums"]["visibility_level"];
+          stats_visibility?: Database["public"]["Enums"]["visibility_level"];
           updated_at?: string;
           user_id: string;
         };
         Update: {
           activity_visibility?: Database["public"]["Enums"]["visibility_level"];
           age_confirmed_at?: string | null;
+          badges_visibility?: Database["public"]["Enums"]["visibility_level"];
           locale?: string;
+          profile_public?: boolean;
+          replay_visibility?: Database["public"]["Enums"]["visibility_level"];
+          score_visibility?: Database["public"]["Enums"]["visibility_level"];
+          stats_visibility?: Database["public"]["Enums"]["visibility_level"];
           updated_at?: string;
           user_id?: string;
         };
@@ -1650,6 +1737,71 @@ export type Database = {
         };
         Relationships: [];
       };
+      share_clips: {
+        Row: {
+          attempts: number;
+          bytes: number | null;
+          card_key: string;
+          claimed_at: string | null;
+          created_at: string;
+          design: number;
+          duration_ms: number;
+          finished_at: string | null;
+          id: string;
+          last_requested_at: string;
+          locale: string;
+          object_key: string | null;
+          requested_by: string | null;
+          start_ms: number;
+          status: Database["public"]["Enums"]["share_clip_status"];
+          track_id: string;
+        };
+        Insert: {
+          attempts?: number;
+          bytes?: number | null;
+          card_key: string;
+          claimed_at?: string | null;
+          created_at?: string;
+          design: number;
+          duration_ms: number;
+          finished_at?: string | null;
+          id?: string;
+          last_requested_at?: string;
+          locale: string;
+          object_key?: string | null;
+          requested_by?: string | null;
+          start_ms: number;
+          status?: Database["public"]["Enums"]["share_clip_status"];
+          track_id: string;
+        };
+        Update: {
+          attempts?: number;
+          bytes?: number | null;
+          card_key?: string;
+          claimed_at?: string | null;
+          created_at?: string;
+          design?: number;
+          duration_ms?: number;
+          finished_at?: string | null;
+          id?: string;
+          last_requested_at?: string;
+          locale?: string;
+          object_key?: string | null;
+          requested_by?: string | null;
+          start_ms?: number;
+          status?: Database["public"]["Enums"]["share_clip_status"];
+          track_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "share_clips_track_id_fkey";
+            columns: ["track_id"];
+            isOneToOne: false;
+            referencedRelation: "tracks";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       track_artists: {
         Row: {
           artist_id: string;
@@ -1695,6 +1847,8 @@ export type Database = {
           integrated_lufs: number | null;
           object_key: string;
           processed_at: string | null;
+          reanalysis_attempts: number;
+          reanalysis_claimed_at: string | null;
           rejection_code: string | null;
           rejection_message: string | null;
           report: Json | null;
@@ -1717,6 +1871,8 @@ export type Database = {
           integrated_lufs?: number | null;
           object_key: string;
           processed_at?: string | null;
+          reanalysis_attempts?: number;
+          reanalysis_claimed_at?: string | null;
           rejection_code?: string | null;
           rejection_message?: string | null;
           report?: Json | null;
@@ -1739,6 +1895,8 @@ export type Database = {
           integrated_lufs?: number | null;
           object_key?: string;
           processed_at?: string | null;
+          reanalysis_attempts?: number;
+          reanalysis_claimed_at?: string | null;
           rejection_code?: string | null;
           rejection_message?: string | null;
           report?: Json | null;
@@ -2249,6 +2407,21 @@ export type Database = {
         Args: { appeal: string; decision: string };
         Returns: undefined;
       };
+      artist_chart: {
+        Args: { chart?: string; code?: string; max_results?: number; scope?: string };
+        Returns: {
+          artist_id: string;
+          city: string;
+          country_code: string;
+          growth: number;
+          image_id: string;
+          listeners_7d: number;
+          name: string;
+          rank: number;
+          slug: string;
+          value: number;
+        }[];
+      };
       artist_copyright_strikes: { Args: { artist: string }; Returns: number };
       artist_follower_count: { Args: { artist: string }; Returns: number };
       artist_monthly_listening: {
@@ -2285,6 +2458,8 @@ export type Database = {
           integrated_lufs: number | null;
           object_key: string;
           processed_at: string | null;
+          reanalysis_attempts: number;
+          reanalysis_claimed_at: string | null;
           rejection_code: string | null;
           rejection_message: string | null;
           report: Json | null;
@@ -2352,6 +2527,14 @@ export type Database = {
       can_view_playlist: { Args: { playlist: string }; Returns: boolean };
       can_view_release: { Args: { release: string }; Returns: boolean };
       cancel_event: { Args: { event: string }; Returns: undefined };
+      claim_audio_reanalysis: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          codec: string;
+          id: string;
+          object_key: string;
+        }[];
+      };
       claim_audio_upload: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -2370,6 +2553,26 @@ export type Database = {
           object_key: string;
         }[];
       };
+      claim_share_clip: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          attempts: number;
+          audio_key: string;
+          card_key: string;
+          duration_ms: number;
+          id: string;
+          start_ms: number;
+          track_id: string;
+        }[];
+      };
+      claim_storage_deletions: {
+        Args: { max_results?: number };
+        Returns: {
+          bucket: string;
+          id: number;
+          object_key: string;
+        }[];
+      };
       compare_with: { Args: { days?: number; handle: string }; Returns: Json };
       complete_audio_upload: {
         Args: { upload: string };
@@ -2384,6 +2587,8 @@ export type Database = {
           integrated_lufs: number | null;
           object_key: string;
           processed_at: string | null;
+          reanalysis_attempts: number;
+          reanalysis_claimed_at: string | null;
           rejection_code: string | null;
           rejection_message: string | null;
           report: Json | null;
@@ -2551,6 +2756,10 @@ export type Database = {
         Args: { image: string };
         Returns: Database["public"]["Enums"]["audio_upload_status"];
       };
+      fail_share_clip: {
+        Args: { clip: string };
+        Returns: Database["public"]["Enums"]["share_clip_status"];
+      };
       find_or_create_venue: {
         Args: {
           address?: string;
@@ -2561,6 +2770,10 @@ export type Database = {
         };
         Returns: string;
       };
+      finish_audio_reanalysis: {
+        Args: { best_moment: Json; upload: string; waveform: Json };
+        Returns: boolean;
+      };
       finish_audio_upload: {
         Args: { report: Json; upload: string; variants?: Json };
         Returns: Database["public"]["Enums"]["audio_upload_status"];
@@ -2568,6 +2781,27 @@ export type Database = {
       finish_image_upload: {
         Args: { image: string; result: Json };
         Returns: Database["public"]["Enums"]["audio_upload_status"];
+      };
+      finish_share_clip: {
+        Args: { bytes: number; clip: string; object_key: string };
+        Returns: Database["public"]["Enums"]["share_clip_status"];
+      };
+      finish_storage_deletions: { Args: { ids: number[] }; Returns: number };
+      fresh_releases: {
+        Args: { country?: string; genre?: string; hours?: number; max_results?: number };
+        Returns: {
+          artist_country: string;
+          artist_id: string;
+          artist_name: string;
+          artist_slug: string;
+          artwork_image_id: string;
+          listeners_7d: number;
+          publish_at: string;
+          release_id: string;
+          slug: string;
+          title: string;
+          type: string;
+        }[];
       };
       has_app_role: {
         Args: { required: Database["public"]["Enums"]["app_role"] };
@@ -2595,6 +2829,38 @@ export type Database = {
       };
       move_playlist_track: { Args: { item: string; to_index: number }; Returns: undefined };
       move_track: { Args: { direction: number; track: string }; Returns: undefined };
+      music_chart: {
+        Args: {
+          chart?: string;
+          code?: string;
+          country?: string;
+          max_results?: number;
+          scope?: string;
+        };
+        Returns: {
+          artist_country: string;
+          artist_id: string;
+          artist_image_id: string;
+          artist_name: string;
+          artist_slug: string;
+          artwork_image_id: string;
+          growth: number;
+          public_code: string;
+          rank: number;
+          release_slug: string;
+          release_title: string;
+          title: string;
+          track_id: string;
+          value: number;
+        }[];
+      };
+      music_cities: {
+        Args: { country: string };
+        Returns: {
+          artists: number;
+          city: string;
+        }[];
+      };
       my_blocked_users: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -2604,23 +2870,22 @@ export type Database = {
           id: string;
         }[];
       };
-      my_challenges: {
-        Args: Record<PropertyKey, never>;
-        Returns: {
-          code: string;
-          completed_at: string;
-          ends_at: string;
-          metric: string;
-          progress: number;
-          target: number;
-        }[];
-      };
       my_deletion_blockers: {
         Args: Record<PropertyKey, never>;
         Returns: {
           artist_id: string;
           name: string;
           slug: string;
+        }[];
+      };
+      my_discovery_set: {
+        Args: { kind: string };
+        Returns: {
+          completed_at: string;
+          items: Json;
+          period_start: string;
+          progress: number;
+          target: number;
         }[];
       };
       my_discovery_stats: {
@@ -2650,6 +2915,19 @@ export type Database = {
           reason: string;
           shown: number;
           skips: number;
+        }[];
+      };
+      my_missions: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          cadence: string;
+          code: string;
+          completed_at: string;
+          ends_at: string;
+          metric: string;
+          progress: number;
+          target: number;
+          xp: number;
         }[];
       };
       my_plan: {
@@ -2696,6 +2974,17 @@ export type Database = {
         }[];
       };
       my_records: { Args: Record<PropertyKey, never>; Returns: Json };
+      my_share_clips: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          created_at: string;
+          duration_ms: number;
+          locale: string;
+          start_ms: number;
+          status: Database["public"]["Enums"]["share_clip_status"];
+          track_id: string;
+        }[];
+      };
       my_taste: { Args: Record<PropertyKey, never>; Returns: Json };
       my_weekly_recap: { Args: { weeks_ago?: number }; Returns: Json };
       onboarding_artists: {
@@ -2739,6 +3028,10 @@ export type Database = {
           i_blocked: boolean;
           i_follow: boolean;
         }[];
+      };
+      queue_share_clip: {
+        Args: { clip: string };
+        Returns: Database["public"]["Enums"]["share_clip_status"];
       };
       record_events: { Args: { events: Json }; Returns: number };
       record_listen: {
@@ -2806,6 +3099,21 @@ export type Database = {
         Args: { artist: string; evidence: Json; note?: string };
         Returns: string;
       };
+      request_share_clip: {
+        Args: {
+          design: number;
+          duration_ms: number;
+          locale: string;
+          start_ms: number;
+          track: string;
+        };
+        Returns: {
+          card_key: string;
+          id: string;
+          needs_card: boolean;
+          status: Database["public"]["Enums"]["share_clip_status"];
+        }[];
+      };
       require_staff: {
         Args: { required: Database["public"]["Enums"]["app_role"] };
         Returns: undefined;
@@ -2821,6 +3129,16 @@ export type Database = {
       review_release: {
         Args: { decision: string; note?: string; release: string };
         Returns: Database["public"]["Enums"]["release_status"];
+      };
+      save_discovery_set: {
+        Args: { chosen: Json; set_kind: string };
+        Returns: {
+          completed_at: string;
+          items: Json;
+          period_start: string;
+          progress: number;
+          target: number;
+        }[];
       };
       search_catalog: {
         Args: { max_results?: number; query: string };
@@ -2840,6 +3158,13 @@ export type Database = {
       };
       search_normalize: { Args: { value: string }; Returns: string };
       set_release_genres: { Args: { genre_ids: number[]; release: string }; Returns: undefined };
+      share_clip: {
+        Args: { clip: string };
+        Returns: {
+          object_key: string;
+          status: Database["public"]["Enums"]["share_clip_status"];
+        }[];
+      };
       submit_release: { Args: { release: string }; Returns: undefined };
       submit_report: {
         Args: {
@@ -2907,6 +3232,19 @@ export type Database = {
         }[];
       };
       withdraw_release_submission: { Args: { release: string }; Returns: undefined };
+      world_tracks: {
+        Args: { exclude_country?: string; max_results?: number };
+        Returns: {
+          artist_name: string;
+          artist_slug: string;
+          artwork_image_id: string;
+          country_code: string;
+          listeners_7d: number;
+          public_code: string;
+          title: string;
+          track_id: string;
+        }[];
+      };
     };
     Enums: {
       ai_content: "human" | "ai_assisted" | "ai_generated" | "unknown";
@@ -2944,6 +3282,7 @@ export type Database = {
       release_type: "single" | "ep" | "album" | "compilation" | "live";
       report_reason: "copyright" | "illegal" | "hate" | "impersonation" | "spam" | "other";
       report_subject: "artist" | "release" | "playlist" | "event" | "venue" | "profile";
+      share_clip_status: "awaiting_card" | "queued" | "processing" | "ready" | "failed";
       track_artist_role: "main" | "featured" | "remixer";
       visibility_level: "public" | "followers" | "private";
       voivodeship:
@@ -3117,6 +3456,7 @@ export const Constants = {
       release_type: ["single", "ep", "album", "compilation", "live"],
       report_reason: ["copyright", "illegal", "hate", "impersonation", "spam", "other"],
       report_subject: ["artist", "release", "playlist", "event", "venue", "profile"],
+      share_clip_status: ["awaiting_card", "queued", "processing", "ready", "failed"],
       track_artist_role: ["main", "featured", "remixer"],
       visibility_level: ["public", "followers", "private"],
       voivodeship: [

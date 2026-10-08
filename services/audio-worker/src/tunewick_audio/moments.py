@@ -128,3 +128,19 @@ def best_moment(energy_db: np.ndarray, bands_db: np.ndarray, duration_s: float) 
         if new[boundary] >= 0.5:
             start = boundary
     return Moment(start * 1000, length * 1000)
+
+
+def analyse_file(path: str) -> tuple[Moment, list[int]]:
+    """Best moment and waveform of any decodable file (e.g. a delivery variant, for backfills)."""
+    from .ffmpeg import ffprobe
+    from .pcm import iter_pcm
+
+    stream = next(s for s in ffprobe(path)["streams"] if s["codec_type"] == "audio")
+    rate, channels = int(stream["sample_rate"]), int(stream["channels"])
+    tracker = MomentTracker(rate)
+    samples = 0
+    for _, flat in iter_pcm(path, "float", rate, channels):
+        frame = flat.astype(np.float64).reshape(-1, channels)
+        samples += frame.shape[0]
+        tracker.add(frame)
+    return tracker.best_moment(samples / rate), tracker.waveform()

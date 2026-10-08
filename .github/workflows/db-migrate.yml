@@ -1,0 +1,50 @@
+name: Database migrations
+
+# Applies supabase/migrations to the production database (docs/deployment.md §2). Manual only:
+# run it first with apply = false — it lists what would be applied — then again with apply = true.
+# Needs repository secrets SUPABASE_ACCESS_TOKEN (supabase.com → Account → Access Tokens),
+# SUPABASE_DB_PASSWORD and SUPABASE_PROJECT_REF (the id in https://<ref>.supabase.co).
+
+on:
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: "Apply the pending migrations (false = only list them)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: db-migrate
+  cancel-in-progress: false
+
+jobs:
+  migrate:
+    name: ${{ inputs.apply && 'apply' || 'dry run' }}
+    runs-on: ubuntu-latest
+    environment: production
+    env:
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+      PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 2.119.0
+      - name: Secrets are set
+        run: |
+          for name in SUPABASE_ACCESS_TOKEN SUPABASE_DB_PASSWORD PROJECT_REF; do
+            if [ -z "${!name}" ]; then echo "::error::Missing secret for $name"; exit 1; fi
+          done
+      - run: supabase link --project-ref "$PROJECT_REF" --password "$SUPABASE_DB_PASSWORD"
+      - name: Applied and pending migrations
+        run: supabase migration list --password "$SUPABASE_DB_PASSWORD"
+      - name: Dry run
+        if: ${{ !inputs.apply }}
+        run: supabase db push --dry-run --password "$SUPABASE_DB_PASSWORD"
+      - name: Apply
+        if: ${{ inputs.apply }}
+        run: supabase db push --yes --password "$SUPABASE_DB_PASSWORD"

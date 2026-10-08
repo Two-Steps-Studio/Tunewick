@@ -47,6 +47,16 @@ pnpm exec supabase db push
 `link` asks for the database password from §1. `db push` lists the migrations before applying
 them. Never edit production schema in the dashboard — write a migration instead.
 
+Without a terminal: GitHub → Actions → **Database migrations** → Run workflow (from `main`).
+First with `apply` off — it lists applied and pending migrations and does a dry run — then with
+`apply` on. It needs repository (or `production` environment) secrets `SUPABASE_ACCESS_TOKEN`
+(supabase.com → Account → Access Tokens), `SUPABASE_DB_PASSWORD` (§1) and `SUPABASE_PROJECT_REF`
+(the id in `https://<ref>.supabase.co`). Add required reviewers to the `production` environment to
+make every run wait for approval.
+
+Order with a release that needs new tables: migrations first, then promote the Vercel deployment
+(an app built for a newer schema fails on an older database).
+
 ## 3. Vercel project
 
 Settings → General: Root Directory `apps/web`, framework Next.js, "Include files outside the root
@@ -166,6 +176,11 @@ then run `node scripts/create-invites.mjs ...` in the same window.
   Check: `select jobname, schedule from cron.job;`
 - Share cards and Open Graph images are rendered by the web app (`next/og`); covers are converted
   from WebP with `sharp` (an explicit dependency of `apps/web`).
+- The audio worker also renders share videos (`share_clips` queue): no new settings — it uses the
+  same Supabase key and buckets; the app writes cards into the ingest bucket with its own S3 keys.
+- The worker also empties the storage sweep (`private.storage_deletions`): its S3 key needs
+  DeleteObject on both buckets. Entries failing five times stay in the table — check
+  `select * from private.storage_deletions where attempts >= 5;` now and then.
 - Point values and caps: edit `discovery_point_rules` (admin) — no deploy needed. Weekly
   challenges: `discovery_challenges` (enable/disable or change targets between weeks; the running
   week's three are picked from the enabled ones).

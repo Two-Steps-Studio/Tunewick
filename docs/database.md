@@ -459,5 +459,9 @@ periods `season` and `last_season`.
 Best moment (`20261008160000`): `track_audio_uploads.best_moment_ms` (generated from the worker
 report v2), `track_previews` returns it as `suggested_start_ms`, `release_soundchecks` (now
 security definer, public releases only) falls back to it before 0:00.
+Share clips (`20261008170000`): `share_clips` (no direct access; `request_share_clip`,
+`queue_share_clip`, `share_clip`, `my_share_clips`; worker `claim/finish/fail_share_clip`).
+Storage sweep (`20261008180000`): `private.storage_deletions` (objects the database forgot),
+worker `claim_storage_deletions` / `finish_storage_deletions`; `private.expire_share_clips()` daily.
 pgTAP: `discovery.test.sql`, `compare_friends.test.sql`, `feed_outcomes.test.sql`,
-`seasons_challenges.test.sql`.
+`seasons_challenges.test.sql`, `share_clips.test.sql`.
