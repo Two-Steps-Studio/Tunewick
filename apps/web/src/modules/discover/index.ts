@@ -9,7 +9,6 @@ export {
 export type { DiscoveryPreferences, FeedItem, FeedPage } from "./types";
 export { DiscoverFeed } from "./ui/feed";
 export { Onboarding } from "./ui/onboarding";
-export { ReportButton } from "./ui/report-button";
 export { ShareButton } from "./ui/share-button";
 export { getSharedSong, parseSongSegment, type SharedSong } from "./song";
 export { SongPreview } from "./ui/song-preview";

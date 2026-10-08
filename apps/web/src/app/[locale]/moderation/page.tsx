@@ -3,7 +3,19 @@ import { getFormatter, getTranslations, setRequestLocale } from "next-intl/serve
 import { getPathname, Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { isAdmin, requireStaff } from "@/modules/auth";
-import { decideReport, getOpenReports, getSubmissions } from "@/modules/moderation";
+import {
+  getSubmissions,
+  getVerificationRequests,
+  VerificationDecisionForm,
+} from "@/modules/moderation";
+import {
+  AppealDecisionForm,
+  getOpenReports,
+  getPendingAppeals,
+  ModerateReportForm,
+  SubjectLink,
+} from "@/modules/reports";
+import { EventReviewForm, getPendingEvents } from "@/modules/events";
 
 export const metadata: Metadata = { robots: { index: false } };
 
@@ -19,13 +31,18 @@ export default async function ModerationPage({ params }: PageProps<"/[locale]/mo
   const t = await getTranslations("Moderation");
   const tReleases = await getTranslations("Releases");
   const format = await getFormatter();
-  const [submissions, admin, reports] = await Promise.all([
+  const [submissions, admin, verifications, reports, appeals] = await Promise.all([
     getSubmissions(),
     isAdmin(),
+    getVerificationRequests(),
     getOpenReports(),
+    getPendingAppeals(),
   ]);
-  const tReport = await getTranslations("Report");
+  const pendingEvents = await getPendingEvents();
+  const tEvents = await getTranslations("Events");
+  const tReports = await getTranslations("Reports");
   const tPromo = await getTranslations("PromoAdmin");
+  const tAdmin = await getTranslations("Admin");
 
   return (
     <section className="auth-page">
@@ -34,6 +51,7 @@ export default async function ModerationPage({ params }: PageProps<"/[locale]/mo
         <p className="auth-page__lead">{t("lead")}</p>
         {admin ? (
           <p className="settings-profile-link">
+            <Link href="/admin">{tAdmin("link")}</Link> ·{" "}
             <Link href="/admin/promo">{tPromo("link")}</Link>
           </p>
         ) : null}
@@ -67,62 +85,157 @@ export default async function ModerationPage({ params }: PageProps<"/[locale]/mo
             ))}
           </ul>
         )}
-
-        <section aria-labelledby="reports" className="settings-form__group">
-          <h2 id="reports" className="section-title">
-            {t("reports.title", { count: reports.length })}
+        <section className="settings-form__group" aria-labelledby="verifications">
+          <h2 id="verifications" className="section-title">
+            {t("verification.title", { count: verifications.length })}
           </h2>
-          {reports.length === 0 ? (
-            <p className="field__hint">{t("reports.empty")}</p>
+          {verifications.length === 0 ? (
+            <p className="field__hint">{t("verification.empty")}</p>
           ) : (
-            <ul className="artist-list">
-              {reports.map((r) => (
-                <li key={r.id} className="artist-list__item report-item">
-                  <span className="artist-list__name">
-                    {r.artistSlug && r.releaseSlug ? (
-                      <Link
-                        href={{
-                          pathname: "/artists/[slug]/releases/[release]",
-                          params: { slug: r.artistSlug, release: r.releaseSlug },
-                        }}
-                      >
-                        {r.label ?? t("reports.gone")}
-                      </Link>
-                    ) : r.artistSlug ? (
-                      <Link href={{ pathname: "/artists/[slug]", params: { slug: r.artistSlug } }}>
-                        {r.label ?? t("reports.gone")}
-                      </Link>
-                    ) : r.handle ? (
-                      <Link href={{ pathname: "/profile/[handle]", params: { handle: r.handle } }}>
-                        {r.label}
-                      </Link>
-                    ) : (
-                      (r.label ?? t("reports.gone"))
-                    )}
-                  </span>
+            <ul className="promo-codes">
+              {verifications.map((v) => (
+                <li key={v.id} className="promo-codes__item">
+                  <Link
+                    className="artist-list__name"
+                    href={{ pathname: "/artists/[slug]", params: { slug: v.artist.slug } }}
+                  >
+                    {v.artist.name}
+                  </Link>
                   <span className="field__hint">
-                    {t(`reports.subjects.${r.subject_type as "track"}`)} ·{" "}
-                    {tReport(`categories.${r.category as "copyright"}`)} ·{" "}
-                    {format.dateTime(new Date(r.created_at), { dateStyle: "medium" })}
+                    {t("submitted", {
+                      date: format.dateTime(new Date(v.createdAt), {
+                        dateStyle: "medium",
+                        timeStyle: "short",
+                      }),
+                    })}
                   </span>
-                  {r.details ? <p className="report-item__details">{r.details}</p> : null}
-                  <div className="decision-form__buttons">
-                    <form action={decideReport.bind(null, r.id, "actioned")}>
-                      <button type="submit" className="button button--primary">
-                        {t("reports.actioned")}
-                      </button>
-                    </form>
-                    <form action={decideReport.bind(null, r.id, "dismissed")}>
-                      <button type="submit" className="button">
-                        {t("reports.dismissed")}
-                      </button>
-                    </form>
-                  </div>
+                  <ul className="verification-evidence">
+                    {v.evidence.map((url) => (
+                      <li key={url}>
+                        <a href={url} target="_blank" rel="noopener noreferrer nofollow">
+                          {url}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                  {v.note ? <p className="profile__bio">{v.note}</p> : null}
+                  <VerificationDecisionForm requestId={v.id} artistName={v.artist.name} />
                 </li>
               ))}
             </ul>
           )}
-          <p className="field__hint">{t("reports.hint")}</p>
+        </section>
+        <section className="settings-form__group" aria-labelledby="reports">
+          <h2 id="reports" className="section-title">
+            {tReports("queue.title", { count: reports.length })}
+          </h2>
+          {reports.length === 0 ? (
+            <p className="field__hint">{tReports("queue.empty")}</p>
+          ) : (
+            <ul className="promo-codes">
+              {reports.map((item) => (
+                <li key={item.report.id} className="promo-codes__item report-item">
+                  <SubjectLink subject={item.subject} />
+                  <span className="field__hint">
+                    {tReports(`subjects.${item.report.subject_type}`)} ·{" "}
+                    {tReports("queue.count", { count: item.reports.length })}
+                    {item.strikes ? ` · ${tReports("queue.strikes", { count: item.strikes })}` : ""}
+                  </span>
+                  <ul className="report-item__reports">
+                    {item.reports.map((r) => (
+                      <li key={r.id}>
+                        <strong>{tReports(`reasons.${r.reason}`)}</strong>: {r.details}
+                        {r.claimant_name ? (
+                          <span className="field__hint">
+                            {" "}
+                            ·{" "}
+                            {tReports("queue.claimant", {
+                              name: r.claimant_name,
+                              email: r.claimant_email ?? "",
+                            })}
+                          </span>
+                        ) : null}
+                      </li>
+                    ))}
+                  </ul>
+                  <ModerateReportForm
+                    reportId={item.report.id}
+                    subjectType={item.report.subject_type}
+                  />
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+        <section className="settings-form__group" aria-labelledby="appeals">
+          <h2 id="appeals" className="section-title">
+            {tReports("appeals.title", { count: appeals.length })}
+          </h2>
+          {appeals.length === 0 ? (
+            <p className="field__hint">{tReports("appeals.empty")}</p>
+          ) : (
+            <ul className="promo-codes">
+              {appeals.map((item) => (
+                <li key={item.id} className="promo-codes__item">
+                  <SubjectLink subject={item.subject} />
+                  <span className="field__hint">
+                    {tReports(`moderation.actions.${item.action as "takedown_release"}`)} ·{" "}
+                    {tReports(`reasons.${item.reason}`)}
+                  </span>
+                  <p>
+                    <strong>{tReports("appeals.statement")}</strong> {item.statement}
+                  </p>
+                  <p>
+                    <strong>{tReports("appeals.appeal")}</strong> {item.appeal_text}
+                  </p>
+                  <AppealDecisionForm decisionId={item.id} />
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+        <section className="settings-form__group" aria-labelledby="pending-events">
+          <h2 id="pending-events" className="section-title">
+            {tEvents("review.title", { count: pendingEvents.length })}
+          </h2>
+          {pendingEvents.length === 0 ? (
+            <p className="field__hint">{tEvents("review.empty")}</p>
+          ) : (
+            <ul className="promo-codes">
+              {pendingEvents.map((e) => (
+                <li key={e.id} className="promo-codes__item">
+                  <Link
+                    className="artist-list__name"
+                    href={{ pathname: "/events/[id]", params: { id: e.id } }}
+                  >
+                    {e.title}
+                  </Link>
+                  <span className="field__hint">
+                    {format.dateTime(new Date(e.starts_at), {
+                      dateStyle: "medium",
+                      timeStyle: "short",
+                      timeZone: "Europe/Warsaw",
+                    })}
+                    {e.venue ? ` · ${e.venue.name}, ${e.venue.city}` : ""}
+                    {e.venue && !e.venue.verified ? ` · ${tEvents("review.newVenue")}` : ""}
+                    {e.artist ? ` · ${e.artist.name}` : ""}
+                  </span>
+                  {e.ticket_url ? (
+                    <a
+                      className="verification-evidence"
+                      href={e.ticket_url}
+                      target="_blank"
+                      rel="noopener noreferrer nofollow"
+                    >
+                      {e.ticket_url}
+                    </a>
+                  ) : null}
+                  {e.description ? <p>{e.description}</p> : null}
+                  <EventReviewForm eventId={e.id} title={e.title} />
+                </li>
+              ))}
+            </ul>
+          )}
         </section>
       </div>
     </section>

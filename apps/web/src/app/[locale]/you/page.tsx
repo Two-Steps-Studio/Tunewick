@@ -6,7 +6,7 @@ import { formatListening } from "@/lib/intl";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { getOptionalUser } from "@/modules/auth";
 import { ViewEvent } from "@/modules/discover";
-import { getMyFollowing } from "@/modules/users";
+import { getMyFollowing } from "@/modules/social";
 import {
   getMyAchievements,
   getMyProgress,

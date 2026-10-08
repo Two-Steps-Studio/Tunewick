@@ -216,15 +216,19 @@ export async function getFeedPage(request: FeedRequest): Promise<FeedPage> {
     own.forEach((row) => pin(row, "artist_spotlight"));
     const artistId = own[0]?.artist_id;
     if (artistId) {
-      const { data: similar } = await supabase.rpc("similar_artists", {
+      // Then artists like them: the music graph (collaborations, shared credits, audience, gigs —
+      // M7) and the artist's own genres.
+      const { data: related } = await supabase.rpc("related_artists", {
         artist: artistId,
         max_results: 12,
       });
       const coFollowed = new Map(taste.coFollowed);
-      for (const s of similar ?? []) {
-        coFollowed.set(s.artist_id, (coFollowed.get(s.artist_id) ?? 0) + 10 + s.shared_listeners);
+      for (const r of related ?? []) {
+        coFollowed.set(r.artist_id, (coFollowed.get(r.artist_id) ?? 0) + 10 + r.score);
       }
-      rankTaste = { ...taste, coFollowed };
+      const genres = new Map(taste.genres);
+      for (const id of own[0]?.genre_ids ?? []) genres.set(id, (genres.get(id) ?? 0) + 5);
+      rankTaste = { ...taste, coFollowed, genres };
     }
   }
 

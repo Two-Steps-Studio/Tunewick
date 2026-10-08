@@ -1,10 +1,3 @@
-export {
-  compareWith,
-  type DiscoverySummary,
-  getMyAccount,
-  getMyFollowing,
-  getPublicProfile,
-  getUserFollow,
-} from "./queries";
-export { UserFollowButton } from "./ui/follow-button";
+export { getMyAccount, getPublicProfile } from "./queries";
+export { PrivacySection } from "./ui/privacy-section";
 export { SettingsForm } from "./ui/settings-form";

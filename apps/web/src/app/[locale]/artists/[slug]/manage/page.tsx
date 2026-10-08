@@ -4,9 +4,12 @@ import { Artwork, getImageSources, getLatestImageUpload, ImageUpload } from "@/m
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getPathname, Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
+import { DecisionList } from "@/modules/reports";
+import { cancelEvent, EventForm, getManagedEvents } from "@/modules/events";
 import {
   ArtistInfoForm,
   ArtistReachForm,
+  ArtistListening,
   getArtistForManagement,
   getArtistReach,
   InviteMemberForm,
@@ -37,6 +40,7 @@ export default async function ManageArtistPage({
   );
   // Non-members get the same 404 as a missing artist (no information leak).
   const data = await getArtistForManagement(slug, user.id);
+  const tEvents = await getTranslations("Events");
   if (!data) notFound();
 
   const t = await getTranslations("Artists");
@@ -168,12 +172,57 @@ export default async function ManageArtistPage({
             {t("manage.verification")}
           </h2>
           <p className="field__hint">{t("manage.verificationLead")}</p>
+          {data.lastRequest?.status === "rejected" && data.lastRequest.decision_note ? (
+            <p className="form-status">
+              {t("manage.verificationRejected", { reason: data.lastRequest.decision_note })}
+            </p>
+          ) : null}
           {canRequest ? (
             <VerificationForm artistId={artist.id} />
           ) : (
             <p role="status">{t(`verification.${artist.verification_status}`)}</p>
           )}
         </section>
+        {data.myRole === "owner" || data.myRole === "manager" ? (
+          <section className="settings-form__group" aria-labelledby="gigs">
+            <h2 id="gigs" className="section-title">
+              {tEvents("manage.title")}
+            </h2>
+            <p className="field__hint">{tEvents("manage.lead")}</p>
+            <ul className="promo-codes">
+              {(await getManagedEvents(artist.id)).map((e) => (
+                <li key={e.id} className="promo-codes__item">
+                  <Link
+                    className="artist-list__name"
+                    href={{ pathname: "/events/[id]", params: { id: e.id } }}
+                  >
+                    {e.title}
+                  </Link>
+                  <span className="field__hint">
+                    {e.venue ? `${e.venue.name}, ${e.venue.city} · ` : ""}
+                    {tEvents(`status.${e.status}`)}
+                  </span>
+                  {e.status === "rejected" && e.review_note ? (
+                    <p className="form-status">{tEvents("rejected", { reason: e.review_note })}</p>
+                  ) : null}
+                  {e.status === "pending" || e.status === "published" ? (
+                    <form action={cancelEvent.bind(null, e.id)}>
+                      <button type="submit" className="button button--quiet">
+                        {tEvents("manage.cancel", { title: e.title })}
+                      </button>
+                    </form>
+                  ) : null}
+                </li>
+              ))}
+            </ul>
+            <EventForm artistId={artist.id} />
+          </section>
+        ) : null}
+        <ArtistListening artistId={artist.id} />
+        <DecisionList
+          filter={{ artistId: artist.id }}
+          canAppeal={data.myRole === "owner" || data.myRole === "manager"}
+        />
       </div>
     </section>
   );

@@ -7,7 +7,7 @@ import type { AppPathname } from "@/i18n/routing";
 // Discover is the center: one tap from anywhere to new music.
 const items = [
   { href: "/", key: "discover" },
-  { href: "/browse", key: "browse" },
+  { href: "/scene", key: "scene" },
   { href: "/search", key: "search" },
   { href: "/library", key: "library" },
   { href: "/you", key: "you" },

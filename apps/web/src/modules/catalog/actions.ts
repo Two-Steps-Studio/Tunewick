@@ -10,7 +10,6 @@ import {
   fieldErrors,
   genresSchema,
   newReleaseSchema,
-  previewSchema,
   releaseDbError,
   releaseDetailsSchema,
   type ReleaseFormState,
@@ -150,7 +149,7 @@ export async function updateTrack(
   _prev: ReleaseFormState,
   formData: FormData,
 ): Promise<ReleaseFormState> {
-  const values = read(formData, ["title", "isrc", "explicit", "aiContent"]);
+  const values = read(formData, ["title", "isrc", "explicit", "aiContent", "soundcheckStart"]);
   const parsed = trackSchema.safeParse(values);
   if (!parsed.success) return { fieldErrors: fieldErrors(parsed.error.issues), values };
   const supabase = await createSupabaseServerClient();
@@ -161,36 +160,12 @@ export async function updateTrack(
       isrc: parsed.data.isrc,
       explicit: parsed.data.explicit,
       ai_content: parsed.data.aiContent,
+      soundcheck_start_ms: parsed.data.soundcheckStart,
     })
     .eq("id", trackId)
     .select("id");
   if (error) return { ...releaseDbError(error), values };
   if (!data?.length) return { error: "notEditable", values };
-  refresh();
-  return { saved: true };
-}
-
-/** The Discover preview of a track (owners and managers, any release status). */
-export async function setTrackPreview(
-  trackId: string,
-  durationMs: number | null,
-  _prev: ReleaseFormState,
-  formData: FormData,
-): Promise<ReleaseFormState> {
-  const values = read(formData, ["start", "length"]);
-  const parsed = previewSchema.safeParse({ ...values, durationMs });
-  if (!parsed.success) return { fieldErrors: fieldErrors(parsed.error.issues), values };
-  const supabase = await createSupabaseServerClient();
-  const { error } = await supabase.rpc("set_track_preview", {
-    track: trackId,
-    // null clears the choice (automatic preview); generated RPC types do not model nullable args.
-    start_ms: parsed.data.startMs as number,
-    length_ms: parsed.data.lengthMs as number,
-  });
-  if (error) {
-    if (error.code === "22023") return { fieldErrors: { start: "previewOutside" }, values };
-    return { ...releaseDbError(error), values };
-  }
   refresh();
   return { saved: true };
 }
@@ -212,11 +187,26 @@ export async function addCredit(
   _prev: ReleaseFormState,
   formData: FormData,
 ): Promise<ReleaseFormState> {
-  const values = read(formData, ["name", "role", "detail"]);
+  const values = read(formData, ["name", "role", "detail", "artistSlug"]);
   const parsed = creditSchema.safeParse(values);
   if (!parsed.success) return { fieldErrors: fieldErrors(parsed.error.issues), values };
   const supabase = await createSupabaseServerClient();
-  const { error } = await supabase.from("credits").insert({ track_id: trackId, ...parsed.data });
+  const { artistSlug, ...credit } = parsed.data;
+  let artistId: string | null = null;
+  if (artistSlug) {
+    // Only active, public profiles can be linked; the link feeds related artists (M7).
+    const { data: artist } = await supabase
+      .from("artists")
+      .select("id")
+      .eq("slug", artistSlug)
+      .eq("status", "active")
+      .maybeSingle();
+    if (!artist) return { fieldErrors: { artistSlug: "artistNotFound" }, values };
+    artistId = artist.id;
+  }
+  const { error } = await supabase
+    .from("credits")
+    .insert({ track_id: trackId, ...credit, artist_id: artistId });
   if (error) return releaseDbError(error);
   refresh();
   return { saved: true };

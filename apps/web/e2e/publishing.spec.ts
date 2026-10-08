@@ -31,6 +31,12 @@ function toneWav(seconds: number) {
 async function readyRelease(page: Page) {
   const email = await createConfirmedUser(page, "publish-artist");
   const slug = `pub-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 5)}`;
+  // A second profile to credit (the producer has an artist page too).
+  await page.goto("/artysci/nowy");
+  await page.getByLabel("Nazwa artysty").fill(`Kopalnia ${slug}`);
+  await page.getByLabel("Adres profilu").fill(`${slug}-prod`);
+  await page.getByRole("button", { name: "Załóż profil" }).click();
+  await expect(page).toHaveURL(new RegExp(`/artysci/${slug}-prod/zarzadzaj$`));
   await page.goto("/artysci/nowy");
   // Unique per run: the local database is shared with other (and earlier) test runs.
   await page.getByLabel("Nazwa artysty").fill(`Familok ${slug}`);
@@ -44,6 +50,29 @@ async function readyRelease(page: Page) {
   await page.getByLabel("Tytuł utworu").fill("Nocna zmiana");
   await page.getByRole("button", { name: "Dodaj utwór" }).click();
   await expect(page.locator(".track-item__title")).toHaveText(["Nocna zmiana"]);
+
+  // Credits: one linked to a Tunewick profile, one only by name.
+  await page.getByText("Szczegóły: Nocna zmiana").click();
+  const track = page.locator(".track-item", { hasText: "Nocna zmiana" });
+  // Soundcheck: the excerpt Discover plays.
+  await track.getByLabel("Początek soundchecku (m:ss)").fill("75");
+  await track.getByRole("button", { name: "Zapisz", exact: true }).click();
+  await expect(track.getByText("Wpisz czas jako minuty:sekundy, np. 1:05.")).toBeVisible();
+  await track.getByLabel("Początek soundchecku (m:ss)").fill("0:02");
+  await track.getByRole("button", { name: "Zapisz", exact: true }).click();
+  await expect(track.getByText("Zapisano.")).toBeVisible();
+  await track.getByLabel("Imię i nazwisko lub pseudonim").fill("Kopalnia");
+  await track.getByLabel("Rola").selectOption("producer");
+  await track.getByLabel("Profil w Tunewick (opcjonalnie)").fill("nie-ma-takiego-profilu");
+  await track.getByRole("button", { name: "Dodaj twórcę" }).click();
+  await expect(track.getByText("Nie ma aktywnego profilu artysty o takim adresie.")).toBeVisible();
+  await track.getByLabel("Profil w Tunewick (opcjonalnie)").fill(`${slug}-prod`);
+  await track.getByRole("button", { name: "Dodaj twórcę" }).click();
+  await expect(track.getByText(`Kopalnia → Kopalnia ${slug}`)).toBeVisible();
+  await track.getByLabel("Imię i nazwisko lub pseudonim").fill("Ola Nowak");
+  await track.getByLabel("Rola").selectOption("mastering_engineer");
+  await track.getByRole("button", { name: "Dodaj twórcę" }).click();
+  await expect(track.getByText("Ola Nowak", { exact: true })).toBeVisible();
 
   const rights = page.locator("form", {
     has: page.getByRole("button", { name: "Złóż oświadczenie" }),
@@ -72,7 +101,7 @@ async function readyRelease(page: Page) {
     mimeType: "audio/wav",
     buffer: toneWav(12),
   });
-  await expect(page.locator(".track-item").first().getByRole("status")).toHaveText(
+  await expect(page.locator(".track-item").first().locator(".track-audio__status")).toHaveText(
     /^Gotowe: nocna-zmiana\.wav/,
     { timeout: 90_000 },
   );
@@ -146,6 +175,14 @@ test.describe("review and publishing", () => {
     await expect(listener.getByRole("img", { name: /^Okładka: Szychta/ })).toBeVisible();
     await expect(listener.getByText("1 utwór · 0:12")).toBeVisible();
     await expect(listener.getByText("Bez AI — utworzone przez ludzi.")).toBeVisible();
+    const credits = listener.locator("section", {
+      has: listener.getByRole("heading", { name: "Twórcy" }),
+    });
+    await expect(credits.getByRole("link", { name: "Kopalnia" })).toHaveAttribute(
+      "href",
+      `/artysci/${slug}-prod`,
+    );
+    await expect(credits.getByText("Ola Nowak")).toBeVisible();
     // A Free listener's page has no link to lossless files at all.
     expect(await listener.content()).not.toContain("lossless.flac");
 
@@ -160,6 +197,15 @@ test.describe("review and publishing", () => {
     const card = listener.locator(".release-card", { hasText: `Familok ${slug}` });
     await expect(card.getByRole("link", { name: "Szychta" })).toBeVisible();
     await expect(card.getByText(/^Debiut · /)).toBeVisible();
+    // Its soundcheck: 10 s from 0:02 (the 12 s track ends there), marked in the player.
+    await card
+      .getByRole("button", { name: `Posłuchaj fragmentu: Nocna zmiana — Familok ${slug}` })
+      .click();
+    const soundcheckBar = listener.getByRole("region", { name: "Odtwarzacz" });
+    await expect(soundcheckBar.getByText("Soundcheck", { exact: true })).toBeVisible();
+    await expect(soundcheckBar.locator(".player-bar__time").first()).toHaveText(/^0:0[3-9]$/, {
+      timeout: 20_000,
+    });
 
     // A shared song: public page with the preview (no account), then into Discover with it first.
     await listener.goto(`/artysci/${slug}`);

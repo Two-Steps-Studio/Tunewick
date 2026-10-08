@@ -10,7 +10,6 @@ import { getFullPlayback, setFeedReaction, setTrackSaved } from "../actions";
 import type { PreviewState } from "../preview-player";
 import type { FeedItem } from "../types";
 import { Icon } from "./icons";
-import { ReportButton } from "./report-button";
 import { ShareButton } from "./share-button";
 import { ToggleAction } from "./toggle-action";
 
@@ -323,7 +322,12 @@ export function FeedCard({
                   {t("discoverArtist", { artist: item.artist.name })}
                 </Link>
                 {signedIn ? (
-                  <ReportButton subjectType="track" subjectId={item.trackId} name={item.title} />
+                  <Link
+                    className="feed-menu__item"
+                    href={{ pathname: "/report", query: { typ: "release", id: item.release.id } }}
+                  >
+                    {t("report")}
+                  </Link>
                 ) : null}
               </div>
             ) : null}

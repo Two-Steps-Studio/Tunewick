@@ -49,4 +49,6 @@ export interface PlayerState {
   /** Device output rate (AudioContext), when known. */
   outputSampleRateHz: number | null;
   error: PlayerError | null;
+  /** A soundcheck: only this excerpt (seconds into the track) plays, then the player stops. */
+  clip: { start: number; end: number } | null;
 }

@@ -32,12 +32,9 @@ for (const { path, heading, lang } of pages) {
 test("navigation marks the current page and keeps the player region", async ({ page }) => {
   await page.goto("/");
   const nav = page.getByRole("navigation", { name: "Nawigacja główna" });
-  await nav.getByRole("link", { name: "Przeglądaj" }).click();
-  await expect(page).toHaveURL(/\/przegladaj$/);
-  await expect(nav.getByRole("link", { name: "Przeglądaj" })).toHaveAttribute(
-    "aria-current",
-    "page",
-  );
+  await nav.getByRole("link", { name: "Scena" }).click();
+  await expect(page).toHaveURL(/\/scena$/);
+  await expect(nav.getByRole("link", { name: "Scena" })).toHaveAttribute("aria-current", "page");
   await expect(page.getByRole("region", { name: "Odtwarzacz" })).toBeVisible();
 });
 

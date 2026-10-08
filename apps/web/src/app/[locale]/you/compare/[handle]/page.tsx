@@ -5,7 +5,8 @@ import { getPathname, Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { formatListening } from "@/lib/intl";
 import { requireUser } from "@/modules/auth";
-import { compareWith, type DiscoverySummary, getPublicProfile } from "@/modules/users";
+import { compareWith, type DiscoverySummary } from "@/modules/social";
+import { getPublicProfile } from "@/modules/users";
 
 export const metadata: Metadata = { robots: { index: false } };
 

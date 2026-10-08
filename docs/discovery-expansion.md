@@ -163,3 +163,14 @@ also after publishing); similar-listener signal from shared listening (`my_taste
 "+2" notice for saves; QR codes on story/square/weekly cards; following people (`user_follows`,
 public counts, private lists) and **You vs friend** (`compare_with`) — allowed only by the
 compared person's `activity_visibility`: everyone, only people they follow, or nobody.
+
+### Integration with `work` (2026-10-08)
+
+`work` built M7–M11 in parallel (soundchecks, artist graph, events, DSA reports, people follows and
+blocks, payouts base, retention, legal). Where both did the same thing, `work`'s implementation is
+kept and Discover uses it: previews are **soundcheck** listens (`record_listen(..., soundcheck)`),
+reports go through the DSA form (`/report`), follows/blocks/visibility come from M8.2 (compare uses
+`can_view_activity`), "Discover this artist" boosts the artist graph (`related_artists`), the
+artist picks the excerpt with the soundcheck start in the track form (my separate preview editor
+was dropped). The Discover migrations were renumbered after `work`'s (`20261008100000…`).
+Navigation: Discover · Scene · Search · Library · You (Browse is linked from the feed bar).

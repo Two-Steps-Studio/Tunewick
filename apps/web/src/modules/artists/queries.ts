@@ -57,7 +57,7 @@ export async function getArtistForManagement(slug: string, userId: string) {
       ),
     supabase
       .from("artist_verification_requests")
-      .select("status, created_at")
+      .select("status, created_at, decision_note")
       .eq("artist_id", artist.id)
       .order("created_at", { ascending: false })
       .limit(1),
@@ -100,14 +100,39 @@ export async function getArtistReach(artistId: string) {
   };
 }
 
-/** Popular songs (real listener counts) and similar artists, for the public page. */
+/** Popular songs (real listener counts in the last 30 days, then newest), for the public page. */
 export async function getArtistDiscovery(artistId: string) {
   const supabase = await createSupabaseServerClient();
-  const [top, similar] = await Promise.all([
-    supabase.rpc("artist_top_tracks", { artist: artistId, max_results: 5 }),
-    supabase.rpc("similar_artists", { artist: artistId, max_results: 8 }),
-  ]);
-  if (top.error) throw top.error;
-  if (similar.error) throw similar.error;
-  return { topTracks: top.data ?? [], similar: similar.data ?? [] };
+  const { data, error } = await supabase.rpc("artist_top_tracks", {
+    artist: artistId,
+    max_results: 5,
+  });
+  if (error) throw error;
+  return { topTracks: data ?? [] };
+}
+
+export type RelatedRelation =
+  | "collaborated"
+  | "shared_credit"
+  | "same_label"
+  | "shared_audience"
+  | "same_city"
+  | "played_together";
+
+/** Related artists with the evidence for their strongest reason (public data only). */
+export async function getRelatedArtists(artistId: string) {
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase.rpc("related_artists", {
+    artist: artistId,
+    max_results: 8,
+  });
+  if (error) throw error;
+  return (data ?? []).map((row) => ({
+    id: row.artist_id,
+    slug: row.slug,
+    name: row.name,
+    imageId: row.image_id,
+    relation: row.relation as RelatedRelation,
+    evidence: (row.evidence ?? {}) as Record<string, string | number>,
+  }));
 }

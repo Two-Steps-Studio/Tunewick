@@ -50,7 +50,7 @@ graph_edges (derived)      feature_flags, access_invites, waitlist      private.
 | `user_roles` | `user_id`, `role (moderator, admin)`, `granted_by` | Platform roles. "listener" is implicit. No writes through the Data API; changes audited. ✅ implemented (M0.3). |
 | `consents` | `user_id`, `purpose (analytics, marketing, personalization)`, `granted`, `policy_version`, `created_at` | Append-only history; latest row per purpose wins. |
 | `data_requests` | `user_id`, `type (export, delete)`, `status`, `requested_at`, `completed_at` | GDPR flows. |
-| `blocks` | `blocker_id`, `blocked_id` | Hides users from each other's activity. |
+| `user_blocks` | `blocker_id`, `blocked_id` | Hides users from each other's activity; ends follows both ways. |
 
 ### 3.2 Artists
 
@@ -222,7 +222,7 @@ Every policy is covered by pgTAP tests in `supabase/tests/` (a policy without a 
 | Player, quality selection, gapless | `audio_variants`, `release_loudness`, `tracks.segue_into_next`, `player_sessions` |
 | Library, history, playlists | `track_likes`, `release_likes`, `artist_follows`, `listening_events`, `playlists`, `playlist_tracks` |
 | Discovery, related | `graph_edges`, `listening_events`, `artist_follows` |
-| Social | `user_follows`, `activity`, `blocks` |
+| Social | `user_follows`, `user_blocks` |
 | Events, "Byłem przy tym" | `cities`, `venues`, `events`, `event_lineup`, `event_attendance` |
 | Music Graph | catalog + `credits` + `event_lineup` → `graph_edges` |
 | Entitlements, promo codes | `plans`, `entitlements`, `promo_campaigns`, `private.promo_codes`, `promo_redemptions` |
@@ -299,6 +299,66 @@ life; audited). Wrappers: `admin_grant_entitlement(user, plan, days | null, note
 plan, days, source, note)` (service role, `scripts/grant-plan.mjs`). The web app's
 `listenerEntitlement()` is `my_plan().max_quality_tier`.
 
+## Events, venues and "Byłem przy tym" (implemented, M8)
+
+`venues` (slug from name + city, city text + voivodeship like artists, unverified until staff
+verify; `find_or_create_venue` dedupes by normalized name and city), `events` (status pending →
+published / rejected, cancelled by the adding artist; `create_event` by the artist's owner/manager,
+from a day ago up to two years ahead, ≤ 20 pending) and `event_lineup` (the adding artist first).
+`review_event` (moderator + aal2, reason for rejections, audited) publishes; `upcoming_events(region)`
+lists published and cancelled gigs. Pages: Scene (by voivodeship), event (lineup with soundchecks of
+each artist's newest release, ticket link), venue (upcoming and past), artist (upcoming gigs), manage
+(add / cancel, review status). `event_attendance` ("Byłem przy tym") is written only by
+`mark_attended`: published events, from the start to 30 days after; private to the listener, no
+counts; listed in the library. `private.refresh_event_graph` adds `played_together` edges from
+published lineups (evidence: the event). Not yet: reports on events (needs a new enum value in its
+own transaction), venue self-service, verified attendance.
+
+## Admin panel (implemented, M10.3)
+
+`/admin` (admin + aal2): staff list (`admin_list_staff`, handles only), grant/revoke roles by
+profile handle (`admin_find_user` → `admin_grant_role` / `admin_revoke_role`), Premium for support
+cases (`admin_grant_entitlement`), feature flags (`admin_list_feature_flags`,
+`admin_set_feature_flag`) and a read-only audit log viewer (`admin_audit_log(max, prefix)`, newest
+first, actor handle). Every change goes through the existing audited functions.
+
+## Reports, takedowns and appeals (implemented, M10.2)
+
+`reports` (artist / release / playlist; reason copyright, illegal, hate, impersonation, spam, other;
+copyright notices require claimant name, email and a good-faith statement) are created by
+`submit_report` (signed in, public content only, one open report per person and subject, 10 a day).
+Reporters read their own; staff read all; owners never see who reported.
+`moderate_report(report, action, statement)` (moderator + aal2): dismiss, `takedown_release`
+(→ `taken_down`), `suspend_artist` (→ `suspended`) or `hide_playlist` (→ private), always with a
+statement of reasons (≥ 20 chars); closes every open report about the subject; the previous state is
+kept. `moderation_decisions` are readable by the affected artist's members / playlist owner, who can
+`appeal_moderation_decision` once within 6 months; `decide_appeal` is made by a **different**
+moderator (uphold, or reverse = restore the previous state). `artist_copyright_strikes` (staff only)
+counts upheld copyright takedowns (repeat-infringer signal). All steps are audited. Verification:
+`review_artist_verification` (M10.1) with a reason for rejections, shown to the artist.
+
+## Credits and the artist graph (implemented, M7)
+
+Credits may link a Tunewick artist (`credits.artist_id`, set from the profile address in the
+editor; only active profiles). `graph_edges` (public, derived) holds artist ↔ artist edges, both
+directions, rebuilt by `private.refresh_artist_graph()` from `private.public_tracks` whenever release
+or artist status changes: `collaborated` (a credit or featured link on a public track),
+`shared_credit` (the same person — normalized name — in the same role: producer, mixing,
+mastering, songwriting), `same_label`. Evidence (`derived_from`) always comes from one source row.
+`related_artists(artist)` adds live `shared_audience` (≥ 3 accounts follow both — a count only) and
+`same_city`, ranks collaboration > shared people > label > audience > city, and lists only artists
+with public music. The artist page shows the discography and related artists with these reasons;
+release pages show credits.
+
+## Soundchecks (implemented, M7.4)
+
+`tracks.soundcheck_start_ms` is chosen by the artist in the editor (m:ss; must start ≥ 5 s before the
+end — a shorter new master resets it instead of failing processing). `release_soundchecks(ids)`
+returns, per public release, its first track with a chosen excerpt (else track 1) and a length of
+≤ 30 s. The player's `playClip` plays only that excerpt and stops; Discover shows a soundcheck button
+on each release. Soundcheck listens are recorded with `listening_events.soundcheck = true` (≤ 35 s)
+and never count towards payouts (D2).
+
 ## Likes and follows (implemented, M5.1)
 
 `track_likes`, `release_likes`, `artist_follows` (PK `(user_id, subject)`, `user_id` defaults to
@@ -364,8 +424,10 @@ returns nothing. Playlists, events and venues join when they exist.
 
 ## Discovery expansion (implemented, M13 — docs/discovery-expansion.md)
 
-Migrations `20261007100000_global_model`, `20261007110000_discovery_ledger`,
-`20261007120000_discovery_progress_feed`.
+Migrations `20261008100000_global_model`, `20261008110000_discovery_ledger`,
+`20261008120000_discovery_progress_feed`, `20261008130000_compare_friends` (after `work`'s
+M7–M11 migrations; reports, people follows/blocks, soundchecks, partitions and retention come
+from those).
 
 | Table / column | Purpose |
 | --- | --- |
@@ -374,21 +436,18 @@ Migrations `20261007100000_global_model`, `20261007110000_discovery_ledger`,
 | `artist_genres` (≤ 5), `artist_links` (≤ 10, https) | What the artist makes; links on the public page. Owners/managers edit |
 | `listener_preferences` | Country, optional city, content languages, genres, discovery mode, exploration share, hide explicit, ranking opt-out, time zone, onboarded. Private |
 | `tracks.public_code` | Random, immutable share code (`/song/{artist}/{title}-{code}`) |
-| `listening_events.context` | `player` or `preview` (previews never count as payout plays) |
+| `listening_events.soundcheck` (M7.4) | Discover previews are recorded as soundcheck listens: never payout plays |
 | `track_saves` | "Saved from Discover" crate (Like stays `track_likes`) |
 | `discovery_point_rules` | Points and rolling-24 h caps per award kind; admin-editable |
 | `discovery_points` | The ledger; unique `(user, kind, award_key)`; written only by `private.award` |
 | `achievements`, `user_achievements` | Definitions as rows (metric + threshold); unlocks evaluated in the database |
-| `private.product_events` | Product analytics, signed-in only, no IP/UA, 180-day retention (`private.prune_product_events`) |
-| `reports` | Song/release/artist/user reports; staff decide via `decide_report` (MFA, audited) |
+| `private.product_events` | Product analytics, signed-in only, no IP/UA, 180-day retention (`private.prune_product_events`, pg_cron); exported by `my_product_events()` |
+| `private.track_stats`, `private.track_country_listeners` | Materialized feed aggregates, refreshed every 5 min (pg_cron) |
 
-Functions: `record_listen` (now with `context`, returns awards), `record_share`, `record_events`,
+Functions: `record_listen` (returns awards; `soundcheck` marks previews), `record_share`, `record_events`,
 `refresh_my_achievements`, `my_discovery_stats(period)`, `my_progress`, `my_records`,
-`my_weekly_recap`, `discovery_leaderboard`, `my_ranking`, `discover_candidates`, `my_taste`,
-`track_previews`, `similar_artists`, `artist_top_tracks`, `onboarding_artists`,
+`my_weekly_recap`, `discovery_leaderboard`, `my_ranking`, `discover_candidates`, `my_taste`
+(with shared-listening `co_listened`), `track_previews`, `artist_top_tracks`, `onboarding_artists`,
+`compare_with` (visibility via M8.2 `can_view_activity`), `my_product_events`,
 `browse_countries`; `discover_releases`/`discover_artists` gained a `country` filter.
-pgTAP: `supabase/tests/database/discovery.test.sql`.
-
-Later (2026-10-08): `set_track_preview` (artist-chosen preview, any release status),
-`my_taste().co_listened`, `user_follows` + `user_follow_counts`, `can_compare_with`, `compare_with`
-(visibility of the compared person decides). pgTAP: `user_follows.test.sql`.
+pgTAP: `discovery.test.sql`, `compare_friends.test.sql`.

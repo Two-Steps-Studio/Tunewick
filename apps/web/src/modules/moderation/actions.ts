@@ -36,3 +36,35 @@ export async function decide(
   revalidatePath("/", "layout");
   return redirect({ href: "/moderation", locale: await getLocale() });
 }
+
+export type VerificationState = {
+  error?: "note_required" | "mfa_required" | "not_allowed" | "already_decided" | "failed";
+  note?: string;
+};
+
+/** Approve or reject an artist verification request (the database checks role and MFA again). */
+export async function decideVerification(
+  requestId: string,
+  _prev: VerificationState,
+  formData: FormData,
+): Promise<VerificationState> {
+  const decision = String(formData.get("decision") ?? "");
+  const note = String(formData.get("note") ?? "").trim();
+  if (decision === "reject" && note.length < 10) return { error: "note_required", note };
+
+  const supabase = await createSupabaseServerClient();
+  const { error } = await supabase.rpc("review_artist_verification", {
+    request: requestId,
+    decision,
+    note: note || undefined,
+  });
+  if (error) {
+    if (error.hint === "mfa_required") return { error: "mfa_required", note };
+    if (error.code === "42501") return { error: "not_allowed", note };
+    if (error.code === "55000") return { error: "already_decided", note };
+    if (error.code === "22023") return { error: "note_required", note };
+    return { error: "failed", note };
+  }
+  revalidatePath("/", "layout");
+  return {};
+}

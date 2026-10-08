@@ -162,36 +162,6 @@ export async function getFullPlayback(trackId: string): Promise<{
   return index === -1 ? null : { tracks, index, entitlement };
 }
 
-const reportSchema = z.object({
-  subjectType: z.enum(["track", "release", "artist", "user"]),
-  subjectId: z.uuid(),
-  category: z.enum(["copyright", "inappropriate", "spam", "impersonation", "other"]),
-  details: z.string().trim().max(2000).optional(),
-});
-
-export type ReportInput = z.input<typeof reportSchema>;
-
-/** A listener's report (rate-limited in the database). */
-export async function reportContent(input: ReportInput) {
-  const parsed = reportSchema.safeParse(input);
-  if (!parsed.success) return { ok: false as const, error: "invalid" as const };
-  const supabase = await createSupabaseServerClient();
-  const { data: auth } = await supabase.auth.getClaims();
-  if (!auth?.claims) return { ok: false as const, error: "signIn" as const };
-  const { error } = await supabase.from("reports").insert({
-    subject_type: parsed.data.subjectType,
-    subject_id: parsed.data.subjectId,
-    category: parsed.data.category,
-    details: parsed.data.details || null,
-  });
-  if (error)
-    return {
-      ok: false as const,
-      error: error.code === "54000" ? ("limit" as const) : ("failed" as const),
-    };
-  return { ok: true as const };
-}
-
 export interface SuggestedArtist {
   id: string;
   slug: string;

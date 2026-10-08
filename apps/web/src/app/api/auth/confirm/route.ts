@@ -1,7 +1,7 @@
 import type { EmailOtpType } from "@supabase/supabase-js";
 import { type NextRequest, NextResponse } from "next/server";
 import { hasLocale } from "next-intl";
-import { getPathname } from "@/i18n/navigation";
+import { getPathname, staticHref } from "@/i18n/navigation";
 import { routing, type StaticPathname } from "@/i18n/routing";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
   const locale = hasLocale(routing.locales, cookieLocale) ? cookieLocale : routing.defaultLocale;
   const to = (href: StaticPathname, query?: Record<string, string>) =>
     NextResponse.redirect(
-      new URL(getPathname({ href: { pathname: href, query }, locale }), request.url),
+      new URL(getPathname({ href: staticHref(href, query), locale }), request.url),
     );
 
   if (!tokenHash || !type || !ALLOWED_TYPES.includes(type)) {

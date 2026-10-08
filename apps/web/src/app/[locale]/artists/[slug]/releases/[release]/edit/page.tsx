@@ -24,7 +24,6 @@ import {
   ReviewStatus,
   RightsForm,
   SubmitReleaseForm,
-  PreviewForm,
   TrackItem,
 } from "@/modules/catalog";
 
@@ -52,7 +51,7 @@ export default async function ReleaseEditorPage({
   if (!data) notFound();
 
   const t = await getTranslations("Releases");
-  const { artist, release, editable, canSetPreview, tracks, genreIds, allGenres } = data;
+  const { artist, release, editable, tracks, genreIds, allGenres } = data;
   const trackIds = tracks.map((track) => track.id);
   const [declaration, audio, cover, coverUpload] = await Promise.all([
     getLatestDeclaration(release.id),
@@ -153,7 +152,6 @@ export default async function ReleaseEditorPage({
                     preview={previewFor(track.id)}
                   />
                 ) : null}
-                {canSetPreview ? <PreviewForm track={track} /> : null}
               </TrackItem>
             ))}
           </ol>

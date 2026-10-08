@@ -45,74 +45,26 @@ export async function getSubmission(releaseId: string) {
   return { release, artist: release.artist, tracks: tracks ?? [], history: history ?? [] };
 }
 
-/** Open reports, oldest first, with a readable subject (RLS: staff see every report). */
-export async function getOpenReports() {
+/** Pending artist verification requests, oldest first (RLS: members and staff). */
+export async function getVerificationRequests() {
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase
-    .from("reports")
-    .select("id, subject_type, subject_id, category, details, created_at")
-    .eq("status", "open")
-    .order("created_at", { ascending: true })
-    .limit(100);
+    .from("artist_verification_requests")
+    .select("id, evidence, note, created_at, artist:artists (id, slug, name, city, voivodeship)")
+    .eq("status", "pending")
+    .order("created_at", { ascending: true });
   if (error) throw error;
-  const ids = (type: string) =>
-    data.filter((r) => r.subject_type === type).map((r) => r.subject_id);
-  const [tracks, releases, artists, users] = await Promise.all([
-    supabase
-      .from("tracks")
-      .select(
-        "id, title, public_code, release:releases(slug, artist:artists!releases_artist_id_fkey(slug, name))",
-      )
-      .in("id", ids("track")),
-    supabase
-      .from("releases")
-      .select("id, slug, title, artist:artists!releases_artist_id_fkey(slug, name)")
-      .in("id", ids("release")),
-    supabase.from("artists").select("id, slug, name").in("id", ids("artist")),
-    supabase.from("profiles").select("id, handle, display_name").in("id", ids("user")),
-  ]);
-  return data.map((report) => {
-    switch (report.subject_type) {
-      case "track": {
-        const t = tracks.data?.find((x) => x.id === report.subject_id);
-        return {
-          ...report,
-          label: t ? `${t.release?.artist?.name ?? ""} — ${t.title}` : null,
-          artistSlug: t?.release?.artist?.slug ?? null,
-          releaseSlug: t?.release?.slug ?? null,
-          handle: null,
-        };
-      }
-      case "release": {
-        const r = releases.data?.find((x) => x.id === report.subject_id);
-        return {
-          ...report,
-          label: r ? `${r.artist?.name ?? ""} — ${r.title}` : null,
-          artistSlug: r?.artist?.slug ?? null,
-          releaseSlug: r?.slug ?? null,
-          handle: null,
-        };
-      }
-      case "artist": {
-        const a = artists.data?.find((x) => x.id === report.subject_id);
-        return {
-          ...report,
-          label: a?.name ?? null,
-          artistSlug: a?.slug ?? null,
-          releaseSlug: null,
-          handle: null,
-        };
-      }
-      default: {
-        const u = users.data?.find((x) => x.id === report.subject_id);
-        return {
-          ...report,
-          label: u?.display_name ?? u?.handle ?? null,
-          artistSlug: null,
-          releaseSlug: null,
-          handle: u?.handle ?? null,
-        };
-      }
-    }
-  });
+  return data.flatMap((r) =>
+    r.artist
+      ? [
+          {
+            id: r.id,
+            note: r.note,
+            createdAt: r.created_at,
+            artist: r.artist,
+            evidence: Array.isArray(r.evidence) ? (r.evidence as string[]) : [],
+          },
+        ]
+      : [],
+  );
 }

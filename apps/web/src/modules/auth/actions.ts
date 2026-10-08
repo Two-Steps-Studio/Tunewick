@@ -2,7 +2,7 @@
 
 import { redirect as redirectToPath } from "next/navigation";
 import { getLocale } from "next-intl/server";
-import { redirect } from "@/i18n/navigation";
+import { redirect, staticHref } from "@/i18n/navigation";
 import type { StaticPathname } from "@/i18n/routing";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { isFeatureEnabled } from "@/modules/flags";
@@ -30,7 +30,10 @@ async function go(
   href: StaticPathname | { pathname: StaticPathname; query?: Record<string, string> },
 ) {
   const locale = await getLocale();
-  return redirect({ href, locale });
+  return redirect({
+    href: typeof href === "string" ? href : staticHref(href.pathname, href.query),
+    locale,
+  });
 }
 
 export async function signUp(_prev: AuthFormState, formData: FormData): Promise<AuthFormState> {
