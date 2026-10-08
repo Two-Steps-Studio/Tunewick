@@ -1404,8 +1404,8 @@
       "global_explorer": "Globalny odkrywca"
     },
     "toNextLevel": "Postęp do poziomu {level}",
-    "toNextLevelPoints": "{score} do poziomu {level}",
-    "points": "Punkty odkryć",
+    "toNextLevelPoints": "{score} XP do poziomu {level}",
+    "points": "XP",
     "today": "Dziś",
     "diversity": "Różnorodność",
     "streak": "{count, plural, one {# dzień serii odkryć} few {# dni serii odkryć} many {# dni serii odkryć} other {# dnia serii odkryć}}",
@@ -1444,7 +1444,7 @@
         "newSongs": "Nowe odkrycia",
         "saves": "Zapisane utwory",
         "follows": "Obserwowani artyści",
-        "points": "Punkty"
+        "points": "XP"
       },
       "hint": "Fragmenty liczą się do czasu słuchania; odtworzenia to słuchanie w odtwarzaczu przez co najmniej 30 sekund."
     },
@@ -1515,7 +1515,8 @@
         "save": "Zapisanie utworu (raz na utwór)",
         "full_listen": "Wysłuchanie nowego odkrycia w całości (raz dziennie)",
         "share": "Udostępnienie utworu (raz dziennie na utwór)",
-        "challenge": "Ukończone wyzwanie tygodnia (raz na wyzwanie)"
+        "challenge": "Ukończone wyzwanie tygodnia (raz na wyzwanie)",
+        "underground": "Artysta z mniej niż 10 000 słuchaczy (raz na artystę)"
       },
       "fair": "Punkty nagradzają odkrywanie, nie godziny odtwarzania: powtórki, zapętlanie i szybkie pomijanie nic nie dają, a każdy rodzaj punktów ma dzienny limit."
     },
@@ -1531,7 +1532,7 @@
     "compareWith": "Porównaj",
     "challenges": {
       "title": "Wyzwania tygodnia",
-      "points": "+20 pkt",
+      "points": "+200 XP",
       "hint": "Te same trzy wyzwania dla wszystkich, nowe co poniedziałek. Ten zestaw kończy się {date}.",
       "names": {
         "thirty_songs": "Odkryj {target} nowych utworów",
@@ -1549,9 +1550,10 @@
     "seasons": {
       "title": "Twoje sezony",
       "name": "Sezon {quarter}/{year}",
-      "place": "{rank}. miejsce z {participants} · {points} pkt",
+      "place": "{rank}. miejsce z {participants} · {points} XP",
       "hint": "Sezon to kwartał. Miejsce liczymy ze wszystkich odkrywców, także tych, którzy nie pokazują się w publicznym rankingu — widzisz je tylko Ty."
-    }
+    },
+    "scoreHint": "Discovery Score rośnie tylko za odkrycia — nowe utwory, artystów, gatunki, kraje i małe sceny — i jest wyższy, gdy odkrywasz różnorodnie. XP zbierasz za wszystko, co robisz w TuneWick; od XP zależy poziom."
   },
   "Rankings": {
     "title": "Rankingi",
@@ -1576,20 +1578,20 @@
     "country": "Kraj",
     "show": "Pokaż",
     "heading": "{scope} · {period}",
-    "you": "Ty: #{rank} z {participants} · {points} pkt",
+    "you": "Ty: #{rank} z {participants} · {points} XP",
     "percentile": "więcej niż {percentile}% słuchaczy",
     "notListed": "Nie jesteś widoczny/a publicznie — ustaw nazwę profilu.",
     "notRanked": "W tym okresie nie masz jeszcze punktów — odkryj coś nowego.",
     "signIn": "Zaloguj się, aby zobaczyć swoje miejsce.",
     "empty": "W tym okresie nikogo tu jeszcze nie ma. Bądź pierwszy/a.",
     "discoveries": "{count, plural, one {# odkrycie} few {# odkrycia} many {# odkryć} other {# odkrycia}}",
-    "points": "{points} pkt",
+    "points": "{points} XP",
     "fair": "Ranking tygodniowy zaczyna się od nowa w każdy poniedziałek (UTC). Widoczni: słuchacze z nazwą profilu, którzy nie wyłączyli rankingów.",
     "seasonName": "Sezon {quarter}/{year}",
     "seasonEnds": "{season} kończy się {date}. Wtedy zapisujemy Twoje końcowe miejsce."
   },
   "Notices": {
-    "points": "+{points}",
+    "points": "+{points} XP",
     "dismiss": "Zamknij",
     "parts": {
       "new_song": "Nowy utwór",
@@ -1599,7 +1601,8 @@
       "country": "Muzyka z kraju {country}",
       "save": "Zapisane",
       "full_listen": "Całe wysłuchane",
-      "share": "Udostępnione"
+      "share": "Udostępnione",
+      "underground": "mała scena"
     },
     "goal": {
       "daily_artists": "Cel dnia zrobiony: {target} nowych artystów!",
@@ -1629,7 +1632,7 @@
       "newArtists": "Nowi artyści",
       "countries": "Kraje",
       "listening": "Słuchanie",
-      "points": "Punkty odkryć"
+      "points": "XP"
     },
     "hint": "Widoczne dzięki ustawieniom prywatności tej osoby; Twoje ustawienie decyduje, co ona widzi o Tobie."
   }

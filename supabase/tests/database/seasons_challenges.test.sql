@@ -41,7 +41,7 @@ values ('00000000-0000-0000-0000-000000000d01', 'save', 'old', 2, now() - interv
 set local role authenticated;
 select ok((select completed_at is not null from my_challenges() where code = 'three_genres'), 'reaching the target completes it');
 select is((select progress from my_challenges() where code = 'five_saves'), 0, 'last week''s saves are not this week''s');
-select is((select points::int from discovery_points where kind = 'challenge'), 20, 'a completed challenge pays its points');
+select is((select points::int from discovery_points where kind = 'challenge'), 200, 'a completed challenge pays its XP');
 
 set local role postgres;
 insert into discovery_points (user_id, kind, award_key, points) values ('00000000-0000-0000-0000-000000000d01', 'new_genre', 'g4', 5);

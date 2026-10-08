@@ -242,10 +242,10 @@ describe("progress", () => {
 
   it("Discovery Score rewards points, and diversity on top", () => {
     expect(discoveryScore(0, [])).toBe(0);
-    expect(discoveryScore(100, [100])).toBe(800);
+    expect(discoveryScore(1000, [100])).toBe(800);
     expect(
       discoveryScore(
-        100,
+        1000,
         Array.from({ length: 12 }, () => 1),
       ),
     ).toBe(1000);

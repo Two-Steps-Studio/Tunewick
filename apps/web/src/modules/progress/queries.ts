@@ -13,6 +13,7 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export interface ProgressSummary {
   timeZone: string;
+  /** Total XP (everything in the ledger). */
   pointsTotal: number;
   pointsToday: number;
   pointsWeek: number;
@@ -30,6 +31,7 @@ export interface ProgressSummary {
 type ProgressJson = ProgressInput & {
   time_zone: string;
   points_total: number;
+  discovery_points_total: number;
   points_today: number;
   points_week: number;
   songs_total: number;
@@ -59,7 +61,7 @@ export async function getMyProgress(): Promise<ProgressSummary | null> {
     avg_weekly_artists: numbers(p.avg_weekly_artists),
     avg_weekly_countries: numbers(p.avg_weekly_countries),
   };
-  const score = discoveryScore(p.points_total, p.genre_spread);
+  const score = discoveryScore(p.discovery_points_total, p.genre_spread);
   return {
     timeZone: p.time_zone,
     pointsTotal: p.points_total,
@@ -72,7 +74,7 @@ export async function getMyProgress(): Promise<ProgressSummary | null> {
     longestStreak: p.longest_streak,
     score,
     diversity: diversity(p.genre_spread),
-    level: levelFor(score),
+    level: levelFor(p.points_total),
     goals: goalsFor(input),
   };
 }

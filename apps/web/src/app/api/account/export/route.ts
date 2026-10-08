@@ -69,6 +69,7 @@ export async function GET() {
     productEvents,
     seasons,
     clips,
+    daily,
   ] = await Promise.all([
     supabase.from("profiles").select("handle, display_name, bio, created_at").eq("id", user.id),
     supabase.from("profile_settings").select("*").eq("user_id", user.id),
@@ -117,6 +118,10 @@ export async function GET() {
       .from("season_results")
       .select("season_start, points, discoveries, rank, participants, percentile"),
     supabase.rpc("my_share_clips"),
+    supabase
+      .from("listening_daily")
+      .select("day, ms_played, plays, tracks, artists, hours")
+      .order("day"),
   ]);
 
   const body = {
@@ -150,6 +155,7 @@ export async function GET() {
     discover_activity_events: own(productEvents),
     season_results: own(seasons),
     share_videos_requested: own(clips),
+    listening_by_day: own(daily),
   };
 
   return new NextResponse(JSON.stringify(body, null, 2), {

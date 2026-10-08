@@ -3,7 +3,7 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set search_path = public, extensions;
 
-select plan(51);
+select plan(52);
 
 insert into auth.users (id, email, raw_app_meta_data, aud, role)
 values
@@ -88,14 +88,14 @@ select is((record_listen((select id from ids where name = 't1'), now() - interva
   '[]'::jsonb, 'a skip (8 s) discovers nothing');
 select is((select sum((a ->> 'points')::int)::int from jsonb_array_elements(
     record_listen((select id from ids where name = 't1'), now() - interval '50 seconds', 20000, true, null, true) -> 'awards') a),
-  14, 'a whole preview of new music: new song 1 + new artist 3 + new genre 5 + new country 5');
+  180, 'a whole preview of new music (XP): new song 10 + new artist 30 + new genre 50 + new country 50 + underground 40');
 select is((record_listen((select id from ids where name = 't1'), now() - interval '40 seconds', 25000, false, 'high', false)) -> 'awards',
   '[]'::jsonb, 'replaying a discovered song earns nothing');
 select is((select sum((a ->> 'points')::int)::int from jsonb_array_elements(
     record_listen((select id from ids where name = 't3'), now() - interval '30 seconds', 16000, false, null, true) -> 'awards') a),
-  14, 'a German techno artist is a new artist, genre and country (genre from the artist when the release has none)');
+  180, 'a German techno artist is a new artist, genre and country (genre from the artist when the release has none)');
 select is((record_listen((select id from ids where name = 't1'), now() - interval '20 seconds', 180000, true, 'high', false)) -> 'awards',
-  '[{"kind": "full_listen", "points": 1}]'::jsonb, 'a full listen of recently discovered music');
+  '[{"kind": "full_listen", "points": 10}]'::jsonb, 'a full listen of recently discovered music');
 select is((record_listen((select id from ids where name = 't1'), now() - interval '10 seconds', 180000, true, 'high', false)) -> 'awards',
   '[]'::jsonb, 'looping it pays once a day');
 select throws_ok($$select record_listen((select id from ids where name = 't1'), now(), 40000, false, null, true)$$,
@@ -106,8 +106,8 @@ select throws_ok($$insert into discovery_points (user_id, kind, award_key, point
 select lives_ok($$insert into track_saves (track_id) values ((select id from ids where name = 't2'))$$, 'a listener saves a track');
 delete from track_saves where track_id = (select id from ids where name = 't2');
 insert into track_saves (track_id) values ((select id from ids where name = 't2'));
-select is((select sum(points)::int from discovery_points where kind = 'save'), 2, 'unsave + save again pays once');
-select is(record_share((select id from ids where name = 't1'), 'copy'), 3, 'sharing pays');
+select is((select sum(points)::int from discovery_points where kind = 'save'), 20, 'unsave + save again pays once');
+select is(record_share((select id from ids where name = 't1'), 'copy'), 30, 'sharing pays');
 select is(record_share((select id from ids where name = 't1'), 'copy'), 0, 'sharing the same song again today does not');
 
 -- The feed reads cached aggregates: zero until the scheduled refresh, real counts after it.
@@ -139,7 +139,8 @@ select is((select array_agg(t.title) from my_recent_tracks() r join tracks t on 
   'recently played leaves out previews and soundchecks');
 select is((my_progress() ->> 'current_streak')::int, 1, 'a day with a discovery starts a streak');
 select is((my_progress() ->> 'today_artists')::int, 2, 'goal progress: artists discovered today');
-select is((my_progress() ->> 'points_total')::int, 14 + 14 + 1 + 2 + 3, 'points add up');
+select is((my_progress() ->> 'points_total')::int, 180 + 180 + 10 + 20 + 30, 'XP adds up everything in the ledger');
+select is((my_progress() ->> 'discovery_points_total')::int, 180 + 180 + 10, 'the Discovery Score counts discoveries only (no saves or shares)');
 select ok((select bool_or(code = 'first_discovery') from user_achievements), 'First Discovery is unlocked');
 select ok((select (g ->> 'w')::numeric > 0 from jsonb_array_elements(my_taste() -> 'genres') g
   where (g ->> 'id')::smallint = (select id from genres where slug = 'techno')), 'taste: genres from what was heard (artist genres as fallback)');

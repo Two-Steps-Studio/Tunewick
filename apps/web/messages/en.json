@@ -1404,8 +1404,8 @@
       "global_explorer": "Global Explorer"
     },
     "toNextLevel": "Progress to level {level}",
-    "toNextLevelPoints": "{score} to level {level}",
-    "points": "Discovery Points",
+    "toNextLevelPoints": "{score} XP to level {level}",
+    "points": "XP",
     "today": "Today",
     "diversity": "Diversity",
     "streak": "{count, plural, one {# day discovery streak} other {# day discovery streak}}",
@@ -1444,7 +1444,7 @@
         "newSongs": "New discoveries",
         "saves": "Songs saved",
         "follows": "Artists followed",
-        "points": "Points"
+        "points": "XP"
       },
       "hint": "Previews count as listening time; plays are full-player listens of at least 30 seconds."
     },
@@ -1515,7 +1515,8 @@
         "save": "Saving a song (once per song)",
         "full_listen": "Listening to a new discovery in full (once a day)",
         "share": "Sharing a song (once a day per song)",
-        "challenge": "A completed weekly challenge (once per challenge)"
+        "challenge": "A completed weekly challenge (once per challenge)",
+        "underground": "An artist with fewer than 10,000 listeners (once per artist)"
       },
       "fair": "Points reward discovering, not hours of playback: replays, loops and quick skips earn nothing, and every kind of point has a daily cap."
     },
@@ -1531,7 +1532,7 @@
     "compareWith": "Compare",
     "challenges": {
       "title": "This week’s challenges",
-      "points": "+20 pts",
+      "points": "+200 XP",
       "hint": "The same three challenges for everyone, new every Monday. This set ends {date}.",
       "names": {
         "thirty_songs": "Discover {target} new songs",
@@ -1549,9 +1550,10 @@
     "seasons": {
       "title": "Your seasons",
       "name": "Season {quarter} · {year}",
-      "place": "#{rank} of {participants} · {points} pts",
+      "place": "#{rank} of {participants} · {points} XP",
       "hint": "A season is a quarter. Your place counts every discoverer, including those who stay out of the public ranking — only you see it."
-    }
+    },
+    "scoreHint": "Your Discovery Score grows only by discovering — new songs, artists, genres, countries and small scenes — and more when you discover widely. You earn XP for everything you do on TuneWick; your level follows XP."
   },
   "Rankings": {
     "title": "Rankings",
@@ -1576,20 +1578,20 @@
     "country": "Country",
     "show": "Show",
     "heading": "{scope} · {period}",
-    "you": "You: #{rank} of {participants} · {points} points",
+    "you": "You: #{rank} of {participants} · {points} XP",
     "percentile": "more than {percentile}% of listeners",
     "notListed": "You are not shown publicly — set a profile name.",
     "notRanked": "No points in this period yet — discover something new.",
     "signIn": "Sign in to see your place.",
     "empty": "Nobody here yet this period. Be the first.",
     "discoveries": "{count, plural, one {# discovery} other {# discoveries}}",
-    "points": "{points} pts",
+    "points": "{points} XP",
     "fair": "Weekly rankings reset every Monday (UTC). Shown: listeners with a profile name who did not opt out.",
     "seasonName": "Season {quarter} · {year}",
     "seasonEnds": "{season} ends on {date}. That is when your final place is recorded."
   },
   "Notices": {
-    "points": "+{points}",
+    "points": "+{points} XP",
     "dismiss": "Dismiss",
     "parts": {
       "new_song": "New song",
@@ -1599,7 +1601,8 @@
       "country": "Music from {country}",
       "save": "Saved",
       "full_listen": "Full listen",
-      "share": "Shared"
+      "share": "Shared",
+      "underground": "small scene"
     },
     "goal": {
       "daily_artists": "Daily goal completed: {target} new artists!",
@@ -1629,7 +1632,7 @@
       "newArtists": "New artists",
       "countries": "Countries",
       "listening": "Listening",
-      "points": "Discovery points"
+      "points": "XP"
     },
     "hint": "Shown because of their privacy setting; your own setting decides what they see of you."
   }

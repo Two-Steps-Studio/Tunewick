@@ -883,6 +883,39 @@ export type Database = {
           },
         ];
       };
+      listening_daily: {
+        Row: {
+          artists: number;
+          day: string;
+          hours: number[];
+          ms_played: number;
+          plays: number;
+          tracks: number;
+          updated_at: string;
+          user_id: string;
+        };
+        Insert: {
+          artists?: number;
+          day: string;
+          hours?: number[];
+          ms_played?: number;
+          plays?: number;
+          tracks?: number;
+          updated_at?: string;
+          user_id: string;
+        };
+        Update: {
+          artists?: number;
+          day?: string;
+          hours?: number[];
+          ms_played?: number;
+          plays?: number;
+          tracks?: number;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
       listening_events: {
         Row: {
           artist_id: string;
@@ -1142,21 +1175,36 @@ export type Database = {
         Row: {
           activity_visibility: Database["public"]["Enums"]["visibility_level"];
           age_confirmed_at: string | null;
+          badges_visibility: Database["public"]["Enums"]["visibility_level"];
           locale: string;
+          profile_public: boolean;
+          replay_visibility: Database["public"]["Enums"]["visibility_level"];
+          score_visibility: Database["public"]["Enums"]["visibility_level"];
+          stats_visibility: Database["public"]["Enums"]["visibility_level"];
           updated_at: string;
           user_id: string;
         };
         Insert: {
           activity_visibility?: Database["public"]["Enums"]["visibility_level"];
           age_confirmed_at?: string | null;
+          badges_visibility?: Database["public"]["Enums"]["visibility_level"];
           locale?: string;
+          profile_public?: boolean;
+          replay_visibility?: Database["public"]["Enums"]["visibility_level"];
+          score_visibility?: Database["public"]["Enums"]["visibility_level"];
+          stats_visibility?: Database["public"]["Enums"]["visibility_level"];
           updated_at?: string;
           user_id: string;
         };
         Update: {
           activity_visibility?: Database["public"]["Enums"]["visibility_level"];
           age_confirmed_at?: string | null;
+          badges_visibility?: Database["public"]["Enums"]["visibility_level"];
           locale?: string;
+          profile_public?: boolean;
+          replay_visibility?: Database["public"]["Enums"]["visibility_level"];
+          score_visibility?: Database["public"]["Enums"]["visibility_level"];
+          stats_visibility?: Database["public"]["Enums"]["visibility_level"];
           updated_at?: string;
           user_id?: string;
         };

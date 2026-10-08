@@ -111,13 +111,13 @@ export default async function YouPage({ params, searchParams }: PageProps<"/[loc
             {t("level", { level: progress.level.level })} · {t(`levels.${progress.level.title}`)}
           </p>
           <Meter
-            value={progress.score - progress.level.floor}
+            value={progress.pointsTotal - progress.level.floor}
             max={progress.level.next - progress.level.floor}
             label={t("toNextLevel", { level: progress.level.level + 1 })}
           />
           <p className="score-card__hint">
             {t("toNextLevelPoints", {
-              score: n(progress.level.next - progress.score),
+              score: n(progress.level.next - progress.pointsTotal),
               level: progress.level.level + 1,
             })}
           </p>
@@ -135,6 +135,7 @@ export default async function YouPage({ params, searchParams }: PageProps<"/[loc
               <dd>{format.number(progress.diversity, { style: "percent" })}</dd>
             </div>
           </dl>
+          <p className="score-card__hint">{t("scoreHint")}</p>
         </div>
         <p className="streak" data-active={progress.currentStreak > 0 || undefined}>
           <span aria-hidden="true">🔥</span>{" "}
