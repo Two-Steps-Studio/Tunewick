@@ -2569,6 +2569,16 @@ export type Database = {
           unique_songs: number;
         }[];
       };
+      my_feed_outcomes: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          completes: number;
+          hits: number;
+          reason: string;
+          shown: number;
+          skips: number;
+        }[];
+      };
       my_plan: {
         Args: Record<PropertyKey, never>;
         Returns: {

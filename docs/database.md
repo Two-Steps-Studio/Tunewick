@@ -449,5 +449,6 @@ Functions: `record_listen` (returns awards; `soundcheck` marks previews), `recor
 `my_weekly_recap`, `discovery_leaderboard`, `my_ranking`, `discover_candidates`, `my_taste`
 (with shared-listening `co_listened`), `track_previews`, `artist_top_tracks`, `onboarding_artists`,
 `compare_with` (visibility via M8.2 `can_view_activity`), `my_product_events`,
+`my_feed_outcomes` (per-reason results of the last 60 days, input to per-listener weight tuning),
 `browse_countries`; `discover_releases`/`discover_artists` gained a `country` filter.
-pgTAP: `discovery.test.sql`, `compare_friends.test.sql`.
+pgTAP: `discovery.test.sql`, `compare_friends.test.sql`, `feed_outcomes.test.sql`.

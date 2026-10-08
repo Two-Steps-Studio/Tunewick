@@ -5,8 +5,11 @@ import {
   EMPTY_TASTE,
   goalsFor,
   levelFor,
+  MODE_WEIGHTS,
   previewWindow,
   rankFeed,
+  tuneWeights,
+  TUNING,
   type Candidate,
   type Taste,
 } from ".";
@@ -297,5 +300,61 @@ describe("progress", () => {
       lengthMs: 30_000,
       chosen: false,
     });
+  });
+});
+
+describe("tuneWeights", () => {
+  const base = MODE_WEIGHTS.for_you;
+  const outcome = (reason: string, shown: number, hits: number, completes = 0) => ({
+    reason,
+    shown,
+    hits,
+    completes,
+    skips: 0,
+  });
+
+  it("leaves weights alone without enough history", () => {
+    const tuned = tuneWeights(base, [outcome("genre_you_like", 10, 5)]);
+    expect(tuned.weights).toBe(base);
+    expect(tuned.factors).toEqual({});
+  });
+
+  it("leaves weights alone when nothing ever worked (no rate to compare with)", () => {
+    expect(tuneWeights(base, [outcome("genre_you_like", 80, 0)]).factors).toEqual({});
+  });
+
+  it("boosts the signal that works and dampens the one that does not", () => {
+    const tuned = tuneWeights(base, [
+      outcome("listeners_like_you", 60, 18),
+      outcome("genre_you_like", 60, 2),
+      outcome("new_genre", 20, 2),
+    ]);
+    expect(tuned.weights.user).toBeGreaterThan(base.user);
+    expect(tuned.weights.genre).toBeLessThan(base.genre);
+    // Untouched: no reason maps to it.
+    expect(tuned.weights.skip).toBe(base.skip);
+    expect(tuned.weights.seen).toBe(base.seen);
+  });
+
+  it("is a nudge: factors stay within the configured bounds", () => {
+    const tuned = tuneWeights(base, [outcome("rising", 500, 500), outcome("popular", 500, 0)]);
+    expect(tuned.factors.rising).toBeLessThanOrEqual(TUNING.maxFactor);
+    expect(tuned.factors.popularity).toBe(TUNING.minFactor);
+  });
+
+  it("shrinks little evidence toward the listener's overall rate", () => {
+    const few = tuneWeights(base, [outcome("rising", 3, 3), outcome("popular", 100, 30)]);
+    const many = tuneWeights(base, [outcome("rising", 60, 60), outcome("popular", 100, 30)]);
+    expect(few.factors.rising ?? 1).toBeLessThan(many.factors.rising ?? 1);
+  });
+
+  it("pools reasons that stand for the same feature and counts finished previews", () => {
+    const tuned = tuneWeights(base, [
+      outcome("followed_artist", 30, 6),
+      outcome("artist_you_like", 30, 0, 12),
+      outcome("popular", 60, 2),
+    ]);
+    expect(tuned.factors.artist).toBeGreaterThan(1);
+    expect(tuned.factors.popularity).toBeLessThan(1);
   });
 });

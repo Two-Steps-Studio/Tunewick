@@ -68,8 +68,8 @@ genre name columns. None of it is removed; it is generalized.
   ✅ regional/global rankings, ✅ Weekly Recap with percentile, ✅ shareable stats card (vertical
   1080×1920 + square), ✅ artist country/genres/languages/links + similar artists + "Discover this
   artist", ✅ reports (song/artist/user) into the staff area.
-- Improved recommendations: co-listening (item-item) instead of co-follow only; per-user weight
-  tuning from discovery success (save/follow of a previously unknown artist).
+- ✅ Improved recommendations: co-listening (similar listeners) next to co-follow; ✅ per-listener
+  weight tuning from discovery success (`my_feed_outcomes` + `tuneWeights`).
 - QR code on share cards, artist-chosen preview editing UI in the release editor (the column
   exists), upcoming events on artist pages (needs M8 events).
 
@@ -152,7 +152,7 @@ Known gaps / next:
 - Guidon tasks for M13 must be created from §3 (no Guidon access from the implementation session).
 - Previews use AAC only (as the delivery tiers do); a browser without AAC shows "can't play the
   preview" — a FLAC/Opus preview variant would need a worker change.
-- Per-listener weight tuning (from discovery success) is P1.
+- ~~Per-listener weight tuning~~ — done 2026-10-08, see below.
 - Done 2026-10-08: feed aggregates are materialized views refreshed every 5 minutes by pg_cron
   (`private.track_stats`, `private.track_country_listeners`).
 
@@ -174,3 +174,15 @@ reports go through the DSA form (`/report`), follows/blocks/visibility come from
 artist picks the excerpt with the soundcheck start in the track form (my separate preview editor
 was dropped). The Discover migrations were renumbered after `work`'s (`20261008100000…`).
 Navigation: Discover · Scene · Search · Library · You (Browse is linked from the feed bar).
+
+### Per-listener weight tuning (2026-10-08)
+
+Every feed event already carries the reason code the item was shown for. `my_feed_outcomes()`
+returns, per reason and over the caller's last 60 days, the distinct songs shown, kept (liked,
+saved or artist followed), finished and skipped; pinned items (`shared`, `artist_spotlight`) do
+not count. `tuneWeights()` (`packages/shared/src/discovery/tune.ts`, constants in `TUNING`) maps
+each reason to the feature it stands for, compares its success rate (kept + ½ finished, per song
+shown) with the listener's overall rate, shrinks it toward that rate with 20 pseudo-songs,
+square-roots the lift and clamps it to ×0.75…×1.33. Nothing changes below 40 songs shown or with no
+success at all. Applied in For You and Global only — Nearby/New/Rising are lenses the listener
+chose — and never to the exploration share, which stays the listener's setting.

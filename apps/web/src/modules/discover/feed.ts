@@ -2,12 +2,16 @@ import "server-only";
 
 import {
   EMPTY_TASTE,
+  EXPLORING_MODES,
   FEED,
+  MODE_WEIGHTS,
   previewWindow,
   rankFeed,
+  tuneWeights,
   type Candidate,
   type Database,
   type DiscoveryMode,
+  type FeatureWeights,
   type Json,
   type RankedItem,
   type Taste,
@@ -182,6 +186,23 @@ export interface FeedRequest {
   locale: string;
 }
 
+/**
+ * Weights for this listener: in the exploring modes (For You, Global) the features that explained
+ * what they liked, saved or followed count a little more, the ones they kept passing a little less.
+ * The other modes are lenses the listener picked, so their weights stay as defined.
+ */
+async function weightsFor(
+  supabase: Supabase,
+  mode: DiscoveryMode,
+  signedIn: boolean,
+): Promise<FeatureWeights> {
+  const base = MODE_WEIGHTS[mode];
+  if (!signedIn || !EXPLORING_MODES.includes(mode)) return base;
+  const { data, error } = await supabase.rpc("my_feed_outcomes");
+  if (error) throw error;
+  return tuneWeights(base, data ?? []).weights;
+}
+
 /** One page of the Discover feed for the current listener (account or visitor). */
 export async function getFeedPage(request: FeedRequest): Promise<FeedPage> {
   const supabase = await createSupabaseServerClient();
@@ -190,10 +211,11 @@ export async function getFeedPage(request: FeedRequest): Promise<FeedPage> {
   const size = request.size ?? FEED.pageSize;
   const exclude = new Set(request.exclude ?? []);
 
-  const [rows, taste, genres] = await Promise.all([
+  const [rows, taste, genres, weights] = await Promise.all([
     loadCandidates(supabase, mode, preferences),
     loadTaste(supabase, preferences, signedIn),
     getGenres(request.locale),
+    weightsFor(supabase, mode, signedIn),
   ]);
   const byId = new Map(rows.map((row) => [row.track_id, row]));
 
@@ -234,6 +256,7 @@ export async function getFeedPage(request: FeedRequest): Promise<FeedPage> {
 
   const ranked = rankFeed(rows.map(toCandidate), rankTaste, {
     mode,
+    weights,
     size: Math.max(0, size - pinned.length),
     seed: request.seed,
     explorationShare: preferences.explorationShare,
