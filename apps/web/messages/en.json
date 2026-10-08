@@ -1270,7 +1270,8 @@
       "firstRelease": "First release {when} · {count, plural, one {# release} other {# releases}}"
     },
     "soundcheck": "Soundcheck {seconds} s",
-    "soundcheckLabel": "Hear an excerpt: {title} — {artist}"
+    "soundcheckLabel": "Hear an excerpt: {title} — {artist}",
+    "charts": "See this week’s charts →"
   },
   "Feed": {
     "title": "Discover",
@@ -1351,7 +1352,8 @@
       "unavailable": "No video is available for this song.",
       "signin": "Sign in to prepare a video.",
       "limit": "You have made many videos this hour — try again later."
-    }
+    },
+    "charts": "Charts"
   },
   "Onboarding": {
     "title": "Discovery preferences",
@@ -1635,5 +1637,108 @@
       "points": "XP"
     },
     "hint": "Shown because of their privacy setting; your own setting decides what they see of you."
+  },
+  "Charts": {
+    "title": "Charts",
+    "lead": "What people listen to and discover this week — counted in listeners, never plays, so loops and bots don’t move anything.",
+    "loading": "Loading charts…",
+    "tabsLabel": "Chart",
+    "scopeLabel": "Where",
+    "citiesLabel": "City scenes",
+    "artistChartsLabel": "Artist chart",
+    "freshLabel": "Released",
+    "country": "Country…",
+    "genre": "Genre…",
+    "show": "Show",
+    "play": "Play from here",
+    "playFrom": "Play from {title} by {artist}",
+    "discoverArtist": "Discover {name}",
+    "new": "new",
+    "tabs": {
+      "top": "Top 100",
+      "rising": "Rising",
+      "underground": "Underground",
+      "discovered": "Most discovered",
+      "saved": "Most saved",
+      "shared": "Most shared",
+      "artists": "Artists",
+      "fresh": "Fresh",
+      "world": "Discover the world"
+    },
+    "scope": {
+      "global": "Global",
+      "popularIn": "Popular in {place}",
+      "from": "Music from {place}",
+      "city": "{city} scene",
+      "genre": "{genre}"
+    },
+    "regions": {
+      "europe": "Europe",
+      "americas": "Americas",
+      "asia": "Asia",
+      "africa": "Africa",
+      "oceania": "Oceania"
+    },
+    "about": {
+      "top": "Listeners in the last 7 days. “Popular in …” counts listeners there — shown once at least 3 of them listen.",
+      "rising": "Songs gaining the most listeners compared with the week before.",
+      "underground": "The most listened songs by artists with fewer than 10,000 listeners a month.",
+      "discovered": "Songs most people heard for the first time this week — TuneWick’s own chart.",
+      "saved": "Songs saved to crates this week.",
+      "shared": "Songs shared this week."
+    },
+    "aboutArtists": {
+      "rising": "Artists gaining the most listeners compared with the week before.",
+      "underground": "Artists with fewer than 10,000 listeners a month, by listeners this week.",
+      "new_listeners": "Artists with the most people hearing them for the first time this week.",
+      "discovered": "Artists discovered by the most people this week."
+    },
+    "artistCharts": {
+      "rising": "Rising artists",
+      "underground": "Underground artists",
+      "new_listeners": "Most new listeners",
+      "discovered": "Most discovered"
+    },
+    "values": {
+      "top": "{count, plural, one {# listener} other {{value} listeners}}",
+      "rising": "{count, plural, one {+# listener} other {+{value} listeners}}",
+      "underground": "{count, plural, one {# listener} other {{value} listeners}}",
+      "discovered": "{count, plural, one {# discovery} other {{value} discoveries}}",
+      "saved": "{count, plural, one {# save} other {{value} saves}}",
+      "shared": "{count, plural, one {# share} other {{value} shares}}"
+    },
+    "artistValues": {
+      "rising": "{count, plural, one {+# listener} other {+{value} listeners}}",
+      "underground": "{count, plural, one {# listener} other {{value} listeners}}",
+      "new_listeners": "{count, plural, one {# new listener} other {{value} new listeners}}",
+      "discovered": "{count, plural, one {# discovery} other {{value} discoveries}}"
+    },
+    "fresh": {
+      "h24": "Last 24 hours",
+      "h168": "Last 7 days",
+      "h720": "Last 30 days"
+    },
+    "empty": {
+      "top": "No chart here yet — not enough listeners this week.",
+      "rising": "Nothing is rising here yet.",
+      "underground": "No underground songs here this week yet.",
+      "discovered": "Nobody discovered music here this week yet — be the first.",
+      "saved": "Nothing saved here this week yet.",
+      "shared": "Nothing shared here this week yet."
+    },
+    "emptyArtists": "No artists in this chart yet.",
+    "emptyFresh": "No new releases here in this time.",
+    "emptyCta": "Discover music",
+    "world": {
+      "title": "Discover the world",
+      "lead": "The most listened song from each country this week.",
+      "leadOutside": "The most listened song from each country this week — outside {country}.",
+      "empty": "Music from other countries will show up here as soon as people listen to it."
+    }
+  },
+  "Segment": {
+    "errorTitle": "Something went wrong",
+    "errorText": "This part of TuneWick could not load. Your data is safe — try again.",
+    "retry": "Try again"
   }
 }

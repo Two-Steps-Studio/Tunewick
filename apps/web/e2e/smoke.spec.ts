@@ -5,6 +5,7 @@ const pages = [
   { path: "/przegladaj", heading: "Przeglądaj", lang: "pl" },
   { path: "/ty", heading: "Ty", lang: "pl" },
   { path: "/rankingi", heading: "Rankingi", lang: "pl" },
+  { path: "/listy", heading: "Listy przebojów", lang: "pl" },
   { path: "/scena", heading: "Scena", lang: "pl" },
   { path: "/szukaj", heading: "Szukaj", lang: "pl" },
   { path: "/biblioteka", heading: "Biblioteka", lang: "pl" },
@@ -12,6 +13,7 @@ const pages = [
   { path: "/en/browse", heading: "Browse", lang: "en" },
   { path: "/en/you", heading: "You", lang: "en" },
   { path: "/en/rankings", heading: "Rankings", lang: "en" },
+  { path: "/en/charts", heading: "Charts", lang: "en" },
   { path: "/en/scene", heading: "Scene", lang: "en" },
   { path: "/en/search", heading: "Search", lang: "en" },
   { path: "/en/library", heading: "Library", lang: "en" },
@@ -108,4 +110,16 @@ test("rankings have a season and say when it ends", async ({ page }) => {
   await expect(page).toHaveURL(/period=season/);
   await expect(page.getByText(/Sezon \d\/\d{4} kończy się/)).toBeVisible();
   await expect(page.getByRole("link", { name: "Poprzedni sezon" })).toBeVisible();
+});
+
+test("charts switch between lists and scopes, with an honest empty state", async ({ page }) => {
+  await page.goto("/listy");
+  await expect(page.getByRole("heading", { level: 2 })).toContainText("Top 100");
+  await page.getByRole("link", { name: "Najczęściej odkrywane" }).click();
+  await expect(page).toHaveURL(/c=discovered/);
+  await page.getByRole("link", { name: "Europa" }).click();
+  await expect(page).toHaveURL(/scope=region&code=europe/);
+  await expect(page.getByText("Muzyka: Europa")).toBeVisible();
+  await page.getByRole("link", { name: "Odkryj świat" }).click();
+  await expect(page.getByRole("heading", { name: "Odkryj świat", level: 2 })).toBeVisible();
 });

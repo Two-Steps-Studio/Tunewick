@@ -328,6 +328,9 @@ export function DiscoverFeed({ initial }: { initial: FeedPage }) {
             {t(`modes.${m}`)}
           </button>
         ))}
+        <Link href="/charts" className="feed-modes__chip feed-modes__chip--link">
+          {t("charts")}
+        </Link>
         <Link href="/browse" className="feed-modes__chip feed-modes__chip--link">
           {t("browse")}
         </Link>

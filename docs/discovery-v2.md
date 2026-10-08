@@ -64,3 +64,11 @@ states, mobile and desktop layouts, EN/PL, tests, and its line in §4.
   days, hours histogram, previews excluded, 25-month retention), privacy switches on
   `profile_settings` + `private.can_view(owner, level)`. UI: XP wording, level from XP, Score
   explained. Export includes `listening_by_day`. pgTAP `m14_foundations.test.sql`.
+- **M14.2 done** — `20261009110000_charts`: MVs `private.track_charts`, `private.track_chart_places`
+  (≥ 3 listeners per place), `private.artist_charts`, refreshed every 15 min; `music_chart`
+  (top/rising/underground/discovered/saved/shared × global/country/region/city scene/genre),
+  `artist_chart` (rising/underground/new listeners/discovered), `fresh_releases` (24 h/7 d/30 d),
+  `music_cities`, `world_tracks`. Page `/charts` (`/listy`): tabs, scopes, "Popular in …" for the
+  listener's country, city scenes, play-from-here queues (audio presigned only on tap), Discover the
+  world; loading/error states (`components/feedback/segment-error.tsx`), links from the feed and
+  Browse. pgTAP `charts.test.sql`, E2E smoke.

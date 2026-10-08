@@ -1270,7 +1270,8 @@
       "firstRelease": "Pierwsze wydawnictwo {when} · {count, plural, one {# wydawnictwo} few {# wydawnictwa} many {# wydawnictw} other {# wydawnictwa}}"
     },
     "soundcheck": "Soundcheck {seconds} s",
-    "soundcheckLabel": "Posłuchaj fragmentu: {title} — {artist}"
+    "soundcheckLabel": "Posłuchaj fragmentu: {title} — {artist}",
+    "charts": "Zobacz listy przebojów tygodnia →"
   },
   "Feed": {
     "title": "Odkrywaj",
@@ -1351,7 +1352,8 @@
       "unavailable": "Wideo dla tego utworu nie jest dostępne.",
       "signin": "Zaloguj się, żeby przygotować wideo.",
       "limit": "W tej godzinie powstało już sporo Twoich filmów — spróbuj później."
-    }
+    },
+    "charts": "Listy"
   },
   "Onboarding": {
     "title": "Preferencje odkrywania",
@@ -1635,5 +1637,108 @@
       "points": "XP"
     },
     "hint": "Widoczne dzięki ustawieniom prywatności tej osoby; Twoje ustawienie decyduje, co ona widzi o Tobie."
+  },
+  "Charts": {
+    "title": "Listy przebojów",
+    "lead": "Czego ludzie słuchają i co odkrywają w tym tygodniu. Liczymy słuchaczy, a nie odtworzenia, więc zapętlanie i boty niczego nie zmieniają.",
+    "loading": "Ładujemy listy…",
+    "tabsLabel": "Lista",
+    "scopeLabel": "Gdzie",
+    "citiesLabel": "Sceny miast",
+    "artistChartsLabel": "Lista artystów",
+    "freshLabel": "Wydane",
+    "country": "Kraj…",
+    "genre": "Gatunek…",
+    "show": "Pokaż",
+    "play": "Graj od tego miejsca",
+    "playFrom": "Graj od: {title} — {artist}",
+    "discoverArtist": "Odkryj: {name}",
+    "new": "nowość",
+    "tabs": {
+      "top": "Top 100",
+      "rising": "Zyskujące",
+      "underground": "Underground",
+      "discovered": "Najczęściej odkrywane",
+      "saved": "Najczęściej zapisywane",
+      "shared": "Najczęściej udostępniane",
+      "artists": "Artyści",
+      "fresh": "Świeże",
+      "world": "Odkryj świat"
+    },
+    "scope": {
+      "global": "Cały świat",
+      "popularIn": "Popularne: {place}",
+      "from": "Muzyka: {place}",
+      "city": "Scena: {city}",
+      "genre": "{genre}"
+    },
+    "regions": {
+      "europe": "Europa",
+      "americas": "Ameryki",
+      "asia": "Azja",
+      "africa": "Afryka",
+      "oceania": "Oceania"
+    },
+    "about": {
+      "top": "Słuchacze z ostatnich 7 dni. „Popularne: …” liczy słuchaczy z tego miejsca — pokazujemy utwór, gdy słucha go tam co najmniej 3 osoby.",
+      "rising": "Utwory, które zyskały najwięcej słuchaczy w porównaniu z poprzednim tygodniem.",
+      "underground": "Najczęściej słuchane utwory artystów, którzy mają mniej niż 10 000 słuchaczy miesięcznie.",
+      "discovered": "Utwory, które w tym tygodniu najwięcej osób usłyszało po raz pierwszy — lista TuneWick.",
+      "saved": "Utwory najczęściej zapisywane w tym tygodniu.",
+      "shared": "Utwory najczęściej udostępniane w tym tygodniu."
+    },
+    "aboutArtists": {
+      "rising": "Artyści, którzy zyskali najwięcej słuchaczy w porównaniu z poprzednim tygodniem.",
+      "underground": "Artyści z mniej niż 10 000 słuchaczy miesięcznie, według słuchaczy w tym tygodniu.",
+      "new_listeners": "Artyści, których w tym tygodniu najwięcej osób usłyszało po raz pierwszy.",
+      "discovered": "Artyści odkryci w tym tygodniu przez najwięcej osób."
+    },
+    "artistCharts": {
+      "rising": "Zyskujący artyści",
+      "underground": "Artyści underground",
+      "new_listeners": "Najwięcej nowych słuchaczy",
+      "discovered": "Najczęściej odkrywani"
+    },
+    "values": {
+      "top": "{count, plural, one {# słuchacz} few {{value} słuchaczy} many {{value} słuchaczy} other {{value} słuchacza}}",
+      "rising": "{count, plural, one {+# słuchacz} few {+{value} słuchaczy} many {+{value} słuchaczy} other {+{value} słuchacza}}",
+      "underground": "{count, plural, one {# słuchacz} few {{value} słuchaczy} many {{value} słuchaczy} other {{value} słuchacza}}",
+      "discovered": "{count, plural, one {# odkrycie} few {{value} odkrycia} many {{value} odkryć} other {{value} odkrycia}}",
+      "saved": "{count, plural, one {# zapis} few {{value} zapisy} many {{value} zapisów} other {{value} zapisu}}",
+      "shared": "{count, plural, one {# udostępnienie} few {{value} udostępnienia} many {{value} udostępnień} other {{value} udostępnienia}}"
+    },
+    "artistValues": {
+      "rising": "{count, plural, one {+# słuchacz} few {+{value} słuchaczy} many {+{value} słuchaczy} other {+{value} słuchacza}}",
+      "underground": "{count, plural, one {# słuchacz} few {{value} słuchaczy} many {{value} słuchaczy} other {{value} słuchacza}}",
+      "new_listeners": "{count, plural, one {# nowy słuchacz} few {{value} nowych słuchaczy} many {{value} nowych słuchaczy} other {{value} nowego słuchacza}}",
+      "discovered": "{count, plural, one {# odkrycie} few {{value} odkrycia} many {{value} odkryć} other {{value} odkrycia}}"
+    },
+    "fresh": {
+      "h24": "Ostatnie 24 godziny",
+      "h168": "Ostatnie 7 dni",
+      "h720": "Ostatnie 30 dni"
+    },
+    "empty": {
+      "top": "Tu nie ma jeszcze listy — za mało słuchaczy w tym tygodniu.",
+      "rising": "Nic tu jeszcze nie zyskuje.",
+      "underground": "W tym tygodniu nie ma tu jeszcze utworów underground.",
+      "discovered": "Nikt jeszcze nie odkrył tu muzyki w tym tygodniu — bądź pierwszą osobą.",
+      "saved": "W tym tygodniu nikt tu jeszcze niczego nie zapisał.",
+      "shared": "W tym tygodniu nikt tu jeszcze niczego nie udostępnił."
+    },
+    "emptyArtists": "Na tej liście nie ma jeszcze artystów.",
+    "emptyFresh": "W tym czasie nie było tu nowych wydań.",
+    "emptyCta": "Odkrywaj muzykę",
+    "world": {
+      "title": "Odkryj świat",
+      "lead": "Najczęściej słuchany utwór z każdego kraju w tym tygodniu.",
+      "leadOutside": "Najczęściej słuchany utwór z każdego kraju w tym tygodniu — spoza kraju: {country}.",
+      "empty": "Muzyka z innych krajów pojawi się tu, gdy tylko ktoś zacznie jej słuchać."
+    }
+  },
+  "Segment": {
+    "errorTitle": "Coś poszło nie tak",
+    "errorText": "Ta część TuneWick się nie wczytała. Twoje dane są bezpieczne — spróbuj ponownie.",
+    "retry": "Spróbuj ponownie"
   }
 }

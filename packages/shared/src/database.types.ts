@@ -2368,6 +2368,21 @@ export type Database = {
         Args: { appeal: string; decision: string };
         Returns: undefined;
       };
+      artist_chart: {
+        Args: { chart?: string; code?: string; max_results?: number; scope?: string };
+        Returns: {
+          artist_id: string;
+          city: string;
+          country_code: string;
+          growth: number;
+          image_id: string;
+          listeners_7d: number;
+          name: string;
+          rank: number;
+          slug: string;
+          value: number;
+        }[];
+      };
       artist_copyright_strikes: { Args: { artist: string }; Returns: number };
       artist_follower_count: { Args: { artist: string }; Returns: number };
       artist_monthly_listening: {
@@ -2733,6 +2748,22 @@ export type Database = {
         Returns: Database["public"]["Enums"]["share_clip_status"];
       };
       finish_storage_deletions: { Args: { ids: number[] }; Returns: number };
+      fresh_releases: {
+        Args: { country?: string; genre?: string; hours?: number; max_results?: number };
+        Returns: {
+          artist_country: string;
+          artist_id: string;
+          artist_name: string;
+          artist_slug: string;
+          artwork_image_id: string;
+          listeners_7d: number;
+          publish_at: string;
+          release_id: string;
+          slug: string;
+          title: string;
+          type: string;
+        }[];
+      };
       has_app_role: {
         Args: { required: Database["public"]["Enums"]["app_role"] };
         Returns: boolean;
@@ -2759,6 +2790,38 @@ export type Database = {
       };
       move_playlist_track: { Args: { item: string; to_index: number }; Returns: undefined };
       move_track: { Args: { direction: number; track: string }; Returns: undefined };
+      music_chart: {
+        Args: {
+          chart?: string;
+          code?: string;
+          country?: string;
+          max_results?: number;
+          scope?: string;
+        };
+        Returns: {
+          artist_country: string;
+          artist_id: string;
+          artist_image_id: string;
+          artist_name: string;
+          artist_slug: string;
+          artwork_image_id: string;
+          growth: number;
+          public_code: string;
+          rank: number;
+          release_slug: string;
+          release_title: string;
+          title: string;
+          track_id: string;
+          value: number;
+        }[];
+      };
+      music_cities: {
+        Args: { country: string };
+        Returns: {
+          artists: number;
+          city: string;
+        }[];
+      };
       my_blocked_users: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -3108,6 +3171,19 @@ export type Database = {
         }[];
       };
       withdraw_release_submission: { Args: { release: string }; Returns: undefined };
+      world_tracks: {
+        Args: { exclude_country?: string; max_results?: number };
+        Returns: {
+          artist_name: string;
+          artist_slug: string;
+          artwork_image_id: string;
+          country_code: string;
+          listeners_7d: number;
+          public_code: string;
+          title: string;
+          track_id: string;
+        }[];
+      };
     };
     Enums: {
       ai_content: "human" | "ai_assisted" | "ai_generated" | "unknown";

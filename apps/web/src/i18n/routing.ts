@@ -11,6 +11,7 @@ export const routing = defineRouting({
     "/you": { pl: "/ty", en: "/you" },
     "/you/compare/[handle]": { pl: "/ty/porownaj/[handle]", en: "/you/compare/[handle]" },
     "/rankings": { pl: "/rankingi", en: "/rankings" },
+    "/charts": { pl: "/listy", en: "/charts" },
     // Shared links: the same path in every language (tunewick.com/song/artist/song).
     "/song/[artist]/[song]": "/song/[artist]/[song]",
     "/scene": { pl: "/scena", en: "/scene" },
