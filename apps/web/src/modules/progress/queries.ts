@@ -177,27 +177,33 @@ export async function getLeaderboard(scope: RankingScope) {
   return { rows: board.data ?? [], me: mine.data?.[0] ?? null, signedIn: Boolean(auth?.claims) };
 }
 
-export interface Challenge {
+export type MissionCadence = "daily" | "weekly" | "monthly" | "event";
+
+export interface Mission {
+  cadence: MissionCadence;
   code: string;
   metric: string;
   target: number;
+  xp: number;
   progress: number;
   completedAt: string | null;
   endsAt: string;
 }
 
-/** This week's challenges (the same for everyone) with the listener's progress. */
-export async function getMyChallenges(): Promise<Challenge[]> {
+/** Missions running now (the same for everyone) with the listener's progress. */
+export async function getMyMissions(): Promise<Mission[]> {
   const supabase = await createSupabaseServerClient();
-  const { data, error } = await supabase.rpc("my_challenges");
+  const { data, error } = await supabase.rpc("my_missions");
   if (error) throw error;
-  return (data ?? []).map((c) => ({
-    code: c.code,
-    metric: c.metric,
-    target: c.target,
-    progress: c.progress,
-    completedAt: c.completed_at ?? null,
-    endsAt: c.ends_at,
+  return (data ?? []).map((m) => ({
+    cadence: m.cadence as MissionCadence,
+    code: m.code,
+    metric: m.metric,
+    target: m.target,
+    xp: m.xp,
+    progress: m.progress,
+    completedAt: m.completed_at ?? null,
+    endsAt: m.ends_at,
   }));
 }
 

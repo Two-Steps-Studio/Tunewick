@@ -5,6 +5,9 @@ set search_path = public, extensions;
 
 select plan(52);
 
+-- Missions pay on their own (missions.test.sql); this file checks the discovery ledger alone.
+update discovery_challenges set enabled = false;
+
 insert into auth.users (id, email, raw_app_meta_data, aud, role)
 values
   ('00000000-0000-0000-0000-0000000000a1', 'dx-artist@test.local', '{"beta_bypass": "true"}', 'authenticated', 'authenticated'),

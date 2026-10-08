@@ -7,7 +7,7 @@ import { dismissNotice, useCurrentNotice, type Notice } from "../store";
 function useText(notice: Notice) {
   const t = useTranslations("Notices");
   const tAchievements = useTranslations("You.achievements.names");
-  const tChallenges = useTranslations("You.challenges.names");
+  const tMissions = useTranslations("Missions.metrics");
   const locale = useLocale();
   switch (notice.kind) {
     case "award": {
@@ -32,11 +32,11 @@ function useText(notice: Notice) {
         lead: "🏆",
         text: t("achievement", { name: tAchievements(notice.code as "first_discovery") }),
       };
-    case "challenge":
+    case "mission":
       return {
-        lead: "🎯",
-        text: t("challenge", {
-          name: tChallenges(notice.code as "thirty_songs", { target: notice.target }),
+        lead: `+${notice.xp}`,
+        text: t("mission", {
+          name: tMissions(notice.metric as "new_songs", { target: notice.target }),
         }),
       };
   }

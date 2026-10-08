@@ -1502,7 +1502,12 @@
         "collector": "Kolekcjoner",
         "early_supporter": "Wczesny fan",
         "challenger": "Pogromca wyzwań",
-        "season_star": "Gwiazda sezonu"
+        "season_star": "Gwiazda sezonu",
+        "globetrotter": "Obieżyświat",
+        "underground_hunter": "Łowca undergroundu",
+        "night_listener": "Nocny słuchacz",
+        "discovery_machine": "Maszyna odkryć",
+        "year_explorer": "Odkrywca roku"
       },
       "metrics": {
         "songs": "{count, plural, one {Odkryj pierwszy utwór} few {Odkryj # utwory} other {Odkryj # utworów}}",
@@ -1514,7 +1519,11 @@
         "early_supporter": "Odkryj artystę z mniej niż 25 obserwującymi, który później przekroczy 100",
         "saves": "Zapisz {count} utworów",
         "challenges": "Ukończ {count} wyzwań tygodnia",
-        "season_top10": "Zakończ sezon w najlepszych 10% odkrywców"
+        "season_top10": "Zakończ sezon w najlepszych 10% odkrywców",
+        "underground": "Odkryj {count} artystów z mniej niż 10 000 słuchaczy",
+        "night": "Słuchaj najwięcej między 22:00 a 5:00",
+        "best_week_songs": "Odkryj {count} utworów w jednym tygodniu",
+        "year_discovery_xp": "Zdobądź {count} XP za odkrycia w jednym roku"
       },
       "unlocked": "Zdobyte {date}",
       "locked": "Jeszcze nie"
@@ -1533,7 +1542,7 @@
         "save": "Zapisanie utworu (raz na utwór)",
         "full_listen": "Wysłuchanie nowego odkrycia w całości (raz dziennie)",
         "share": "Udostępnienie utworu (raz dziennie na utwór)",
-        "challenge": "Ukończone wyzwanie tygodnia (raz na wyzwanie)",
+        "challenge": "Ukończona misja (XP zależne od misji)",
         "underground": "Artysta z mniej niż 10 000 słuchaczy (raz na artystę)",
         "daily_complete": "Ukończone Daily Discovery (raz dziennie)",
         "weekly_complete": "Ukończony Weekly Drop (raz w tygodniu)"
@@ -1550,30 +1559,14 @@
     },
     "following": "Osoby, które obserwujesz",
     "compareWith": "Porównaj",
-    "challenges": {
-      "title": "Wyzwania tygodnia",
-      "points": "+200 XP",
-      "hint": "Te same trzy wyzwania dla wszystkich, nowe co poniedziałek. Ten zestaw kończy się {date}.",
-      "names": {
-        "thirty_songs": "Odkryj {target} nowych utworów",
-        "ten_artists": "Odkryj {target} nowych artystów",
-        "three_genres": "Posłuchaj {target} gatunków, których jeszcze nie znasz",
-        "three_countries": "Odkryj muzykę z {target} nowych krajów",
-        "two_regions": "Odkryj artystów z {target} różnych części świata",
-        "five_saves": "Zapisz {target} odkrytych utworów",
-        "two_shares": "Poleć komuś {target} utwory",
-        "five_full_listens": "Wysłuchaj w całości {target} świeżych odkryć",
-        "small_artists": "Znajdź {target} artystów, których obserwuje najwyżej 50 osób",
-        "five_days": "Odkrywaj coś nowego przez {target} dni tego tygodnia"
-      }
-    },
     "seasons": {
       "title": "Twoje sezony",
       "name": "Sezon {quarter}/{year}",
       "place": "{rank}. miejsce z {participants} · {points} XP",
       "hint": "Sezon to kwartał. Miejsce liczymy ze wszystkich odkrywców, także tych, którzy nie pokazują się w publicznym rankingu — widzisz je tylko Ty."
     },
-    "scoreHint": "Discovery Score rośnie tylko za odkrycia — nowe utwory, artystów, gatunki, kraje i małe sceny — i jest wyższy, gdy odkrywasz różnorodnie. XP zbierasz za wszystko, co robisz w TuneWick; od XP zależy poziom."
+    "scoreHint": "Discovery Score rośnie tylko za odkrycia — nowe utwory, artystów, gatunki, kraje i małe sceny — i jest wyższy, gdy odkrywasz różnorodnie. XP zbierasz za wszystko, co robisz w TuneWick; od XP zależy poziom.",
+    "missions": "Misje"
   },
   "Rankings": {
     "title": "Rankingi",
@@ -1633,7 +1626,7 @@
     "streak": "Seria odkryć: {days} dni z rzędu",
     "roll": "Masz dobrą passę! {count} odkryć dzisiaj",
     "achievement": "Nowe osiągnięcie: {name}",
-    "challenge": "Wyzwanie ukończone: {name}"
+    "mission": "Misja ukończona: {name}"
   },
   "Compare": {
     "title": "Ty vs {name}",
@@ -1851,6 +1844,36 @@
       "underground": "Lista underground →",
       "world": "Odkryj świat →",
       "fresh": "Wydane w ostatnich 24 godzinach →"
+    },
+    "missions": "Dzisiejsze misje",
+    "allMissions": "Wszystkie misje →"
+  },
+  "Missions": {
+    "empty": "Teraz nie ma misji — nowe zaczną się wkrótce.",
+    "cadence": {
+      "daily": "Dziś",
+      "weekly": "Ten tydzień",
+      "monthly": "Ten miesiąc",
+      "event": "Wydarzenie specjalne"
+    },
+    "ends": "do {date}",
+    "xp": "+{xp} XP",
+    "done": "Ukończona",
+    "progress": "{progress} / {target}",
+    "metrics": {
+      "new_songs": "{target, plural, one {Odkryj nowy utwór} few {Odkryj # nowe utwory} many {Odkryj # nowych utworów} other {Odkryj # nowego utworu}}",
+      "new_artists": "{target, plural, one {Odkryj artystę, którego nie znasz} few {Odkryj # artystów, których nie znasz} many {Odkryj # artystów, których nie znasz} other {Odkryj # artysty, których nie znasz}}",
+      "new_genres": "{target, plural, one {Poznaj nowy gatunek} few {Poznaj # nowe gatunki} many {Poznaj # nowych gatunków} other {Poznaj # nowego gatunku}}",
+      "new_countries": "{target, plural, one {Odkryj muzykę z nowego kraju} few {Odkryj muzykę z # nowych krajów} many {Odkryj muzykę z # nowych krajów} other {Odkryj muzykę z # nowego kraju}}",
+      "regions": "Odkryj artystów z {target} części świata",
+      "saves": "{target, plural, one {Zapisz odkryty utwór} few {Zapisz # odkryte utwory} many {Zapisz # odkrytych utworów} other {Zapisz # odkrytego utworu}}",
+      "shares": "{target, plural, one {Udostępnij utwór} few {Udostępnij # utwory} many {Udostępnij # utworów} other {Udostępnij # utworu}}",
+      "full_listens": "{target, plural, one {Wysłuchaj w całości świeżego odkrycia} few {Wysłuchaj w całości # świeże odkrycia} many {Wysłuchaj w całości # świeżych odkryć} other {Wysłuchaj w całości # świeżego odkrycia}}",
+      "small_artists": "{target, plural, one {Znajdź artystę, którego obserwuje najwyżej 50 osób} few {Znajdź # artystów, których obserwuje najwyżej 50 osób} many {Znajdź # artystów, których obserwuje najwyżej 50 osób} other {Znajdź # artysty, których obserwuje najwyżej 50 osób}}",
+      "days": "Odkrywaj coś nowego przez {target} dni",
+      "underground": "{target, plural, one {Znajdź artystę z mniej niż 10 tys. słuchaczy} few {Znajdź # artystów z mniej niż 10 tys. słuchaczy} many {Znajdź # artystów z mniej niż 10 tys. słuchaczy} other {Znajdź # artysty z mniej niż 10 tys. słuchaczy}}",
+      "artist_countries": "Odkryj artystów z {target} różnych krajów",
+      "daily_set": "Ukończ swoje Daily Discovery"
     }
   }
 }

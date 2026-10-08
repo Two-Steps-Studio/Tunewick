@@ -83,3 +83,12 @@ states, mobile and desktop layouts, EN/PL, tests, and its line in §4.
   to this" from the card menu: genres + artist graph), `?set=daily|weekly`; reason chip opens the
   Why panel. Page `/today` (`/dzis`) with loading/error states; "Today" chip leads the feed bar.
   pgTAP `discovery_sets.test.sql`, unit tests, E2E `today.spec.ts`.
+- **M14.4 done** — `20261009130000_missions`: `discovery_challenges` gains cadence (daily /
+  weekly / monthly / event with a window) and XP; stable shared rotation per UTC period (3 / 3 / 2,
+  all running events); metrics include artists from different countries, underground finds and
+  completing Daily Discovery; `private.award_points` pays a mission's own XP once per period;
+  `my_missions()` replaces `my_challenges()`. New badges: Globetrotter (10 countries), Underground
+  Hunter (50), Night Listener (≥ 40 % of ≥ 100 plays at 22:00–05:00, from `listening_daily`),
+  Discovery Machine (150 songs in a week), Year Explorer (20,000 discovery XP in a year). Mission
+  names come from metric + target (a new mission is a row, no translation). UI: missions on You
+  (all cadences) and Today (today's + events), completion notices. pgTAP `missions.test.sql`.

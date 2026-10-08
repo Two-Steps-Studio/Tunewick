@@ -1502,7 +1502,12 @@
         "collector": "Collector",
         "early_supporter": "Early Supporter",
         "challenger": "Challenger",
-        "season_star": "Season Star"
+        "season_star": "Season Star",
+        "globetrotter": "Globetrotter",
+        "underground_hunter": "Underground Hunter",
+        "night_listener": "Night Listener",
+        "discovery_machine": "Discovery Machine",
+        "year_explorer": "Year Explorer"
       },
       "metrics": {
         "songs": "{count, plural, one {Discover your first song} other {Discover # songs}}",
@@ -1514,7 +1519,11 @@
         "early_supporter": "Discover an artist with under 25 followers who later passes 100",
         "saves": "Save {count} songs",
         "challenges": "Complete {count} weekly challenges",
-        "season_top10": "Finish a season in the top 10% of discoverers"
+        "season_top10": "Finish a season in the top 10% of discoverers",
+        "underground": "Discover {count} artists with fewer than 10,000 listeners",
+        "night": "Do most of your listening between 10 pm and 5 am",
+        "best_week_songs": "Discover {count} songs in one week",
+        "year_discovery_xp": "Earn {count} discovery XP in one year"
       },
       "unlocked": "Unlocked {date}",
       "locked": "Not yet"
@@ -1533,7 +1542,7 @@
         "save": "Saving a song (once per song)",
         "full_listen": "Listening to a new discovery in full (once a day)",
         "share": "Sharing a song (once a day per song)",
-        "challenge": "A completed weekly challenge (once per challenge)",
+        "challenge": "A completed mission (its own XP)",
         "underground": "An artist with fewer than 10,000 listeners (once per artist)",
         "daily_complete": "Completing your Daily Discovery (once a day)",
         "weekly_complete": "Completing your Weekly Drop (once a week)"
@@ -1550,30 +1559,14 @@
     },
     "following": "People you follow",
     "compareWith": "Compare",
-    "challenges": {
-      "title": "This week’s challenges",
-      "points": "+200 XP",
-      "hint": "The same three challenges for everyone, new every Monday. This set ends {date}.",
-      "names": {
-        "thirty_songs": "Discover {target} new songs",
-        "ten_artists": "Discover {target} new artists",
-        "three_genres": "Listen to {target} genres you have not heard yet",
-        "three_countries": "Discover music from {target} new countries",
-        "two_regions": "Discover artists from {target} different parts of the world",
-        "five_saves": "Save {target} songs you discovered",
-        "two_shares": "Share {target} songs with someone",
-        "five_full_listens": "Hear {target} fresh discoveries all the way through",
-        "small_artists": "Find {target} artists with at most 50 followers",
-        "five_days": "Discover something new on {target} days this week"
-      }
-    },
     "seasons": {
       "title": "Your seasons",
       "name": "Season {quarter} · {year}",
       "place": "#{rank} of {participants} · {points} XP",
       "hint": "A season is a quarter. Your place counts every discoverer, including those who stay out of the public ranking — only you see it."
     },
-    "scoreHint": "Your Discovery Score grows only by discovering — new songs, artists, genres, countries and small scenes — and more when you discover widely. You earn XP for everything you do on TuneWick; your level follows XP."
+    "scoreHint": "Your Discovery Score grows only by discovering — new songs, artists, genres, countries and small scenes — and more when you discover widely. You earn XP for everything you do on TuneWick; your level follows XP.",
+    "missions": "Missions"
   },
   "Rankings": {
     "title": "Rankings",
@@ -1633,7 +1626,7 @@
     "streak": "{days} day discovery streak",
     "roll": "You're on a roll! {count} discoveries today",
     "achievement": "Achievement unlocked: {name}",
-    "challenge": "Challenge complete: {name}"
+    "mission": "Mission complete: {name}"
   },
   "Compare": {
     "title": "You vs {name}",
@@ -1851,6 +1844,36 @@
       "underground": "Underground chart →",
       "world": "Discover the world →",
       "fresh": "Released in the last 24 hours →"
+    },
+    "missions": "Today’s missions",
+    "allMissions": "All missions →"
+  },
+  "Missions": {
+    "empty": "No missions right now — new ones start soon.",
+    "cadence": {
+      "daily": "Today",
+      "weekly": "This week",
+      "monthly": "This month",
+      "event": "Special event"
+    },
+    "ends": "ends {date}",
+    "xp": "+{xp} XP",
+    "done": "Done",
+    "progress": "{progress} / {target}",
+    "metrics": {
+      "new_songs": "{target, plural, one {Discover a new song} other {Discover # new songs}}",
+      "new_artists": "{target, plural, one {Discover an artist you’ve never heard} other {Discover # artists you’ve never heard}}",
+      "new_genres": "{target, plural, one {Explore a new genre} other {Explore # new genres}}",
+      "new_countries": "{target, plural, one {Discover music from a new country} other {Discover music from # new countries}}",
+      "regions": "Discover artists from {target} parts of the world",
+      "saves": "{target, plural, one {Save a song you discovered} other {Save # songs you discovered}}",
+      "shares": "{target, plural, one {Share a song} other {Share # songs}}",
+      "full_listens": "{target, plural, one {Hear a fresh discovery all the way through} other {Hear # fresh discoveries all the way through}}",
+      "small_artists": "{target, plural, one {Find an artist with at most 50 followers} other {Find # artists with at most 50 followers}}",
+      "days": "Discover something new on {target} days",
+      "underground": "{target, plural, one {Find an artist with fewer than 10k listeners} other {Find # artists with fewer than 10k listeners}}",
+      "artist_countries": "Discover artists from {target} different countries",
+      "daily_set": "Complete your Daily Discovery"
     }
   }
 }

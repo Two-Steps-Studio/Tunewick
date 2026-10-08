@@ -6,6 +6,7 @@ import type { Locale } from "@/i18n/routing";
 import { countryName, flagEmoji, songSegment } from "@/lib/intl";
 import { slugify } from "@/lib/slug";
 import { getDiscoverySets, type DiscoverySetView } from "@/modules/discover";
+import { getMyMissions, MissionList } from "@/modules/progress";
 import { Artwork } from "@/modules/images";
 
 export async function generateMetadata({
@@ -25,7 +26,7 @@ export default async function TodayPage({ params }: PageProps<"/[locale]/today">
   setRequestLocale(locale as Locale);
   const t = await getTranslations("Today");
   const format = await getFormatter();
-  const sets = await getDiscoverySets();
+  const [sets, missions] = await Promise.all([getDiscoverySets(), getMyMissions()]);
   const daily = sets?.find((s) => s.kind === "daily") ?? null;
   const weekly = sets?.find((s) => s.kind === "weekly") ?? null;
 
@@ -59,6 +60,18 @@ export default async function TodayPage({ params }: PageProps<"/[locale]/today">
         <p className="today__empty" role="status">
           {t("noDaily")}
         </p>
+      ) : null}
+
+      {sets !== null ? (
+        <section aria-labelledby="today-missions" className="today__section">
+          <h2 id="today-missions" className="today__heading">
+            {t("missions")}
+          </h2>
+          <MissionList missions={missions} cadences={["daily", "event"]} />
+          <Link href="/you" className="today__all">
+            {t("allMissions")}
+          </Link>
+        </section>
       ) : null}
 
       <section aria-labelledby="journeys" className="today__section">

@@ -3451,3 +3451,88 @@ body {
     }
   }
 }
+
+@layer components {
+  /* Missions (M14.4) ------------------------------------------------------------ */
+  .missions {
+    display: grid;
+    gap: var(--tk-space-6);
+  }
+  .missions__group {
+    display: grid;
+    gap: var(--tk-space-2);
+  }
+  .missions__cadence {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--tk-space-3);
+    font-family: var(--tk-font-mono);
+    font-size: var(--tk-text-xs);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .missions__cadence span {
+    color: var(--text-muted);
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .missions__list {
+    display: grid;
+    gap: var(--tk-space-2);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .mission {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas: "xp name count" "meter meter meter";
+    align-items: center;
+    gap: var(--tk-space-2) var(--tk-space-3);
+    padding: var(--tk-space-3) var(--tk-space-4);
+    background: var(--bg-raised);
+  }
+  .mission__xp {
+    grid-area: xp;
+    padding: 0.15rem var(--tk-space-2);
+    background: var(--tk-lime);
+    color: var(--tk-graphite);
+    font-family: var(--tk-font-mono);
+    font-size: var(--tk-text-xs);
+    font-weight: 700;
+  }
+  .mission__name {
+    grid-area: name;
+    font-weight: 600;
+  }
+  .mission__count {
+    grid-area: count;
+    font-family: var(--tk-font-mono);
+    font-size: var(--tk-text-xs);
+    color: var(--text-muted);
+  }
+  .mission__meter {
+    grid-area: meter;
+    height: 4px;
+    background: var(--line);
+    overflow: hidden;
+  }
+  .mission__meter span {
+    display: block;
+    height: 100%;
+    background: var(--accent);
+    transform-origin: left;
+  }
+  .mission[data-done] {
+    box-shadow: inset 3px 0 0 var(--tk-lime);
+  }
+  .mission[data-done] .mission__count {
+    color: var(--accent);
+  }
+  .today__all {
+    justify-self: start;
+    font-size: var(--tk-text-sm);
+    color: var(--accent);
+  }
+}

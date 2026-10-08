@@ -334,25 +334,37 @@ export type Database = {
       };
       discovery_challenges: {
         Row: {
+          cadence: string;
           code: string;
           enabled: boolean;
+          ends_at: string | null;
           metric: string;
+          starts_at: string | null;
           target: number;
           updated_at: string;
+          xp: number;
         };
         Insert: {
+          cadence?: string;
           code: string;
           enabled?: boolean;
+          ends_at?: string | null;
           metric: string;
+          starts_at?: string | null;
           target: number;
           updated_at?: string;
+          xp?: number;
         };
         Update: {
+          cadence?: string;
           code?: string;
           enabled?: boolean;
+          ends_at?: string | null;
           metric?: string;
+          starts_at?: string | null;
           target?: number;
           updated_at?: string;
+          xp?: number;
         };
         Relationships: [];
       };
@@ -2858,17 +2870,6 @@ export type Database = {
           id: string;
         }[];
       };
-      my_challenges: {
-        Args: Record<PropertyKey, never>;
-        Returns: {
-          code: string;
-          completed_at: string;
-          ends_at: string;
-          metric: string;
-          progress: number;
-          target: number;
-        }[];
-      };
       my_deletion_blockers: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -2914,6 +2915,19 @@ export type Database = {
           reason: string;
           shown: number;
           skips: number;
+        }[];
+      };
+      my_missions: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          cadence: string;
+          code: string;
+          completed_at: string;
+          ends_at: string;
+          metric: string;
+          progress: number;
+          target: number;
+          xp: number;
         }[];
       };
       my_plan: {

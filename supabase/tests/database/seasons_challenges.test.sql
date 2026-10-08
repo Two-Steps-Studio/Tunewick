@@ -18,10 +18,10 @@ update discovery_challenges set enabled = code in ('three_genres', 'five_saves',
 
 set local role anon;
 set local request.jwt.claims = '{"role": "anon"}';
-select is((select count(*)::int from my_challenges()), 3, 'three challenges a week, visible to visitors');
-select is((select sum(progress)::int from my_challenges()), 0, 'visitors have no progress');
-select ok((select bool_and(ends_at = (date_trunc('week', now() at time zone 'UTC') + interval '7 days') at time zone 'UTC') from my_challenges()),
-  'challenges end with the UTC week');
+select is((select count(*)::int from my_missions() where cadence = 'weekly'), 3, 'three weekly missions, visible to visitors');
+select is((select sum(progress)::int from my_missions()), 0, 'visitors have no progress');
+select ok((select bool_and(ends_at = (date_trunc('week', now() at time zone 'UTC') + interval '7 days') at time zone 'UTC') from my_missions()),
+  'weekly missions end with the UTC week');
 
 set local role postgres;
 insert into discovery_points (user_id, kind, award_key, points, genre_id)
@@ -29,7 +29,7 @@ select '00000000-0000-0000-0000-000000000d01', 'new_genre', 'g' || n, 5, null fr
 
 set local role authenticated;
 set local request.jwt.claims = '{"sub": "00000000-0000-0000-0000-000000000d01", "role": "authenticated"}';
-select is((select row(progress, completed_at is null)::text from my_challenges() where code = 'three_genres'), '(2,t)',
+select is((select row(progress, completed_at is null)::text from my_missions() where code = 'three_genres'), '(2,t)',
   'progress counts this week''s ledger');
 
 set local role postgres;
@@ -39,9 +39,9 @@ insert into discovery_points (user_id, kind, award_key, points, created_at)
 values ('00000000-0000-0000-0000-000000000d01', 'save', 'old', 2, now() - interval '8 days');
 
 set local role authenticated;
-select ok((select completed_at is not null from my_challenges() where code = 'three_genres'), 'reaching the target completes it');
-select is((select progress from my_challenges() where code = 'five_saves'), 0, 'last week''s saves are not this week''s');
-select is((select points::int from discovery_points where kind = 'challenge'), 200, 'a completed challenge pays its XP');
+select ok((select completed_at is not null from my_missions() where code = 'three_genres'), 'reaching the target completes it');
+select is((select progress from my_missions() where code = 'five_saves'), 0, 'last week''s saves are not this week''s');
+select is((select points::int from discovery_points where kind = 'challenge'), 200, 'a completed mission pays its own XP');
 
 set local role postgres;
 insert into discovery_points (user_id, kind, award_key, points) values ('00000000-0000-0000-0000-000000000d01', 'new_genre', 'g4', 5);
