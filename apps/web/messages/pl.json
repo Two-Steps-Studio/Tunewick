@@ -210,7 +210,7 @@
     "hints": {
       "handle": "Małe litery, cyfry i myślniki, 2–40 znaków. Adres profilu: tunewick.com/profil/nazwa",
       "bio": "Do 500 znaków.",
-      "visibility": "Aktywność słuchania pojawi się w serwisie razem z funkcjami społecznościowymi. To ustawienie zadziała od ich startu."
+      "visibility": "Kto może porównywać swoje odkrycia z Twoimi: wszyscy, tylko osoby, które obserwujesz, albo tylko Ty."
     },
     "locales": {
       "pl": "Polski",
@@ -218,7 +218,7 @@
     },
     "visibility": {
       "public": "Wszyscy",
-      "followers": "Obserwujący",
+      "followers": "Osoby, które obserwuję",
       "private": "Tylko ja"
     },
     "submit": "Zapisz zmiany",
@@ -236,7 +236,15 @@
   },
   "Profile": {
     "memberSince": "Na Tunewick od {date}",
-    "empty": "Ten profil nie ma jeszcze opisu."
+    "empty": "Ten profil nie ma jeszcze opisu.",
+    "follow": "Obserwuj: {name}",
+    "unfollow": "Przestań obserwować: {name}",
+    "followShort": "Obserwuj",
+    "following": "Obserwujesz",
+    "failed": "Nie udało się zapisać. Spróbuj ponownie.",
+    "followers": "{count, plural, =0 {Nikt jeszcze nie obserwuje} one {# obserwujący} few {# obserwujących} many {# obserwujących} other {# obserwującego}}",
+    "followingCount": "obserwuje: {count}",
+    "compare": "Porównaj swoje odkrycia z: {name}"
   },
   "Security": {
     "title": "Bezpieczeństwo",
@@ -1204,7 +1212,9 @@
       "artists": "nowych artystów",
       "countries": "krajów",
       "question": "A co Ty odkryłeś/aś?"
-    }
+    },
+    "following": "Osoby, które obserwujesz",
+    "compareWith": "Porównaj"
   },
   "Rankings": {
     "title": "Rankingi",
@@ -1259,5 +1269,26 @@
     "streak": "Seria odkryć: {days} dni z rzędu",
     "roll": "Masz dobrą passę! {count} odkryć dzisiaj",
     "achievement": "Nowe osiągnięcie: {name}"
+  },
+  "Compare": {
+    "title": "Ty vs {name}",
+    "private": "{name} nie udostępnia Ci aktywności słuchania. Każdy wybiera to w ustawieniach: wszyscy, tylko osoby, które obserwuje, albo nikt.",
+    "back": "Wróć do: {name}",
+    "period": "Okres",
+    "periods": {
+      "week": "Ostatnie 7 dni",
+      "month": "Ostatnie 30 dni",
+      "all": "Od początku"
+    },
+    "you": "Ty",
+    "rows": {
+      "songs": "Utwory",
+      "artists": "Artyści",
+      "newArtists": "Nowi artyści",
+      "countries": "Kraje",
+      "listening": "Słuchanie",
+      "points": "Punkty odkryć"
+    },
+    "hint": "Widoczne dzięki ustawieniom prywatności tej osoby; Twoje ustawienie decyduje, co ona widzi o Tobie."
   }
 }

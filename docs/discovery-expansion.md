@@ -152,7 +152,14 @@ Known gaps / next:
 - Guidon tasks for M13 must be created from §3 (no Guidon access from the implementation session).
 - Previews use AAC only (as the delivery tiers do); a browser without AAC shows "can't play the
   preview" — a FLAC/Opus preview variant would need a worker change.
-- Saving shows no "+2" notice yet (the award is recorded); co-listening (item–item) signals and
-  per-listener weight tuning are P1.
+- Per-listener weight tuning (from discovery success) is P1.
 - `discover_candidates` aggregates 30 days of events per request — fine for the beta catalog; a
   materialized view refreshed every few minutes is the step before public launch.
+
+### Update 2026-10-08
+
+Added: artists choose the Discover preview in the release editor (`set_track_preview`, 15–30 s,
+also after publishing); similar-listener signal from shared listening (`my_taste().co_listened`);
+"+2" notice for saves; QR codes on story/square/weekly cards; following people (`user_follows`,
+public counts, private lists) and **You vs friend** (`compare_with`) — allowed only by the
+compared person's `activity_visibility`: everyone, only people they follow, or nobody.

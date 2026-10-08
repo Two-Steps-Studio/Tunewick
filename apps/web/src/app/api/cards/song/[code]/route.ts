@@ -3,7 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { countryName, songSegment } from "@/lib/intl";
 import { slugify } from "@/lib/slug";
-import { coverForCard, getSharedSong, songCard } from "@/modules/discover";
+import { coverForCard, getSharedSong, qrDataUrl, songCard } from "@/modules/discover";
 
 /** Song share card: ?format=story (1080×1920) | square (1080×1080), ?locale=pl|en. */
 export async function GET(
@@ -21,6 +21,7 @@ export async function GET(
   const data = await getSharedSong(code, 1280);
   if (!data) return new NextResponse(null, { status: 404 });
   const t = await getTranslations({ locale, namespace: "Song" });
+  const path = `/song/${data.artist.slug}/${songSegment(data.track.title, data.track.code, slugify)}`;
   return songCard(
     {
       title: data.track.title,
@@ -35,7 +36,8 @@ export async function GET(
       color: data.cover?.color ?? null,
       tagline: t("cardTagline"),
       cta: t("cardCta"),
-      url: `${request.nextUrl.host}/song/${data.artist.slug}/${songSegment(data.track.title, data.track.code, slugify)}`,
+      url: `${request.nextUrl.host}${path}`,
+      qr: await qrDataUrl(`${request.nextUrl.origin}${path}`),
     },
     format,
   );

@@ -1621,6 +1621,24 @@ export type Database = {
           },
         ];
       };
+      user_follows: {
+        Row: {
+          created_at: string;
+          followee_id: string;
+          follower_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          followee_id: string;
+          follower_id?: string;
+        };
+        Update: {
+          created_at?: string;
+          followee_id?: string;
+          follower_id?: string;
+        };
+        Relationships: [];
+      };
       user_roles: {
         Row: {
           created_at: string;
@@ -1832,6 +1850,7 @@ export type Database = {
           country_code: string;
         }[];
       };
+      can_compare_with: { Args: { person: string }; Returns: boolean };
       can_edit_release: { Args: { release: string }; Returns: boolean };
       can_view_audio_upload: { Args: { upload: string }; Returns: boolean };
       can_view_image: { Args: { image: string }; Returns: boolean };
@@ -1855,6 +1874,7 @@ export type Database = {
           object_key: string;
         }[];
       };
+      compare_with: { Args: { days?: number; handle: string }; Returns: Json };
       complete_audio_upload: {
         Args: { upload: string };
         Returns: {
@@ -2221,6 +2241,13 @@ export type Database = {
           preview_start_ms: number;
           track_id: string;
           variants: Json;
+        }[];
+      };
+      user_follow_counts: {
+        Args: { person: string };
+        Returns: {
+          followers: number;
+          following: number;
         }[];
       };
       withdraw_release_submission: { Args: { release: string }; Returns: undefined };

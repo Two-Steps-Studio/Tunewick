@@ -229,14 +229,14 @@ export default async function ArtistPage({ params }: PageProps<"/[locale]/artist
         </section>
       ) : null}
       {user ? (
-        <p className="profile__report">
+        <div className="profile__report">
           <ReportButton
             subjectType="artist"
             subjectId={artist.id}
             name={artist.name}
             className="button button--quiet"
           />
-        </p>
+        </div>
       ) : null}
       {user && (await isArtistMember(artist.id)) ? (
         <Link

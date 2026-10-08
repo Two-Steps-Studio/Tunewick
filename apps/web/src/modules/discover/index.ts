@@ -13,5 +13,5 @@ export { ReportButton } from "./ui/report-button";
 export { ShareButton } from "./ui/share-button";
 export { getSharedSong, parseSongSegment, type SharedSong } from "./song";
 export { SongPreview } from "./ui/song-preview";
-export { CARD_SIZES, type CardFormat, coverForCard, songCard, statsCard } from "./cards";
+export { CARD_SIZES, type CardFormat, coverForCard, qrDataUrl, songCard, statsCard } from "./cards";
 export { ViewEvent } from "./ui/view-event";

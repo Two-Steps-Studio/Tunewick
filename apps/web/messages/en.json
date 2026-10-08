@@ -210,7 +210,7 @@
     "hints": {
       "handle": "Lowercase letters, digits and hyphens, 2–40 characters. Profile address: tunewick.com/en/profile/name",
       "bio": "Up to 500 characters.",
-      "visibility": "Listening activity arrives together with social features. This setting applies from their launch."
+      "visibility": "Who may compare their discoveries with yours: everyone, only people you follow, or only you."
     },
     "locales": {
       "pl": "Polski",
@@ -218,7 +218,7 @@
     },
     "visibility": {
       "public": "Everyone",
-      "followers": "Followers",
+      "followers": "People I follow",
       "private": "Only me"
     },
     "submit": "Save changes",
@@ -236,7 +236,15 @@
   },
   "Profile": {
     "memberSince": "On Tunewick since {date}",
-    "empty": "This profile has no description yet."
+    "empty": "This profile has no description yet.",
+    "follow": "Follow: {name}",
+    "unfollow": "Unfollow: {name}",
+    "followShort": "Follow",
+    "following": "Following",
+    "failed": "Could not save. Please try again.",
+    "followers": "{count, plural, =0 {No followers yet} one {# follower} other {# followers}}",
+    "followingCount": "follows {count}",
+    "compare": "Compare your discoveries with {name}"
   },
   "Security": {
     "title": "Security",
@@ -1204,7 +1212,9 @@
       "artists": "new artists",
       "countries": "countries",
       "question": "What did you discover?"
-    }
+    },
+    "following": "People you follow",
+    "compareWith": "Compare"
   },
   "Rankings": {
     "title": "Rankings",
@@ -1259,5 +1269,26 @@
     "streak": "{days} day discovery streak",
     "roll": "You're on a roll! {count} discoveries today",
     "achievement": "Achievement unlocked: {name}"
+  },
+  "Compare": {
+    "title": "You vs {name}",
+    "private": "{name} does not share listening activity with you. People choose this in their settings: everyone, only people they follow, or nobody.",
+    "back": "Back to {name}",
+    "period": "Period",
+    "periods": {
+      "week": "Last 7 days",
+      "month": "Last 30 days",
+      "all": "All time"
+    },
+    "you": "You",
+    "rows": {
+      "songs": "Songs",
+      "artists": "Artists",
+      "newArtists": "New artists",
+      "countries": "Countries",
+      "listening": "Listening",
+      "points": "Discovery points"
+    },
+    "hint": "Shown because of their privacy setting; your own setting decides what they see of you."
   }
 }

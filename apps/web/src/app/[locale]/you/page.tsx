@@ -6,6 +6,7 @@ import { formatListening } from "@/lib/intl";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { getOptionalUser } from "@/modules/auth";
 import { ViewEvent } from "@/modules/discover";
+import { getMyFollowing } from "@/modules/users";
 import {
   getMyAchievements,
   getMyProgress,
@@ -63,12 +64,13 @@ export default async function YouPage({ params, searchParams }: PageProps<"/[loc
     ? (query.period as StatsPeriod)
     : "week";
   const format = await getFormatter();
-  const [progress, stats, records, recap, achievements] = await Promise.all([
+  const [progress, stats, records, recap, achievements, following] = await Promise.all([
     getMyProgress(),
     getMyStats(period),
     getMyRecords(),
     getMyWeeklyRecap(1),
     getMyAchievements(),
+    getMyFollowing(),
   ]);
   if (!progress) return null;
   const n = (value: number) => format.number(value);
@@ -348,6 +350,31 @@ export default async function YouPage({ params, searchParams }: PageProps<"/[loc
           ))}
         </ul>
       </section>
+
+      {following.length ? (
+        <section aria-labelledby="following" className="you__section">
+          <h2 id="following" className="section-title">
+            {t("following")}
+          </h2>
+          <ul className="artist-list">
+            {following.map((person) => (
+              <li key={person.id} className="artist-list__item">
+                <Link
+                  className="artist-list__name"
+                  href={{ pathname: "/profile/[handle]", params: { handle: person.handle } }}
+                >
+                  {person.name}
+                </Link>
+                <Link
+                  href={{ pathname: "/you/compare/[handle]", params: { handle: person.handle } }}
+                >
+                  {t("compareWith")}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
 
       <nav className="you__links" aria-label={t("more")}>
         <Link href="/rankings" className="button">

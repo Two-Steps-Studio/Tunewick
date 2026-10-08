@@ -2,7 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { getTranslations } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { formatListening } from "@/lib/intl";
-import { statsCard } from "@/modules/discover";
+import { qrDataUrl, statsCard } from "@/modules/discover";
 import { getMyWeeklyRecap } from "@/modules/progress";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
@@ -31,6 +31,7 @@ export async function GET(request: NextRequest) {
       ],
       question: t("question"),
       url: request.nextUrl.host,
+      qr: await qrDataUrl(request.nextUrl.origin),
     },
     format,
   );

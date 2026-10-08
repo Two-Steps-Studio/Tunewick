@@ -2530,4 +2530,30 @@ body {
     font-size: var(--tk-text-sm);
     white-space: pre-wrap;
   }
+
+  /* You vs friend ------------------------------------------------------------ */
+  .compare {
+    width: 100%;
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+  }
+  .compare th,
+  .compare td {
+    padding: var(--tk-space-3) var(--tk-space-2);
+    border-bottom: 1px solid var(--line);
+    text-align: right;
+  }
+  .compare thead th {
+    font-family: var(--tk-font-display);
+    font-size: var(--tk-text-lg);
+  }
+  .compare tbody th {
+    text-align: left;
+    font-weight: 600;
+  }
+  .compare tbody td {
+    font-family: var(--tk-font-display);
+    font-size: var(--tk-text-xl);
+    font-weight: 700;
+  }
 }

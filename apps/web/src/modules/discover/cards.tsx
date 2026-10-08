@@ -1,6 +1,7 @@
 import "server-only";
 
 import { ImageResponse } from "next/og";
+import QRCode from "qrcode";
 import sharp from "sharp";
 
 /**
@@ -20,6 +21,22 @@ const C = {
 };
 
 export type CardFormat = "og" | "story" | "square";
+
+/** A QR code (SVG data URL, graphite on ivory) that opens `url` — for printed and filmed cards. */
+export async function qrDataUrl(url: string): Promise<string> {
+  const svg = await QRCode.toString(url, {
+    type: "svg",
+    margin: 1,
+    errorCorrectionLevel: "M",
+    color: { dark: "#171515", light: "#f2ebdd" },
+  });
+  return `data:image/svg+xml;base64,${Buffer.from(svg).toString("base64")}`;
+}
+
+function Qr({ src, size }: { src: string; size: number }) {
+  // eslint-disable-next-line @next/next/no-img-element -- rendered to PNG by Satori
+  return <img src={src} width={size} height={size} alt="" />;
+}
 
 /**
  * Covers are stored as WebP, which the card renderer cannot decode: fetch the variant and hand it
@@ -105,6 +122,8 @@ export interface SongCardData {
   tagline: string;
   cta: string;
   url: string;
+  /** QR code to the song (story and square cards). */
+  qr?: string | null;
 }
 
 export function songCard(data: SongCardData, format: CardFormat) {
@@ -189,9 +208,21 @@ export function songCard(data: SongCardData, format: CardFormat) {
             <div key="info" style={{ display: "flex" }}>
               {info}
             </div>,
-            <div key="cta" style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              <div style={{ fontSize: vertical ? 40 : 30, color: C.lime }}>{data.cta}</div>
-              <div style={{ fontSize: vertical ? 30 : 24, color: C.muted }}>{data.url}</div>
+            <div
+              key="cta"
+              style={{
+                display: "flex",
+                alignItems: "flex-end",
+                justifyContent: "space-between",
+                gap: 32,
+                width: "100%",
+              }}
+            >
+              <div style={{ display: "flex", flexDirection: "column", gap: 8, flex: 1 }}>
+                <div style={{ fontSize: vertical ? 40 : 30, color: C.lime }}>{data.cta}</div>
+                <div style={{ fontSize: vertical ? 26 : 22, color: C.muted }}>{data.url}</div>
+              </div>
+              {data.qr ? <Qr src={data.qr} size={vertical ? 180 : 140} /> : null}
             </div>,
           ]}
     </div>,
@@ -204,6 +235,7 @@ export interface StatsCardData {
   lines: { value: string; label: string }[];
   question: string;
   url: string;
+  qr?: string | null;
 }
 
 /** "MY TUNEWICK WEEK" — the listener's own numbers. Private to whoever downloads it. */
@@ -237,9 +269,19 @@ export function statsCard(data: StatsCardData, format: Exclude<CardFormat, "og">
           </div>
         ))}
       </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-        <div style={{ fontSize: vertical ? 50 : 38, color: C.ivory }}>{data.question}</div>
-        <div style={{ fontSize: vertical ? 30 : 24, color: C.muted }}>{data.url}</div>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "flex-end",
+          justifyContent: "space-between",
+          gap: 32,
+        }}
+      >
+        <div style={{ display: "flex", flexDirection: "column", gap: 10, flex: 1 }}>
+          <div style={{ fontSize: vertical ? 50 : 38, color: C.ivory }}>{data.question}</div>
+          <div style={{ fontSize: vertical ? 30 : 24, color: C.muted }}>{data.url}</div>
+        </div>
+        {data.qr ? <Qr src={data.qr} size={vertical ? 180 : 140} /> : null}
       </div>
     </div>,
     { width, height, headers: { "Cache-Control": "private, no-store" } },

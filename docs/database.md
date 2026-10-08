@@ -388,3 +388,7 @@ Functions: `record_listen` (now with `context`, returns awards), `record_share`,
 `track_previews`, `similar_artists`, `artist_top_tracks`, `onboarding_artists`,
 `browse_countries`; `discover_releases`/`discover_artists` gained a `country` filter.
 pgTAP: `supabase/tests/database/discovery.test.sql`.
+
+Later (2026-10-08): `set_track_preview` (artist-chosen preview, any release status),
+`my_taste().co_listened`, `user_follows` + `user_follow_counts`, `can_compare_with`, `compare_with`
+(visibility of the compared person decides). pgTAP: `user_follows.test.sql`.
