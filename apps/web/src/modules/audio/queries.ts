@@ -31,10 +31,20 @@ export interface TrackAudio {
   upsampledFrom: number | null;
   bitPadded: boolean;
   tiers: string[];
+  /** Suggested preview start from the analysis (reports v2+). */
+  bestMomentMs: number | null;
+  /** 200 peaks, 0–100 (reports v2+). */
+  waveform: number[];
 }
 
 type ReportShape = Partial<WorkerReport> & {
-  analysis?: (WorkerReport["analysis"] & { tiers?: Record<string, boolean> }) | null;
+  analysis?:
+    | (WorkerReport["analysis"] & {
+        tiers?: Record<string, boolean>;
+        best_moment?: { start_ms: number; duration_ms: number };
+        waveform?: number[];
+      })
+    | null;
 };
 
 /** Whether masters can be uploaded on this deployment (storage configured). */
@@ -79,6 +89,8 @@ function describe(row: {
     bitPadded: analysis?.flags?.includes("suspected_bit_padded") ?? false,
     // jsonb does not keep key order: list the tiers from lowest to highest.
     tiers: TIER_ORDER.filter((tier) => analysis?.tiers?.[tier]),
+    bestMomentMs: analysis?.best_moment?.start_ms ?? null,
+    waveform: Array.isArray(analysis?.waveform) ? analysis.waveform : [],
   };
 }
 
@@ -234,4 +246,44 @@ export async function getPlayableQueue(
   );
   for (const list of results) for (const track of list) playable.set(track.id, track);
   return items.map((item) => playable.get(item.id) ?? null);
+}
+
+export interface Soundcheck {
+  track: PlayerTrack;
+  /** Seconds into the track. */
+  start: number;
+  length: number;
+}
+
+/** Playable soundchecks (≤ 30 s excerpts) of public releases, by release id. */
+export async function getSoundchecks(
+  releases: { id: string; artistName: string }[],
+  maxTier: QualityTier,
+): Promise<Map<string, Soundcheck>> {
+  const result = new Map<string, Soundcheck>();
+  if (!releases.length) return result;
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase.rpc("release_soundchecks", {
+    releases: releases.map((r) => r.id),
+  });
+  if (error) throw error;
+  await Promise.all(
+    (data ?? []).map(async (row) => {
+      const artistName = releases.find((r) => r.id === row.release_id)?.artistName ?? "";
+      const [track] = await getPlayableTracks(
+        row.release_id,
+        [{ id: row.track_id, title: row.title }],
+        artistName,
+        maxTier,
+      );
+      if (track) {
+        result.set(row.release_id, {
+          track,
+          start: row.start_ms / 1000,
+          length: row.duration_ms / 1000,
+        });
+      }
+    }),
+  );
+  return result;
 }

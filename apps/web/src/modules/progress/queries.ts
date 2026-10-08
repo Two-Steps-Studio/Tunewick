@@ -143,7 +143,7 @@ export async function getMyAchievements() {
   return all.data.map((a) => ({ ...a, unlockedAt: unlocked.get(a.code) ?? null }));
 }
 
-export type RankingPeriod = "week" | "month" | "all";
+export type RankingPeriod = "week" | "month" | "season" | "last_season" | "all";
 
 export interface RankingScope {
   period: RankingPeriod;
@@ -173,4 +173,40 @@ export async function getLeaderboard(scope: RankingScope) {
   if (board.error) throw board.error;
   if (mine.error) throw mine.error;
   return { rows: board.data ?? [], me: mine.data?.[0] ?? null, signedIn: Boolean(auth?.claims) };
+}
+
+export interface Challenge {
+  code: string;
+  metric: string;
+  target: number;
+  progress: number;
+  completedAt: string | null;
+  endsAt: string;
+}
+
+/** This week's challenges (the same for everyone) with the listener's progress. */
+export async function getMyChallenges(): Promise<Challenge[]> {
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase.rpc("my_challenges");
+  if (error) throw error;
+  return (data ?? []).map((c) => ({
+    code: c.code,
+    metric: c.metric,
+    target: c.target,
+    progress: c.progress,
+    completedAt: c.completed_at ?? null,
+    endsAt: c.ends_at,
+  }));
+}
+
+/** The listener's final places in closed seasons, newest first. */
+export async function getMySeasons() {
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase
+    .from("season_results")
+    .select("season_start, points, rank, participants, percentile")
+    .order("season_start", { ascending: false })
+    .limit(8);
+  if (error) throw error;
+  return data;
 }

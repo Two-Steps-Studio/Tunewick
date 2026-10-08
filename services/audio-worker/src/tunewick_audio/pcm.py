@@ -15,6 +15,7 @@ from dataclasses import dataclass
 import numpy as np
 
 from .ffmpeg import ffmpeg_cmd
+from .moments import MomentTracker
 from .probe import Rejected
 
 CLIP_THRESHOLD = 0.9999  # ≈ −0.001 dBFS; int full scale (incl. 32767/32768) counts
@@ -39,6 +40,7 @@ class PcmStats:
     silent: bool
     spectrum: np.ndarray  # mean power per rfft bin, summed over channels
     freqs: np.ndarray
+    moments: MomentTracker  # loudness/spectral shape per second → best moment, waveform
 
 
 def decode_command(path: str, sample_format: str) -> list[str]:
@@ -89,6 +91,7 @@ def analyse(path: str, *, sample_format: str, sample_rate: int, channels: int, b
     sums = np.zeros(channels)
     cross = sq_l = sq_r = 0.0
     nonzero = False
+    moments = MomentTracker(sample_rate)
 
     for data, flat in iter_pcm(path, sample_format, sample_rate, channels):
         sha.update(data)
@@ -108,6 +111,7 @@ def analyse(path: str, *, sample_format: str, sample_rate: int, channels: int, b
                     fits16 = fits24 and bool(np.all(scaled == np.round(scaled)))
         frame = x.reshape(-1, channels)
         samples += frame.shape[0]
+        moments.add(frame)
 
         magnitude = np.abs(frame)
         peak = max(peak, float(magnitude.max(initial=0.0)))
@@ -155,6 +159,7 @@ def analyse(path: str, *, sample_format: str, sample_rate: int, channels: int, b
         silent=not nonzero,
         spectrum=spectrum / max(frames, 1),
         freqs=np.fft.rfftfreq(n, 1 / sample_rate),
+        moments=moments,
     )
 
 

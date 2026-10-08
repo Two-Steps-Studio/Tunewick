@@ -62,5 +62,36 @@ export async function updateSettings(
     (await cookies()).set("NEXT_LOCALE", input.locale, { path: "/", sameSite: "lax" });
     redirect({ href: "/settings", locale: input.locale });
   }
-  return { saved: true };
+  // The form resets to its defaults after the action: keep the saved values as those defaults,
+  // or a second save without a reload would send the stale ones.
+  return { saved: true, values };
+}
+
+export interface DeleteAccountState {
+  error?: "email_mismatch" | "sole_owner" | "staff" | "failed";
+  email?: string;
+}
+
+/** Deletes the signed-in account (GDPR art. 17); the database checks everything again. */
+export async function deleteAccount(
+  _prev: DeleteAccountState,
+  formData: FormData,
+): Promise<DeleteAccountState> {
+  const email = String(formData.get("email") ?? "").trim();
+  const supabase = await createSupabaseServerClient();
+  const { error } = await supabase.rpc("delete_my_account", { confirm_email: email });
+  if (error) {
+    const hint = error.hint as DeleteAccountState["error"];
+    return {
+      error:
+        hint === "email_mismatch" || hint === "sole_owner" || hint === "staff" ? hint : "failed",
+      email,
+    };
+  }
+  // The user no longer exists: drop the session cookies too.
+  await supabase.auth.signOut({ scope: "local" });
+  return redirect({
+    href: { pathname: "/", query: { konto: "usuniete" } },
+    locale: await getLocale(),
+  });
 }

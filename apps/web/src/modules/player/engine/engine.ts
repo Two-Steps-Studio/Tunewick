@@ -44,6 +44,7 @@ export const IDLE_STATE: PlayerState = {
   now: null,
   outputSampleRateHz: null,
   error: null,
+  clip: null,
 };
 
 function readNetwork(): NetworkInfo {
@@ -135,8 +136,16 @@ export class PlayerEngine {
     if (!queue.length) return;
     this.stallCap = null;
     this.measureOutputRate();
-    this.update({ queue, index: startIndex, error: null });
+    this.update({ queue, index: startIndex, error: null, clip: null });
     await this.start(startIndex, 0);
+  }
+
+  /** Plays a soundcheck: `length` seconds of `track` from `start`, then stops. */
+  async playClip(track: PlayerTrack, start: number, length: number) {
+    this.stallCap = null;
+    this.measureOutputRate();
+    this.update({ queue: [track], index: 0, error: null, clip: { start, end: start + length } });
+    await this.start(0, start);
   }
 
   toggle() {
@@ -146,6 +155,12 @@ export class PlayerEngine {
 
   async resume() {
     if (!this.state.queue.length) return;
+    // A finished soundcheck plays again from the start of the excerpt.
+    const clip = this.state.clip;
+    if (clip && this.state.position >= clip.end - 0.25) {
+      await this.start(this.state.index, clip.start);
+      return;
+    }
     try {
       await this.audio.play();
     } catch {
@@ -335,6 +350,11 @@ export class PlayerEngine {
         ? this.audio.duration
         : this.state.duration;
       this.update({ position: this.audio.currentTime, duration });
+    }
+    const clip = this.state.clip;
+    if (clip && this.state.position >= clip.end && !this.audio.paused) {
+      this.audio.pause();
+      this.update({ status: "paused", position: clip.end });
     }
     this.updatePositionState();
   }

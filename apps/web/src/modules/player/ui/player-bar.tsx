@@ -143,6 +143,7 @@ export function PlayerBar({ reportListens = false }: { reportListens?: boolean }
 
       <div className="player-bar__now">
         <p className="player-bar__title" aria-live="polite">
+          {state.clip ? <span className="player-bar__soundcheck">{t("soundcheck")}</span> : null}
           <span className="player-bar__track">{track.title}</span>
           <span className="player-bar__artist">{track.artist}</span>
         </p>

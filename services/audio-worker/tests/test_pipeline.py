@@ -39,6 +39,15 @@ def test_cd_quality_wav_gets_exact_lossless_and_no_hires(media, processed):
     assert lossless["pcm_sha256"] == analysis["pcm_sha256"]
     assert [f["container"] for f in lossless["files"]] == ["flac", "fmp4"]
 
+    # 11 s: the whole track is the preview; the waveform is always 200 points.
+    assert analysis["best_moment"] == {
+        "start_ms": 0,
+        "duration_ms": 11_000,
+        "method": "energy_novelty_v1",
+    }
+    assert len(analysis["waveform"]) == 200 and max(analysis["waveform"]) == 100
+    assert report["version"] == 2
+
 
 def test_true_hires_flac(media, processed):
     report = processed(media("hires.flac", *noise(96000), "-ac", "2", *S24, "-c:a", "flac"))

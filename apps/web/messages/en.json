@@ -13,9 +13,10 @@
   },
   "Nav": {
     "discover": "Discover",
-    "browse": "Browse",
+    "scene": "Scene",
     "search": "Search",
     "library": "Library",
+    "browse": "Browse",
     "you": "You"
   },
   "Player": {
@@ -52,12 +53,18 @@
       "playback_blocked": "The browser blocked playback — press Play.",
       "unplayable": "This browser can't play any version of this track.",
       "stream_error": "The audio stream was interrupted."
-    }
+    },
+    "soundcheck": "Soundcheck"
   },
   "Scene": {
     "title": "Scene",
     "lead": "Gigs, clubs and venues around you.",
-    "empty": "No events yet. We will only show real events added by artists and venues."
+    "empty": "No events yet. We will only show real events added by artists and venues.",
+    "leadEvents": "Real gigs of small independent artists from all over Poland — added by them and checked by moderators.",
+    "regionLabel": "Region",
+    "allPoland": "All of Poland",
+    "upcoming": "Upcoming gigs",
+    "emptyRegion": "No gigs announced in {region} Voivodeship yet."
   },
   "Search": {
     "title": "Search",
@@ -107,6 +114,8 @@
       "clearYes": "Yes, clear it",
       "clearNo": "Cancel"
     },
+    "gigs": "I was there",
+    "gigsLead": "Gigs you marked. Only you can see them.",
     "saved": {
       "title": "Saved from Discover",
       "lead": "Songs you saved while discovering — come back to them any time.",
@@ -153,7 +162,8 @@
       "lead": "Discover independent music and local scenes.",
       "submit": "Create account",
       "haveAccount": "Already have an account?",
-      "toLogin": "Sign in"
+      "toLogin": "Sign in",
+      "legal": "By creating an account you accept the <terms>Terms of Service</terms>. How we process data is described in the <privacy>Privacy Policy</privacy>."
     },
     "reset": {
       "title": "Forgot your password?",
@@ -205,12 +215,12 @@
       "displayName": "Display name",
       "bio": "About me",
       "locale": "Language",
-      "visibility": "Who can see your listening activity"
+      "visibility": "Who sees your activity"
     },
     "hints": {
       "handle": "Lowercase letters, digits and hyphens, 2–40 characters. Profile address: tunewick.com/en/profile/name",
       "bio": "Up to 500 characters.",
-      "visibility": "Who may compare their discoveries with yours: everyone, only people you follow, or only you."
+      "visibility": "Who sees gigs you marked (\"I was there\") and your public playlists on your profile. It also decides who can compare their discoveries with yours."
     },
     "locales": {
       "pl": "Polski",
@@ -218,7 +228,7 @@
     },
     "visibility": {
       "public": "Everyone",
-      "followers": "People I follow",
+      "followers": "Followers",
       "private": "Only me"
     },
     "submit": "Save changes",
@@ -237,13 +247,6 @@
   "Profile": {
     "memberSince": "On Tunewick since {date}",
     "empty": "This profile has no description yet.",
-    "follow": "Follow: {name}",
-    "unfollow": "Unfollow: {name}",
-    "followShort": "Follow",
-    "following": "Following",
-    "failed": "Could not save. Please try again.",
-    "followers": "{count, plural, =0 {No followers yet} one {# follower} other {# followers}}",
-    "followingCount": "follows {count}",
     "compare": "Compare your discoveries with {name}"
   },
   "Security": {
@@ -334,16 +337,12 @@
       "noBio": "This artist has not added a description yet.",
       "noReleases": "No published releases.",
       "followers": "{count, plural, =0 {No followers yet} one {# follower} other {# followers}}",
+      "discography": "Discography",
       "languages": "Sings in: {languages}",
       "discover": "Discover this artist",
       "popular": "Popular songs",
       "listeners": "{count, plural, one {# listener} other {# listeners}} this month",
-      "newest": "Releases",
-      "links": "Links",
-      "similar": "Discover similar artists",
-      "similarListeners": "{count, plural, one {# shared follower} other {# shared followers}}",
-      "similarCountry": "Also from {country}",
-      "similarGenres": "Similar genres"
+      "links": "Links"
     },
     "manage": {
       "title": "Manage: {name}",
@@ -362,6 +361,7 @@
       "you": "You",
       "noName": "Account without a profile name",
       "photo": "Artist photo",
+      "verificationRejected": "Verification request rejected: {reason} You can send a new one with other evidence.",
       "reach": "Where you're from and what you make"
     },
     "errors": {
@@ -386,6 +386,23 @@
       "languagesInvalid": "Use language codes such as pl, en, es (up to 8).",
       "genresTooMany": "Choose up to 5 genres.",
       "linksInvalid": "Every link must start with https:// (up to 10)."
+    },
+    "related": {
+      "title": "Related artists",
+      "collaborated": "Worked together: “{track}”",
+      "sharedCredit": "{role, select, producer {Same producer} mixing_engineer {Same mixing engineer} mastering_engineer {Same mastering engineer} songwriter {Same songwriter} composer {Same composer} lyricist {Same lyricist} other {Same collaborator}}: {name}",
+      "sameLabel": "Same label: {label}",
+      "sharedAudience": "{count, plural, other {# people follow both}}",
+      "sameCity": "Also from: {city}",
+      "playedTogether": "Played together: {event}"
+    },
+    "listening": {
+      "title": "Listeners",
+      "lead": "Closed months. A play counts from 30 seconds; soundchecks never count.",
+      "empty": "The first month closes on the 2nd of the next month.",
+      "month": "Month",
+      "listeners": "Listeners",
+      "plays": "Plays"
     },
     "links": {
       "website": "Website",
@@ -450,7 +467,11 @@
       "isrc": "ISRC (optional)",
       "creditName": "Name or alias",
       "creditRole": "Role",
-      "creditDetail": "Details (e.g. instrument)"
+      "creditDetail": "Details (e.g. instrument)",
+      "creditArtist": "Tunewick profile (optional)",
+      "creditArtistHint": "The artist's profile address, e.g. halda-kolektyw. Links the track to their profile and helps listeners find related artists.",
+      "soundcheckStart": "Soundcheck start (m:ss)",
+      "soundcheckStartHint": "The 30-second excerpt that introduces the track in Discover. Empty = from the beginning."
     },
     "types": {
       "single": "Single",
@@ -509,8 +530,9 @@
       "samplesDescriptionRequired": "Describe the samples and permissions.",
       "aiRequired": "Declare AI involvement.",
       "termsRequired": "Accept the terms to submit the declaration.",
-      "previewTime": "Write the start as m:ss, e.g. 1:05.",
-      "previewOutside": "The preview must fit inside the song (15–30 s)."
+      "artistNotFound": "No active artist profile has this address.",
+      "soundcheckInvalid": "Enter the time as minutes:seconds, e.g. 1:05.",
+      "soundcheckTooLate": "The soundcheck must start at least 5 s before the end of the track."
     },
     "rights": {
       "title": "Rights to this release",
@@ -549,7 +571,8 @@
         "ai": "AI",
         "yes": "Yes",
         "no": "No"
-      }
+      },
+      "readTerms": "Read the Artist Terms"
     },
     "readiness": {
       "title": "Ready to submit",
@@ -577,15 +600,6 @@
         "not_allowed": "You can't submit this release.",
         "failed": "Something went wrong. Please try again."
       }
-    },
-    "preview": {
-      "title": "Discover preview",
-      "chosen": "Listeners hear {length} s from {start} — chosen by you.",
-      "automatic": "Automatic: {length} s from {start}. Pick the moment that represents the song best.",
-      "start": "Start (m:ss)",
-      "startHint": "Leave empty for the automatic excerpt.",
-      "length": "Length",
-      "seconds": "{s} seconds"
     }
   },
   "Audio": {
@@ -636,7 +650,8 @@
       "empty": "The file contains no audio.",
       "integrity": "The FLAC checksum doesn’t match its audio — the file is damaged.",
       "processing_failed": "We couldn’t process the file after several attempts. Please upload it again or contact us."
-    }
+    },
+    "bestMoment": "The analysis found the best moment at {start} (highlighted) — Discover previews start there until you set your own soundcheck start."
   },
   "Release": {
     "trackCount": "{count, plural, one {# track} other {# tracks}}",
@@ -652,7 +667,8 @@
       "ai_assisted": "Made with AI assistance.",
       "ai_generated": "Generated by AI."
     },
-    "coverAlt": "Cover: {title} — {artist}"
+    "coverAlt": "Cover: {title} — {artist}",
+    "credits": "Credits"
   },
   "Moderation": {
     "title": "Moderation",
@@ -698,19 +714,20 @@
       }
     },
     "cover": "Cover",
-    "reports": {
-      "title": "Reports ({count})",
-      "empty": "No open reports.",
-      "gone": "(no longer available)",
-      "subjects": {
-        "track": "Song",
-        "release": "Release",
-        "artist": "Artist",
-        "user": "User"
-      },
-      "actioned": "Action taken",
-      "dismissed": "Dismiss",
-      "hint": "Taking action (takedown, suspension) is done on the release or artist; this records the decision in the audit log."
+    "verification": {
+      "title": "Artist verification ({count})",
+      "empty": "No verification requests.",
+      "note": "Reason for the decision on: {artist}",
+      "noteHint": "Required when rejecting (at least 10 characters) — the artist sees it in their profile panel.",
+      "approve": "Verify: {artist}",
+      "reject": "Reject: {artist}",
+      "error": {
+        "note_required": "Tell the artist why the request is rejected (at least 10 characters).",
+        "mfa_required": "This decision needs two-factor sign-in in this session.",
+        "not_allowed": "You are not allowed to make this decision.",
+        "already_decided": "This request has already been decided.",
+        "failed": "Could not save the decision. Please try again."
+      }
     }
   },
   "Images": {
@@ -773,7 +790,8 @@
       "warminsko_mazurskie": "Warmian-Masurian",
       "wielkopolskie": "Greater Poland",
       "zachodniopomorskie": "West Pomeranian"
-    }
+    },
+    "voivodeshipLabel": "Voivodeship"
   },
   "Plan": {
     "title": "Plan",
@@ -934,6 +952,306 @@
       "failed": "Could not save. Please try again."
     }
   },
+  "Reports": {
+    "link": "Report a problem",
+    "title": "Report a problem",
+    "about": "You are reporting the {subject} “{title}”",
+    "lead": "Your report goes to Tunewick moderators. The owner will not see who reported; they will see the decision and its reasons.",
+    "subjects": {
+      "artist": "artist profile",
+      "release": "release",
+      "playlist": "playlist",
+      "event": "gig",
+      "venue": "venue",
+      "profile": "profile"
+    },
+    "reasons": {
+      "copyright": "Copyright infringement",
+      "illegal": "Illegal content",
+      "hate": "Hate speech or harassment",
+      "impersonation": "Impersonation",
+      "spam": "Spam or fraud",
+      "other": "Other"
+    },
+    "fields": {
+      "reason": "Reason",
+      "details": "Details",
+      "claimantName": "Name of the rights holder or their representative",
+      "claimantEmail": "Contact email",
+      "goodFaith": "I state in good faith that this information is accurate and that I am authorised to act for the rights holder."
+    },
+    "hints": {
+      "details": "What is wrong and where (e.g. which track). 10–2000 characters."
+    },
+    "copyright": {
+      "title": "Copyright notice",
+      "lead": "We need the claimant's details so a moderator can get in touch and assess the notice."
+    },
+    "submit": "Send report",
+    "sent": "Thank you. Your report has been sent to the moderators.",
+    "errors": {
+      "details": "Describe the problem (10–2000 characters).",
+      "copyright": "For copyright, give a name, a valid email and tick the statement.",
+      "duplicate": "You already reported this — it is waiting for a decision.",
+      "limit": "Too many reports today. Try again tomorrow.",
+      "gone": "This content is no longer public.",
+      "signedOut": "Sign in to report content.",
+      "failed": "Could not send the report. Please try again."
+    },
+    "queue": {
+      "title": "Reports ({count})",
+      "empty": "No open reports.",
+      "count": "{count, plural, one {# report} other {# reports}}",
+      "strikes": "{count, plural, one {# upheld copyright infringement} other {# upheld copyright infringements}}",
+      "claimant": "claimant: {name} <{email}>"
+    },
+    "appeals": {
+      "title": "Appeals ({count})",
+      "empty": "No appeals to decide.",
+      "statement": "Decision:",
+      "appeal": "Appeal:"
+    },
+    "moderation": {
+      "action": "Decision",
+      "actions": {
+        "takedown_release": "Release taken down",
+        "suspend_artist": "Artist profile suspended",
+        "hide_playlist": "Playlist hidden",
+        "dismiss": "Report dismissed",
+        "remove_event": "Gig removed from the Scene",
+        "clear_venue_details": "Venue address and website removed",
+        "reset_profile": "Profile name and bio cleared"
+      },
+      "statement": "Statement of reasons (the owner will read it)",
+      "statementHint": "What was decided and why, in plain words — at least 20 characters.",
+      "decide": "Save decision",
+      "appealNote": "Reasons for the appeal decision",
+      "reverse": "Grant the appeal (restore)",
+      "uphold": "Uphold the decision",
+      "errors": {
+        "statement": "The statement needs at least 20 characters.",
+        "mismatch": "This decision does not fit the reported content.",
+        "mfa_required": "This decision needs two-factor sign-in in this session.",
+        "not_allowed": "You cannot make this decision (e.g. a different moderator decides appeals against your decisions).",
+        "decided": "This has already been decided.",
+        "failed": "Could not save the decision. Please try again."
+      }
+    },
+    "decisions": {
+      "title": "Moderation decisions",
+      "appealStatus": {
+        "none": "you can appeal",
+        "pending": "appeal in progress",
+        "upheld": "appeal not granted",
+        "reversed": "appeal granted — restored"
+      },
+      "appealDecided": "Appeal decision: {note}",
+      "appeal": "Appeal",
+      "appealHint": "Explain why the decision is wrong (e.g. you hold a licence). A different moderator decides. 10–4000 characters.",
+      "sendAppeal": "Send appeal",
+      "errors": {
+        "text": "Describe your appeal (10–4000 characters).",
+        "already": "This decision was already appealed or the period has ended.",
+        "not_allowed": "Only the profile owner or a manager can appeal.",
+        "failed": "Could not send the appeal. Please try again."
+      }
+    }
+  },
+  "Admin": {
+    "link": "Administration",
+    "title": "Administration",
+    "lead": "Staff roles, Premium for support, feature flags and the audit log. Every change is logged.",
+    "toModeration": "Moderation",
+    "toPromo": "Promotions",
+    "staff": "Staff",
+    "roles": {
+      "moderator": "moderator",
+      "admin": "administrator"
+    },
+    "you": "that is you — you cannot remove your own admin role",
+    "revoke": "Revoke role",
+    "revokeLabel": "Revoke {role} role: {who}",
+    "grantRole": "Grant role",
+    "roleGranted": "Role granted. The person must turn on two-factor sign-in to use it.",
+    "premium": "Premium for support",
+    "premiumLead": "E.g. compensation for a bug or a tester. Use promo codes for campaigns.",
+    "grantPremium": "Grant Premium",
+    "premiumGranted": "Premium granted.",
+    "flags": "Feature flags",
+    "on": "on",
+    "off": "off",
+    "turnOn": "Turn on",
+    "turnOff": "Turn off",
+    "audit": "Audit log",
+    "auditFilter": "Kind of change",
+    "auditAll": "everything",
+    "system": "system",
+    "unknownActor": "unnamed account",
+    "fields": {
+      "handle": "Profile handle",
+      "handleHint": "The profile address, e.g. kasia-k (no @).",
+      "role": "Role",
+      "days": "For how many days",
+      "daysHint": "Empty = for life.",
+      "note": "Note (reason)",
+      "noteHint": "Shown in the audit log and as the plan's source."
+    },
+    "errors": {
+      "notFound": "No account has this profile handle.",
+      "invalid": "Check the form fields.",
+      "mfa_required": "This needs two-factor sign-in in this session.",
+      "not_allowed": "You are not allowed to make this change.",
+      "already_lifetime": "This person already has Premium for life.",
+      "failed": "That did not work. Please try again."
+    },
+    "playback": "Playback (7 days)",
+    "playbackLead": "Time to first audio and player errors, without personal data. Target: median under 1 s for High.",
+    "playbackEmpty": "No data from the last 7 days.",
+    "playbackTier": "Quality",
+    "playbackStarts": "Starts",
+    "playbackP50": "Median",
+    "playbackP90": "90%",
+    "playbackErrors": "Errors",
+    "shares": "Listening: {month}",
+    "sharesLead": "The base for future user-centric payouts (D2). A play counts from 30 s, soundchecks excluded. Nothing is paid out from this today.",
+    "sharesEmpty": "This month is not closed yet, or nobody listened.",
+    "sharesArtist": "Artist",
+    "sharesListeners": "Listeners",
+    "sharesPlays": "Plays",
+    "sharesHours": "Hours"
+  },
+  "Events": {
+    "badge": "Gig",
+    "cancelled": "Cancelled",
+    "status": {
+      "pending": "waiting for moderation",
+      "published": "published",
+      "rejected": "rejected",
+      "cancelled": "cancelled"
+    },
+    "rejected": "Event rejected: {reason}",
+    "tickets": "Tickets (organiser's site)",
+    "lineup": "Who plays",
+    "soundcheck": "Listen",
+    "soundcheckLabel": "Hear an excerpt: {artist} — {title}",
+    "noMusic": "No music on Tunewick yet",
+    "artistUpcoming": "Upcoming gigs",
+    "manage": {
+      "title": "Gigs",
+      "lead": "Add a gig you play. After a moderator checks it, it shows on the Scene, on your profile and at the venue.",
+      "cancel": "Cancel: {title}"
+    },
+    "form": {
+      "title": "Event name",
+      "startsAt": "Date and time",
+      "startsAtHint": "Polish time.",
+      "venue": "Venue",
+      "venueName": "Club or venue name",
+      "city": "City of the gig",
+      "address": "Address (optional)",
+      "lineup": "Who else plays (optional)",
+      "lineupHint": "Tunewick artist profile addresses, separated by commas, e.g. halda-kolektyw, suwalska-fala.",
+      "ticketUrl": "Ticket link (optional)",
+      "description": "Description (optional)",
+      "submit": "Add gig",
+      "saved": "Added. The gig is waiting for a moderator.",
+      "errors": {
+        "title": "Enter the event name (2–160 characters).",
+        "date": "Enter a date and time — from today up to two years ahead.",
+        "venue": "Enter the venue name, city and voivodeship.",
+        "ticket": "The ticket link must start with https://",
+        "lineup": "One of the profile addresses is not an active Tunewick artist.",
+        "limit": "Too many gigs are waiting for moderation. Wait for a decision.",
+        "forbidden": "Profile owners and managers add gigs.",
+        "failed": "Could not add the gig. Please try again."
+      }
+    },
+    "review": {
+      "title": "Gigs to check ({count})",
+      "empty": "No gigs to check.",
+      "newVenue": "new venue",
+      "note": "Note for the artist: {title}",
+      "publish": "Publish: {title}",
+      "reject": "Reject: {title}",
+      "errors": {
+        "note_required": "Tell the artist why the gig is rejected (at least 10 characters).",
+        "mfa_required": "This decision needs two-factor sign-in in this session.",
+        "not_allowed": "You are not allowed to make this decision.",
+        "decided": "This gig was already checked.",
+        "failed": "Could not save the decision. Please try again."
+      }
+    },
+    "attended": {
+      "mark": "I was there",
+      "marked": "I was there ✓",
+      "private": "Only you see this — it is your gig history, not a counter.",
+      "later": "From the start of the gig and for 30 days you can mark “I was there”.",
+      "errors": {
+        "not_started": "The gig has not started yet.",
+        "too_late": "More than 30 days have passed since the gig.",
+        "failed": "Could not save. Please try again."
+      }
+    }
+  },
+  "Venues": {
+    "verified": "Verified venue",
+    "unverified": "Venue added by an artist",
+    "website": "Venue website",
+    "upcoming": "Upcoming",
+    "noUpcoming": "Nothing planned here yet.",
+    "past": "Played here"
+  },
+  "Privacy": {
+    "title": "Your data",
+    "exportLead": "Download everything Tunewick keeps about you: account, profile, plan, likes, playlists, listening and gig history, reports — in one JSON file.",
+    "export": "Download my data",
+    "deleteLead": "Deleting your account erases your profile, settings, likes, playlists, history and plan. Rights declarations for released music stay as evidence — without your data.",
+    "blocked": "First add another owner to the artist profiles you are the only owner of, or write to us to delete them:",
+    "delete": "Delete account",
+    "deleteWarning": "This cannot be undone. To confirm, type the account's email address.",
+    "confirmEmail": "Account email address",
+    "deleteForever": "Delete my account forever",
+    "cancel": "Cancel",
+    "errors": {
+      "email_mismatch": "That is not this account's email address.",
+      "sole_owner": "First hand over or delete the artist profiles you are the only owner of.",
+      "staff": "Tunewick staff accounts are removed by an administrator — the role must be revoked first.",
+      "failed": "Could not delete the account. Please try again."
+    }
+  },
+  "Social": {
+    "followShort": "Follow",
+    "following": "Following",
+    "follow": "Follow {name}",
+    "unfollow": "Unfollow {name}",
+    "followFailed": "Could not save. Try again.",
+    "followers": "{count, plural, one {1 follower} other {# followers}}",
+    "followingCount": "{count, plural, =0 {follows nobody} other {follows #}}",
+    "block": "Block",
+    "blockQuestion": "Block {name}? You will stop following each other and will not see each other's activity.",
+    "blockYes": "Yes, block",
+    "cancel": "Cancel",
+    "unblock": "Unblock",
+    "unblockNamed": "Unblock {name}",
+    "blockedTitle": "Blocked people",
+    "blockedLead": "These people cannot follow you or see your activity. You do not see theirs either.",
+    "noName": "Unnamed account",
+    "activityTitle": "Activity",
+    "activityHidden": "This person's activity is visible only to people they choose.",
+    "activityOwn": "This is how people you allow see your activity. Change it in Settings.",
+    "attended": "I was there",
+    "attendedEmpty": "No gigs marked yet.",
+    "playlists": "Public playlists",
+    "playlistsEmpty": "No public playlists.",
+    "trackCount": "{count, plural, =0 {no tracks} one {1 track} other {# tracks}}"
+  },
+  "Legal": {
+    "nav": "Documents",
+    "terms": "Terms of Service",
+    "artistTerms": "Artist Terms",
+    "privacy": "Privacy Policy",
+    "contentPolicy": "Content and Reporting Policy"
+  },
   "Browse": {
     "title": "Browse",
     "lead": "New music from small independent artists, newest first — by country, and by region in Poland. No popularity algorithm here: everything says why it is shown.",
@@ -950,7 +1268,9 @@
       "new": "New · {when}",
       "released": "Released {when}",
       "firstRelease": "First release {when} · {count, plural, one {# release} other {# releases}}"
-    }
+    },
+    "soundcheck": "Soundcheck {seconds} s",
+    "soundcheckLabel": "Hear an excerpt: {title} — {artist}"
   },
   "Feed": {
     "title": "Discover",
@@ -1019,7 +1339,10 @@
       "shared": "Shared with you",
       "artist_spotlight": "Discovering {artist}"
     },
-    "previewUnsupported": "This browser can't play the preview. Try another browser or Play full song."
+    "previewUnsupported": "This browser can't play the preview. Try another browser or Play full song.",
+    "browse": "Browse new releases",
+    "accountDeleted": "Your account has been deleted. Thank you for being with us.",
+    "report": "Report this release"
   },
   "Onboarding": {
     "title": "Discovery preferences",
@@ -1044,29 +1367,6 @@
     "submit": "Start discovering",
     "skip": "Skip",
     "failed": "Could not save. Please try again."
-  },
-  "Report": {
-    "open": "Report",
-    "title": "Report: {name}",
-    "why": "What is wrong?",
-    "categories": {
-      "copyright": "It uses my work without permission (copyright)",
-      "inappropriate": "Inappropriate or harmful content",
-      "spam": "Spam or misleading",
-      "impersonation": "Pretends to be someone else",
-      "other": "Something else"
-    },
-    "details": "Details (optional)",
-    "submit": "Send report",
-    "cancel": "Cancel",
-    "close": "Close",
-    "sent": "Thank you. Moderators will review it.",
-    "errors": {
-      "signIn": "Sign in to report.",
-      "limit": "You have sent many reports today. Please try again tomorrow.",
-      "failed": "Could not send. Please try again.",
-      "invalid": "Choose a reason."
-    }
   },
   "Song": {
     "badge": "Song",
@@ -1173,7 +1473,9 @@
         "on_a_roll": "On a Roll",
         "unstoppable": "Unstoppable",
         "collector": "Collector",
-        "early_supporter": "Early Supporter"
+        "early_supporter": "Early Supporter",
+        "challenger": "Challenger",
+        "season_star": "Season Star"
       },
       "metrics": {
         "songs": "{count, plural, one {Discover your first song} other {Discover # songs}}",
@@ -1183,7 +1485,9 @@
         "longest_streak": "A {count}-day discovery streak",
         "deep_genre": "{count}+ artists from one genre",
         "early_supporter": "Discover an artist with under 25 followers who later passes 100",
-        "saves": "Save {count} songs"
+        "saves": "Save {count} songs",
+        "challenges": "Complete {count} weekly challenges",
+        "season_top10": "Finish a season in the top 10% of discoverers"
       },
       "unlocked": "Unlocked {date}",
       "locked": "Not yet"
@@ -1201,7 +1505,8 @@
         "new_country": "New country",
         "save": "Saving a song (once per song)",
         "full_listen": "Listening to a new discovery in full (once a day)",
-        "share": "Sharing a song (once a day per song)"
+        "share": "Sharing a song (once a day per song)",
+        "challenge": "A completed weekly challenge (once per challenge)"
       },
       "fair": "Points reward discovering, not hours of playback: replays, loops and quick skips earn nothing, and every kind of point has a daily cap."
     },
@@ -1214,7 +1519,30 @@
       "question": "What did you discover?"
     },
     "following": "People you follow",
-    "compareWith": "Compare"
+    "compareWith": "Compare",
+    "challenges": {
+      "title": "This week’s challenges",
+      "points": "+20 pts",
+      "hint": "The same three challenges for everyone, new every Monday. This set ends {date}.",
+      "names": {
+        "thirty_songs": "Discover {target} new songs",
+        "ten_artists": "Discover {target} new artists",
+        "three_genres": "Listen to {target} genres you have not heard yet",
+        "three_countries": "Discover music from {target} new countries",
+        "two_regions": "Discover artists from {target} different parts of the world",
+        "five_saves": "Save {target} songs you discovered",
+        "two_shares": "Share {target} songs with someone",
+        "five_full_listens": "Hear {target} fresh discoveries all the way through",
+        "small_artists": "Find {target} artists with at most 50 followers",
+        "five_days": "Discover something new on {target} days this week"
+      }
+    },
+    "seasons": {
+      "title": "Your seasons",
+      "name": "Season {quarter} · {year}",
+      "place": "#{rank} of {participants} · {points} pts",
+      "hint": "A season is a quarter. Your place counts every discoverer, including those who stay out of the public ranking — only you see it."
+    }
   },
   "Rankings": {
     "title": "Rankings",
@@ -1223,7 +1551,9 @@
     "periods": {
       "week": "This week",
       "month": "This month",
-      "all": "All time"
+      "all": "All time",
+      "season": "Season",
+      "last_season": "Last season"
     },
     "scope": "Where",
     "global": "Worldwide",
@@ -1245,7 +1575,9 @@
     "empty": "Nobody here yet this period. Be the first.",
     "discoveries": "{count, plural, one {# discovery} other {# discoveries}}",
     "points": "{points} pts",
-    "fair": "Weekly rankings reset every Monday (UTC). Shown: listeners with a profile name who did not opt out."
+    "fair": "Weekly rankings reset every Monday (UTC). Shown: listeners with a profile name who did not opt out.",
+    "seasonName": "Season {quarter} · {year}",
+    "seasonEnds": "{season} ends on {date}. That is when your final place is recorded."
   },
   "Notices": {
     "points": "+{points}",
@@ -1268,7 +1600,8 @@
     },
     "streak": "{days} day discovery streak",
     "roll": "You're on a roll! {count} discoveries today",
-    "achievement": "Achievement unlocked: {name}"
+    "achievement": "Achievement unlocked: {name}",
+    "challenge": "Challenge complete: {name}"
   },
   "Compare": {
     "title": "You vs {name}",

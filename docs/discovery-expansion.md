@@ -68,16 +68,17 @@ genre name columns. None of it is removed; it is generalized.
   ✅ regional/global rankings, ✅ Weekly Recap with percentile, ✅ shareable stats card (vertical
   1080×1920 + square), ✅ artist country/genres/languages/links + similar artists + "Discover this
   artist", ✅ reports (song/artist/user) into the staff area.
-- Improved recommendations: co-listening (item-item) instead of co-follow only; per-user weight
-  tuning from discovery success (save/follow of a previously unknown artist).
+- ✅ Improved recommendations: co-listening (similar listeners) next to co-follow; ✅ per-listener
+  weight tuning from discovery success (`my_feed_outcomes` + `tuneWeights`).
 - QR code on share cards, artist-chosen preview editing UI in the release editor (the column
   exists), upcoming events on artist pages (needs M8 events).
 
 ### P2 — advanced
 
-Friends comparison (needs user follows + visibility checks), learned recommendation model and
-audio embeddings, automatic "best moment" detection in the worker (energy/novelty curve) and
-waveform, seasonal rankings and challenges, creator tools and promotional clips (video render of
+~~Friends comparison~~ (done), learned recommendation model and audio embeddings, ~~automatic
+"best moment" detection in the worker (energy/novelty curve) and waveform~~ (done 2026-10-08,
+docs/audio.md §2.6), ~~seasonal rankings and
+challenges~~ (done 2026-10-08), creator tools and promotional clips (video render of
 the share card + preview audio), bot detection beyond rate rules (timing entropy, device
 fingerprints — only with legal review), personalized discovery campaigns.
 
@@ -150,11 +151,12 @@ Open Graph and story/square cards.
 Known gaps / next:
 
 - Guidon tasks for M13 must be created from §3 (no Guidon access from the implementation session).
+- Previews start at the artist's soundcheck, else the analysed best moment (audio.md §2.6).
 - Previews use AAC only (as the delivery tiers do); a browser without AAC shows "can't play the
   preview" — a FLAC/Opus preview variant would need a worker change.
-- Per-listener weight tuning (from discovery success) is P1.
-- `discover_candidates` aggregates 30 days of events per request — fine for the beta catalog; a
-  materialized view refreshed every few minutes is the step before public launch.
+- ~~Per-listener weight tuning~~ — done 2026-10-08, see below.
+- Done 2026-10-08: feed aggregates are materialized views refreshed every 5 minutes by pg_cron
+  (`private.track_stats`, `private.track_country_listeners`).
 
 ### Update 2026-10-08
 
@@ -163,3 +165,43 @@ also after publishing); similar-listener signal from shared listening (`my_taste
 "+2" notice for saves; QR codes on story/square/weekly cards; following people (`user_follows`,
 public counts, private lists) and **You vs friend** (`compare_with`) — allowed only by the
 compared person's `activity_visibility`: everyone, only people they follow, or nobody.
+
+### Integration with `work` (2026-10-08)
+
+`work` built M7–M11 in parallel (soundchecks, artist graph, events, DSA reports, people follows and
+blocks, payouts base, retention, legal). Where both did the same thing, `work`'s implementation is
+kept and Discover uses it: previews are **soundcheck** listens (`record_listen(..., soundcheck)`),
+reports go through the DSA form (`/report`), follows/blocks/visibility come from M8.2 (compare uses
+`can_view_activity`), "Discover this artist" boosts the artist graph (`related_artists`), the
+artist picks the excerpt with the soundcheck start in the track form (my separate preview editor
+was dropped). The Discover migrations were renumbered after `work`'s (`20261008100000…`).
+Navigation: Discover · Scene · Search · Library · You (Browse is linked from the feed bar).
+
+### Per-listener weight tuning (2026-10-08)
+
+Every feed event already carries the reason code the item was shown for. `my_feed_outcomes()`
+returns, per reason and over the caller's last 60 days, the distinct songs shown, kept (liked,
+saved or artist followed), finished and skipped; pinned items (`shared`, `artist_spotlight`) do
+not count. `tuneWeights()` (`packages/shared/src/discovery/tune.ts`, constants in `TUNING`) maps
+each reason to the feature it stands for, compares its success rate (kept + ½ finished, per song
+shown) with the listener's overall rate, shrinks it toward that rate with 20 pseudo-songs,
+square-roots the lift and clamps it to ×0.75…×1.33. Nothing changes below 40 songs shown or with no
+success at all. Applied in For You and Global only — Nearby/New/Rising are lenses the listener
+chose — and never to the exploration share, which stays the listener's setting.
+
+### Seasons and weekly challenges (2026-10-08)
+
+- **Seasons** are calendar quarters (UTC) — the same for every region, nothing to maintain. Rankings
+  gain "Season" and "Last season"; a daily pg_cron job closes the previous quarter into
+  `season_results`: every participant's final global place, points and percentile (counting also
+  listeners hidden from public rankings — the row is visible only to its owner, on You). A top-10 %
+  finish among at least 10 participants unlocks **Season Star**.
+- **Weekly challenges**: three per UTC week, the same for everyone (a shared topic is what makes
+  them social), picked deterministically from `discovery_challenges` (10 to start: new songs,
+  artists, genres, countries, world regions, saves, shares, full listens, artists with ≤ 50
+  followers, days with a discovery). Progress is counted from the ledger, so only real discoveries
+  count and every anti-abuse rule applies; a reached target pays 20 points (`challenge`, once per
+  challenge and week) through a trigger on `discovery_points`, so listens, saves and shares all
+  complete them. A fresh completion shows a notice; 10 completed unlock **Challenger**.
+- Why not personalized challenge targets: adaptive goals already cover "your pace"; challenges are
+  deliberately shared so friends can compare the same task. Staff tune targets in the table.

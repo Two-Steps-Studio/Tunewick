@@ -4,7 +4,9 @@ import { getFormatter, getTranslations, setRequestLocale } from "next-intl/serve
 import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { countryName, flagEmoji } from "@/lib/intl";
+import { getSoundchecks, listenerEntitlement } from "@/modules/audio";
 import { getDiscover, parseCountry, parseRegion } from "@/modules/discover";
+import { SoundcheckButton } from "@/modules/player";
 import { Artwork, getImageSourcesMany } from "@/modules/images";
 
 const NEW_FOR_DAYS = 14;
@@ -33,6 +35,12 @@ export default async function BrowsePage({ params, searchParams }: PageProps<"/[
   const country = parseCountry(query.country) ?? (parseRegion(query.woj) ? "PL" : null);
   const region = country === "PL" ? parseRegion(query.woj) : null;
   const { releases, artists, countries } = await getDiscover(region, country);
+  const entitlement = await listenerEntitlement();
+  // The artist's soundcheck of each release (M7.4): a few seconds before deciding to listen.
+  const soundchecks = await getSoundchecks(
+    releases.map((r) => ({ id: r.release_id, artistName: r.artist_name })),
+    entitlement,
+  );
   const images = await getImageSourcesMany(
     [...releases.map((r) => r.artwork_image_id), ...artists.map((a) => a.image_id)],
     320,
@@ -142,6 +150,23 @@ export default async function BrowsePage({ params, searchParams }: PageProps<"/[
                 <span className="release-card__reason">
                   {releaseReason(r.publish_at, r.is_debut)}
                 </span>
+                {soundchecks.get(r.release_id) ? (
+                  <SoundcheckButton
+                    {...soundchecks.get(r.release_id)!}
+                    entitlement={entitlement}
+                    label={t("soundcheckLabel", {
+                      title: soundchecks.get(r.release_id)!.track.title,
+                      artist: r.artist_name,
+                    })}
+                  >
+                    <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+                      <path d="M7 4.5v15l12-7.5z" fill="currentColor" />
+                    </svg>
+                    {t("soundcheck", {
+                      seconds: Math.round(soundchecks.get(r.release_id)!.length),
+                    })}
+                  </SoundcheckButton>
+                ) : null}
                 {r.city || r.voivodeship || r.country_code ? (
                   <span className="release-card__place">
                     {place(r.city, r.voivodeship, r.country_code)}

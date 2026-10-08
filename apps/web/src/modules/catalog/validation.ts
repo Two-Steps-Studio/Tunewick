@@ -17,9 +17,10 @@ export type ReleaseErrorCode =
   | "samplesDescriptionRequired"
   | "aiRequired"
   | "termsRequired"
+  | "artistNotFound"
+  | "soundcheckInvalid"
+  | "soundcheckTooLate"
   | "notEditable"
-  | "previewTime"
-  | "previewOutside"
   | "forbidden"
   | "unexpected";
 
@@ -98,12 +99,38 @@ export const trackSchema = z.object({
     .optional()
     .transform((v) => v === "on"),
   aiContent: z.enum(AI_CONTENT),
+  /** Where the 30 s soundcheck starts, "m:ss" (empty: from the beginning). */
+  soundcheckStart: z
+    .string()
+    .optional()
+    .transform((v) => (v ?? "").trim())
+    .pipe(z.string().regex(/^(\d{1,3}:[0-5]\d)?$/, { error: "soundcheckInvalid" }))
+    .transform((v) => {
+      if (v === "") return null;
+      const [minutes, seconds] = v.split(":").map(Number);
+      return (minutes! * 60 + seconds!) * 1000;
+    }),
 });
+
+/** "m:ss" for a soundcheck start in milliseconds. */
+export function formatSoundcheckStart(ms: number | null) {
+  if (ms === null) return "";
+  const seconds = Math.round(ms / 1000);
+  return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
+}
 
 export const creditSchema = z.object({
   name: z.string().trim().min(1, { error: "nameRequired" }).max(120, { error: "nameRequired" }),
   role: z.enum(CREDIT_ROLES),
   detail: optional(z.string().max(120, { error: "lineTooLong" })),
+  /** Optional link to a Tunewick artist profile (its address, e.g. "halda-kolektyw"). */
+  artistSlug: optional(
+    z
+      .string()
+      .trim()
+      .toLowerCase()
+      .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, { error: "artistNotFound" }),
+  ),
 });
 
 export const genresSchema = z
@@ -161,45 +188,8 @@ export function releaseDbError(error: { code?: string; message?: string }): Rele
   if (error.code === "23514" && message.includes("genres")) return { error: "tooManyGenres" };
   if (error.code === "23514" && message.includes("isrc"))
     return { fieldErrors: { isrc: "isrcInvalid" } };
+  if (error.code === "23514" && message.includes("soundcheck"))
+    return { fieldErrors: { soundcheckStart: "soundcheckTooLate" } };
   if (error.code === "42501") return { error: "forbidden" };
   return { error: "unexpected" };
 }
-
-/** "1:05" or "65" → 65 000 ms; null for anything else. */
-export function parseClock(value: string): number | null {
-  const match = value.trim().match(/^(?:(\d{1,3}):)?(\d{1,2})$/);
-  if (!match) return null;
-  const minutes = Number(match[1] ?? 0);
-  const seconds = Number(match[2]);
-  if (match[1] !== undefined && seconds > 59) return null;
-  return (minutes * 60 + seconds) * 1000;
-}
-
-export function formatClock(ms: number): string {
-  const seconds = Math.round(ms / 1000);
-  return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
-}
-
-export const PREVIEW_LENGTHS = [15, 20, 25, 30] as const;
-
-/** The Discover preview: automatic (empty start) or a start time + 15–30 s inside the track. */
-export const previewSchema = z
-  .object({
-    start: z.string(),
-    length: z.coerce.number().refine((v) => (PREVIEW_LENGTHS as readonly number[]).includes(v)),
-    durationMs: z.number().int().positive().nullable(),
-  })
-  .transform((v, ctx) => {
-    if (v.start.trim() === "") return { startMs: null, lengthMs: null };
-    const startMs = parseClock(v.start);
-    if (startMs === null) {
-      ctx.addIssue({ code: "custom", path: ["start"], message: "previewTime" });
-      return z.NEVER;
-    }
-    const lengthMs = v.length * 1000;
-    if (v.durationMs !== null && startMs + lengthMs > v.durationMs) {
-      ctx.addIssue({ code: "custom", path: ["start"], message: "previewOutside" });
-      return z.NEVER;
-    }
-    return { startMs, lengthMs };
-  });

@@ -3,7 +3,7 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set search_path = public, extensions;
 
-select plan(55);
+select plan(51);
 
 insert into auth.users (id, email, raw_app_meta_data, aud, role)
 values
@@ -61,18 +61,6 @@ update tracks set public_code = 'aaaaaaaaaa' where id = (select id from ids wher
 select is((select public_code from tracks where id = (select id from ids where name = 't1')), (select public_code from code_before),
   'the public code never changes (shared links keep working)');
 
--- The artist picks the preview, also after publishing; only inside the track and 15–30 s.
-set local role authenticated;
-set local request.jwt.claims = '{"sub": "00000000-0000-0000-0000-0000000000a1", "role": "authenticated"}';
-select lives_ok($$select set_track_preview((select id from ids where name = 't2'), 30000, 25000)$$,
-  'owners set a preview on a published track');
-select throws_ok($$select set_track_preview((select id from ids where name = 't2'), 170000, 20000)$$,
-  '22023', null, 'the preview stays inside the track');
-select throws_ok($$select set_track_preview((select id from ids where name = 't2'), 0, 5000)$$,
-  '22023', null, 'and lasts 15–30 s');
-set local request.jwt.claims = '{"sub": "00000000-0000-0000-0000-0000000000a2", "role": "authenticated"}';
-select throws_ok($$select set_track_preview((select id from ids where name = 't2'), 0, 20000)$$,
-  '42501', null, 'listeners cannot');
 set local role postgres;
 update tracks set soundcheck_start_ms = 60000, soundcheck_duration_ms = 20000 where id = (select id from ids where name = 't2');
 
@@ -92,28 +80,26 @@ select is((select count(*)::int from track_previews(array[(select id from ids wh
 select is((select array_agg(title) from discover_releases(country => 'DE')), array['Erste'], 'browse filters by country');
 select is((select array_agg(country_code order by country_code) from browse_countries()), array['DE', 'PL'],
   'browse lists countries that have public music');
-select is((select count(*)::int from similar_artists((select id from ids where name = 'pl'))), 0,
-  'no similarity without shared genres or listeners');
 
 -- Listening and awards.
 set local role authenticated;
 set local request.jwt.claims = '{"sub": "00000000-0000-0000-0000-0000000000a2", "role": "authenticated"}';
-select is((record_listen((select id from ids where name = 't1'), now() - interval '1 minute', 8000, false, null, 'preview')) -> 'awards',
+select is((record_listen((select id from ids where name = 't1'), now() - interval '1 minute', 8000, false, null, true)) -> 'awards',
   '[]'::jsonb, 'a skip (8 s) discovers nothing');
 select is((select sum((a ->> 'points')::int)::int from jsonb_array_elements(
-    record_listen((select id from ids where name = 't1'), now() - interval '50 seconds', 20000, true, null, 'preview') -> 'awards') a),
+    record_listen((select id from ids where name = 't1'), now() - interval '50 seconds', 20000, true, null, true) -> 'awards') a),
   14, 'a whole preview of new music: new song 1 + new artist 3 + new genre 5 + new country 5');
-select is((record_listen((select id from ids where name = 't1'), now() - interval '40 seconds', 25000, false, 'high', 'player')) -> 'awards',
+select is((record_listen((select id from ids where name = 't1'), now() - interval '40 seconds', 25000, false, 'high', false)) -> 'awards',
   '[]'::jsonb, 'replaying a discovered song earns nothing');
 select is((select sum((a ->> 'points')::int)::int from jsonb_array_elements(
-    record_listen((select id from ids where name = 't3'), now() - interval '30 seconds', 16000, false, null, 'preview') -> 'awards') a),
+    record_listen((select id from ids where name = 't3'), now() - interval '30 seconds', 16000, false, null, true) -> 'awards') a),
   14, 'a German techno artist is a new artist, genre and country (genre from the artist when the release has none)');
-select is((record_listen((select id from ids where name = 't1'), now() - interval '20 seconds', 180000, true, 'high', 'player')) -> 'awards',
+select is((record_listen((select id from ids where name = 't1'), now() - interval '20 seconds', 180000, true, 'high', false)) -> 'awards',
   '[{"kind": "full_listen", "points": 1}]'::jsonb, 'a full listen of recently discovered music');
-select is((record_listen((select id from ids where name = 't1'), now() - interval '10 seconds', 180000, true, 'high', 'player')) -> 'awards',
+select is((record_listen((select id from ids where name = 't1'), now() - interval '10 seconds', 180000, true, 'high', false)) -> 'awards',
   '[]'::jsonb, 'looping it pays once a day');
-select throws_ok($$select record_listen((select id from ids where name = 't1'), now(), 30000, false, null, 'radio')$$,
-  '22023', null, 'unknown contexts are refused');
+select throws_ok($$select record_listen((select id from ids where name = 't1'), now(), 40000, false, null, true)$$,
+  '22023', null, 'a preview (soundcheck) lasts at most 35 s');
 select throws_ok($$insert into discovery_points (user_id, kind, award_key, points) values ('00000000-0000-0000-0000-0000000000a2', 'share', 'x', 100)$$,
   '42501', null, 'nobody writes points directly');
 
@@ -124,13 +110,25 @@ select is((select sum(points)::int from discovery_points where kind = 'save'), 2
 select is(record_share((select id from ids where name = 't1'), 'copy'), 3, 'sharing pays');
 select is(record_share((select id from ids where name = 't1'), 'copy'), 0, 'sharing the same song again today does not');
 
+-- The feed reads cached aggregates: zero until the scheduled refresh, real counts after it.
+set local role anon;
+set local request.jwt.claims = '{"role": "anon"}';
+select is((select listeners_30d from discover_candidates() where title = 'Jeden'), 0, 'candidates use the cache (not yet refreshed)');
+set local role postgres;
+select lives_ok($$select private.refresh_discovery_stats()$$, 'the cache refreshes without blocking readers');
+set local role anon;
+set local request.jwt.claims = '{"role": "anon"}';
+select is((select listeners_30d from discover_candidates() where title = 'Jeden'), 1, 'after the refresh the listener counts');
+set local role authenticated;
+set local request.jwt.claims = '{"sub": "00000000-0000-0000-0000-0000000000a2", "role": "authenticated"}';
+
 -- Caps: a rule at its daily cap still records the discovery, with 0 points.
 set local role postgres;
 update discovery_point_rules set daily_cap = 2 where kind = 'new_song';
 set local role authenticated;
 set local request.jwt.claims = '{"sub": "00000000-0000-0000-0000-0000000000a2", "role": "authenticated"}';
 select is((select (a ->> 'points')::int from jsonb_array_elements(
-    record_listen((select id from ids where name = 't2'), now() - interval '5 seconds', 30000, false, null, 'player') -> 'awards') a
+    record_listen((select id from ids where name = 't2'), now() - interval '5 seconds', 30000, false, null, false) -> 'awards') a
   where a ->> 'kind' = 'new_song'), 0, 'over the daily cap a discovery counts but earns 0');
 
 select is((select array[unique_songs, unique_artists, new_songs, new_artists, new_countries, saves]
@@ -138,7 +136,7 @@ select is((select array[unique_songs, unique_artists, new_songs, new_artists, ne
 select is((select new_songs from my_discovery_stats('week')), 3, 'stats for this week');
 select is((select plays from my_discovery_stats()), 3, 'plays are full-player listens of ≥ 30 s (previews are not plays)');
 select is((select array_agg(t.title) from my_recent_tracks() r join tracks t on t.id = r.track_id), array['Dwa', 'Jeden'],
-  'recently played lists player listens only');
+  'recently played leaves out previews and soundchecks');
 select is((my_progress() ->> 'current_streak')::int, 1, 'a day with a discovery starts a streak');
 select is((my_progress() ->> 'today_artists')::int, 2, 'goal progress: artists discovered today');
 select is((my_progress() ->> 'points_total')::int, 14 + 14 + 1 + 2 + 3, 'points add up');
@@ -175,10 +173,6 @@ select throws_ok($$update listener_preferences set time_zone = 'Mars/Olympus'$$,
 set local request.jwt.claims = '{"sub": "00000000-0000-0000-0000-0000000000a3", "role": "authenticated"}';
 select is((select count(*)::int from discovery_points), 0, 'points are private');
 select is((select new_songs from my_discovery_stats()), 0, 'and so are stats');
-select lives_ok($$insert into reports (subject_type, subject_id, category, details) values ('track', (select id from ids where name = 't1'), 'copyright', 'My song')$$,
-  'listeners report songs');
-set local request.jwt.claims = '{"sub": "00000000-0000-0000-0000-0000000000a2", "role": "authenticated"}';
-select is((select count(*)::int from reports), 0, 'reports are visible to their author and staff only');
 
 set local role anon;
 set local request.jwt.claims = '{"role": "anon"}';

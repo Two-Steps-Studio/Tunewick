@@ -1,5 +1,5 @@
 import { expect, type Page, test } from "@playwright/test";
-import { createConfirmedUser } from "./helpers";
+import { createConfirmedUser, enableMfa, grantRole } from "./helpers";
 
 function unique(prefix: string) {
   return `${prefix}-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 5)}`;
@@ -76,6 +76,45 @@ test.describe("artist onboarding", () => {
       .fill("https://zespol-cma.example\nhttps://bandcamp.example/cma");
     await page.getByRole("button", { name: "Wyślij prośbę o weryfikację" }).click();
     await expect(page.getByRole("status").filter({ hasText: "Weryfikacja w toku" })).toBeVisible();
+
+    // A moderator (role + MFA) rejects with a reason, the artist sees it and asks again,
+    // then the moderator verifies — the badge comes only from that decision.
+    const staffContext = await browser.newContext({ locale: "pl-PL" });
+    const moderator = await staffContext.newPage();
+    grantRole(await createConfirmedUser(moderator, "verify-moderator"), "moderator");
+    await moderator.goto("/moderacja");
+    await enableMfa(moderator);
+    await moderator.goto("/moderacja");
+    const request = moderator.locator(".promo-codes__item", {
+      has: moderator.locator(`a[href="/artysci/${slug}"]`),
+    });
+    await expect(request.getByRole("link", { name: "https://bandcamp.example/cma" })).toBeVisible();
+    await request.getByRole("button", { name: "Odrzuć: Zespół Ćma" }).click();
+    await expect(request.getByRole("alert")).toHaveText(
+      "Napisz artyście, dlaczego wniosek jest odrzucony (co najmniej 10 znaków).",
+    );
+    await request
+      .getByLabel("Uzasadnienie decyzji dla: Zespół Ćma")
+      .fill("Brak linku do nagrań zespołu.");
+    await request.getByRole("button", { name: "Odrzuć: Zespół Ćma" }).click();
+    await expect(request).toHaveCount(0);
+
+    await page.reload();
+    await expect(
+      page.getByText(/^Wniosek o weryfikację odrzucony: Brak linku do nagrań zespołu\./),
+    ).toBeVisible();
+    await page
+      .getByLabel("Linki potwierdzające (jeden na linię)")
+      .fill("https://bandcamp.example/cma/album");
+    await page.getByRole("button", { name: "Wyślij prośbę o weryfikację" }).click();
+    await expect(page.getByRole("status").filter({ hasText: "Weryfikacja w toku" })).toBeVisible();
+
+    await moderator.reload();
+    await request.getByRole("button", { name: "Zweryfikuj: Zespół Ćma" }).click();
+    await expect(request).toHaveCount(0);
+    await page.goto(`/artysci/${slug}`);
+    await expect(page.getByText("Zweryfikowany artysta")).toBeVisible();
+    await staffContext.close();
   });
 
   test("outsiders cannot open the management page", async ({ page, browser }) => {
@@ -107,11 +146,12 @@ test("an artist from anywhere in Poland sets the city and voivodeship", async ({
   await page.getByRole("button", { name: "Załóż profil" }).click();
   await expect(page).toHaveURL(new RegExp(`/artysci/${slug}/zarzadzaj$`));
 
-  await page.getByLabel("Miasto lub miejscowość").fill("Suwałki");
-  await page.getByLabel("Województwo").selectOption("podlaskie");
-  await page.getByRole("button", { name: "Zapisz" }).first().click();
-  await expect(page.getByText("Zapisano.")).toBeVisible();
-  await expect(page.getByLabel("Województwo")).toHaveValue("podlaskie");
+  const info = page.getByRole("region", { name: "Informacje" });
+  await info.getByLabel("Miasto lub miejscowość").fill("Suwałki");
+  await info.getByLabel("Województwo").selectOption("podlaskie");
+  await info.getByRole("button", { name: "Zapisz" }).click();
+  await expect(info.getByText("Zapisano.")).toBeVisible();
+  await expect(info.getByLabel("Województwo")).toHaveValue("podlaskie");
 
   await page.goto(`/artysci/${slug}`);
   await expect(page.getByText("Suwałki · woj. podlaskie")).toBeVisible();

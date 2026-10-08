@@ -203,7 +203,7 @@ export function DiscoverFeed({ initial }: { initial: FeedPage }) {
             msPlayed: listen.msPlayed,
             completed: listen.completed,
             tier: null,
-            context: "preview",
+            soundcheck: true,
           }),
           keepalive: true,
         })
@@ -328,6 +328,9 @@ export function DiscoverFeed({ initial }: { initial: FeedPage }) {
             {t(`modes.${m}`)}
           </button>
         ))}
+        <Link href="/browse" className="feed-modes__chip feed-modes__chip--link">
+          {t("browse")}
+        </Link>
         <Link href="/welcome" className="feed-modes__chip feed-modes__chip--settings">
           {t("preferences")}
         </Link>

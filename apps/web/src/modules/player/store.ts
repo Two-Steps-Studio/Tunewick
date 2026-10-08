@@ -4,6 +4,7 @@ import { useSyncExternalStore } from "react";
 import { IDLE_STATE, PlayerEngine } from "./engine/engine";
 import { type ListenAwards, reportAwards } from "@/modules/notices";
 import { ListeningTracker } from "./listening";
+import { browserFamily, PlaybackMetrics } from "./metrics";
 import type { PlayerState } from "./types";
 
 let engine: PlayerEngine | null = null;
@@ -26,7 +27,8 @@ let reporting = false;
 
 /**
  * Sends listens of this tab to the server (signed-in listeners only — the server checks again)
- * and shows what they earned. keepalive lets the last listen leave even while the page is closing.
+ * and shows what they earned, plus playback telemetry. keepalive lets the last listen leave even
+ * while the page is closing.
  */
 export function startListeningReports() {
   if (reporting || typeof window === "undefined") return;
@@ -42,7 +44,20 @@ export function startListeningReports() {
       .then(reportAwards)
       .catch(() => undefined);
   });
+  const browser = browserFamily(navigator.userAgent);
+  const metrics = new PlaybackMetrics((metric) => {
+    void fetch("/api/playback", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...metric, browser }),
+      keepalive: true,
+    }).catch(() => undefined);
+  });
   const player = getPlayer();
-  player.subscribe(() => tracker.update(player.getState()));
+  player.subscribe(() => {
+    const state = player.getState();
+    tracker.update(state);
+    metrics.update(state);
+  });
   window.addEventListener("pagehide", () => tracker.flush());
 }

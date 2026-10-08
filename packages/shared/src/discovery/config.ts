@@ -83,6 +83,21 @@ export const FEED = {
   pageSize: 8,
 } as const;
 
+/**
+ * Per-listener weight tuning (tuneWeights): how strongly each feature counts follows how well the
+ * recommendations it explains worked for this listener in the last 60 days.
+ */
+export const TUNING = {
+  /** Songs shown in total before anything is tuned. */
+  minShown: 40,
+  /** Pseudo-songs at the listener's overall rate added to every reason (shrinkage). */
+  prior: 20,
+  /** A finished preview counts as this much of a like/save/follow. */
+  completeWeight: 0.5,
+  minFactor: 0.75,
+  maxFactor: 1.33,
+} as const;
+
 /** Preview defaults when the artist did not choose a soundcheck. */
 export const PREVIEW = {
   lengthMs: 30_000,

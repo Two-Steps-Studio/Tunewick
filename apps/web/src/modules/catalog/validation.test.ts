@@ -1,12 +1,11 @@
 import { describe, expect, it } from "vitest";
 import {
   creditSchema,
-  parseClock,
-  previewSchema,
   rightsSchema,
   genresSchema,
   releaseDbError,
   releaseDetailsSchema,
+  formatSoundcheckStart,
   trackSchema,
 } from "./validation";
 
@@ -58,10 +57,15 @@ describe("trackSchema", () => {
 
 describe("creditSchema and genresSchema", () => {
   it("validates credits and limits genres to three", () => {
-    expect(creditSchema.safeParse({ name: "", role: "producer", detail: "" }).success).toBe(false);
-    expect(creditSchema.parse({ name: "Ola", role: "performer", detail: "bas" }).detail).toBe(
-      "bas",
+    const credit = { name: "Ola", role: "performer", detail: "bas", artistSlug: "" };
+    expect(creditSchema.safeParse({ ...credit, name: "" }).success).toBe(false);
+    expect(creditSchema.parse(credit).detail).toBe("bas");
+    expect(creditSchema.parse(credit).artistSlug).toBeNull();
+    // A linked profile address is normalized and must look like an address.
+    expect(creditSchema.parse({ ...credit, artistSlug: " Halda-Kolektyw " }).artistSlug).toBe(
+      "halda-kolektyw",
     );
+    expect(creditSchema.safeParse({ ...credit, artistSlug: "nie adres!" }).success).toBe(false);
     expect(genresSchema.safeParse(["1", "2", "3"]).success).toBe(true);
     expect(genresSchema.safeParse(["1", "2", "3", "4"]).success).toBe(false);
   });
@@ -107,24 +111,16 @@ describe("rightsSchema", () => {
   });
 });
 
-describe("previewSchema", () => {
-  it("reads m:ss or seconds and keeps the preview inside the track", () => {
-    expect(parseClock("1:05")).toBe(65_000);
-    expect(parseClock("45")).toBe(45_000);
-    expect(parseClock("1:75")).toBeNull();
-    expect(previewSchema.parse({ start: "1:00", length: "20", durationMs: 180_000 })).toEqual({
-      startMs: 60_000,
-      lengthMs: 20_000,
-    });
-    expect(previewSchema.parse({ start: "", length: "30", durationMs: null })).toEqual({
-      startMs: null,
-      lengthMs: null,
-    });
-    expect(
-      previewSchema.safeParse({ start: "2:50", length: "20", durationMs: 180_000 }).success,
-    ).toBe(false);
-    expect(previewSchema.safeParse({ start: "0:10", length: "12", durationMs: null }).success).toBe(
-      false,
-    );
+describe("soundcheck start", () => {
+  const track = { title: "Utwór", isrc: "", aiContent: "human" };
+  it("reads m:ss into milliseconds and empty as from the beginning", () => {
+    expect(trackSchema.parse({ ...track, soundcheckStart: "1:05" }).soundcheckStart).toBe(65000);
+    expect(trackSchema.parse({ ...track, soundcheckStart: " " }).soundcheckStart).toBeNull();
+    expect(formatSoundcheckStart(65000)).toBe("1:05");
+    expect(formatSoundcheckStart(null)).toBe("");
+  });
+  it("refuses other formats", () => {
+    expect(trackSchema.safeParse({ ...track, soundcheckStart: "65" }).success).toBe(false);
+    expect(trackSchema.safeParse({ ...track, soundcheckStart: "1:75" }).success).toBe(false);
   });
 });

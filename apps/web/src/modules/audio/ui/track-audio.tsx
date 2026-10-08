@@ -47,6 +47,44 @@ function sourceName(source: NonNullable<TrackAudio["source"]>) {
   return `${name.toUpperCase()} ${source.bits}/${formatSampleRate(source.sampleRate)}`;
 }
 
+const PREVIEW_MS = 30_000;
+
+/**
+ * The track at a glance with the suggested preview highlighted. Decorative: the same facts are in
+ * the text next to it.
+ */
+function Waveform({
+  peaks,
+  durationMs,
+  startMs,
+}: {
+  peaks: number[];
+  durationMs: number;
+  startMs: number | null;
+}) {
+  const from = startMs === null ? -1 : (startMs / durationMs) * peaks.length;
+  const to = startMs === null ? -1 : ((startMs + PREVIEW_MS) / durationMs) * peaks.length;
+  return (
+    <svg
+      className="track-audio__wave"
+      viewBox={`0 0 ${peaks.length} 100`}
+      preserveAspectRatio="none"
+      aria-hidden="true"
+    >
+      {peaks.map((peak, i) => (
+        <rect
+          key={i}
+          x={i + 0.15}
+          width={0.7}
+          y={50 - Math.max(peak, 2) / 2}
+          height={Math.max(peak, 2)}
+          className={i >= from && i < to ? "is-preview" : undefined}
+        />
+      ))}
+    </svg>
+  );
+}
+
 /** What the worker found, in plain words: source format, length, loudness, versions, caveats. */
 export function AcceptedDetails({ audio }: { audio: TrackAudio }) {
   const t = useTranslations("Audio");
@@ -73,6 +111,19 @@ export function AcceptedDetails({ audio }: { audio: TrackAudio }) {
         </p>
       ) : null}
       {audio.bitPadded ? <p className="track-audio__note">{t("note.padded")}</p> : null}
+      {audio.waveform.length && audio.durationMs ? (
+        <Waveform
+          peaks={audio.waveform}
+          durationMs={audio.durationMs}
+          startMs={audio.bestMomentMs}
+        />
+      ) : null}
+      {/* A short track previews from the start: nothing to suggest. */}
+      {audio.bestMomentMs ? (
+        <p className="field__hint">
+          {t("bestMoment", { start: formatDuration(audio.bestMomentMs) })}
+        </p>
+      ) : null}
     </>
   );
 }

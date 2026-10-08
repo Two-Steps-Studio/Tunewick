@@ -88,6 +88,28 @@ plain words (source format, length, loudness, versions, caveats such as a suspec
 and lets the team listen to the processed versions through the player. Locally:
 `pnpm worker:start` (Docker); production: Fly.io (docs/deployment.md §3b).
 
+### 2.6 Best moment and waveform (report v2, `moments.py`)
+
+The same decoding pass keeps, per second of the downmixed track, its RMS level and its spectral
+shape in 16 log-spaced bands (60 Hz–16 kHz), and a 10 Hz peak envelope.
+
+- **Novelty** at second *t*: the change between the 4 s before and the 4 s after — the band shape
+  (each side centred, so loudness alone does not count) plus any rise in level. Peaks mark
+  section boundaries: a chorus or a drop coming in.
+- **Best moment**: the start of the 30 s window with the highest mean loudness (normalized between
+  the track's 10th and 95th percentile) + 0.6 × novelty at its start − the share of silent seconds
+  (< −50 dBFS); windows starting in the first 10 % or after 75 % of the track lose 0.3; the window
+  never touches the last 3 s. If no strong boundary is at the chosen start, it moves to one within
+  3 s. Tracks under 35 s preview from the start. Whole seconds; `method: energy_novelty_v1`.
+- **Waveform**: 200 peaks, 0–100 relative to the loudest moment (short tracks repeat points).
+
+Stored in the report as `analysis.best_moment` and `analysis.waveform`;
+`track_audio_uploads.best_moment_ms` is generated from it. The artist's soundcheck start always
+wins; otherwise Discover previews and release soundchecks start at the best moment (before v2
+reports: a third in, or 0:00 for soundchecks). The editor draws the waveform with the suggested
+30 s highlighted. Known limits: no beat or key analysis, so a long build-up that is loud but has
+no change can win over a quieter hook; a learned model (P2) would replace this, same report field.
+
 ## 3. Delivery tiers
 
 | Tier | Variant 🔬 | Generated when | Plan |

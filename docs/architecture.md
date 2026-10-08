@@ -223,6 +223,45 @@ preserves relative levels inside a release.
 - Self-hosted, subset fonts.
 - Postgres: indexes defined with each migration; query plans reviewed for discovery/search queries.
 - Budgets: home LCP < 2.5 s on mid-range mobile 4G; time-to-first-audio < 1 s for cached High tier.
+- Measured (M11): signed-in players report time to first audio (loading → playing) and player
+  errors to `private.playback_metrics` — day, tier, strategy, browser family only, no user id;
+  rate-limited per account by a separate hourly counter. `/admin` shows starts, median and p90
+  per tier for the last 7 days and flags a median over 1 s.
+- Query review (M11.5): `scripts/db/query-review.sql` fills the local database with ~10x the
+  closed beta (3 000 artists, 12 000 releases, 60 000 tracks, 400 venues, 4 000 gigs, 20 000
+  listeners, 1M listens) inside a rolled-back transaction and times the hot read paths as an
+  anonymous visitor. Run it after schema changes to discovery, search, graph or Scene.
+
+  | Path | Before | After |
+  | --- | --- | --- |
+  | `search_catalog` (typo, worst case: synthetic titles share trigrams) | 7 191 ms | 99 ms |
+  | `discover_releases` (all of Poland) | 891 ms | 13 ms |
+  | `discover_artists` | 993 ms | 5 ms |
+  | `related_artists`, `upcoming_events`, artist releases and gigs | 1–8 ms | unchanged |
+  | `refresh_artist_graph` (full recompute) | 13 ms | 10 ms |
+
+  Cause: security-invoker functions read every catalog row through RLS, where the release and
+  track policies call `can_view_release()` per row; search filtered with `similarity()`, which no
+  index serves. Catalog-wide read functions are now security definer with explicit public filters
+  (published, `publish_at <= now()`, artist active), and search filters each source by its
+  trigram-indexed expression. Foreign keys read by hot paths or cascades got indexes; audit-only
+  columns (`created_by`, `reviewed_by`, …) stay unindexed on purpose — they are only touched when
+  an account is deleted.
+- Page budget (M11.6): `pnpm --filter @tunewick/web perf:budget` loads key pages from a running
+  production build in Chromium emulating a mid-range phone on 4G (Pixel 7 viewport, 4x CPU
+  slowdown, 9 Mb/s, 150 ms RTT, cold cache) and fails over LCP 2.5 s or 250 kB of compressed JS.
+  First run (local server, so without real network distance to Vercel and Supabase):
+
+  | Page | LCP | JS (compressed) |
+  | --- | --- | --- |
+  | `/` | 840 ms | 166 kB |
+  | `/scena` | 664 ms | 165 kB |
+  | `/szukaj` | 596 ms | 166 kB |
+  | `/logowanie` | 700 ms | 162 kB |
+  | `/biblioteka` | 704 ms | 169 kB |
+
+  Most of the JS is the React/Next runtime and the persistent player shared by every page. Repeat
+  against the production URL after deploy for numbers that include real latency.
 
 ## 12. Cost estimate (order of magnitude, closed beta)
 

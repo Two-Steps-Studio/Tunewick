@@ -13,9 +13,10 @@
   },
   "Nav": {
     "discover": "Odkrywaj",
-    "browse": "Przeglądaj",
+    "scene": "Scena",
     "search": "Szukaj",
     "library": "Biblioteka",
+    "browse": "Przeglądaj",
     "you": "Ty"
   },
   "Player": {
@@ -52,12 +53,18 @@
       "playback_blocked": "Przeglądarka zablokowała odtwarzanie — naciśnij Odtwarzaj.",
       "unplayable": "Ta przeglądarka nie odtwarza żadnej wersji tego utworu.",
       "stream_error": "Połączenie z serwerem audio zostało przerwane."
-    }
+    },
+    "soundcheck": "Soundcheck"
   },
   "Scene": {
     "title": "Scena",
     "lead": "Koncerty, kluby i miejsca w Twojej okolicy.",
-    "empty": "Nie ma jeszcze wydarzeń. Pokażemy tylko prawdziwe wydarzenia dodane przez artystów i miejsca."
+    "empty": "Nie ma jeszcze wydarzeń. Pokażemy tylko prawdziwe wydarzenia dodane przez artystów i miejsca.",
+    "leadEvents": "Prawdziwe koncerty małych, niezależnych artystów z całej Polski — dodane przez nich i sprawdzone przez moderatorów.",
+    "regionLabel": "Region",
+    "allPoland": "Cała Polska",
+    "upcoming": "Najbliższe koncerty",
+    "emptyRegion": "W województwie {region} nie ma jeszcze zapowiedzianych koncertów."
   },
   "Search": {
     "title": "Szukaj",
@@ -107,6 +114,8 @@
       "clearYes": "Tak, wyczyść",
       "clearNo": "Anuluj"
     },
+    "gigs": "Byłem przy tym",
+    "gigsLead": "Twoja historia koncertów. Widzisz ją tylko Ty.",
     "saved": {
       "title": "Zapisane z Odkrywaj",
       "lead": "Utwory zapisane podczas odkrywania — wróć do nich, kiedy chcesz.",
@@ -153,7 +162,8 @@
       "lead": "Odkrywaj niezależną muzykę i lokalne sceny.",
       "submit": "Załóż konto",
       "haveAccount": "Masz już konto?",
-      "toLogin": "Zaloguj się"
+      "toLogin": "Zaloguj się",
+      "legal": "Zakładając konto, akceptujesz <terms>Regulamin</terms>. Jak przetwarzamy dane, opisuje <privacy>Polityka prywatności</privacy>."
     },
     "reset": {
       "title": "Nie pamiętasz hasła?",
@@ -205,12 +215,12 @@
       "displayName": "Nazwa wyświetlana",
       "bio": "O mnie",
       "locale": "Język serwisu",
-      "visibility": "Kto widzi Twoją aktywność słuchania"
+      "visibility": "Kto widzi Twoją aktywność"
     },
     "hints": {
       "handle": "Małe litery, cyfry i myślniki, 2–40 znaków. Adres profilu: tunewick.com/profil/nazwa",
       "bio": "Do 500 znaków.",
-      "visibility": "Kto może porównywać swoje odkrycia z Twoimi: wszyscy, tylko osoby, które obserwujesz, albo tylko Ty."
+      "visibility": "Kto widzi na Twoim profilu oznaczone koncerty („Byłem przy tym”) i publiczne playlisty. Decyduje też, kto może porównywać swoje odkrycia z Twoimi."
     },
     "locales": {
       "pl": "Polski",
@@ -218,7 +228,7 @@
     },
     "visibility": {
       "public": "Wszyscy",
-      "followers": "Osoby, które obserwuję",
+      "followers": "Obserwujący",
       "private": "Tylko ja"
     },
     "submit": "Zapisz zmiany",
@@ -237,13 +247,6 @@
   "Profile": {
     "memberSince": "Na Tunewick od {date}",
     "empty": "Ten profil nie ma jeszcze opisu.",
-    "follow": "Obserwuj: {name}",
-    "unfollow": "Przestań obserwować: {name}",
-    "followShort": "Obserwuj",
-    "following": "Obserwujesz",
-    "failed": "Nie udało się zapisać. Spróbuj ponownie.",
-    "followers": "{count, plural, =0 {Nikt jeszcze nie obserwuje} one {# obserwujący} few {# obserwujących} many {# obserwujących} other {# obserwującego}}",
-    "followingCount": "obserwuje: {count}",
     "compare": "Porównaj swoje odkrycia z: {name}"
   },
   "Security": {
@@ -334,16 +337,12 @@
       "noBio": "Ten artysta nie dodał jeszcze opisu.",
       "noReleases": "Brak opublikowanych wydawnictw.",
       "followers": "{count, plural, =0 {Nikt jeszcze nie obserwuje} one {# osoba obserwuje} few {# osoby obserwują} many {# osób obserwuje} other {# osoby obserwuje}}",
+      "discography": "Dyskografia",
       "languages": "Śpiewa po: {languages}",
       "discover": "Odkrywaj tego artystę",
       "popular": "Popularne utwory",
       "listeners": "{count, plural, one {# słuchacz} few {# słuchaczy} many {# słuchaczy} other {# słuchacza}} w tym miesiącu",
-      "newest": "Wydawnictwa",
-      "links": "Linki",
-      "similar": "Odkryj podobnych artystów",
-      "similarListeners": "{count, plural, one {# wspólny obserwujący} few {# wspólnych obserwujących} many {# wspólnych obserwujących} other {# wspólnego obserwującego}}",
-      "similarCountry": "Też z kraju: {country}",
-      "similarGenres": "Podobne gatunki"
+      "links": "Linki"
     },
     "manage": {
       "title": "Zarządzaj: {name}",
@@ -362,6 +361,7 @@
       "you": "Ty",
       "noName": "Konto bez nazwy profilu",
       "photo": "Zdjęcie artysty",
+      "verificationRejected": "Wniosek o weryfikację odrzucony: {reason} Możesz złożyć nowy z innymi dowodami.",
       "reach": "Skąd jesteś i co tworzysz"
     },
     "errors": {
@@ -386,6 +386,23 @@
       "languagesInvalid": "Użyj kodów języków, np. pl, en, es (do 8).",
       "genresTooMany": "Wybierz do 5 gatunków.",
       "linksInvalid": "Każdy link musi zaczynać się od https:// (do 10)."
+    },
+    "related": {
+      "title": "Powiązani artyści",
+      "collaborated": "Współpraca: „{track}”",
+      "sharedCredit": "{role, select, producer {Ten sam producent} mixing_engineer {Ten sam realizator miksu} mastering_engineer {Ten sam mastering} songwriter {Ten sam autor piosenek} composer {Ten sam kompozytor} lyricist {Ten sam autor tekstów} other {Ten sam twórca}}: {name}",
+      "sameLabel": "Ta sama wytwórnia: {label}",
+      "sharedAudience": "{count, plural, few {# osoby obserwują oboje} many {# osób obserwuje oboje} other {# osoby obserwują oboje}}",
+      "sameCity": "Też z: {city}",
+      "playedTogether": "Grali razem: {event}"
+    },
+    "listening": {
+      "title": "Słuchacze",
+      "lead": "Zamknięte miesiące. Odtworzenie liczy się od 30 sekund; soundchecki się nie liczą.",
+      "empty": "Pierwszy miesiąc zamknie się 2. dnia kolejnego miesiąca.",
+      "month": "Miesiąc",
+      "listeners": "Słuchacze",
+      "plays": "Odtworzenia"
     },
     "links": {
       "website": "Strona",
@@ -450,7 +467,11 @@
       "isrc": "ISRC (opcjonalnie)",
       "creditName": "Imię i nazwisko lub pseudonim",
       "creditRole": "Rola",
-      "creditDetail": "Szczegóły (np. instrument)"
+      "creditDetail": "Szczegóły (np. instrument)",
+      "creditArtist": "Profil w Tunewick (opcjonalnie)",
+      "creditArtistHint": "Adres profilu artysty, np. halda-kolektyw. Połączy utwór z jego profilem i pomoże słuchaczom trafić do powiązanych artystów.",
+      "soundcheckStart": "Początek soundchecku (m:ss)",
+      "soundcheckStartHint": "30-sekundowy fragment, którym utwór przedstawia się w Odkrywaj. Puste = od początku."
     },
     "types": {
       "single": "Singiel",
@@ -509,8 +530,9 @@
       "samplesDescriptionRequired": "Opisz sample i zgody.",
       "aiRequired": "Określ udział AI.",
       "termsRequired": "Aby złożyć oświadczenie, zaakceptuj warunki.",
-      "previewTime": "Wpisz początek jako m:ss, np. 1:05.",
-      "previewOutside": "Fragment musi zmieścić się w utworze (15–30 s)."
+      "artistNotFound": "Nie ma aktywnego profilu artysty o takim adresie.",
+      "soundcheckInvalid": "Wpisz czas jako minuty:sekundy, np. 1:05.",
+      "soundcheckTooLate": "Soundcheck musi zacząć się co najmniej 5 s przed końcem utworu."
     },
     "rights": {
       "title": "Prawa do wydawnictwa",
@@ -549,7 +571,8 @@
         "ai": "AI",
         "yes": "Tak",
         "no": "Nie"
-      }
+      },
+      "readTerms": "Przeczytaj Regulamin dla artystów"
     },
     "readiness": {
       "title": "Gotowość do wysłania",
@@ -577,15 +600,6 @@
         "not_allowed": "Nie możesz wysłać tego wydawnictwa.",
         "failed": "Coś poszło nie tak. Spróbuj ponownie."
       }
-    },
-    "preview": {
-      "title": "Fragment w Odkrywaj",
-      "chosen": "Słuchacze usłyszą {length} s od {start} — wybrane przez Ciebie.",
-      "automatic": "Automatycznie: {length} s od {start}. Wybierz moment, który najlepiej przedstawia utwór.",
-      "start": "Początek (m:ss)",
-      "startHint": "Zostaw puste, aby użyć fragmentu automatycznego.",
-      "length": "Długość",
-      "seconds": "{s} sekund"
     }
   },
   "Audio": {
@@ -636,7 +650,8 @@
       "empty": "Plik nie zawiera dźwięku.",
       "integrity": "Suma kontrolna pliku FLAC nie zgadza się z zawartością — plik jest uszkodzony.",
       "processing_failed": "Nie udało się przetworzyć pliku mimo kilku prób. Prześlij go ponownie albo napisz do nas."
-    }
+    },
+    "bestMoment": "Najlepszy moment według analizy zaczyna się w {start} (zaznaczony na wykresie) — od niego startuje podgląd w Odkrywaj, dopóki nie ustawisz własnego początku soundchecku."
   },
   "Release": {
     "trackCount": "{count, plural, one {# utwór} few {# utwory} many {# utworów} other {# utworu}}",
@@ -652,7 +667,8 @@
       "ai_assisted": "Utworzone z pomocą AI.",
       "ai_generated": "Wygenerowane przez AI."
     },
-    "coverAlt": "Okładka: {title} — {artist}"
+    "coverAlt": "Okładka: {title} — {artist}",
+    "credits": "Twórcy"
   },
   "Moderation": {
     "title": "Moderacja",
@@ -698,19 +714,20 @@
       }
     },
     "cover": "Okładka",
-    "reports": {
-      "title": "Zgłoszenia ({count})",
-      "empty": "Brak otwartych zgłoszeń.",
-      "gone": "(już niedostępne)",
-      "subjects": {
-        "track": "Utwór",
-        "release": "Wydawnictwo",
-        "artist": "Artysta",
-        "user": "Użytkownik"
-      },
-      "actioned": "Podjęto działanie",
-      "dismissed": "Odrzuć",
-      "hint": "Działanie (zdjęcie treści, zawieszenie) wykonuje się na wydawnictwie lub artyście; tu zapisuje się decyzję w dzienniku audytu."
+    "verification": {
+      "title": "Weryfikacja artystów ({count})",
+      "empty": "Nie ma wniosków o weryfikację.",
+      "note": "Uzasadnienie decyzji dla: {artist}",
+      "noteHint": "Przy odrzuceniu wymagane (co najmniej 10 znaków) — artysta zobaczy je w panelu profilu.",
+      "approve": "Zweryfikuj: {artist}",
+      "reject": "Odrzuć: {artist}",
+      "error": {
+        "note_required": "Napisz artyście, dlaczego wniosek jest odrzucony (co najmniej 10 znaków).",
+        "mfa_required": "Ta decyzja wymaga logowania dwuskładnikowego w tej sesji.",
+        "not_allowed": "Nie masz uprawnień do tej decyzji.",
+        "already_decided": "Ten wniosek został już rozpatrzony.",
+        "failed": "Nie udało się zapisać decyzji. Spróbuj ponownie."
+      }
     }
   },
   "Images": {
@@ -773,7 +790,8 @@
       "warminsko_mazurskie": "warmińsko-mazurskie",
       "wielkopolskie": "wielkopolskie",
       "zachodniopomorskie": "zachodniopomorskie"
-    }
+    },
+    "voivodeshipLabel": "Województwo"
   },
   "Plan": {
     "title": "Plan",
@@ -934,6 +952,306 @@
       "failed": "Nie udało się zapisać. Spróbuj ponownie."
     }
   },
+  "Reports": {
+    "link": "Zgłoś naruszenie",
+    "title": "Zgłoś naruszenie",
+    "about": "Zgłaszasz: {subject} „{title}”",
+    "lead": "Zgłoszenie trafi do moderatorów Tunewick. Właściciel treści nie zobaczy, kto zgłosił; zobaczy decyzję i jej uzasadnienie.",
+    "subjects": {
+      "artist": "profil artysty",
+      "release": "wydawnictwo",
+      "playlist": "playlistę",
+      "event": "koncert",
+      "venue": "miejsce",
+      "profile": "profil"
+    },
+    "reasons": {
+      "copyright": "Naruszenie praw autorskich",
+      "illegal": "Treść niezgodna z prawem",
+      "hate": "Mowa nienawiści lub nękanie",
+      "impersonation": "Podszywanie się",
+      "spam": "Spam lub oszustwo",
+      "other": "Inny powód"
+    },
+    "fields": {
+      "reason": "Powód",
+      "details": "Opis",
+      "claimantName": "Imię i nazwisko lub nazwa podmiotu uprawnionego",
+      "claimantEmail": "E-mail do kontaktu",
+      "goodFaith": "Oświadczam w dobrej wierze, że podane informacje są prawdziwe i że mam prawo działać w imieniu właściciela praw."
+    },
+    "hints": {
+      "details": "Co jest nie tak i gdzie (np. który utwór). 10–2000 znaków."
+    },
+    "copyright": {
+      "title": "Zgłoszenie naruszenia praw autorskich",
+      "lead": "Potrzebujemy danych wnioskodawcy, żeby moderator mógł się skontaktować i ocenić zgłoszenie."
+    },
+    "submit": "Wyślij zgłoszenie",
+    "sent": "Dziękujemy. Zgłoszenie trafiło do moderatorów.",
+    "errors": {
+      "details": "Opisz problem (10–2000 znaków).",
+      "copyright": "Przy naruszeniu praw autorskich podaj imię i nazwisko, poprawny e-mail i zaznacz oświadczenie.",
+      "duplicate": "Twoje zgłoszenie tej treści już czeka na decyzję.",
+      "limit": "Wysłano dziś zbyt wiele zgłoszeń. Spróbuj jutro.",
+      "gone": "Tej treści już nie ma publicznie.",
+      "signedOut": "Zaloguj się, aby zgłosić treść.",
+      "failed": "Nie udało się wysłać zgłoszenia. Spróbuj ponownie."
+    },
+    "queue": {
+      "title": "Zgłoszenia ({count})",
+      "empty": "Nie ma otwartych zgłoszeń.",
+      "count": "{count, plural, one {# zgłoszenie} few {# zgłoszenia} many {# zgłoszeń} other {# zgłoszenia}}",
+      "strikes": "{count, plural, one {# uznane naruszenie praw autorskich} few {# uznane naruszenia praw autorskich} many {# uznanych naruszeń praw autorskich} other {# uznanego naruszenia praw autorskich}}",
+      "claimant": "wnioskodawca: {name} <{email}>"
+    },
+    "appeals": {
+      "title": "Odwołania ({count})",
+      "empty": "Nie ma odwołań do rozpatrzenia.",
+      "statement": "Decyzja:",
+      "appeal": "Odwołanie:"
+    },
+    "moderation": {
+      "action": "Decyzja",
+      "actions": {
+        "takedown_release": "Zdjęcie wydawnictwa",
+        "suspend_artist": "Zawieszenie profilu artysty",
+        "hide_playlist": "Ukrycie playlisty",
+        "dismiss": "Oddalenie zgłoszenia",
+        "remove_event": "Usunięcie koncertu ze Sceny",
+        "clear_venue_details": "Usunięcie adresu i strony miejsca",
+        "reset_profile": "Wyczyszczenie nazwy i opisu profilu"
+      },
+      "statement": "Uzasadnienie (zobaczy je właściciel treści)",
+      "statementHint": "Co postanowiono i dlaczego, prostym językiem — co najmniej 20 znaków.",
+      "decide": "Zapisz decyzję",
+      "appealNote": "Uzasadnienie decyzji w sprawie odwołania",
+      "reverse": "Uwzględnij odwołanie (przywróć)",
+      "uphold": "Utrzymaj decyzję",
+      "errors": {
+        "statement": "Uzasadnienie musi mieć co najmniej 20 znaków.",
+        "mismatch": "Ta decyzja nie pasuje do zgłoszonej treści.",
+        "mfa_required": "Ta decyzja wymaga logowania dwuskładnikowego w tej sesji.",
+        "not_allowed": "Nie możesz podjąć tej decyzji (np. odwołanie od własnej decyzji rozpatruje inny moderator).",
+        "decided": "To zostało już rozstrzygnięte.",
+        "failed": "Nie udało się zapisać decyzji. Spróbuj ponownie."
+      }
+    },
+    "decisions": {
+      "title": "Decyzje moderacji",
+      "appealStatus": {
+        "none": "możesz się odwołać",
+        "pending": "odwołanie w toku",
+        "upheld": "odwołanie nieuwzględnione",
+        "reversed": "odwołanie uwzględnione — przywrócono"
+      },
+      "appealDecided": "Rozstrzygnięcie odwołania: {note}",
+      "appeal": "Odwołanie",
+      "appealHint": "Wyjaśnij, dlaczego decyzja jest błędna (np. masz licencję). Odwołanie rozpatrzy inny moderator. 10–4000 znaków.",
+      "sendAppeal": "Wyślij odwołanie",
+      "errors": {
+        "text": "Opisz odwołanie (10–4000 znaków).",
+        "already": "Od tej decyzji już się odwołano albo minął termin.",
+        "not_allowed": "Odwołać się może właściciel lub menedżer profilu.",
+        "failed": "Nie udało się wysłać odwołania. Spróbuj ponownie."
+      }
+    }
+  },
+  "Admin": {
+    "link": "Administracja",
+    "title": "Administracja",
+    "lead": "Role personelu, Premium dla wsparcia, flagi funkcji i dziennik zmian. Każda zmiana trafia do dziennika.",
+    "toModeration": "Moderacja",
+    "toPromo": "Promocje",
+    "staff": "Personel",
+    "roles": {
+      "moderator": "moderator",
+      "admin": "administrator"
+    },
+    "you": "to Ty — swojej roli administratora nie odbierzesz",
+    "revoke": "Odbierz rolę",
+    "revokeLabel": "Odbierz rolę {role}: {who}",
+    "grantRole": "Nadaj rolę",
+    "roleGranted": "Rola nadana. Osoba musi włączyć logowanie dwuskładnikowe, żeby z niej korzystać.",
+    "premium": "Premium dla wsparcia",
+    "premiumLead": "Np. rekompensata za błąd albo tester. Dla kampanii używaj kodów promocyjnych.",
+    "grantPremium": "Przyznaj Premium",
+    "premiumGranted": "Premium przyznane.",
+    "flags": "Flagi funkcji",
+    "on": "włączona",
+    "off": "wyłączona",
+    "turnOn": "Włącz",
+    "turnOff": "Wyłącz",
+    "audit": "Dziennik zmian",
+    "auditFilter": "Rodzaj zmian",
+    "auditAll": "wszystko",
+    "system": "system",
+    "unknownActor": "konto bez nazwy",
+    "fields": {
+      "handle": "Nazwa profilu osoby",
+      "handleHint": "Adres profilu, np. kasia-k (bez @).",
+      "role": "Rola",
+      "days": "Na ile dni",
+      "daysHint": "Puste = na zawsze.",
+      "note": "Notatka (powód)",
+      "noteHint": "Widoczna w dzienniku zmian i jako źródło planu."
+    },
+    "errors": {
+      "notFound": "Nie ma konta z taką nazwą profilu.",
+      "invalid": "Sprawdź pola formularza.",
+      "mfa_required": "To wymaga logowania dwuskładnikowego w tej sesji.",
+      "not_allowed": "Nie masz uprawnień do tej zmiany.",
+      "already_lifetime": "Ta osoba ma już Premium na zawsze.",
+      "failed": "Nie udało się. Spróbuj ponownie."
+    },
+    "playback": "Odtwarzanie (7 dni)",
+    "playbackLead": "Czas do pierwszego dźwięku i błędy odtwarzacza, bez danych osób. Cel: mediana poniżej 1 s dla High.",
+    "playbackEmpty": "Brak danych z ostatnich 7 dni.",
+    "playbackTier": "Jakość",
+    "playbackStarts": "Starty",
+    "playbackP50": "Mediana",
+    "playbackP90": "90%",
+    "playbackErrors": "Błędy",
+    "shares": "Słuchanie: {month}",
+    "sharesLead": "Podstawa przyszłych wypłat user-centric (D2). Odtworzenie liczy się od 30 s, bez soundchecków. Dziś nic z tego nie jest wypłacane.",
+    "sharesEmpty": "Ten miesiąc nie został jeszcze zamknięty albo nikt nie słuchał.",
+    "sharesArtist": "Artysta",
+    "sharesListeners": "Słuchacze",
+    "sharesPlays": "Odtworzenia",
+    "sharesHours": "Godziny"
+  },
+  "Events": {
+    "badge": "Koncert",
+    "cancelled": "Odwołane",
+    "status": {
+      "pending": "czeka na moderację",
+      "published": "opublikowane",
+      "rejected": "odrzucone",
+      "cancelled": "odwołane"
+    },
+    "rejected": "Wydarzenie odrzucone: {reason}",
+    "tickets": "Bilety (strona organizatora)",
+    "lineup": "Kto gra",
+    "soundcheck": "Posłuchaj",
+    "soundcheckLabel": "Posłuchaj fragmentu: {artist} — {title}",
+    "noMusic": "Bez muzyki w Tunewick",
+    "artistUpcoming": "Najbliższe koncerty",
+    "manage": {
+      "title": "Koncerty",
+      "lead": "Dodaj koncert, na którym grasz. Po sprawdzeniu przez moderatora pojawi się na Scenie, na Twoim profilu i w miejscu, gdzie grasz.",
+      "cancel": "Odwołaj: {title}"
+    },
+    "form": {
+      "title": "Nazwa wydarzenia",
+      "startsAt": "Data i godzina",
+      "startsAtHint": "Czas polski.",
+      "venue": "Miejsce",
+      "venueName": "Nazwa klubu lub miejsca",
+      "city": "Miasto koncertu",
+      "address": "Adres (opcjonalnie)",
+      "lineup": "Kto jeszcze gra (opcjonalnie)",
+      "lineupHint": "Adresy profili artystów w Tunewick, oddzielone przecinkami, np. halda-kolektyw, suwalska-fala.",
+      "ticketUrl": "Link do biletów (opcjonalnie)",
+      "description": "Opis (opcjonalnie)",
+      "submit": "Dodaj koncert",
+      "saved": "Dodano. Koncert czeka na sprawdzenie przez moderatora.",
+      "errors": {
+        "title": "Podaj nazwę wydarzenia (2–160 znaków).",
+        "date": "Podaj datę i godzinę — od dziś do dwóch lat naprzód.",
+        "venue": "Podaj nazwę miejsca, miasto i województwo.",
+        "ticket": "Link do biletów musi zaczynać się od https://",
+        "lineup": "Któryś adres profilu nie należy do aktywnego artysty w Tunewick.",
+        "limit": "Za dużo koncertów czeka na moderację. Poczekaj na decyzję.",
+        "forbidden": "Koncerty dodają właściciele i menedżerowie profilu.",
+        "failed": "Nie udało się dodać koncertu. Spróbuj ponownie."
+      }
+    },
+    "review": {
+      "title": "Koncerty do sprawdzenia ({count})",
+      "empty": "Nie ma koncertów do sprawdzenia.",
+      "newVenue": "nowe miejsce",
+      "note": "Uwagi dla artysty: {title}",
+      "publish": "Opublikuj: {title}",
+      "reject": "Odrzuć: {title}",
+      "errors": {
+        "note_required": "Napisz artyście, dlaczego koncert jest odrzucony (co najmniej 10 znaków).",
+        "mfa_required": "Ta decyzja wymaga logowania dwuskładnikowego w tej sesji.",
+        "not_allowed": "Nie masz uprawnień do tej decyzji.",
+        "decided": "Ten koncert został już sprawdzony.",
+        "failed": "Nie udało się zapisać decyzji. Spróbuj ponownie."
+      }
+    },
+    "attended": {
+      "mark": "Byłem przy tym",
+      "marked": "Byłem przy tym ✓",
+      "private": "Widzisz to tylko Ty — to Twoja historia koncertów, nie licznik.",
+      "later": "Od rozpoczęcia koncertu przez 30 dni możesz zaznaczyć „Byłem przy tym”.",
+      "errors": {
+        "not_started": "Koncert jeszcze się nie zaczął.",
+        "too_late": "Minęło ponad 30 dni od koncertu.",
+        "failed": "Nie udało się zapisać. Spróbuj ponownie."
+      }
+    }
+  },
+  "Venues": {
+    "verified": "Miejsce zweryfikowane",
+    "unverified": "Miejsce dodane przez artystę",
+    "website": "Strona miejsca",
+    "upcoming": "Nadchodzące",
+    "noUpcoming": "Na razie nic tu nie zaplanowano.",
+    "past": "Tu grali"
+  },
+  "Privacy": {
+    "title": "Twoje dane",
+    "exportLead": "Pobierz wszystko, co Tunewick o Tobie przechowuje: konto, profil, plan, polubienia, playlisty, historię słuchania i koncertów, zgłoszenia — w jednym pliku JSON.",
+    "export": "Pobierz moje dane",
+    "deleteLead": "Usunięcie konta kasuje profil, ustawienia, polubienia, playlisty, historię i plan. Oświadczenia o prawach do wydanej muzyki zostają jako dowód — bez Twoich danych.",
+    "blocked": "Najpierw dodaj innego właściciela do profili artystów, których jesteś jedynym właścicielem, albo napisz do nas, żeby je usunąć:",
+    "delete": "Usuń konto",
+    "deleteWarning": "Tego nie da się cofnąć. Aby potwierdzić, wpisz adres e-mail konta.",
+    "confirmEmail": "Adres e-mail konta",
+    "deleteForever": "Usuń konto na zawsze",
+    "cancel": "Anuluj",
+    "errors": {
+      "email_mismatch": "To nie jest adres e-mail tego konta.",
+      "sole_owner": "Najpierw przekaż albo usuń profile artystów, których jesteś jedynym właścicielem.",
+      "staff": "Konta zespołu Tunewick usuwa administrator — najpierw trzeba odebrać rolę.",
+      "failed": "Nie udało się usunąć konta. Spróbuj ponownie."
+    }
+  },
+  "Social": {
+    "followShort": "Obserwuj",
+    "following": "Obserwujesz",
+    "follow": "Obserwuj: {name}",
+    "unfollow": "Przestań obserwować: {name}",
+    "followFailed": "Nie udało się zapisać. Spróbuj ponownie.",
+    "followers": "{count, plural, =0 {0 obserwujących} one {1 osoba obserwuje} few {# osoby obserwują} many {# osób obserwuje} other {# osoby obserwują}}",
+    "followingCount": "{count, plural, =0 {nikogo nie obserwuje} one {obserwuje 1 osobę} few {obserwuje # osoby} many {obserwuje # osób} other {obserwuje # osoby}}",
+    "block": "Zablokuj",
+    "blockQuestion": "Zablokować: {name}? Przestaniecie się nawzajem obserwować i nie zobaczycie swojej aktywności.",
+    "blockYes": "Tak, zablokuj",
+    "cancel": "Anuluj",
+    "unblock": "Odblokuj",
+    "unblockNamed": "Odblokuj: {name}",
+    "blockedTitle": "Zablokowane osoby",
+    "blockedLead": "Te osoby nie mogą Cię obserwować ani widzieć Twojej aktywności. Ty też nie widzisz ich aktywności.",
+    "noName": "Konto bez nazwy",
+    "activityTitle": "Aktywność",
+    "activityHidden": "Aktywność tej osoby jest widoczna tylko dla wybranych osób.",
+    "activityOwn": "Tak widzą Twoją aktywność osoby, którym na to pozwalasz. Zmienisz to w Ustawieniach.",
+    "attended": "Byłem przy tym",
+    "attendedEmpty": "Brak oznaczonych koncertów.",
+    "playlists": "Publiczne playlisty",
+    "playlistsEmpty": "Brak publicznych playlist.",
+    "trackCount": "{count, plural, =0 {bez utworów} one {1 utwór} few {# utwory} many {# utworów} other {# utworu}}"
+  },
+  "Legal": {
+    "nav": "Dokumenty",
+    "terms": "Regulamin",
+    "artistTerms": "Regulamin dla artystów",
+    "privacy": "Polityka prywatności",
+    "contentPolicy": "Zasady treści i zgłoszeń"
+  },
   "Browse": {
     "title": "Przeglądaj",
     "lead": "Nowa muzyka małych niezależnych artystów, od najnowszej — według kraju, a w Polsce także województwa. Bez algorytmu popularności: wszystko mówi, dlaczego tu jest.",
@@ -950,7 +1268,9 @@
       "new": "Nowość · {when}",
       "released": "Wydane {when}",
       "firstRelease": "Pierwsze wydawnictwo {when} · {count, plural, one {# wydawnictwo} few {# wydawnictwa} many {# wydawnictw} other {# wydawnictwa}}"
-    }
+    },
+    "soundcheck": "Soundcheck {seconds} s",
+    "soundcheckLabel": "Posłuchaj fragmentu: {title} — {artist}"
   },
   "Feed": {
     "title": "Odkrywaj",
@@ -1019,7 +1339,10 @@
       "shared": "Ktoś Ci to udostępnił",
       "artist_spotlight": "Odkrywasz: {artist}"
     },
-    "previewUnsupported": "Ta przeglądarka nie odtworzy fragmentu. Spróbuj innej przeglądarki albo „Odtwórz cały utwór”."
+    "previewUnsupported": "Ta przeglądarka nie odtworzy fragmentu. Spróbuj innej przeglądarki albo „Odtwórz cały utwór”.",
+    "browse": "Przeglądaj nowości",
+    "accountDeleted": "Konto zostało usunięte. Dziękujemy za wspólny czas w Tunewick.",
+    "report": "Zgłoś to wydawnictwo"
   },
   "Onboarding": {
     "title": "Preferencje odkrywania",
@@ -1044,29 +1367,6 @@
     "submit": "Zacznij odkrywać",
     "skip": "Pomiń",
     "failed": "Nie udało się zapisać. Spróbuj ponownie."
-  },
-  "Report": {
-    "open": "Zgłoś",
-    "title": "Zgłoś: {name}",
-    "why": "Co jest nie tak?",
-    "categories": {
-      "copyright": "Wykorzystuje moją twórczość bez zgody (prawa autorskie)",
-      "inappropriate": "Nieodpowiednie lub szkodliwe treści",
-      "spam": "Spam lub wprowadzanie w błąd",
-      "impersonation": "Podszywa się pod kogoś",
-      "other": "Coś innego"
-    },
-    "details": "Szczegóły (opcjonalnie)",
-    "submit": "Wyślij zgłoszenie",
-    "cancel": "Anuluj",
-    "close": "Zamknij",
-    "sent": "Dziękujemy. Moderatorzy się tym zajmą.",
-    "errors": {
-      "signIn": "Zaloguj się, aby zgłosić.",
-      "limit": "Wysłano dziś wiele zgłoszeń. Spróbuj jutro.",
-      "failed": "Nie udało się wysłać. Spróbuj ponownie.",
-      "invalid": "Wybierz powód."
-    }
   },
   "Song": {
     "badge": "Utwór",
@@ -1173,7 +1473,9 @@
         "on_a_roll": "Passa",
         "unstoppable": "Nie do zatrzymania",
         "collector": "Kolekcjoner",
-        "early_supporter": "Wczesny fan"
+        "early_supporter": "Wczesny fan",
+        "challenger": "Pogromca wyzwań",
+        "season_star": "Gwiazda sezonu"
       },
       "metrics": {
         "songs": "{count, plural, one {Odkryj pierwszy utwór} few {Odkryj # utwory} other {Odkryj # utworów}}",
@@ -1183,7 +1485,9 @@
         "longest_streak": "Seria odkryć przez {count} dni",
         "deep_genre": "{count}+ artystów z jednego gatunku",
         "early_supporter": "Odkryj artystę z mniej niż 25 obserwującymi, który później przekroczy 100",
-        "saves": "Zapisz {count} utworów"
+        "saves": "Zapisz {count} utworów",
+        "challenges": "Ukończ {count} wyzwań tygodnia",
+        "season_top10": "Zakończ sezon w najlepszych 10% odkrywców"
       },
       "unlocked": "Zdobyte {date}",
       "locked": "Jeszcze nie"
@@ -1201,7 +1505,8 @@
         "new_country": "Nowy kraj",
         "save": "Zapisanie utworu (raz na utwór)",
         "full_listen": "Wysłuchanie nowego odkrycia w całości (raz dziennie)",
-        "share": "Udostępnienie utworu (raz dziennie na utwór)"
+        "share": "Udostępnienie utworu (raz dziennie na utwór)",
+        "challenge": "Ukończone wyzwanie tygodnia (raz na wyzwanie)"
       },
       "fair": "Punkty nagradzają odkrywanie, nie godziny odtwarzania: powtórki, zapętlanie i szybkie pomijanie nic nie dają, a każdy rodzaj punktów ma dzienny limit."
     },
@@ -1214,7 +1519,30 @@
       "question": "A co Ty odkryłeś/aś?"
     },
     "following": "Osoby, które obserwujesz",
-    "compareWith": "Porównaj"
+    "compareWith": "Porównaj",
+    "challenges": {
+      "title": "Wyzwania tygodnia",
+      "points": "+20 pkt",
+      "hint": "Te same trzy wyzwania dla wszystkich, nowe co poniedziałek. Ten zestaw kończy się {date}.",
+      "names": {
+        "thirty_songs": "Odkryj {target} nowych utworów",
+        "ten_artists": "Odkryj {target} nowych artystów",
+        "three_genres": "Posłuchaj {target} gatunków, których jeszcze nie znasz",
+        "three_countries": "Odkryj muzykę z {target} nowych krajów",
+        "two_regions": "Odkryj artystów z {target} różnych części świata",
+        "five_saves": "Zapisz {target} odkrytych utworów",
+        "two_shares": "Poleć komuś {target} utwory",
+        "five_full_listens": "Wysłuchaj w całości {target} świeżych odkryć",
+        "small_artists": "Znajdź {target} artystów, których obserwuje najwyżej 50 osób",
+        "five_days": "Odkrywaj coś nowego przez {target} dni tego tygodnia"
+      }
+    },
+    "seasons": {
+      "title": "Twoje sezony",
+      "name": "Sezon {quarter}/{year}",
+      "place": "{rank}. miejsce z {participants} · {points} pkt",
+      "hint": "Sezon to kwartał. Miejsce liczymy ze wszystkich odkrywców, także tych, którzy nie pokazują się w publicznym rankingu — widzisz je tylko Ty."
+    }
   },
   "Rankings": {
     "title": "Rankingi",
@@ -1223,7 +1551,9 @@
     "periods": {
       "week": "Ten tydzień",
       "month": "Ten miesiąc",
-      "all": "Od początku"
+      "all": "Od początku",
+      "season": "Sezon",
+      "last_season": "Poprzedni sezon"
     },
     "scope": "Gdzie",
     "global": "Cały świat",
@@ -1245,7 +1575,9 @@
     "empty": "W tym okresie nikogo tu jeszcze nie ma. Bądź pierwszy/a.",
     "discoveries": "{count, plural, one {# odkrycie} few {# odkrycia} many {# odkryć} other {# odkrycia}}",
     "points": "{points} pkt",
-    "fair": "Ranking tygodniowy zaczyna się od nowa w każdy poniedziałek (UTC). Widoczni: słuchacze z nazwą profilu, którzy nie wyłączyli rankingów."
+    "fair": "Ranking tygodniowy zaczyna się od nowa w każdy poniedziałek (UTC). Widoczni: słuchacze z nazwą profilu, którzy nie wyłączyli rankingów.",
+    "seasonName": "Sezon {quarter}/{year}",
+    "seasonEnds": "{season} kończy się {date}. Wtedy zapisujemy Twoje końcowe miejsce."
   },
   "Notices": {
     "points": "+{points}",
@@ -1268,7 +1600,8 @@
     },
     "streak": "Seria odkryć: {days} dni z rzędu",
     "roll": "Masz dobrą passę! {count} odkryć dzisiaj",
-    "achievement": "Nowe osiągnięcie: {name}"
+    "achievement": "Nowe osiągnięcie: {name}",
+    "challenge": "Wyzwanie ukończone: {name}"
   },
   "Compare": {
     "title": "Ty vs {name}",

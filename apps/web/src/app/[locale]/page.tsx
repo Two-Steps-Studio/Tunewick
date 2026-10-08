@@ -32,13 +32,21 @@ export default async function DiscoverPage({ params, searchParams }: PageProps<"
   const artist =
     typeof query.artist === "string" && SLUG.test(query.artist) ? query.artist : undefined;
   const { preferences, signedIn } = await getDiscoveryPreferences();
+  // After deleting an account (privacy flow) the person lands here; say it was done.
+  const tFeed = await getTranslations("Feed");
+  const deleted =
+    query.konto === "usuniete" ? (
+      <p role="status" className="form-status feed-status">
+        {tFeed("accountDeleted")}
+      </p>
+    ) : null;
 
   if (!preferences.onboarded && !start && !artist) {
     const t = await getTranslations("Onboarding");
-    const tFeed = await getTranslations("Feed");
     const [genres, countries] = await Promise.all([getGenres(locale), getCountryOptions(locale)]);
     return (
       <section className="welcome">
+        {deleted}
         <h1 className="welcome__title">{tFeed("title")}</h1>
         <p className="welcome__lead">{t("lead")}</p>
         <h2 className="welcome__question">{t("question")}</h2>
@@ -58,5 +66,10 @@ export default async function DiscoverPage({ params, searchParams }: PageProps<"
     artistSlug: artist,
     locale,
   });
-  return <DiscoverFeed initial={page} />;
+  return (
+    <>
+      {deleted}
+      <DiscoverFeed initial={page} />
+    </>
+  );
 }

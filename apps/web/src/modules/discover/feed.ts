@@ -2,12 +2,16 @@ import "server-only";
 
 import {
   EMPTY_TASTE,
+  EXPLORING_MODES,
   FEED,
+  MODE_WEIGHTS,
   previewWindow,
   rankFeed,
+  tuneWeights,
   type Candidate,
   type Database,
   type DiscoveryMode,
+  type FeatureWeights,
   type Json,
   type RankedItem,
   type Taste,
@@ -145,7 +149,12 @@ async function previewSources(supabase: Supabase, trackIds: string[]) {
         if (url) sources.push({ tier: variant.tier, url });
       }
       result.set(row.track_id, {
-        window: previewWindow(row.duration_ms, row.preview_start_ms, row.preview_duration_ms),
+        window: previewWindow(
+          row.duration_ms,
+          row.preview_start_ms,
+          row.preview_duration_ms,
+          row.suggested_start_ms,
+        ),
         sources,
       });
     }),
@@ -182,6 +191,23 @@ export interface FeedRequest {
   locale: string;
 }
 
+/**
+ * Weights for this listener: in the exploring modes (For You, Global) the features that explained
+ * what they liked, saved or followed count a little more, the ones they kept passing a little less.
+ * The other modes are lenses the listener picked, so their weights stay as defined.
+ */
+async function weightsFor(
+  supabase: Supabase,
+  mode: DiscoveryMode,
+  signedIn: boolean,
+): Promise<FeatureWeights> {
+  const base = MODE_WEIGHTS[mode];
+  if (!signedIn || !EXPLORING_MODES.includes(mode)) return base;
+  const { data, error } = await supabase.rpc("my_feed_outcomes");
+  if (error) throw error;
+  return tuneWeights(base, data ?? []).weights;
+}
+
 /** One page of the Discover feed for the current listener (account or visitor). */
 export async function getFeedPage(request: FeedRequest): Promise<FeedPage> {
   const supabase = await createSupabaseServerClient();
@@ -190,10 +216,11 @@ export async function getFeedPage(request: FeedRequest): Promise<FeedPage> {
   const size = request.size ?? FEED.pageSize;
   const exclude = new Set(request.exclude ?? []);
 
-  const [rows, taste, genres] = await Promise.all([
+  const [rows, taste, genres, weights] = await Promise.all([
     loadCandidates(supabase, mode, preferences),
     loadTaste(supabase, preferences, signedIn),
     getGenres(request.locale),
+    weightsFor(supabase, mode, signedIn),
   ]);
   const byId = new Map(rows.map((row) => [row.track_id, row]));
 
@@ -216,20 +243,25 @@ export async function getFeedPage(request: FeedRequest): Promise<FeedPage> {
     own.forEach((row) => pin(row, "artist_spotlight"));
     const artistId = own[0]?.artist_id;
     if (artistId) {
-      const { data: similar } = await supabase.rpc("similar_artists", {
+      // Then artists like them: the music graph (collaborations, shared credits, audience, gigs —
+      // M7) and the artist's own genres.
+      const { data: related } = await supabase.rpc("related_artists", {
         artist: artistId,
         max_results: 12,
       });
       const coFollowed = new Map(taste.coFollowed);
-      for (const s of similar ?? []) {
-        coFollowed.set(s.artist_id, (coFollowed.get(s.artist_id) ?? 0) + 10 + s.shared_listeners);
+      for (const r of related ?? []) {
+        coFollowed.set(r.artist_id, (coFollowed.get(r.artist_id) ?? 0) + 10 + r.score);
       }
-      rankTaste = { ...taste, coFollowed };
+      const genres = new Map(taste.genres);
+      for (const id of own[0]?.genre_ids ?? []) genres.set(id, (genres.get(id) ?? 0) + 5);
+      rankTaste = { ...taste, coFollowed, genres };
     }
   }
 
   const ranked = rankFeed(rows.map(toCandidate), rankTaste, {
     mode,
+    weights,
     size: Math.max(0, size - pinned.length),
     seed: request.seed,
     explorationShare: preferences.explorationShare,

@@ -107,6 +107,9 @@ test.describe("master upload", () => {
     });
     await expect(track.getByRole("status")).toHaveText(/^Gotowe: Halda\.wav/, { timeout: 90_000 });
     await expect(track.getByText("WAV 16/44.1 · 0:12")).toBeVisible();
+    // Report v2: the waveform; a 12-second track previews from the start, so no suggestion.
+    await expect(track.locator(".track-audio__wave rect")).toHaveCount(200);
+    await expect(track.getByText(/Najlepszy moment/)).toHaveCount(0);
     await expect(
       track.getByText("Wersje do odtwarzania: Data Saver, High, Lossless."),
     ).toBeVisible();

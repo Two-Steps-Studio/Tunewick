@@ -32,12 +32,9 @@ for (const { path, heading, lang } of pages) {
 test("navigation marks the current page and keeps the player region", async ({ page }) => {
   await page.goto("/");
   const nav = page.getByRole("navigation", { name: "Nawigacja główna" });
-  await nav.getByRole("link", { name: "Przeglądaj" }).click();
-  await expect(page).toHaveURL(/\/przegladaj$/);
-  await expect(nav.getByRole("link", { name: "Przeglądaj" })).toHaveAttribute(
-    "aria-current",
-    "page",
-  );
+  await nav.getByRole("link", { name: "Scena" }).click();
+  await expect(page).toHaveURL(/\/scena$/);
+  await expect(nav.getByRole("link", { name: "Scena" })).toHaveAttribute("aria-current", "page");
   await expect(page.getByRole("region", { name: "Odtwarzacz" })).toBeVisible();
 });
 
@@ -103,4 +100,12 @@ test("a first visit asks what to discover; skipping opens the feed", async ({ pa
   // The choice is remembered (a cookie for visitors): the next visit goes straight to the feed.
   await page.goto("/");
   await expect(page.getByRole("navigation", { name: "Co odkrywać" })).toBeVisible();
+});
+
+test("rankings have a season and say when it ends", async ({ page }) => {
+  await page.goto("/rankingi");
+  await page.getByRole("link", { name: "Sezon", exact: true }).click();
+  await expect(page).toHaveURL(/period=season/);
+  await expect(page.getByText(/Sezon \d\/\d{4} kończy się/)).toBeVisible();
+  await expect(page.getByRole("link", { name: "Poprzedni sezon" })).toBeVisible();
 });

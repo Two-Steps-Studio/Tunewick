@@ -124,6 +124,10 @@ def process(path: str, out_dir: str) -> dict:
                 "true_peak_dbtp": loudness.true_peak_dbtp,
             },
             "flags": flags,
+            # Where a preview should start (a suggestion; the artist's choice wins) and a
+            # 200-point waveform for the editor.
+            "best_moment": stats.moments.best_moment(duration).to_dict(),
+            "waveform": stats.moments.waveform(),
             "tiers": {
                 "data_saver": True,
                 "high": True,
