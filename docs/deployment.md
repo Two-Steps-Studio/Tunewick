@@ -136,6 +136,11 @@ Until these variables exist the editor says "audio upload is coming soon" — no
    Process command: `worker --poll 5` (the image entrypoint is `python -m tunewick_audio`).
    One shared-cpu machine with 2 GB RAM is enough for the beta; more machines can run side by side
    (jobs are claimed with `FOR UPDATE SKIP LOCKED`).
+   Without a terminal: add repository secrets `FLY_API_TOKEN` (fly.io → Account → Access Tokens),
+   `SUPABASE_SECRET_KEY`, `R2_ENDPOINT`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY` and
+   `R2_BUCKET_NAME`, then GitHub → Actions → **Deploy audio worker** → Run workflow. It creates the
+   Fly app on the first run (`services/audio-worker/fly.toml`), sets the worker's secrets from
+   those and deploys. Re-run it after worker changes.
 4. Check: upload a master in the editor → within a minute the track shows "Gotowe" (ready) and
    the *Listen* button plays it. Worker logs: `fly logs` (one JSON line per job).
 

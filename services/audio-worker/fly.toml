@@ -1,0 +1,15 @@
+# Fly.io app for the audio worker (docs/deployment.md §3b). Deployed by the "Deploy audio worker"
+# workflow; no public ports — it only polls the Supabase queue and reads/writes R2.
+app = "tunewick-audio"
+primary_region = "fra"
+
+[build]
+  dockerfile = "Dockerfile"
+  build-target = "production"
+
+[processes]
+  app = "worker --poll 5"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "2gb"

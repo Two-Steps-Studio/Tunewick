@@ -1,0 +1,67 @@
+name: Deploy audio worker
+
+# Builds services/audio-worker and runs it on Fly.io (docs/deployment.md §3b). Manual only.
+# Repository secrets:
+#   FLY_API_TOKEN          fly.io → Account → Access Tokens → Create token (Org deploy token)
+#   SUPABASE_SECRET_KEY    Supabase → Project Settings → API Keys → secret key (sb_secret_…)
+#   R2_ENDPOINT, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_BUCKET_NAME  (same values as in Vercel)
+# The R2 token must have Object Read & Write on both buckets.
+
+on:
+  workflow_dispatch:
+    inputs:
+      media_bucket:
+        description: "R2 bucket for the processed audio"
+        default: tunewick-media
+      fly_org:
+        description: "Fly.io organization slug"
+        default: personal
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-worker
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    defaults:
+      run:
+        working-directory: services/audio-worker
+    env:
+      FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+      SUPABASE_URL: ${{ vars.SUPABASE_URL || 'https://crpttoejcjmnnrvmgify.supabase.co' }}
+      SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+      R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
+      R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+      R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+      R2_BUCKET_NAME: ${{ secrets.R2_BUCKET_NAME }}
+      MEDIA_BUCKET: ${{ inputs.media_bucket }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Secrets are set
+        run: |
+          for name in FLY_API_TOKEN SUPABASE_SECRET_KEY R2_ENDPOINT R2_ACCESS_KEY_ID R2_SECRET_ACCESS_KEY R2_BUCKET_NAME; do
+            if [ -z "${!name}" ]; then echo "::error::Missing repository secret $name"; exit 1; fi
+          done
+      - name: Create the app (first run only)
+        run: flyctl status --app tunewick-audio >/dev/null 2>&1 || flyctl apps create tunewick-audio --org "${{ inputs.fly_org }}"
+      - name: Worker secrets
+        run: |
+          # Cloudflare shows the endpoint with the bucket appended; the worker needs the account endpoint.
+          endpoint="${R2_ENDPOINT%/}"; endpoint="${endpoint%/$R2_BUCKET_NAME}"
+          {
+            echo "TUNEWICK_SUPABASE_URL=$SUPABASE_URL"
+            echo "TUNEWICK_SUPABASE_SECRET_KEY=$SUPABASE_SECRET_KEY"
+            echo "MEDIA_S3_ENDPOINT=$endpoint"
+            echo "MEDIA_S3_REGION=auto"
+            echo "MEDIA_S3_ACCESS_KEY_ID=$R2_ACCESS_KEY_ID"
+            echo "MEDIA_S3_SECRET_ACCESS_KEY=$R2_SECRET_ACCESS_KEY"
+            echo "MEDIA_INGEST_BUCKET=$R2_BUCKET_NAME"
+            echo "MEDIA_BUCKET=$MEDIA_BUCKET"
+          } | flyctl secrets import --stage --app tunewick-audio
+      - run: flyctl deploy --remote-only --ha=false --app tunewick-audio
