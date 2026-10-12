@@ -2497,6 +2497,18 @@ export type Database = {
           track_id: string;
         }[];
       };
+      atlas_city: { Args: { city: string; code: string }; Returns: Json };
+      atlas_countries: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          artists: number;
+          country_code: string;
+          discovered: boolean;
+          listeners_7d: number;
+          region: string;
+        }[];
+      };
+      atlas_country: { Args: { code: string }; Returns: Json };
       begin_audio_upload: {
         Args: { file_name: string; size_bytes: number; track: string };
         Returns: {

@@ -4191,3 +4191,137 @@ body {
     font-size: var(--tk-text-lg);
   }
 }
+
+@layer components {
+  /* Music map (M14.10) ---------------------------------------------------------- */
+  .atlas {
+    --map-hue: #7657ff;
+  }
+  .atlas__mine {
+    margin: 0;
+    font-weight: 600;
+  }
+  .world-map {
+    display: grid;
+    gap: var(--tk-space-3);
+    margin: 0;
+  }
+  .world-map__svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .world-map__land {
+    fill: color-mix(in srgb, var(--text-muted) 18%, var(--bg));
+    stroke: var(--bg);
+    stroke-width: 0.6;
+  }
+  .world-map__land--1 {
+    fill: color-mix(in srgb, var(--map-hue) 30%, var(--bg));
+  }
+  .world-map__land--2 {
+    fill: color-mix(in srgb, var(--map-hue) 52%, var(--bg));
+  }
+  .world-map__land--3 {
+    fill: color-mix(in srgb, var(--map-hue) 76%, var(--bg));
+  }
+  .world-map__land--4 {
+    fill: var(--map-hue);
+  }
+  .world-map__land.is-mine {
+    stroke: var(--text);
+    stroke-width: 1.4;
+  }
+  .world-map a:hover .world-map__land,
+  .world-map a:focus-visible .world-map__land {
+    stroke: var(--text);
+    stroke-width: 2;
+  }
+  .world-map a:focus-visible {
+    outline: none;
+  }
+  .world-map__legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--tk-space-2) var(--tk-space-4);
+    font-size: var(--tk-text-xs);
+    color: var(--text-muted);
+  }
+  .world-map__legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--tk-space-1);
+  }
+  .world-map__swatch {
+    display: inline-block;
+    width: 0.9rem;
+    height: 0.9rem;
+    background: color-mix(in srgb, var(--text-muted) 18%, var(--bg));
+  }
+  .world-map__swatch.world-map__land--1 {
+    background: color-mix(in srgb, var(--map-hue) 30%, var(--bg));
+  }
+  .world-map__swatch.world-map__land--2 {
+    background: color-mix(in srgb, var(--map-hue) 52%, var(--bg));
+  }
+  .world-map__swatch.world-map__land--3 {
+    background: color-mix(in srgb, var(--map-hue) 76%, var(--bg));
+  }
+  .world-map__swatch.world-map__land--4 {
+    background: var(--map-hue);
+  }
+  .world-map__swatch.is-mine {
+    background: transparent;
+    box-shadow: inset 0 0 0 2px var(--text);
+  }
+  .atlas__regions {
+    display: grid;
+    gap: var(--tk-space-6);
+  }
+  @media (min-width: 48rem) {
+    .atlas__regions {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  .atlas-list {
+    display: grid;
+    gap: var(--tk-space-1);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .atlas-list li {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--tk-space-1) var(--tk-space-3);
+    padding: var(--tk-space-2) 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .atlas-list li.is-mine a {
+    font-weight: 700;
+  }
+  .atlas-list span {
+    font-size: var(--tk-text-sm);
+    color: var(--text-muted);
+  }
+  .atlas-artists {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(9rem, 45%), 1fr));
+    gap: var(--tk-space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .atlas-artists li {
+    display: grid;
+    justify-items: start;
+    gap: var(--tk-space-1);
+  }
+  .atlas-artists .stats-list__art {
+    width: 4rem;
+  }
+  .atlas-artists small {
+    color: var(--text-muted);
+  }
+}

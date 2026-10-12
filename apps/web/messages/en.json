@@ -1749,7 +1749,8 @@
       "lead": "The most listened song from each country this week.",
       "leadOutside": "The most listened song from each country this week — outside {country}.",
       "empty": "Music from other countries will show up here as soon as people listen to it."
-    }
+    },
+    "atlasLink": "Music map →"
   },
   "Segment": {
     "errorTitle": "Something went wrong",
@@ -2268,5 +2269,44 @@
       "charts": "See the charts →"
     },
     "early": "{name} is just starting out here — fewer than 3 listeners in the last 30 days. Be one of the first."
+  },
+  "Atlas": {
+    "title": "Music map",
+    "lead": "Where the music on Tunewick comes from — country by country, city by city, scene by scene.",
+    "loading": "Unfolding the map…",
+    "mine": "You have heard music from {count} of {total} countries.",
+    "empty": "No country has published music yet.",
+    "mapTitle": "World map of countries with music on Tunewick",
+    "countryLabel": "{country}: {count, plural, one {# artist} other {# artists}}",
+    "legend": {
+      "none": "No music yet",
+      "one": "1 artist",
+      "few": "2–4",
+      "many": "5–19",
+      "most": "20+",
+      "mine": "You have heard music from here"
+    },
+    "regions": {
+      "europe": "Europe",
+      "americas": "Americas",
+      "asia": "Asia",
+      "africa": "Africa",
+      "oceania": "Oceania"
+    },
+    "artists": "{count, plural, one {# artist} other {# artists}}",
+    "listening": "{count} listening this week",
+    "back": "← Music map",
+    "countryTitle": "Music from {country}",
+    "charts": "This country's charts →",
+    "cities": "Cities and scenes",
+    "genres": "Genres",
+    "topArtists": "Artists",
+    "listeners30": "{count} listeners this month",
+    "cityTitle": "{city} — the scene",
+    "scene": "{count, plural, one {# artist from here} other {# artists from here}}",
+    "cityArtists": "Artists",
+    "events": "Coming up",
+    "venues": "Venues",
+    "upcoming": "{count, plural, =0 {no upcoming events} one {# upcoming event} other {# upcoming events}}"
   }
 }

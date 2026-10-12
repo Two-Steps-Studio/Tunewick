@@ -139,3 +139,13 @@ states, mobile and desktop layouts, EN/PL, tests, and its line in §4.
   people who discovered the artist — behind their stats switch). Artist page: "Discovery" section
   with a Rising badge and "Why you might like…"; small artists get one honest sentence instead of
   empty numbers. Manage page: weekly bar charts and places. pgTAP `artist_discovery.test.sql`.
+- **M14.10 done** — `20261012150000_atlas`, public catalogue facts only (active artists with a
+  published release, their country and city, genres of published releases, published events at
+  venues; listener sums only from artists with 3+ weekly listeners): `atlas_countries()` (+ for the
+  signed-in listener, the countries they have heard), `atlas_country(code)` (cities, genres, most
+  listened artists), `atlas_city(code, city)` (artists, genres, and in Poland venues and the next
+  90 days of events). `/atlas` → `/atlas/[country]` → `/atlas/[country]/[city]`: a server-rendered
+  SVG world map (Natural Earth 1:110m, Equal Earth, prebuilt once by `scripts/build-world-map.mjs`
+  into `modules/atlas/world-paths.json` — no map library or tiles at runtime), one hue in four
+  steps with a legend, your countries outlined, every country also a plain link in the list below.
+  pgTAP `atlas.test.sql`, e2e `atlas.spec.ts`.

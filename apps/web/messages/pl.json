@@ -1749,7 +1749,8 @@
       "lead": "Najczęściej słuchany utwór z każdego kraju w tym tygodniu.",
       "leadOutside": "Najczęściej słuchany utwór z każdego kraju w tym tygodniu — spoza kraju: {country}.",
       "empty": "Muzyka z innych krajów pojawi się tu, gdy tylko ktoś zacznie jej słuchać."
-    }
+    },
+    "atlasLink": "Mapa muzyki →"
   },
   "Segment": {
     "errorTitle": "Coś poszło nie tak",
@@ -2268,5 +2269,44 @@
       "charts": "Zobacz listy przebojów →"
     },
     "early": "{name} dopiero tu startuje — mniej niż 3 słuchaczy w ostatnich 30 dniach. Posłuchaj jako jedna z pierwszych osób."
+  },
+  "Atlas": {
+    "title": "Mapa muzyki",
+    "lead": "Skąd pochodzi muzyka w Tunewick — kraj po kraju, miasto po mieście, scena po scenie.",
+    "loading": "Rozkładamy mapę…",
+    "mine": "Słuchasz muzyki z {count} z {total} krajów.",
+    "empty": "Żaden kraj nie ma jeszcze opublikowanej muzyki.",
+    "mapTitle": "Mapa świata z krajami, z których jest muzyka w Tunewick",
+    "countryLabel": "{country}: {count, plural, one {# artysta} few {# artystów} many {# artystów} other {# artysty}}",
+    "legend": {
+      "none": "Jeszcze bez muzyki",
+      "one": "1 artysta",
+      "few": "2–4",
+      "many": "5–19",
+      "most": "20+",
+      "mine": "Słuchasz muzyki stąd"
+    },
+    "regions": {
+      "europe": "Europa",
+      "americas": "Ameryki",
+      "asia": "Azja",
+      "africa": "Afryka",
+      "oceania": "Oceania"
+    },
+    "artists": "{count, plural, one {# artysta} few {# artystów} many {# artystów} other {# artysty}}",
+    "listening": "{count} słuchaczy w tym tygodniu",
+    "back": "← Mapa muzyki",
+    "countryTitle": "Muzyka z kraju: {country}",
+    "charts": "Listy przebojów tego kraju →",
+    "cities": "Miasta i sceny",
+    "genres": "Gatunki",
+    "topArtists": "Artyści",
+    "listeners30": "{count} słuchaczy w tym miesiącu",
+    "cityTitle": "{city} — scena",
+    "scene": "{count, plural, one {# artysta stąd} few {# artystów stąd} many {# artystów stąd} other {# artysty stąd}}",
+    "cityArtists": "Artyści",
+    "events": "Nadchodzące wydarzenia",
+    "venues": "Miejsca",
+    "upcoming": "{count, plural, =0 {brak nadchodzących wydarzeń} one {# nadchodzące wydarzenie} few {# nadchodzące wydarzenia} many {# nadchodzących wydarzeń} other {# nadchodzącego wydarzenia}}"
   }
 }
