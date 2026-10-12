@@ -6,8 +6,9 @@ import { pl } from "../content/pl";
 import { getOperator } from "../operator";
 import { LEGAL_VERSION, type LegalContent, type LegalDocumentKey } from "../types";
 
+/** Legal texts exist in Polish and English; every other language reads the English version. */
 function contentFor(locale: string): LegalContent {
-  return locale === "en" ? en : pl;
+  return locale === "pl" ? pl : en;
 }
 
 /** Title and lead of a document, for page metadata. */

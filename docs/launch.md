@@ -13,7 +13,10 @@ is what people have to decide or set up before Tunewick is promoted worldwide. O
 2. **Email that scales.** Supabase's built-in email sends only a few messages per hour — sign-up
    confirmations and password resets would stop after the first handful of people. Set up a real
    SMTP provider (e.g. Resend, Postmark, Amazon SES) in Supabase → Authentication → Emails → SMTP,
-   with a sending domain (SPF, DKIM, DMARC).
+   with a sending domain (SPF, DKIM, DMARC). Paste `supabase/templates/confirmation.html` and
+   `recovery.html` into Authentication → Email Templates ("Confirm signup", "Reset password"):
+   they write each email in the account's language (Polish, German, Spanish, French,
+   Portuguese, English for everyone else).
 3. **Your own domain.** Add it in Vercel, set `NEXT_PUBLIC_SITE_URL=https://<domain>` and redeploy;
    add the domain to Supabase → Authentication → URL configuration (site URL and redirect URLs)
    and to the R2 CORS rules.
@@ -21,6 +24,10 @@ is what people have to decide or set up before Tunewick is promoted worldwide. O
    it off in Admin → Feature flags when you are ready for the public.
 5. **Audio worker running** (TrueNAS or Fly.io, `docs/deployment.md` §3b) and **music published**
    from several countries, so discovery, charts and the map are not empty on day one.
+
+6. **Server next to the database.** Vercel → Project → Settings → Functions → Region: pick the
+   region closest to the Supabase project's region (Supabase → Project Settings → General). Every
+   page reads the database several times; across an ocean each read adds ~100 ms.
 
 ## Right after launch
 
@@ -32,6 +39,10 @@ is what people have to decide or set up before Tunewick is promoted worldwide. O
 
 ## Good to have
 
-- More interface languages (the code supports adding locales; legal texts stay in English until
-  reviewed translations exist).
+- Native-speaker review of the German, Spanish, French and Portuguese interface (machine-assisted
+  translations, checked automatically for keys and placeholders only). Legal texts for those
+  languages are the English version until reviewed translations exist.
+- Another language: add the code to `LOCALES` in `apps/web/src/i18n/routing.ts`, a
+  `messages/<code>.json` (the unit test checks it against English), the Open Graph locale in the
+  `[locale]` layout and the language list in `private.handle_new_user` (migration).
 - Uptime monitoring of `/` and `/api/discover/feed` (e.g. Better Stack, UptimeRobot).

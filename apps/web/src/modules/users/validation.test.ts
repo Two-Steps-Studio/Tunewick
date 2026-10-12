@@ -24,7 +24,7 @@ describe("settingsSchema", () => {
   });
 
   it("rejects unknown locales and visibility values", () => {
-    expect(settingsSchema.safeParse({ ...base, locale: "de" }).success).toBe(false);
+    expect(settingsSchema.safeParse({ ...base, locale: "xx" }).success).toBe(false);
     expect(settingsSchema.safeParse({ ...base, activityVisibility: "friends" }).success).toBe(
       false,
     );

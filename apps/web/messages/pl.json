@@ -9,7 +9,6 @@
     "mainNav": "Nawigacja główna",
     "home": "Strona główna Tunewick",
     "language": "Język",
-    "switchTo": "English",
     "moderation": "Moderacja"
   },
   "Nav": {
@@ -222,10 +221,6 @@
       "handle": "Małe litery, cyfry i myślniki, 2–40 znaków. Adres profilu: tunewick.com/profil/nazwa",
       "bio": "Do 500 znaków.",
       "visibility": "Kto widzi na Twoim profilu oznaczone koncerty („Byłem przy tym”) i publiczne playlisty. Decyduje też, kto może porównywać swoje odkrycia z Twoimi."
-    },
-    "locales": {
-      "pl": "Polski",
-      "en": "English"
     },
     "visibility": {
       "public": "Wszyscy",

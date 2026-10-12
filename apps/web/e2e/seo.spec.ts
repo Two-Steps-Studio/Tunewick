@@ -5,6 +5,8 @@ test("robots.txt opens public pages and closes private ones", async ({ request }
   expect(robots).toContain("Allow: /");
   expect(robots).toContain("Disallow: /api/");
   expect(robots).toContain("Disallow: /ustawienia");
+  expect(robots).toContain("Disallow: /moderacja");
+  expect(robots).toContain("Disallow: /de/settings");
   expect(robots).toMatch(/Sitemap: .*\/sitemap\.xml/);
 });
 
@@ -26,9 +28,13 @@ test("public pages have a canonical URL, language versions and a link preview", 
     "href",
     /\/en\/charts$/,
   );
+  await expect(page.locator('link[rel="alternate"][hreflang="de"]')).toHaveAttribute(
+    "href",
+    /\/de\/charts$/,
+  );
   await expect(page.locator('link[rel="alternate"][hreflang="x-default"]')).toHaveAttribute(
     "href",
-    /\/listy$/,
+    /\/en\/charts$/,
   );
   await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
     "content",

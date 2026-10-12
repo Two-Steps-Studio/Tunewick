@@ -1,5 +1,7 @@
 <!doctype html>
-<html lang="pl">
+<!-- In the account's interface language (user metadata "locale"; printf keeps a missing one
+     comparable), English otherwise. -->
+<html>
   <body
     style="
       margin: 0;
@@ -13,6 +15,7 @@
       <p style="font-size: 28px; font-weight: 800; letter-spacing: -0.03em; margin: 0 0 32px">
         tunewick
       </p>
+      {{ if eq (printf "%v" .Data.locale) "pl" }}
       <h1 style="font-size: 20px; margin: 0 0 12px">Ustaw nowe hasło</h1>
       <p style="line-height: 1.5; margin: 0 0 24px">
         Otrzymaliśmy prośbę o zmianę hasła do Twojego konta Tunewick. Link jest ważny przez godzinę.
@@ -31,16 +34,125 @@
           >Ustaw nowe hasło</a
         >
       </p>
-      <hr style="border: 0; border-top: 1px solid #c9c1b3; margin: 0 0 24px" />
-      <h2 style="font-size: 16px; margin: 0 0 8px">Reset your password</h2>
-      <p style="line-height: 1.5; margin: 0 0 16px">
+      <p style="font-size: 12px; color: #6e6762; line-height: 1.5">
+        Jeśli to nie Ty, zignoruj tę wiadomość — hasło się nie zmieni.
+      </p>
+      {{ else if eq (printf "%v" .Data.locale) "de" }}
+      <h1 style="font-size: 20px; margin: 0 0 12px">Neues Passwort festlegen</h1>
+      <p style="line-height: 1.5; margin: 0 0 24px">
+        Wir haben eine Anfrage erhalten, das Passwort deines Tunewick-Kontos zurückzusetzen. Der
+        Link ist eine Stunde lang gültig.
+      </p>
+      <p style="margin: 0 0 32px">
+        <a
+          href="{{ .SiteURL }}/api/auth/confirm?token_hash={{ .TokenHash }}&type=recovery&next=/update-password"
+          style="
+            display: inline-block;
+            background: #171515;
+            color: #d8ff3e;
+            padding: 14px 20px;
+            text-decoration: none;
+            font-weight: 700;
+          "
+          >Neues Passwort festlegen</a
+        >
+      </p>
+      <p style="font-size: 12px; color: #6e6762; line-height: 1.5">
+        Wenn du das nicht warst, ignoriere diese E-Mail — dein Passwort bleibt unverändert.
+      </p>
+      {{ else if eq (printf "%v" .Data.locale) "es" }}
+      <h1 style="font-size: 20px; margin: 0 0 12px">Restablece tu contraseña</h1>
+      <p style="line-height: 1.5; margin: 0 0 24px">
+        Recibimos una solicitud para restablecer la contraseña de tu cuenta de Tunewick. El enlace
+        es válido durante una hora.
+      </p>
+      <p style="margin: 0 0 32px">
+        <a
+          href="{{ .SiteURL }}/api/auth/confirm?token_hash={{ .TokenHash }}&type=recovery&next=/update-password"
+          style="
+            display: inline-block;
+            background: #171515;
+            color: #d8ff3e;
+            padding: 14px 20px;
+            text-decoration: none;
+            font-weight: 700;
+          "
+          >Nueva contraseña</a
+        >
+      </p>
+      <p style="font-size: 12px; color: #6e6762; line-height: 1.5">
+        Si no fuiste tú, ignora este correo: tu contraseña no cambiará.
+      </p>
+      {{ else if eq (printf "%v" .Data.locale) "fr" }}
+      <h1 style="font-size: 20px; margin: 0 0 12px">Réinitialise ton mot de passe</h1>
+      <p style="line-height: 1.5; margin: 0 0 24px">
+        Nous avons reçu une demande de réinitialisation du mot de passe de ton compte Tunewick. Le
+        lien est valable une heure.
+      </p>
+      <p style="margin: 0 0 32px">
+        <a
+          href="{{ .SiteURL }}/api/auth/confirm?token_hash={{ .TokenHash }}&type=recovery&next=/update-password"
+          style="
+            display: inline-block;
+            background: #171515;
+            color: #d8ff3e;
+            padding: 14px 20px;
+            text-decoration: none;
+            font-weight: 700;
+          "
+          >Nouveau mot de passe</a
+        >
+      </p>
+      <p style="font-size: 12px; color: #6e6762; line-height: 1.5">
+        Si ce n’était pas toi, ignore cet e-mail — ton mot de passe ne changera pas.
+      </p>
+      {{ else if eq (printf "%v" .Data.locale) "pt" }}
+      <h1 style="font-size: 20px; margin: 0 0 12px">Redefina sua senha</h1>
+      <p style="line-height: 1.5; margin: 0 0 24px">
+        Recebemos um pedido para redefinir a senha da sua conta Tunewick. O link é válido por uma
+        hora.
+      </p>
+      <p style="margin: 0 0 32px">
+        <a
+          href="{{ .SiteURL }}/api/auth/confirm?token_hash={{ .TokenHash }}&type=recovery&next=/update-password"
+          style="
+            display: inline-block;
+            background: #171515;
+            color: #d8ff3e;
+            padding: 14px 20px;
+            text-decoration: none;
+            font-weight: 700;
+          "
+          >Nova senha</a
+        >
+      </p>
+      <p style="font-size: 12px; color: #6e6762; line-height: 1.5">
+        Se não foi você, ignore este e-mail — sua senha continuará a mesma.
+      </p>
+      {{ else }}
+      <h1 style="font-size: 20px; margin: 0 0 12px">Reset your password</h1>
+      <p style="line-height: 1.5; margin: 0 0 24px">
         We received a request to reset the password of your Tunewick account. The link is valid for
         one hour.
       </p>
-      <p style="font-size: 12px; color: #6e6762; line-height: 1.5">
-        Jeśli to nie Ty, zignoruj tę wiadomość — hasło się nie zmieni. / If this wasn't you, ignore
-        this email — your password stays the same.
+      <p style="margin: 0 0 32px">
+        <a
+          href="{{ .SiteURL }}/api/auth/confirm?token_hash={{ .TokenHash }}&type=recovery&next=/update-password"
+          style="
+            display: inline-block;
+            background: #171515;
+            color: #d8ff3e;
+            padding: 14px 20px;
+            text-decoration: none;
+            font-weight: 700;
+          "
+          >Set a new password</a
+        >
       </p>
+      <p style="font-size: 12px; color: #6e6762; line-height: 1.5">
+        If this wasn’t you, ignore this email — your password stays the same.
+      </p>
+      {{ end }}
     </div>
   </body>
 </html>

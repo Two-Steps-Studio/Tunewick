@@ -4,27 +4,20 @@ import { routing } from "@/i18n/routing";
 import { siteUrl } from "@/lib/site";
 
 // Accounts, a listener's own pages, staff tools and APIs stay out of search results.
-const PRIVATE = ["/settings", "/you", "/library"] as const;
+const PRIVATE = ["/settings", "/you", "/library", "/admin", "/moderation"] as const;
 
 export default function robots(): MetadataRoute.Robots {
-  const localized = routing.locales.flatMap((locale) =>
-    PRIVATE.map((pathname) => getPathname({ href: pathname, locale })),
-  );
+  const localized = routing.locales.flatMap((locale) => [
+    ...PRIVATE.map((pathname) => getPathname({ href: pathname, locale })),
+    // Developer pages (no localized pathname of their own).
+    locale === routing.defaultLocale ? "/dev" : `/${locale}/dev`,
+  ]);
   return {
     rules: [
       {
         userAgent: "*",
         allow: "/",
-        disallow: [
-          "/api/",
-          "/admin",
-          "/moderation",
-          "/dev",
-          "/en/admin",
-          "/en/moderation",
-          "/en/dev",
-          ...new Set(localized),
-        ],
+        disallow: ["/api/", ...new Set(localized)],
       },
     ],
     sitemap: `${siteUrl()}/sitemap.xml`,

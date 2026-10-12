@@ -23,7 +23,7 @@ select is(
   'en', 'valid locale from metadata is used');
 select is(
   (select locale from profile_settings where user_id = '00000000-0000-0000-0000-00000000000b'),
-  'pl', 'invalid locale falls back to pl');
+  'en', 'invalid locale falls back to en');
 select ok(
   (select age_confirmed_at is not null from profile_settings where user_id = '00000000-0000-0000-0000-00000000000a')
   and (select age_confirmed_at is null from profile_settings where user_id = '00000000-0000-0000-0000-00000000000b'),

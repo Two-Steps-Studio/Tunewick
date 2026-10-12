@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { routing } from "@/i18n/routing";
 
 export type SettingsErrorCode =
   | "handleInvalid"
@@ -40,7 +41,7 @@ export const settingsSchema = z.object({
     ),
   displayName: optionalText(80, "displayNameTooLong"),
   bio: optionalText(500, "bioTooLong"),
-  locale: z.enum(["pl", "en"]),
+  locale: z.enum(routing.locales),
   activityVisibility: z.enum(["public", "followers", "private"]),
 });
 

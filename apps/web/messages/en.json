@@ -9,7 +9,6 @@
     "mainNav": "Main navigation",
     "home": "Tunewick home",
     "language": "Language",
-    "switchTo": "Polski",
     "moderation": "Moderation"
   },
   "Nav": {
@@ -222,10 +221,6 @@
       "handle": "Lowercase letters, digits and hyphens, 2–40 characters. Profile address: tunewick.com/en/profile/name",
       "bio": "Up to 500 characters.",
       "visibility": "Who sees gigs you marked (\"I was there\") and your public playlists on your profile. It also decides who can compare their discoveries with yours."
-    },
-    "locales": {
-      "pl": "Polski",
-      "en": "English"
     },
     "visibility": {
       "public": "Everyone",
