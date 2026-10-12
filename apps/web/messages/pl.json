@@ -1465,7 +1465,8 @@
         "points": "XP"
       },
       "hint": "Fragmenty liczą się do czasu słuchania; odtworzenia to słuchanie w odtwarzaczu przez co najmniej 30 sekund.",
-      "more": "Więcej statystyk →"
+      "more": "Więcej statystyk →",
+      "recap": "Podsumowanie miesiąca →"
     },
     "recap": {
       "title": "Twój tydzień",
@@ -1979,6 +1980,69 @@
           "trait": "średnio {value} odtworzenia na utwór"
         }
       }
+    }
+  },
+  "Recap": {
+    "title": "Podsumowanie miesiąca",
+    "signedOut": "Zaloguj się, aby zobaczyć swój miesiąc w muzyce.",
+    "signIn": "Zaloguj się",
+    "loading": "Składamy Twój miesiąc…",
+    "back": "← Ty",
+    "months": "Miesiące",
+    "previous": "← Poprzedni miesiąc",
+    "next": "Następny miesiąc →",
+    "heading": "Twój {month}",
+    "running": "Ten miesiąc jeszcze trwa — liczby rosną do jego ostatniego dnia.",
+    "empty": "W tym miesiącu nic nie słuchano. Włącz coś, a Twoje podsumowanie zacznie się tutaj.",
+    "outside": "Dla tego miesiąca nie ma podsumowania.",
+    "startListening": "Zacznij słuchać",
+    "labels": {
+      "listening": "Czas słuchania",
+      "songs": "Utwory",
+      "artists": "Artyści",
+      "newArtists": "Nowi artyści",
+      "countries": "Kraje",
+      "score": "Discovery Score"
+    },
+    "personality": "Muzyczna osobowość",
+    "personalities": {
+      "explorer": "Odkrywca",
+      "night_listener": "Nocny słuchacz",
+      "underground_hunter": "Łowca podziemia",
+      "global_discoverer": "Globalny odkrywca",
+      "genre_hopper": "Gatunkowy wędrowiec",
+      "repeat_master": "Mistrz powtórek"
+    },
+    "topGenre": "Najczęściej słuchany gatunek: {genre}",
+    "allStats": "Wszystkie statystyki",
+    "share": {
+      "title": "Udostępnij swój miesiąc",
+      "hint": "Karty do Stories, Reels, TikToka (9:16) albo posta (kwadrat). Tylko Twoje liczby i tylko wtedy, gdy je pobierzesz.",
+      "story": "9:16",
+      "square": "Kwadrat",
+      "kinds": {
+        "summary": "Miesiąc w liczbach",
+        "artist": "Top artysta",
+        "song": "Top utwór",
+        "discovery": "Największe odkrycie",
+        "score": "Discovery Score"
+      }
+    },
+    "card": {
+      "heading": "Mój {month} w Tunewick",
+      "question": "A co Ty odkryłeś/aś?",
+      "listening": "słuchania",
+      "songs": "utworów",
+      "newArtists": "nowych artystów",
+      "countries": "krajów",
+      "score": "Discovery Score",
+      "newSongs": "nowych utworów",
+      "underground": "odkryć z podziemia",
+      "topArtist": "Top artysta",
+      "topSong": "Top utwór",
+      "discovery": "Największe odkrycie",
+      "plays": "{count, plural, one {# odtworzenie} few {# odtworzenia} many {# odtworzeń} other {# odtworzenia}}",
+      "since": "{time} słuchania od odkrycia"
     }
   }
 }

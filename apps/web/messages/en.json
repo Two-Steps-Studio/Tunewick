@@ -1465,7 +1465,8 @@
         "points": "XP"
       },
       "hint": "Previews count as listening time; plays are full-player listens of at least 30 seconds.",
-      "more": "More statistics →"
+      "more": "More statistics →",
+      "recap": "Monthly recap →"
     },
     "recap": {
       "title": "Your week",
@@ -1979,6 +1980,69 @@
           "trait": "{value} plays per song on average"
         }
       }
+    }
+  },
+  "Recap": {
+    "title": "Monthly recap",
+    "signedOut": "Sign in to see your month in music.",
+    "signIn": "Sign in",
+    "loading": "Putting your month together…",
+    "back": "← You",
+    "months": "Months",
+    "previous": "← Previous month",
+    "next": "Next month →",
+    "heading": "Your {month}",
+    "running": "This month is still running — the numbers grow until its last day.",
+    "empty": "No listening this month. Play something and your recap starts here.",
+    "outside": "There is no recap for this month.",
+    "startListening": "Start listening",
+    "labels": {
+      "listening": "Listening time",
+      "songs": "Songs",
+      "artists": "Artists",
+      "newArtists": "New artists",
+      "countries": "Countries",
+      "score": "Discovery Score"
+    },
+    "personality": "Music personality",
+    "personalities": {
+      "explorer": "Explorer",
+      "night_listener": "Night Listener",
+      "underground_hunter": "Underground Hunter",
+      "global_discoverer": "Global Discoverer",
+      "genre_hopper": "Genre Hopper",
+      "repeat_master": "Repeat Master"
+    },
+    "topGenre": "Most played genre: {genre}",
+    "allStats": "All statistics",
+    "share": {
+      "title": "Share your month",
+      "hint": "Cards for Stories, Reels, TikTok (9:16) or a post (square). Only your own numbers, only when you download them.",
+      "story": "9:16",
+      "square": "Square",
+      "kinds": {
+        "summary": "Month in numbers",
+        "artist": "Top artist",
+        "song": "Top song",
+        "discovery": "Biggest discovery",
+        "score": "Discovery Score"
+      }
+    },
+    "card": {
+      "heading": "My {month} on Tunewick",
+      "question": "What did you discover?",
+      "listening": "of listening",
+      "songs": "songs",
+      "newArtists": "new artists",
+      "countries": "countries",
+      "score": "Discovery Score",
+      "newSongs": "new songs",
+      "underground": "underground finds",
+      "topArtist": "Top artist",
+      "topSong": "Top song",
+      "discovery": "Biggest discovery",
+      "plays": "{count, plural, one {# play} other {# plays}}",
+      "since": "{time} of listening since discovering"
     }
   }
 }

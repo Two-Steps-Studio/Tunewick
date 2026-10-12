@@ -1043,6 +1043,27 @@ export type Database = {
           },
         ];
       };
+      listening_recaps: {
+        Row: {
+          created_at: string;
+          month: string;
+          stats: NonNullable<Json>;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          month: string;
+          stats: NonNullable<Json>;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string;
+          month?: string;
+          stats?: NonNullable<Json>;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
       moderation_decisions: {
         Row: {
           action: string;
@@ -2931,6 +2952,7 @@ export type Database = {
           xp: number;
         }[];
       };
+      my_month_recap: { Args: { month_start: string }; Returns: Json };
       my_plan: {
         Args: Record<PropertyKey, never>;
         Returns: {

@@ -102,3 +102,12 @@ states, mobile and desktop layouts, EN/PL, tests, and its line in §4.
   7/30/90 days and this year, server-rendered SVG bar charts (one validated hue `#7657ff`, hover
   titles, table view), personality card, tops, discoveries, empty/loading/error states.
   pgTAP `listening_stats.test.sql`, unit tests, e2e `stats.spec.ts`.
+- **M14.6 done** — `20261012110000_monthly_recaps`: `my_month_recap(month)` returns the local
+  month's `listening_stats`; a finished month is stored in `listening_recaps` (own-row RLS, in the
+  data export, deleted with the account) from its second day, so pages and cards read one row; the
+  running month is live and never stored; no recap before joining or in the future. Page
+  `/you/recap?m=YYYY-MM` (`/ty/podsumowanie`): numbers, Discovery Score, #1 artist and song, biggest
+  discovery, personality and top genre, month navigation, empty states. Cards
+  `/api/cards/recap?month&kind=summary|artist|song|discovery|score&format=story|square` (private,
+  signed-in only, 404 when the month has nothing for that kind). pgTAP `monthly_recaps.test.sql`,
+  e2e `recap.spec.ts`.
