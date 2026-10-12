@@ -54,6 +54,12 @@ First with `apply` off — it lists applied and pending migrations and does a dr
 (the id in `https://<ref>.supabase.co`). Add required reviewers to the `production` environment to
 make every run wait for approval.
 
+Without GitHub secrets either: `node scripts/build-migration-bundle.mjs > bundle.sql` builds one
+script for Supabase → **SQL Editor**. It applies only the migrations missing from
+`supabase_migrations.schema_migrations` and records them as the CLI does (so `db push` keeps
+working), runs as a single transaction (a failure changes nothing) and is safe to run again. It
+refuses a database that has the tables but no migration records.
+
 Order with a release that needs new tables: migrations first, then promote the Vercel deployment
 (an app built for a newer schema fails on an older database).
 
