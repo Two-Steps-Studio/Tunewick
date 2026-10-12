@@ -11397,4 +11397,32 @@ $tw_20261012160000$;
   end if;
 end $run$;
 
+-- 20261012170000_admin_is_moderator.sql
+do $run$ begin
+  if not exists (select 1 from supabase_migrations.schema_migrations where version = '20261012170000') then
+    execute $tw_20261012170000$-- Admins can do everything moderators can. The app already treats them so (public.is_staff(),
+-- requireStaff in the web app), but staff functions check public.has_app_role('moderator') via
+-- require_staff, which matched the exact role only — an admin saw the moderation queue and was
+-- then refused every decision. Roles stay separate rows: a moderator still isn't an admin.
+
+create or replace function public.has_app_role(required public.app_role)
+returns boolean
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select exists (
+    select 1
+    from public.user_roles ur
+    where ur.user_id = (select auth.uid())
+      and (ur.role = required or (required = 'moderator' and ur.role = 'admin'))
+  );
+$$;
+$tw_20261012170000$;
+    insert into supabase_migrations.schema_migrations (version, name) values ('20261012170000', 'admin_is_moderator');
+    raise notice 'applied 20261012170000_admin_is_moderator.sql';
+  end if;
+end $run$;
+
 select version, name from supabase_migrations.schema_migrations order by version desc limit 5;
