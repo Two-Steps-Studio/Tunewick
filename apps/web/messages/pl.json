@@ -1251,7 +1251,8 @@
     "terms": "Regulamin",
     "artistTerms": "Regulamin dla artystów",
     "privacy": "Polityka prywatności",
-    "contentPolicy": "Zasady treści i zgłoszeń"
+    "contentPolicy": "Zasady treści i zgłoszeń",
+    "forArtists": "Dla artystów"
   },
   "Browse": {
     "title": "Przeglądaj",
@@ -2309,5 +2310,78 @@
     "events": "Nadchodzące wydarzenia",
     "venues": "Miejsca",
     "upcoming": "{count, plural, =0 {brak nadchodzących wydarzeń} one {# nadchodzące wydarzenie} few {# nadchodzące wydarzenia} many {# nadchodzących wydarzeń} other {# nadchodzącego wydarzenia}}"
+  },
+  "ForArtists": {
+    "eyebrow": "Dla artystów",
+    "title": "Twoja muzyka odkryta przez ludzi, którzy jej szukają",
+    "lead": "Tunewick powstał dla niezależnej muzyki: słuchacze przychodzą tu odkrywać, a cały serwis jest zbudowany tak, żeby pokazywać im nowych artystów — a nie powtarzać tego, co już popularne.",
+    "ctaSignUp": "Załóż konto",
+    "ctaCreate": "Utwórz profil artysty",
+    "terms": "Przeczytaj regulamin dla artystów",
+    "why": "Dlaczego Tunewick",
+    "reasons": {
+      "rights": {
+        "title": "Prawa zostają przy Tobie",
+        "text": "Publikując udzielasz niewyłącznej licencji na streaming wyłącznie w Tunewick — bez pobierania i bez przekazywania innym serwisom. Wydanie możesz wycofać, kiedy chcesz."
+      },
+      "quality": {
+        "title": "Bezstratnie i sprawdzone",
+        "text": "Wgrywasz mastery WAV, AIFF, FLAC lub ALAC. Słuchacze słyszą AAC wysokiej jakości, a z Premium bezstratny FLAC — każdy plik jest porównywany z Twoim masterem przed publikacją."
+      },
+      "fair": {
+        "title": "Tylko prawdziwi słuchacze",
+        "text": "Odtworzenie liczy się od 30 sekund. Rankingi i listy liczą ludzi, nie odtworzenia — zapętlanie i boty niczego nie zmieniają."
+      },
+      "discovery": {
+        "title": "Stworzony do odkrywania",
+        "text": "Daily Discovery, Weekly Drop, Underground i Zyskujący pokazują nowych i małych artystów słuchaczom, którzy szukają czegoś nowego."
+      },
+      "stats": {
+        "title": "Poznaj swoich słuchaczy",
+        "text": "Zobacz nowych słuchaczy tydzień po tygodniu, skąd są i ile osób Cię odkryło — w liczbach zbiorczych, które nigdy nie wskazują konkretnej osoby."
+      },
+      "share": {
+        "title": "Do udostępniania",
+        "text": "Każdy utwór ma swoją stronę do udostępnienia, karty 9:16 z kodem QR i krótkie klipy wideo na Reels, TikToka i Shorts."
+      }
+    },
+    "how": "Jak to działa",
+    "steps": {
+      "profile": {
+        "title": "1. Utwórz profil artysty",
+        "text": "Nazwa, miasto, gatunki, linki i zdjęcie. Zaproś do zespołu muzyków albo managera."
+      },
+      "upload": {
+        "title": "2. Wgraj wydanie",
+        "text": "Mastery do 4 GB, okładka i twórcy. Deklarujesz swoje prawa; wydanie jest sprawdzane przed publikacją."
+      },
+      "found": {
+        "title": "3. Daj się odkryć",
+        "text": "Twoja muzyka trafia do odkrywania, list przebojów i na mapę muzyki. Śledź liczby w panelu artysty."
+      }
+    },
+    "faq": "Pytania",
+    "questions": {
+      "cost": {
+        "q": "Ile to kosztuje?",
+        "a": "W becie publikowanie jest bezpłatne, a Tunewick nie ma przychodów, więc nie ma jeszcze wypłat. Słuchaczy i odtworzenia zapisujemy już co miesiąc; zasady wypłat (model „user-centric”: opłata słuchacza trafia do artystów, których słucha) opublikujemy i poprosimy o Twoją zgodę, zanim zaczniemy pobierać opłaty."
+      },
+      "rights": {
+        "q": "Czy oddaję jakieś prawa?",
+        "a": "Nie. Prawa autorskie i pokrewne zostają przy Tobie. Udzielasz niewyłącznej licencji na streaming w Tunewick, dopóki wydanie jest opublikowane."
+      },
+      "formats": {
+        "q": "Jakie pliki mogę wgrać?",
+        "a": "WAV/BWF/RF64, AIFF, FLAC lub ALAC (.m4a), do 4 GB i do 4 godzin. Plików stratnych nie przyjmujemy jako masterów."
+      },
+      "withdraw": {
+        "q": "Czy mogę wycofać muzykę?",
+        "a": "Tak. Poproś z konta właściciela lub managera, a wydanie zostanie wycofane w ciągu 7 dni; wtedy kończy się licencja."
+      },
+      "where": {
+        "q": "Gdzie mogą być moi słuchacze?",
+        "a": "Wszędzie. Słuchacze odkrywają muzykę według kraju, miasta i gatunku — Twoje wydanie może trafić do ludzi daleko od miejsca, w którym powstało."
+      }
+    }
   }
 }

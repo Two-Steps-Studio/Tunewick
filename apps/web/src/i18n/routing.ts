@@ -20,6 +20,7 @@ export const routing = defineRouting({
     // Shared links: the same path in every language (tunewick.com/song/artist/song).
     "/song/[artist]/[song]": "/song/[artist]/[song]",
     "/scene": { pl: "/scena", en: "/scene" },
+    "/for-artists": { pl: "/dla-artystow", en: "/for-artists" },
     "/atlas": { pl: "/atlas", en: "/atlas" },
     "/atlas/[country]": { pl: "/atlas/[country]", en: "/atlas/[country]" },
     "/atlas/[country]/[city]": { pl: "/atlas/[country]/[city]", en: "/atlas/[country]/[city]" },

@@ -1251,7 +1251,8 @@
     "terms": "Terms of Service",
     "artistTerms": "Artist Terms",
     "privacy": "Privacy Policy",
-    "contentPolicy": "Content and Reporting Policy"
+    "contentPolicy": "Content and Reporting Policy",
+    "forArtists": "For artists"
   },
   "Browse": {
     "title": "Browse",
@@ -2309,5 +2310,78 @@
     "events": "Coming up",
     "venues": "Venues",
     "upcoming": "{count, plural, =0 {no upcoming events} one {# upcoming event} other {# upcoming events}}"
+  },
+  "ForArtists": {
+    "eyebrow": "For artists",
+    "title": "Your music, found by people who are looking for it",
+    "lead": "Tunewick is built for independent music: listeners come here to discover, and the service is designed to put new artists in front of them — not to recycle what is already popular.",
+    "ctaSignUp": "Create an account",
+    "ctaCreate": "Create your artist profile",
+    "terms": "Read the artist terms",
+    "why": "Why Tunewick",
+    "reasons": {
+      "rights": {
+        "title": "Your rights stay yours",
+        "text": "Publishing grants a non-exclusive licence to stream your music on Tunewick only — no downloads, no passing it to other services. Withdraw a release whenever you want."
+      },
+      "quality": {
+        "title": "Lossless, checked",
+        "text": "Upload WAV, AIFF, FLAC or ALAC masters. Listeners hear high-quality AAC, Premium listeners lossless FLAC — and every file is checked against your master before it goes live."
+      },
+      "fair": {
+        "title": "Real listeners only",
+        "text": "A play counts from 30 seconds. Rankings and charts count people, not plays, so looping and bots change nothing."
+      },
+      "discovery": {
+        "title": "Made for discovery",
+        "text": "Daily Discovery, the Weekly Drop, Underground and Rising put new and small artists in front of listeners who are looking for something new."
+      },
+      "stats": {
+        "title": "Know your listeners",
+        "text": "See new listeners week by week, where they are and how many discovered you — as aggregates that never expose a single listener."
+      },
+      "share": {
+        "title": "Built to be shared",
+        "text": "Every song has a share page, 9:16 story cards with a QR code and short video clips for Reels, TikTok and Shorts."
+      }
+    },
+    "how": "How it works",
+    "steps": {
+      "profile": {
+        "title": "1. Create your artist profile",
+        "text": "Name, city, genres, links and a photo. Invite your bandmates or manager to the team."
+      },
+      "upload": {
+        "title": "2. Upload your release",
+        "text": "Masters up to 4 GB, cover art and credits. You declare your rights; the release is reviewed before it is published."
+      },
+      "found": {
+        "title": "3. Get discovered",
+        "text": "Your music enters discovery, charts and the music map. Follow the numbers on your dashboard."
+      }
+    },
+    "faq": "Questions",
+    "questions": {
+      "cost": {
+        "q": "What does it cost?",
+        "a": "During the beta publishing is free and Tunewick has no revenue, so there are no payouts yet. Listeners and plays are already recorded every month; the payout rules (user-centric: a listener's fee goes to the artists they listen to) will be published, and your consent asked, before any fees start."
+      },
+      "rights": {
+        "q": "Do I give up any rights?",
+        "a": "No. Copyright and related rights stay with you. You grant a non-exclusive licence for streaming on Tunewick while the release is published."
+      },
+      "formats": {
+        "q": "Which files can I upload?",
+        "a": "WAV/BWF/RF64, AIFF, FLAC or ALAC (.m4a), up to 4 GB and up to 4 hours. Lossy files are not accepted as masters."
+      },
+      "withdraw": {
+        "q": "Can I take my music down?",
+        "a": "Yes. Ask from an owner or manager account and the release is withdrawn within 7 days; the licence ends then."
+      },
+      "where": {
+        "q": "Where can my listeners be?",
+        "a": "Anywhere. Listeners discover music by country, city and genre — your release can reach people far from where it was made."
+      }
+    }
   }
 }

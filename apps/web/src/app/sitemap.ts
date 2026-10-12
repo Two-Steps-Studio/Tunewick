@@ -18,6 +18,7 @@ const STATIC: Href[] = [
   "/today",
   "/charts",
   "/atlas",
+  "/for-artists",
   "/scene",
   "/browse",
   "/rankings",
