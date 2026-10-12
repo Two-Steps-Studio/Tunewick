@@ -2,7 +2,7 @@ import { jsonLd } from "@/lib/site";
 
 /** Structured data for search engines (schema.org JSON-LD), rendered on the server. */
 export function JsonLd({ data }: { data: Record<string, unknown> }) {
-  // eslint-disable-next-line react/no-danger -- serialized by jsonLd(), which escapes "<"
+  // Serialized by jsonLd(), which escapes "<" so the data cannot close the script tag.
   return <script type="application/ld+json" dangerouslySetInnerHTML={jsonLd(data)} />;
 }
 
