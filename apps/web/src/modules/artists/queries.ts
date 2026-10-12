@@ -1,9 +1,10 @@
 import "server-only";
 
+import { cache } from "react";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 /** Public artist page data; RLS hides suspended artists from non-members. */
-export async function getArtistBySlug(slug: string) {
+export const getArtistBySlug = cache(async (slug: string) => {
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase
     .from("artists")
@@ -14,7 +15,7 @@ export async function getArtistBySlug(slug: string) {
     .maybeSingle();
   if (error) throw error;
   return data;
-}
+});
 
 /** Memberships and pending invitations of the signed-in user. */
 export async function getMyArtists(userId: string) {

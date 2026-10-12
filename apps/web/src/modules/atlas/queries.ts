@@ -1,5 +1,6 @@
 import "server-only";
 
+import { publicQuery } from "@/lib/supabase/public";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export interface AtlasCountry {
@@ -37,12 +38,16 @@ export interface AtlasCountryPage {
   }[];
 }
 
-export async function getAtlasCountry(code: string): Promise<AtlasCountryPage | null> {
-  const supabase = await createSupabaseServerClient();
-  const { data, error } = await supabase.rpc("atlas_country", { code });
-  if (error) throw error;
-  return (data as unknown as AtlasCountryPage | null) ?? null;
-}
+/** The same for every visitor: cached for five minutes. */
+export const getAtlasCountry = publicQuery(
+  "atlas:country",
+  300,
+  async (supabase, code: string): Promise<AtlasCountryPage | null> => {
+    const { data, error } = await supabase.rpc("atlas_country", { code });
+    if (error) throw error;
+    return (data as unknown as AtlasCountryPage | null) ?? null;
+  },
+);
 
 export interface AtlasCityPage {
   artists: { slug: string; name: string; image_id: string | null }[];
@@ -59,12 +64,16 @@ export interface AtlasCityPage {
   }[];
 }
 
-export async function getAtlasCity(code: string, city: string): Promise<AtlasCityPage | null> {
-  const supabase = await createSupabaseServerClient();
-  const { data, error } = await supabase.rpc("atlas_city", { code, city });
-  if (error) throw error;
-  return (data as unknown as AtlasCityPage | null) ?? null;
-}
+/** The same for every visitor: cached for five minutes. */
+export const getAtlasCity = publicQuery(
+  "atlas:city",
+  300,
+  async (supabase, code: string, city: string): Promise<AtlasCityPage | null> => {
+    const { data, error } = await supabase.rpc("atlas_city", { code, city });
+    if (error) throw error;
+    return (data as unknown as AtlasCityPage | null) ?? null;
+  },
+);
 
 /** "PL" ↔ "pl" in URLs; null when it is not a country code. */
 export function parseCountryParam(value: string): string | null {
