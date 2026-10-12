@@ -9,7 +9,9 @@ export async function getMyAccount(userId: string) {
     supabase.from("profiles").select("handle, display_name, bio").eq("id", userId).single(),
     supabase
       .from("profile_settings")
-      .select("locale, activity_visibility")
+      .select(
+        "locale, activity_visibility, profile_public, stats_visibility, score_visibility, badges_visibility, replay_visibility",
+      )
       .eq("user_id", userId)
       .single(),
   ]);

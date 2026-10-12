@@ -1467,7 +1467,8 @@
       "hint": "Previews count as listening time; plays are full-player listens of at least 30 seconds.",
       "more": "More statistics →",
       "recap": "Monthly recap →",
-      "replay": "Replay →"
+      "replay": "Replay →",
+      "friends": "Friends →"
     },
     "recap": {
       "title": "Your week",
@@ -2168,5 +2169,73 @@
       "score": "Discovery Score",
       "question": "What did you discover?"
     }
+  },
+  "Friends": {
+    "title": "Friends",
+    "signedOut": "Sign in to see what your friends discover.",
+    "signIn": "Sign in",
+    "loading": "Looking at your friends…",
+    "back": "← You",
+    "lead": "The people you follow — as far as each of them allows.",
+    "findPeople": "Find people",
+    "privacy": "Choose what others see about you →",
+    "ranking": {
+      "title": "Ranking among friends",
+      "period": "Period",
+      "periods": {
+        "week": "This week",
+        "month": "This month",
+        "all": "All time"
+      },
+      "empty": "Follow people to compare discoveries with them.",
+      "you": "You",
+      "xp": "{xp} XP",
+      "hint": "Only people whose score is visible to you take part."
+    },
+    "activity": {
+      "title": "What friends discovered",
+      "empty": "Nothing from your friends in the last 30 days.",
+      "newArtist": "<who></who> discovered <artist></artist>",
+      "badge": "<who></who> unlocked “{badge}”"
+    }
+  },
+  "ProfileDiscovery": {
+    "title": "Discovery",
+    "hidden": "{name} keeps their discoveries private.",
+    "score": "Discovery Score",
+    "level": "Level",
+    "title_": "Rank",
+    "last30": "Last 30 days",
+    "listening": "Listening time",
+    "newArtists": "New artists",
+    "newSongs": "New songs",
+    "badges": "Badges ({count})",
+    "noBadges": "No badges yet.",
+    "common": "In common with you · {percent} of your artists match",
+    "noCommon": "Nothing in common yet — a good reason to listen to each other's finds.",
+    "replay": "Replay {year}",
+    "replayLine": "{minutes} minutes of music, {artists} new artists.",
+    "replayArtist": "Artist of the year:"
+  },
+  "DiscoveryPrivacy": {
+    "title": "Discovery privacy",
+    "lead": "Decide who sees your discoveries. Blocked people never see anything.",
+    "profilePublic": "Public profile",
+    "profilePublicHint": "Off: nobody but you sees your score, badges, statistics or Replay, whatever the settings below.",
+    "fields": {
+      "stats": "Statistics and discoveries",
+      "score": "Discovery Score and rankings among friends",
+      "badges": "Badges",
+      "replay": "Replay"
+    },
+    "levels": {
+      "public": "Everyone",
+      "followers": "People who follow me",
+      "private": "Only me"
+    },
+    "save": "Save privacy",
+    "saving": "Saving…",
+    "saved": "Saved.",
+    "error": "Could not save. Try again."
   }
 }

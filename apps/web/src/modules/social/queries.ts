@@ -74,3 +74,60 @@ export async function compareWith(handle: string, days: number) {
   if (error) throw error;
   return data as unknown as { me: DiscoverySummary; them: DiscoverySummary } | null;
 }
+
+export type FriendsPeriod = "week" | "month" | "all";
+
+/** You and the people you follow (whose score is visible to you), ranked by XP. */
+export async function getFriendsLeaderboard(period: FriendsPeriod) {
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase.rpc("friends_leaderboard", { period });
+  if (error) throw error;
+  return data ?? [];
+}
+
+/** New artists and badges of the people you follow (last 30 days, as far as they allow). */
+export async function getFriendsActivity() {
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase.rpc("friends_activity", { max_results: 40 });
+  if (error) throw error;
+  return data ?? [];
+}
+
+export interface CommonGround {
+  artists: { slug: string; name: string }[];
+  genres: { slug: string; name_pl: string; name_en: string }[];
+  match: number;
+}
+
+/** Artists and genres you share with a person; null when their stats are not visible to you. */
+export async function getCommonGround(handle: string): Promise<CommonGround | null> {
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase.rpc("common_ground", { handle });
+  if (error) throw error;
+  return (data as unknown as CommonGround | null) ?? null;
+}
+
+export interface ProfileOverview {
+  score: { xp: number; discovery_xp: number; genre_spread: number[] } | null;
+  badges: { code: string; at: string }[] | null;
+  stats: {
+    listening_ms: number;
+    active_days: number;
+    new_artists: number;
+    new_songs: number;
+  } | null;
+  replay: {
+    year: number;
+    minutes: number;
+    new_artists: number;
+    top_artist: { name: string; slug: string } | null;
+  } | null;
+}
+
+/** A profile's score, badges and last 30 days — each part only if its owner lets you see it. */
+export async function getProfileOverview(handle: string): Promise<ProfileOverview | null> {
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase.rpc("profile_overview", { handle });
+  if (error) throw error;
+  return (data as unknown as ProfileOverview | null) ?? null;
+}

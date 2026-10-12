@@ -120,3 +120,13 @@ states, mobile and desktop layouts, EN/PL, tests, and its line in §4.
   story player (progress bars, tap/←/→/space, hold to pause, pauses in hidden tabs, no autoplay
   with reduced motion), year vs year, Replay card `/api/cards/replay` (9:16 / square, private).
   Unit tests, pgTAP `replay.test.sql`, e2e `replay.spec.ts`.
+- **M14.8 done** — `20261012130000_social_discovery`, all behind `private.can_view` and the owner's
+  switches (blocks hide everything both ways, a private profile hides all of it):
+  `friends_leaderboard(period)` (you + people you follow whose score you may see),
+  `friends_activity()` (new artists — stats switch; badges — badges switch; last 30 days),
+  `common_ground(handle)` (shared artists/genres of the last 90 days and how many of your artists
+  match — stats switch), `profile_overview(handle)` (score/level, badges, last 30 days, latest
+  finished Replay — each by its switch; visitors get public parts only). UI: `/you/friends`
+  (`/ty/znajomi`) ranking + activity; the profile's discovery section with common ground; the
+  "Discovery privacy" form in Settings (public profile + who sees statistics, score, badges,
+  Replay). pgTAP `social_discovery.test.sql` (15), e2e `friends.spec.ts`.

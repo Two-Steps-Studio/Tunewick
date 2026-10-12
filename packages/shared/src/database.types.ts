@@ -2615,6 +2615,7 @@ export type Database = {
           object_key: string;
         }[];
       };
+      common_ground: { Args: { handle: string }; Returns: Json };
       compare_with: { Args: { days?: number; handle: string }; Returns: Json };
       complete_audio_upload: {
         Args: { upload: string };
@@ -2845,6 +2846,31 @@ export type Database = {
           type: string;
         }[];
       };
+      friends_activity: {
+        Args: { max_results?: number };
+        Returns: {
+          artist_image_id: string;
+          artist_name: string;
+          artist_slug: string;
+          at: string;
+          badge: string;
+          country_code: string;
+          display_name: string;
+          handle: string;
+          kind: string;
+        }[];
+      };
+      friends_leaderboard: {
+        Args: { period?: string };
+        Returns: {
+          discoveries: number;
+          display_name: string;
+          handle: string;
+          is_me: boolean;
+          points: number;
+          rank: number;
+        }[];
+      };
       has_app_role: {
         Args: { required: Database["public"]["Enums"]["app_role"] };
         Returns: boolean;
@@ -3056,6 +3082,7 @@ export type Database = {
           venue_name: string;
         }[];
       };
+      profile_overview: { Args: { handle: string }; Returns: Json };
       profile_playlists: {
         Args: { profile: string };
         Returns: {

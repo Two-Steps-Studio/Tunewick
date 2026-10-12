@@ -95,3 +95,39 @@ export async function deleteAccount(
     locale: await getLocale(),
   });
 }
+
+const LEVELS = ["public", "followers", "private"] as const;
+type Level = (typeof LEVELS)[number];
+const DISCOVERY_PRIVACY_FIELDS = ["stats", "score", "badges", "replay"] as const;
+
+export interface DiscoveryPrivacyState {
+  saved?: boolean;
+  error?: "unexpected";
+}
+
+/** Who sees the listener's statistics, score, badges and Replay, and whether the profile is public. */
+export async function updateDiscoveryPrivacy(
+  _prev: DiscoveryPrivacyState,
+  formData: FormData,
+): Promise<DiscoveryPrivacyState> {
+  const level = (name: string): Level | null => {
+    const value = String(formData.get(name) ?? "");
+    return (LEVELS as readonly string[]).includes(value) ? (value as Level) : null;
+  };
+  const values = Object.fromEntries(DISCOVERY_PRIVACY_FIELDS.map((f) => [f, level(f)]));
+  if (Object.values(values).some((v) => v === null)) return { error: "unexpected" };
+  const supabase = await createSupabaseServerClient();
+  const { data: auth } = await supabase.auth.getUser();
+  if (!auth.user) return { error: "unexpected" };
+  const { error } = await supabase
+    .from("profile_settings")
+    .update({
+      profile_public: formData.get("profilePublic") === "on",
+      stats_visibility: values.stats as Level,
+      score_visibility: values.score as Level,
+      badges_visibility: values.badges as Level,
+      replay_visibility: values.replay as Level,
+    })
+    .eq("user_id", auth.user.id);
+  return error ? { error: "unexpected" } : { saved: true };
+}

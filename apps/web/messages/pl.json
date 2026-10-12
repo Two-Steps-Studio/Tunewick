@@ -1467,7 +1467,8 @@
       "hint": "Fragmenty liczą się do czasu słuchania; odtworzenia to słuchanie w odtwarzaczu przez co najmniej 30 sekund.",
       "more": "Więcej statystyk →",
       "recap": "Podsumowanie miesiąca →",
-      "replay": "Replay →"
+      "replay": "Replay →",
+      "friends": "Znajomi →"
     },
     "recap": {
       "title": "Twój tydzień",
@@ -2168,5 +2169,73 @@
       "score": "Discovery Score",
       "question": "A co Ty odkryłeś/aś?"
     }
+  },
+  "Friends": {
+    "title": "Znajomi",
+    "signedOut": "Zaloguj się, aby zobaczyć, co odkrywają Twoi znajomi.",
+    "signIn": "Zaloguj się",
+    "loading": "Zaglądamy do znajomych…",
+    "back": "← Ty",
+    "lead": "Osoby, które obserwujesz — w takim zakresie, na jaki każda z nich pozwala.",
+    "findPeople": "Znajdź ludzi",
+    "privacy": "Wybierz, co inni widzą o Tobie →",
+    "ranking": {
+      "title": "Ranking wśród znajomych",
+      "period": "Okres",
+      "periods": {
+        "week": "Ten tydzień",
+        "month": "Ten miesiąc",
+        "all": "Od początku"
+      },
+      "empty": "Obserwuj ludzi, aby porównywać z nimi odkrycia.",
+      "you": "Ty",
+      "xp": "{xp} XP",
+      "hint": "Biorą udział tylko osoby, których wynik jest dla Ciebie widoczny."
+    },
+    "activity": {
+      "title": "Co odkryli znajomi",
+      "empty": "Brak aktywności znajomych w ostatnich 30 dniach.",
+      "newArtist": "<who></who> odkrywa: <artist></artist>",
+      "badge": "<who></who> — odznaka „{badge}”"
+    }
+  },
+  "ProfileDiscovery": {
+    "title": "Odkrywanie",
+    "hidden": "{name} nie pokazuje swoich odkryć.",
+    "score": "Discovery Score",
+    "level": "Poziom",
+    "title_": "Ranga",
+    "last30": "Ostatnie 30 dni",
+    "listening": "Czas słuchania",
+    "newArtists": "Nowi artyści",
+    "newSongs": "Nowe utwory",
+    "badges": "Odznaki ({count})",
+    "noBadges": "Jeszcze bez odznak.",
+    "common": "Wspólne z Tobą · {percent} Twoich artystów się pokrywa",
+    "noCommon": "Na razie nic wspólnego — dobry powód, żeby posłuchać nawzajem swoich odkryć.",
+    "replay": "Replay {year}",
+    "replayLine": "{minutes} minut muzyki, {artists} nowych artystów.",
+    "replayArtist": "Artysta roku:"
+  },
+  "DiscoveryPrivacy": {
+    "title": "Prywatność odkryć",
+    "lead": "Zdecyduj, kto widzi Twoje odkrycia. Zablokowane osoby nie widzą niczego.",
+    "profilePublic": "Publiczny profil",
+    "profilePublicHint": "Wyłączony: nikt poza Tobą nie widzi Twojego wyniku, odznak, statystyk ani Replay, niezależnie od ustawień poniżej.",
+    "fields": {
+      "stats": "Statystyki i odkrycia",
+      "score": "Discovery Score i ranking wśród znajomych",
+      "badges": "Odznaki",
+      "replay": "Replay"
+    },
+    "levels": {
+      "public": "Wszyscy",
+      "followers": "Osoby, które mnie obserwują",
+      "private": "Tylko ja"
+    },
+    "save": "Zapisz prywatność",
+    "saving": "Zapisywanie…",
+    "saved": "Zapisano.",
+    "error": "Nie udało się zapisać. Spróbuj ponownie."
   }
 }

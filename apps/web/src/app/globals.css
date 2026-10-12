@@ -4061,3 +4061,81 @@ body {
     color: var(--text-muted);
   }
 }
+
+@layer components {
+  /* Friends and profile discovery (M14.8) -------------------------------------- */
+  .friends-board,
+  .friends-feed {
+    display: grid;
+    gap: var(--tk-space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .friends-board li {
+    display: grid;
+    grid-template-columns: 2rem minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--tk-space-3);
+    padding: var(--tk-space-3);
+    background: var(--bg-raised);
+  }
+  .friends-board li.is-me {
+    box-shadow: inset 4px 0 0 #7657ff;
+  }
+  .friends-board__rank {
+    font-family: var(--tk-font-mono);
+    color: var(--text-muted);
+  }
+  .friends-board__points {
+    font-variant-numeric: tabular-nums;
+    font-size: var(--tk-text-sm);
+  }
+  .friends-feed li {
+    display: grid;
+    grid-template-columns: 3rem minmax(0, 1fr);
+    align-items: center;
+    gap: var(--tk-space-3);
+  }
+  .friends-feed p {
+    margin: 0;
+  }
+  .friends-feed small {
+    display: block;
+    color: var(--text-muted);
+  }
+  .friends-feed__badge {
+    width: 3rem;
+    aspect-ratio: 1;
+    background: var(--accent);
+    clip-path: polygon(50% 0, 100% 38%, 82% 100%, 18% 100%, 0 38%);
+  }
+  .profile-discovery {
+    display: grid;
+    gap: var(--tk-space-4);
+  }
+  .profile-discovery__sub {
+    margin: 0;
+    font-size: var(--tk-text-base);
+    font-weight: 700;
+  }
+  .stat-tile__text {
+    font-size: var(--tk-text-lg) !important;
+  }
+  .profile-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--tk-space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .profile-badges li {
+    padding: var(--tk-space-1) var(--tk-space-3);
+    font-size: var(--tk-text-sm);
+    box-shadow: inset 0 0 0 1px var(--line);
+  }
+  .profile-common {
+    margin: 0;
+  }
+}
