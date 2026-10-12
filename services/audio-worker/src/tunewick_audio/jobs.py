@@ -132,27 +132,52 @@ def run_once(queue: Queue, storage: Storage) -> bool:
     return True
 
 
-def run_forever(queue: Queue, storage: Storage, poll_seconds: float) -> None:
-    """Audio, images, share clips, the storage sweep, then backfills; sleeps when all are idle."""
-    from .clips import run_clip_once
-    from .image_jobs import run_image_once
-    from .reanalysis import run_reanalysis_once
-    from .sweep import run_sweep_once
+def run_forever(
+    queue: Queue,
+    storage: Storage,
+    poll_seconds: float,
+    idle_exit: float | None = None,
+    *,
+    steps: tuple[Any, ...] | None = None,
+    backfill: Any = None,
+    sleep: Any = time.sleep,
+    clock: Any = time.monotonic,
+) -> None:
+    """Audio, images, share clips, the storage sweep, then backfills; sleeps when all are idle.
 
-    log.info(json.dumps({"event": "worker_started", "poll_seconds": poll_seconds}))
+    With `idle_exit`, returns after that many seconds without any work — on Fly.io the machine then
+    stops and costs nothing until the database wakes it (supabase/migrations/*_worker_wake.sql).
+    """
+    if steps is None or backfill is None:
+        from .clips import run_clip_once
+        from .image_jobs import run_image_once
+        from .reanalysis import run_reanalysis_once
+        from .sweep import run_sweep_once
+
+        steps = steps or (run_once, run_image_once, run_clip_once, run_sweep_once)
+        backfill = backfill or run_reanalysis_once
+
+    started = {"event": "worker_started", "poll_seconds": poll_seconds, "idle_exit": idle_exit}
+    log.info(json.dumps(started))
+    last_work = clock()
     while True:
         busy = False
-        for step in (run_once, run_image_once, run_clip_once, run_sweep_once):
+        for step in steps:
             try:
-                busy = step(queue, storage) or busy  # type: ignore[arg-type]
+                busy = step(queue, storage) or busy
             except Exception:
                 # Queue unreachable (network, Supabase restart): wait and try again.
                 log.exception(json.dumps({"event": "queue_error", "step": step.__name__}))
         if not busy:
             # Backfills only when nothing new is waiting.
             try:
-                busy = run_reanalysis_once(queue, storage)  # type: ignore[arg-type]
+                busy = backfill(queue, storage)
             except Exception:
-                log.exception(json.dumps({"event": "queue_error", "step": "run_reanalysis_once"}))
-        if not busy:
-            time.sleep(poll_seconds)
+                log.exception(json.dumps({"event": "queue_error", "step": backfill.__name__}))
+        if busy:
+            last_work = clock()
+            continue
+        if idle_exit is not None and clock() - last_work >= idle_exit:
+            log.info(json.dumps({"event": "worker_idle_exit", "idle_seconds": idle_exit}))
+            return
+        sleep(poll_seconds)

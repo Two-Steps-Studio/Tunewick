@@ -1,5 +1,7 @@
-# Fly.io app for the audio worker (docs/deployment.md §3b). Deployed by the "Deploy audio worker"
-# workflow; no public ports — it only polls the Supabase queue and reads/writes R2.
+# Fly.io app for the audio worker (docs/deployment.md §3b), deployed by the "Deploy audio worker"
+# workflow. It costs only while it works: the worker exits after 2 idle minutes and the machine
+# stops; the database sends a request to https://<app>.fly.dev/wake when there is work, and the Fly
+# proxy starts the machine again (supabase/migrations/*_worker_wake.sql).
 app = "tunewick-audio"
 primary_region = "fra"
 
@@ -8,7 +10,22 @@ primary_region = "fra"
   build-target = "production"
 
 [processes]
-  app = "worker --poll 5"
+  app = "worker --poll 5 --idle-exit 120 --http-port 8080"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_start_machines = true
+  # The worker stops itself when the queue is empty; the proxy must not stop it mid-job.
+  auto_stop_machines = "off"
+  min_machines_running = 0
+  processes = ["app"]
+
+# A clean exit (idle) leaves the machine stopped; a crash restarts it.
+[[restart]]
+  policy = "on-failure"
+  retries = 5
+  processes = ["app"]
 
 [[vm]]
   size = "shared-cpu-1x"
