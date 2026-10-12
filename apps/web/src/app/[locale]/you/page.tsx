@@ -217,6 +217,9 @@ export default async function YouPage({ params, searchParams }: PageProps<"/[loc
           <Link href="/you/recap" className="button">
             {t("stats.recap")}
           </Link>
+          <Link href="/you/replay" className="button">
+            {t("stats.replay")}
+          </Link>
         </p>
       </section>
 

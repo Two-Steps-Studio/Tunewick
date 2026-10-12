@@ -1466,7 +1466,8 @@
       },
       "hint": "Previews count as listening time; plays are full-player listens of at least 30 seconds.",
       "more": "More statistics →",
-      "recap": "Monthly recap →"
+      "recap": "Monthly recap →",
+      "replay": "Replay →"
     },
     "recap": {
       "title": "Your week",
@@ -2043,6 +2044,129 @@
       "discovery": "Biggest discovery",
       "plays": "{count, plural, one {# play} other {# plays}}",
       "since": "{time} of listening since discovering"
+    }
+  },
+  "Replay": {
+    "title": "TuneWick Replay",
+    "signedOut": "Sign in to see your year in music.",
+    "signIn": "Sign in",
+    "loading": "Rewinding your year…",
+    "back": "← You",
+    "years": "Years",
+    "previous": "← {year}",
+    "next": "{year} →",
+    "heading": "Replay {year}",
+    "tooLittle": "Too little listening this year for a story yet. Keep listening — your Replay grows with you.",
+    "outside": "There is no Replay for this year.",
+    "startListening": "Start listening",
+    "plays": "{count, plural, one {# play} other {# plays}}",
+    "player": {
+      "previous": "Previous",
+      "next": "Next",
+      "pause": "Pause",
+      "play": "Play",
+      "screen": "screen"
+    },
+    "intro": {
+      "title": "Your {year} in music",
+      "complete": "A whole year, told by your listening.",
+      "soFar": "Your year so far — it keeps growing until 31 December."
+    },
+    "minutes": {
+      "title": "Minutes listened",
+      "note": "{time} over {days, plural, one {# day} other {# days}}."
+    },
+    "firstSong": {
+      "title": "Your first song of the year",
+      "note": "{artist} · {date}"
+    },
+    "topMonth": {
+      "title": "Your biggest month",
+      "chart": "Listening per month",
+      "note": "{time} of music."
+    },
+    "topDay": {
+      "title": "Your biggest day",
+      "note": "{time} in one day."
+    },
+    "topArtist": {
+      "title": "Your artist of the year"
+    },
+    "topArtists": {
+      "title": "Your top artists"
+    },
+    "topSong": {
+      "title": "Your song of the year"
+    },
+    "topSongs": {
+      "title": "Your top songs"
+    },
+    "topAlbum": {
+      "title": "Your release of the year"
+    },
+    "topGenre": {
+      "title": "Your genre of the year",
+      "note": "Out of {count, plural, one {# genre} other {# genres}} you played."
+    },
+    "countries": {
+      "title": "Countries in your ears"
+    },
+    "newArtists": {
+      "title": "New artists discovered",
+      "note": "And {songs, plural, one {# song} other {# songs}} you heard for the first time."
+    },
+    "discovery": {
+      "title": "Your discovery of the year",
+      "note": "{time} of listening since you found them."
+    },
+    "underground": {
+      "title": "Underground finds",
+      "note": "Artists you found while they were still small."
+    },
+    "listeningTime": {
+      "title": "Your hour",
+      "note": "{share} of your plays were at night."
+    },
+    "streak": {
+      "title": "Your longest discovery streak",
+      "days": "{count, plural, one {# day} other {# days}}",
+      "note": "Something new every day, in a row."
+    },
+    "personality": {
+      "title": "Your music personality",
+      "types": {
+        "explorer": "Explorer",
+        "night_listener": "Night Listener",
+        "underground_hunter": "Underground Hunter",
+        "global_discoverer": "Global Discoverer",
+        "genre_hopper": "Genre Hopper",
+        "repeat_master": "Repeat Master"
+      }
+    },
+    "score": {
+      "title": "Your Discovery Score",
+      "note": "Earned by discovering — new songs, artists, genres and countries."
+    },
+    "vs": {
+      "title": "Compared with {year}",
+      "minutes": "Minutes",
+      "newArtists": "New artists",
+      "score": "Discovery Score"
+    },
+    "outro": {
+      "title": "That was your {year}",
+      "note": "Share it — and see what your friends discovered.",
+      "story": "Download for Stories (9:16)",
+      "square": "Square card"
+    },
+    "card": {
+      "heading": "My Replay {year}",
+      "minutes": "minutes",
+      "topArtist": "artist of the year",
+      "artists": "artists",
+      "newArtists": "new artists",
+      "score": "Discovery Score",
+      "question": "What did you discover?"
     }
   }
 }

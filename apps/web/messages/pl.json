@@ -1466,7 +1466,8 @@
       },
       "hint": "Fragmenty liczą się do czasu słuchania; odtworzenia to słuchanie w odtwarzaczu przez co najmniej 30 sekund.",
       "more": "Więcej statystyk →",
-      "recap": "Podsumowanie miesiąca →"
+      "recap": "Podsumowanie miesiąca →",
+      "replay": "Replay →"
     },
     "recap": {
       "title": "Twój tydzień",
@@ -2043,6 +2044,129 @@
       "discovery": "Największe odkrycie",
       "plays": "{count, plural, one {# odtworzenie} few {# odtworzenia} many {# odtworzeń} other {# odtworzenia}}",
       "since": "{time} słuchania od odkrycia"
+    }
+  },
+  "Replay": {
+    "title": "TuneWick Replay",
+    "signedOut": "Zaloguj się, aby zobaczyć swój rok w muzyce.",
+    "signIn": "Zaloguj się",
+    "loading": "Przewijamy Twój rok…",
+    "back": "← Ty",
+    "years": "Lata",
+    "previous": "← {year}",
+    "next": "{year} →",
+    "heading": "Replay {year}",
+    "tooLittle": "W tym roku jest jeszcze za mało słuchania na historię. Słuchaj dalej — Twój Replay rośnie razem z Tobą.",
+    "outside": "Dla tego roku nie ma Replay.",
+    "startListening": "Zacznij słuchać",
+    "plays": "{count, plural, one {# odtworzenie} few {# odtworzenia} many {# odtworzeń} other {# odtworzenia}}",
+    "player": {
+      "previous": "Poprzedni",
+      "next": "Następny",
+      "pause": "Pauza",
+      "play": "Odtwarzaj",
+      "screen": "ekran"
+    },
+    "intro": {
+      "title": "Twój {year} w muzyce",
+      "complete": "Cały rok opowiedziany Twoim słuchaniem.",
+      "soFar": "Twój rok do tej pory — rośnie aż do 31 grudnia."
+    },
+    "minutes": {
+      "title": "Minut słuchania",
+      "note": "{time} w {days, plural, one {# dzień} other {# dni}}."
+    },
+    "firstSong": {
+      "title": "Twój pierwszy utwór roku",
+      "note": "{artist} · {date}"
+    },
+    "topMonth": {
+      "title": "Twój największy miesiąc",
+      "chart": "Słuchanie miesiąc po miesiącu",
+      "note": "{time} muzyki."
+    },
+    "topDay": {
+      "title": "Twój największy dzień",
+      "note": "{time} w jeden dzień."
+    },
+    "topArtist": {
+      "title": "Twój artysta roku"
+    },
+    "topArtists": {
+      "title": "Twoi top artyści"
+    },
+    "topSong": {
+      "title": "Twój utwór roku"
+    },
+    "topSongs": {
+      "title": "Twoje top utwory"
+    },
+    "topAlbum": {
+      "title": "Twoje wydanie roku"
+    },
+    "topGenre": {
+      "title": "Twój gatunek roku",
+      "note": "Spośród {count, plural, one {# gatunku} other {# gatunków}}, których słuchasz."
+    },
+    "countries": {
+      "title": "Kraje w Twoich słuchawkach"
+    },
+    "newArtists": {
+      "title": "Nowi odkryci artyści",
+      "note": "I {songs, plural, one {# utwór} few {# utwory} many {# utworów} other {# utworu}} usłyszanych po raz pierwszy."
+    },
+    "discovery": {
+      "title": "Twoje odkrycie roku",
+      "note": "{time} słuchania od chwili odkrycia."
+    },
+    "underground": {
+      "title": "Odkrycia z podziemia",
+      "note": "Artyści znalezieni, zanim zrobiło się o nich głośno."
+    },
+    "listeningTime": {
+      "title": "Twoja godzina",
+      "note": "{share} Twoich odtworzeń było nocą."
+    },
+    "streak": {
+      "title": "Najdłuższa seria odkryć",
+      "days": "{count, plural, one {# dzień} other {# dni}}",
+      "note": "Coś nowego każdego dnia, z rzędu."
+    },
+    "personality": {
+      "title": "Twoja muzyczna osobowość",
+      "types": {
+        "explorer": "Odkrywca",
+        "night_listener": "Nocny słuchacz",
+        "underground_hunter": "Łowca podziemia",
+        "global_discoverer": "Globalny odkrywca",
+        "genre_hopper": "Gatunkowy wędrowiec",
+        "repeat_master": "Mistrz powtórek"
+      }
+    },
+    "score": {
+      "title": "Twój Discovery Score",
+      "note": "Zdobyty za odkrywanie — nowe utwory, artystów, gatunki i kraje."
+    },
+    "vs": {
+      "title": "W porównaniu z {year}",
+      "minutes": "Minuty",
+      "newArtists": "Nowi artyści",
+      "score": "Discovery Score"
+    },
+    "outro": {
+      "title": "Tak wyglądał Twój {year}",
+      "note": "Udostępnij go — i zobacz, co odkryli znajomi.",
+      "story": "Pobierz do Stories (9:16)",
+      "square": "Karta kwadratowa"
+    },
+    "card": {
+      "heading": "Mój Replay {year}",
+      "minutes": "minut",
+      "topArtist": "artysta roku",
+      "artists": "artystów",
+      "newArtists": "nowych artystów",
+      "score": "Discovery Score",
+      "question": "A co Ty odkryłeś/aś?"
     }
   }
 }

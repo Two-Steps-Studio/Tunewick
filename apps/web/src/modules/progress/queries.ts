@@ -8,6 +8,7 @@ import {
   type Goal,
   type Level,
   type ProgressInput,
+  type ReplayData,
 } from "@tunewick/shared";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
@@ -346,4 +347,12 @@ export async function getMyToday(): Promise<string> {
   const { data, error } = await supabase.rpc("my_today");
   if (error) throw error;
   return data;
+}
+
+/** The signed-in listener's Replay for a year; null outside their years. */
+export async function getMyReplay(year: number): Promise<ReplayData | null> {
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase.rpc("my_replay", { replay_year: year });
+  if (error) throw error;
+  return (data as unknown as ReplayData | null) ?? null;
 }

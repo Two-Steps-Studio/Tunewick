@@ -11,6 +11,7 @@ export const routing = defineRouting({
     "/you": { pl: "/ty", en: "/you" },
     "/you/stats": { pl: "/ty/statystyki", en: "/you/stats" },
     "/you/recap": { pl: "/ty/podsumowanie", en: "/you/recap" },
+    "/you/replay": { pl: "/ty/replay", en: "/you/replay" },
     "/you/compare/[handle]": { pl: "/ty/porownaj/[handle]", en: "/you/compare/[handle]" },
     "/rankings": { pl: "/rankingi", en: "/rankings" },
     "/charts": { pl: "/listy", en: "/charts" },

@@ -111,3 +111,12 @@ states, mobile and desktop layouts, EN/PL, tests, and its line in §4.
   `/api/cards/recap?month&kind=summary|artist|song|discovery|score&format=story|square` (private,
   signed-in only, 404 when the month has nothing for that kind). pgTAP `monthly_recaps.test.sql`,
   e2e `recap.spec.ts`.
+- **M14.7 done** — `20261012120000_replay`: `my_replay(year)` = the year's `listening_stats`,
+  listening per month, the first song of the year and the same stretch of the year before (for a
+  running year, 1 Jan → today vs the same dates a year earlier); finished years stored in
+  `listening_replays` (own-row RLS, export, account deletion) from 2 January. `replayStory()` in
+  `@tunewick/shared` builds up to 18 screens from real data only (screens without data are left
+  out; smaller facts give way first; no story below 10 plays). `/you/replay?y=` (`/ty/replay`):
+  story player (progress bars, tap/←/→/space, hold to pause, pauses in hidden tabs, no autoplay
+  with reduced motion), year vs year, Replay card `/api/cards/replay` (9:16 / square, private).
+  Unit tests, pgTAP `replay.test.sql`, e2e `replay.spec.ts`.

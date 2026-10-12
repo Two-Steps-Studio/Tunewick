@@ -1064,6 +1064,27 @@ export type Database = {
         };
         Relationships: [];
       };
+      listening_replays: {
+        Row: {
+          created_at: string;
+          data: NonNullable<Json>;
+          user_id: string;
+          year: number;
+        };
+        Insert: {
+          created_at?: string;
+          data: NonNullable<Json>;
+          user_id: string;
+          year: number;
+        };
+        Update: {
+          created_at?: string;
+          data?: NonNullable<Json>;
+          user_id?: string;
+          year?: number;
+        };
+        Relationships: [];
+      };
       moderation_decisions: {
         Row: {
           action: string;
@@ -2997,6 +3018,7 @@ export type Database = {
         }[];
       };
       my_records: { Args: Record<PropertyKey, never>; Returns: Json };
+      my_replay: { Args: { replay_year: number }; Returns: Json };
       my_share_clips: {
         Args: Record<PropertyKey, never>;
         Returns: {
