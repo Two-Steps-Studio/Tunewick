@@ -2237,5 +2237,36 @@
     "saving": "Zapisywanie…",
     "saved": "Zapisano.",
     "error": "Nie udało się zapisać. Spróbuj ponownie."
+  },
+  "ArtistDiscovery": {
+    "title": "Odkrywanie",
+    "rising": "Zyskujący #{place}",
+    "fewer": "poniżej 3",
+    "listeners30": "Słuchacze · 30 dni",
+    "listeners7": "Słuchacze · 7 dni",
+    "discovered": "Odkryło · 30 dni",
+    "score": "Discovery Score · 30 dni",
+    "places": "Słuchają w:",
+    "hint": "Tylko prawdziwi słuchacze (odtworzenie liczy się od 30 sekund). Liczby poniżej 3 są ukryte, żeby nie dało się wskazać konkretnej osoby.",
+    "why": {
+      "title": "Dlaczego {name} może Ci się spodobać",
+      "friends": "Odkryli ich: {names}",
+      "related": "Słuchasz pokrewnych artystów: {artists}",
+      "genres": "Grają gatunki, które lubisz: {genres}"
+    },
+    "team": {
+      "title": "Odkrywanie — Twoi słuchacze",
+      "lead": "Ostatnie 12 tygodni. Nowi słuchacze: osoby, które w danym tygodniu zagrały Cię po raz pierwszy.",
+      "newListeners": "Nowi słuchacze",
+      "listeners": "Słuchacze",
+      "table": "Pokaż jako tabelę",
+      "week": "Tydzień od {date}",
+      "weekColumn": "Tydzień",
+      "empty": "W ostatnich 12 tygodniach nie było jeszcze słuchaczy.",
+      "countries": "Kraje (3+ słuchaczy)",
+      "cities": "Miasta (3+ słuchaczy)",
+      "charts": "Zobacz listy przebojów →"
+    },
+    "early": "{name} dopiero tu startuje — mniej niż 3 słuchaczy w ostatnich 30 dniach. Posłuchaj jako jedna z pierwszych osób."
   }
 }

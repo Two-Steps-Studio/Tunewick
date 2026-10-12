@@ -2465,6 +2465,16 @@ export type Database = {
         }[];
       };
       artist_copyright_strikes: { Args: { artist: string }; Returns: number };
+      artist_discovery: { Args: { artist: string }; Returns: Json };
+      artist_discovery_weeks: {
+        Args: { artist: string };
+        Returns: {
+          discoveries: number;
+          listeners: number;
+          new_listeners: number;
+          week: string;
+        }[];
+      };
       artist_follower_count: { Args: { artist: string }; Returns: number };
       artist_monthly_listening: {
         Args: { artist: string };
@@ -3304,6 +3314,7 @@ export type Database = {
           voivodeship: Database["public"]["Enums"]["voivodeship"];
         }[];
       };
+      why_artist_for_me: { Args: { artist: string }; Returns: Json };
       withdraw_release_submission: { Args: { release: string }; Returns: undefined };
       world_tracks: {
         Args: { exclude_country?: string; max_results?: number };

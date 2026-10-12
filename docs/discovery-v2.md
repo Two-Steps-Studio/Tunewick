@@ -130,3 +130,12 @@ states, mobile and desktop layouts, EN/PL, tests, and its line in §4.
   (`/ty/znajomi`) ranking + activity; the profile's discovery section with common ground; the
   "Discovery privacy" form in Settings (public profile + who sees statistics, score, badges,
   Replay). pgTAP `social_discovery.test.sql` (15), e2e `friends.spec.ts`.
+- **M14.9 done** — `20261012140000_artist_discovery`, aggregates only (counts under 3 are null,
+  places need 3+ listeners): `artist_discovery(artist)` (public: listeners 7/30 days and growth,
+  discovered by, the XP those discoveries earned = the artist's 30-day Discovery Score, place in
+  Rising, countries and cities of listeners from their own preferences), `artist_discovery_weeks`
+  (team only: new listeners, discoveries and listeners per week, 12 weeks),
+  `why_artist_for_me(artist)` (the caller's own genres and related artists they play, followed
+  people who discovered the artist — behind their stats switch). Artist page: "Discovery" section
+  with a Rising badge and "Why you might like…"; small artists get one honest sentence instead of
+  empty numbers. Manage page: weekly bar charts and places. pgTAP `artist_discovery.test.sql`.

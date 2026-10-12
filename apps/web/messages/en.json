@@ -2237,5 +2237,36 @@
     "saving": "Saving…",
     "saved": "Saved.",
     "error": "Could not save. Try again."
+  },
+  "ArtistDiscovery": {
+    "title": "Discovery",
+    "rising": "Rising #{place}",
+    "fewer": "under 3",
+    "listeners30": "Listeners · 30 days",
+    "listeners7": "Listeners · 7 days",
+    "discovered": "Discovered by · 30 days",
+    "score": "Discovery Score · 30 days",
+    "places": "Listened to in",
+    "hint": "Real listeners only (a play counts from 30 seconds). Numbers under 3 are hidden so no listener can be singled out.",
+    "why": {
+      "title": "Why you might like {name}",
+      "friends": "{names} discovered them",
+      "related": "You listen to related artists: {artists}",
+      "genres": "They play genres you like: {genres}"
+    },
+    "team": {
+      "title": "Discovery — your listeners",
+      "lead": "Last 12 weeks. New listeners: people who played you for the first time that week.",
+      "newListeners": "New listeners",
+      "listeners": "Listeners",
+      "table": "Show as table",
+      "week": "Week of {date}",
+      "weekColumn": "Week",
+      "empty": "No listeners in the last 12 weeks yet.",
+      "countries": "Countries (3+ listeners)",
+      "cities": "Cities (3+ listeners)",
+      "charts": "See the charts →"
+    },
+    "early": "{name} is just starting out here — fewer than 3 listeners in the last 30 days. Be one of the first."
   }
 }

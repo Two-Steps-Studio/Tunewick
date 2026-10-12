@@ -4139,3 +4139,55 @@ body {
     margin: 0;
   }
 }
+
+@layer components {
+  /* Artist discovery (M14.9) ---------------------------------------------------- */
+  .artist-discovery {
+    --chart-bar: #7657ff;
+    display: grid;
+    gap: var(--tk-space-4);
+  }
+  .artist-discovery .section-title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--tk-space-3);
+  }
+  .artist-discovery__rising {
+    padding: var(--tk-space-1) var(--tk-space-2);
+    font-family: var(--tk-font-mono);
+    font-size: var(--tk-text-xs);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #171515;
+    background: var(--tk-lime, #d8ff3e);
+  }
+  .artist-discovery__change {
+    margin-left: var(--tk-space-2);
+    font-size: var(--tk-text-sm);
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+  .artist-discovery__places {
+    margin: 0;
+  }
+  .artist-discovery__why {
+    padding: var(--tk-space-4);
+    background: var(--bg-raised);
+    box-shadow: inset 4px 0 0 #7657ff;
+  }
+  .artist-discovery__why h3 {
+    margin: 0 0 var(--tk-space-2);
+    font-size: var(--tk-text-base);
+  }
+  .artist-discovery__why ul {
+    margin: 0;
+    padding-left: var(--tk-space-4);
+  }
+}
+@layer components {
+  .artist-discovery__early {
+    margin: 0;
+    font-size: var(--tk-text-lg);
+  }
+}

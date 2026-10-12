@@ -136,3 +136,50 @@ export async function getRelatedArtists(artistId: string) {
     evidence: (row.evidence ?? {}) as Record<string, string | number>,
   }));
 }
+
+export interface ArtistDiscoveryStats {
+  listeners_7d: number | null;
+  listeners_prev_7d: number | null;
+  listeners_30d: number | null;
+  new_listeners_7d: number | null;
+  discovered_30d: number | null;
+  score_30d: number | null;
+  rising_place: number | null;
+  places: {
+    countries: { code: string; listeners: number }[];
+    cities: { city: string; country: string | null; listeners: number }[];
+  };
+}
+
+/** An artist's discovery numbers (aggregates; counts under 3 listeners are null). */
+export async function getArtistDiscoveryStats(artistId: string) {
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase.rpc("artist_discovery", { artist: artistId });
+  if (error) throw error;
+  return (data as unknown as ArtistDiscoveryStats | null) ?? null;
+}
+
+export interface WhyArtist {
+  listened: boolean;
+  genres: { slug: string; name_pl: string; name_en: string }[];
+  related: { slug: string; name: string }[];
+  friends: { handle: string; name: string }[];
+}
+
+/** Why the signed-in listener might like this artist (their own listening; null signed out). */
+export async function getWhyArtistForMe(artistId: string) {
+  const supabase = await createSupabaseServerClient();
+  const { data: auth } = await supabase.auth.getClaims();
+  if (!auth?.claims) return null;
+  const { data, error } = await supabase.rpc("why_artist_for_me", { artist: artistId });
+  if (error) throw error;
+  return (data as unknown as WhyArtist | null) ?? null;
+}
+
+/** The team's weekly series for the last 12 weeks (members only). */
+export async function getArtistDiscoveryWeeks(artistId: string) {
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase.rpc("artist_discovery_weeks", { artist: artistId });
+  if (error) throw error;
+  return data ?? [];
+}
