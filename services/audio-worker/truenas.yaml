@@ -1,0 +1,33 @@
+# TuneWick audio worker on TrueNAS SCALE (24.10 or newer):
+# Apps → Discover Apps → ⋮ → Install via YAML → name "tunewick-audio" → paste this → fill in the
+# five values marked FILL IN → Save. No ports: the worker only connects out to Supabase and R2.
+# Update to a new version: Apps → tunewick-audio → Update (or ⋮ → Pull image, then Restart).
+services:
+  worker:
+    image: ghcr.io/two-steps-studio/tunewick-audio:latest
+    command: ["worker", "--poll", "5"]
+    restart: unless-stopped
+    pull_policy: always
+    environment:
+      TUNEWICK_SUPABASE_URL: "https://crpttoejcjmnnrvmgify.supabase.co"
+      # FILL IN: Supabase → Project Settings → API Keys → secret key (sb_secret_…)
+      TUNEWICK_SUPABASE_SECRET_KEY: ""
+      # FILL IN: R2 endpoint without the bucket name, e.g. https://<account-id>.r2.cloudflarestorage.com
+      MEDIA_S3_ENDPOINT: ""
+      MEDIA_S3_REGION: "auto"
+      # FILL IN: R2 token (Object Read & Write on both buckets)
+      MEDIA_S3_ACCESS_KEY_ID: ""
+      # FILL IN
+      MEDIA_S3_SECRET_ACCESS_KEY: ""
+      # FILL IN: the upload bucket (R2_BUCKET_NAME in Vercel)
+      MEDIA_INGEST_BUCKET: ""
+      MEDIA_BUCKET: "tunewick-media"
+    deploy:
+      resources:
+        limits:
+          memory: 2g
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
