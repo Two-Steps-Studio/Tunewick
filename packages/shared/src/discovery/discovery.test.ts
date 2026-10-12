@@ -13,6 +13,9 @@ import {
   tuneWeights,
   TUNING,
   explain,
+  musicPersonality,
+  PERSONALITIES,
+  type PersonalityStats,
   periodSeed,
   pickDaily,
   pickWeekly,
@@ -479,5 +482,50 @@ describe("why this song", () => {
       key: "small",
       values: { listeners: 8000 },
     });
+  });
+});
+
+describe("music personality", () => {
+  const base: PersonalityStats = {
+    plays: 100,
+    tracks: 60,
+    artists: 40,
+    countries: 2,
+    night_plays: 10,
+    new_artists: 5,
+    underground: 2,
+    top_genres: [{ plays: 80 }, { plays: 10 }, { plays: 10 }],
+  };
+
+  it("needs enough listening", () => {
+    expect(musicPersonality({ ...base, plays: 19 })).toBeNull();
+  });
+
+  it("finds a night listener", () => {
+    const result = musicPersonality({ ...base, night_plays: 60 });
+    expect(result?.personality).toBe("night_listener");
+    expect(result?.traits.map((t) => t.personality)).toEqual(["night_listener"]);
+  });
+
+  it("picks the strongest trait relative to its threshold", () => {
+    // 30/40 new artists = 0.75 (1.5× threshold); 7 countries = 1.17×.
+    const result = musicPersonality({ ...base, new_artists: 30, countries: 7 });
+    expect(result?.personality).toBe("explorer");
+    expect(result?.traits.map((t) => t.personality)).toEqual(["explorer", "global_discoverer"]);
+  });
+
+  it("counts even genres as hopping and repeats as mastery", () => {
+    const hopper = {
+      ...base,
+      top_genres: [{ plays: 30 }, { plays: 30 }, { plays: 25 }, { plays: 15 }],
+    };
+    expect(musicPersonality(hopper)?.personality).toBe("genre_hopper");
+    expect(musicPersonality({ ...base, tracks: 10 })?.personality).toBe("repeat_master");
+  });
+
+  it("falls back to the closest trait when none holds", () => {
+    const result = musicPersonality(base);
+    expect(result?.traits).toEqual([]);
+    expect(PERSONALITIES).toContain(result?.personality);
   });
 });

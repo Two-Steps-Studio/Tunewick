@@ -54,6 +54,12 @@ First with `apply` off — it lists applied and pending migrations and does a dr
 (the id in `https://<ref>.supabase.co`). Add required reviewers to the `production` environment to
 make every run wait for approval.
 
+Without GitHub secrets either: `node scripts/build-migration-bundle.mjs > bundle.sql` builds one
+script for Supabase → **SQL Editor**. It applies only the migrations missing from
+`supabase_migrations.schema_migrations` and records them as the CLI does (so `db push` keeps
+working), runs as a single transaction (a failure changes nothing) and is safe to run again. It
+refuses a database that has the tables but no migration records.
+
 Order with a release that needs new tables: migrations first, then promote the Vercel deployment
 (an app built for a newer schema fails on an older database).
 
@@ -103,6 +109,11 @@ Until these variables exist the editor says "audio upload is coming soon" — no
    | `MEDIA_S3_SECRET_ACCESS_KEY` | token secret (mark *Sensitive*) |
    | `MEDIA_INGEST_BUCKET` | `tunewick-ingest` |
 
+   The web app also accepts Cloudflare's usual names when the `MEDIA_*` ones are absent:
+   `R2_ENDPOINT`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_BUCKET_NAME` (the ingest bucket),
+   `R2_REGION`, `R2_MEDIA_BUCKET`; an endpoint copied with the bucket appended works too. The audio
+   worker (§3b) reads only the `MEDIA_*` names.
+
    Redeploy. Locally the same variables point at `pnpm media:start` (SeaweedFS).
 
 ## 3b. Audio worker (Fly.io, EU)
@@ -125,6 +136,11 @@ Until these variables exist the editor says "audio upload is coming soon" — no
    Process command: `worker --poll 5` (the image entrypoint is `python -m tunewick_audio`).
    One shared-cpu machine with 2 GB RAM is enough for the beta; more machines can run side by side
    (jobs are claimed with `FOR UPDATE SKIP LOCKED`).
+   Without a terminal: add repository secrets `FLY_API_TOKEN` (fly.io → Account → Access Tokens),
+   `SUPABASE_SECRET_KEY`, `R2_ENDPOINT`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY` and
+   `R2_BUCKET_NAME`, then GitHub → Actions → **Deploy audio worker** → Run workflow. It creates the
+   Fly app on the first run (`services/audio-worker/fly.toml`), sets the worker's secrets from
+   those and deploys. Re-run it after worker changes.
 4. Check: upload a master in the editor → within a minute the track shows "Gotowe" (ready) and
    the *Listen* button plays it. Worker logs: `fly logs` (one JSON line per job).
 

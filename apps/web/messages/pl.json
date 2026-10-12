@@ -1464,7 +1464,8 @@
         "follows": "Obserwowani artyści",
         "points": "XP"
       },
-      "hint": "Fragmenty liczą się do czasu słuchania; odtworzenia to słuchanie w odtwarzaczu przez co najmniej 30 sekund."
+      "hint": "Fragmenty liczą się do czasu słuchania; odtworzenia to słuchanie w odtwarzaczu przez co najmniej 30 sekund.",
+      "more": "Więcej statystyk →"
     },
     "recap": {
       "title": "Twój tydzień",
@@ -1874,6 +1875,110 @@
       "underground": "{target, plural, one {Znajdź artystę z mniej niż 10 tys. słuchaczy} few {Znajdź # artystów z mniej niż 10 tys. słuchaczy} many {Znajdź # artystów z mniej niż 10 tys. słuchaczy} other {Znajdź # artysty z mniej niż 10 tys. słuchaczy}}",
       "artist_countries": "Odkryj artystów z {target} różnych krajów",
       "daily_set": "Ukończ swoje Daily Discovery"
+    }
+  },
+  "Stats": {
+    "title": "Twoje statystyki",
+    "signedOut": "Zaloguj się, aby zobaczyć, czego, kiedy i jak słuchasz.",
+    "signIn": "Zaloguj się",
+    "loading": "Liczymy Twoje słuchanie…",
+    "back": "← Ty",
+    "period": "Okres",
+    "periods": {
+      "7d": "7 dni",
+      "30d": "30 dni",
+      "90d": "90 dni",
+      "year": "Ten rok"
+    },
+    "empty": "W tym okresie jeszcze nic nie słuchano. Włącz coś, a Twoje statystyki zaczną się tutaj.",
+    "startListening": "Zacznij słuchać",
+    "hourName": "{hour}:00–{hour}:59",
+    "playsCount": "{count, plural, one {# odtworzenie} few {# odtworzenia} many {# odtworzeń} other {# odtworzenia}}",
+    "labels": {
+      "listening": "Czas słuchania",
+      "plays": "Odtworzenia",
+      "activeDays": "Aktywne dni",
+      "songs": "Utwory",
+      "artists": "Artyści",
+      "albums": "Wydania",
+      "genres": "Gatunki",
+      "countries": "Kraje",
+      "newSongs": "Nowe utwory",
+      "newArtists": "Nowi artyści",
+      "underground": "Odkrycia z podziemia",
+      "xp": "Zdobyte XP",
+      "newGenres": "Nowe gatunki",
+      "newCountries": "Nowe kraje",
+      "discoveryXp": "XP za odkrycia",
+      "achievements": "Odblokowane odznaki"
+    },
+    "charts": {
+      "time": "Kiedy słuchasz",
+      "byDay": "Słuchanie dzień po dniu",
+      "byMonth": "Słuchanie miesiąc po miesiącu",
+      "byHour": "Odtworzenia według godziny",
+      "byWeekday": "Słuchanie według dnia tygodnia",
+      "table": "Pokaż jako tabelę",
+      "day": "Dzień",
+      "month": "Miesiąc",
+      "hour": "Godzina",
+      "weekday": "Dzień tygodnia"
+    },
+    "facts": {
+      "topDay": "Twój największy dzień: {day} ({time}).",
+      "topHour": "Najwięcej słuchasz około {hour}:00.",
+      "session": "Najdłuższa sesja: {time}.",
+      "streak": "Najdłuższa seria odkryć: {count, plural, one {# dzień} other {# dni}} z rzędu.",
+      "night": "{share} Twoich odtworzeń było nocą (22:00–05:00)."
+    },
+    "tops": {
+      "artists": "Top artyści",
+      "songs": "Top utwory",
+      "more": "Też na szczycie",
+      "album": "Top wydanie",
+      "genres": "Gatunki",
+      "countries": "Kraje"
+    },
+    "discoveries": {
+      "title": "Odkrycia",
+      "biggest": "Największe odkrycie: <artist></artist> — nowość w tym okresie, od tamtej pory {time} słuchania.",
+      "genre": "Najwięcej odkryć w gatunku {genre}: {count, plural, one {# nowy utwór} few {# nowe utwory} many {# nowych utworów} other {# nowego utworu}}."
+    },
+    "personality": {
+      "title": "Twoja muzyczna osobowość",
+      "notYet": "Posłuchaj trochę więcej w tym okresie, a powiemy Ci, jaka jest Twoja muzyczna osobowość.",
+      "types": {
+        "explorer": {
+          "name": "Odkrywca",
+          "text": "Ciągle sięgasz po artystów, których wcześniej nie znasz.",
+          "trait": "{value} słuchanych artystów to dla Ciebie nowość"
+        },
+        "night_listener": {
+          "name": "Nocny słuchacz",
+          "text": "Twoja muzyka ożywa po zmroku.",
+          "trait": "{value} Twoich odtworzeń było nocą"
+        },
+        "underground_hunter": {
+          "name": "Łowca podziemia",
+          "text": "Znajdujesz artystów, zanim zrobią to inni.",
+          "trait": "mali artyści to {value} wszystkich słuchanych"
+        },
+        "global_discoverer": {
+          "name": "Globalny odkrywca",
+          "text": "Twoje słuchanie przekracza granice.",
+          "trait": "artyści z {value} krajów"
+        },
+        "genre_hopper": {
+          "name": "Gatunkowy wędrowiec",
+          "text": "Żaden gatunek nie trzyma Cię długo.",
+          "trait": "Twój główny gatunek to tylko {value} odtworzeń"
+        },
+        "repeat_master": {
+          "name": "Mistrz powtórek",
+          "text": "Kiedy kochasz utwór, grasz go raz za razem.",
+          "trait": "średnio {value} odtworzenia na utwór"
+        }
+      }
     }
   }
 }

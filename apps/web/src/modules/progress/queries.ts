@@ -218,3 +218,103 @@ export async function getMySeasons() {
   if (error) throw error;
   return data;
 }
+
+export const LISTENING_PERIODS = ["7d", "30d", "90d", "year"] as const;
+export type ListeningPeriod = (typeof LISTENING_PERIODS)[number];
+
+export interface StatsArtist {
+  id: string;
+  slug: string;
+  name: string;
+  country: string | null;
+  image_id: string | null;
+  plays: number;
+  ms: number;
+}
+export interface StatsTrack {
+  id: string;
+  title: string;
+  code: string;
+  artist: string;
+  artist_slug: string;
+  artwork_image_id: string | null;
+  plays: number;
+  ms: number;
+}
+export interface StatsGenre {
+  slug: string;
+  name_pl: string;
+  name_en: string;
+  plays: number;
+}
+
+/** A period of the listener's statistics (`my_listening_stats`). */
+export interface ListeningStats {
+  starts: string;
+  ends: string;
+  listening_ms: number;
+  plays: number;
+  active_days: number;
+  tracks: number;
+  artists: number;
+  albums: number;
+  genres: number;
+  countries: number;
+  by_day: { day: string; ms: number }[];
+  hours: number[];
+  weekdays: number[];
+  night_plays: number;
+  top_day: { day: string; ms: number } | null;
+  longest_session_ms: number;
+  longest_streak: number;
+  top_artists: StatsArtist[];
+  top_tracks: StatsTrack[];
+  top_albums: {
+    id: string;
+    title: string;
+    slug: string;
+    artist: string;
+    artist_slug: string;
+    artwork_image_id: string | null;
+    plays: number;
+  }[];
+  top_genres: StatsGenre[];
+  top_countries: { code: string; plays: number }[];
+  new_songs: number;
+  new_artists: number;
+  new_genres: number;
+  new_countries: number;
+  underground: number;
+  xp: number;
+  discovery_xp: number;
+  achievements: number;
+  biggest_discovery: StatsArtist | null;
+  top_discovered_genre: (Omit<StatsGenre, "plays"> & { songs: number }) | null;
+  genre_spread: number[];
+}
+
+/** Local days [starts, ends) of a period ending today (the year is the calendar year so far). */
+export function periodRange(period: ListeningPeriod, today: string) {
+  const day = (offset: number) => {
+    const d = new Date(`${today}T00:00:00Z`);
+    d.setUTCDate(d.getUTCDate() + offset);
+    return d.toISOString().slice(0, 10);
+  };
+  const ends = day(1);
+  const starts =
+    period === "year"
+      ? `${today.slice(0, 4)}-01-01`
+      : day(1 - { "7d": 7, "30d": 30, "90d": 90 }[period]);
+  return { starts, ends };
+}
+
+/** The signed-in listener's statistics for a period of their local days. */
+export async function getMyListeningStats(period: ListeningPeriod): Promise<ListeningStats> {
+  const supabase = await createSupabaseServerClient();
+  const today = await supabase.rpc("my_today");
+  if (today.error) throw today.error;
+  const { starts, ends } = periodRange(period, today.data);
+  const { data, error } = await supabase.rpc("my_listening_stats", { starts, ends });
+  if (error) throw error;
+  return data as unknown as ListeningStats;
+}

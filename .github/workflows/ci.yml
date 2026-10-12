@@ -117,6 +117,13 @@ jobs:
             echo "::error title=database types::Run pnpm db:types and commit the result."
             exit 1
           }
+      - name: Migration bundle is up to date
+        run: |
+          node scripts/build-migration-bundle.mjs > supabase/bundle/tunewick-migracje.sql
+          git diff --exit-code -- supabase/bundle/tunewick-migracje.sql || {
+            echo "::error title=migration bundle::Run node scripts/build-migration-bundle.mjs > supabase/bundle/tunewick-migracje.sql and commit the result."
+            exit 1
+          }
 
   worker:
     # Audio worker: ruff + pytest in the production image (Debian ffmpeg with libsoxr).

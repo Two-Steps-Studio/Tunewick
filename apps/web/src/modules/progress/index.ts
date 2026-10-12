@@ -8,6 +8,13 @@ export {
   getMyProgress,
   getMyRecords,
   getMyStats,
+  getMyListeningStats,
+  LISTENING_PERIODS,
+  periodRange,
+  type ListeningPeriod,
+  type ListeningStats,
+  type StatsArtist,
+  type StatsTrack,
   getMyWeeklyRecap,
   type ProgressSummary,
   type RankingPeriod,
@@ -16,3 +23,4 @@ export {
   type WeeklyRecap,
 } from "./queries";
 export { MissionList } from "./ui/missions";
+export { BarChart, type Bar } from "./ui/bar-chart";

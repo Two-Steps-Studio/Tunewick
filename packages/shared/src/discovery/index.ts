@@ -4,3 +4,4 @@ export * from "./rank";
 export * from "./tune";
 export * from "./journeys";
 export * from "./why";
+export * from "./personality";
