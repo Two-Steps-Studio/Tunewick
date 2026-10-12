@@ -33,6 +33,7 @@ export function Artwork({
           width={image.width}
           height={image.width}
           loading={priority ? "eager" : "lazy"}
+          fetchPriority={priority ? "high" : undefined}
           decoding="async"
         />
       ) : null}

@@ -1,6 +1,6 @@
 import "server-only";
 
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { publicQuery } from "@/lib/supabase/public";
 
 export const TRACK_CHARTS = [
   "top",
@@ -25,58 +25,69 @@ export interface ChartQuery {
   country: string | null;
 }
 
-export async function getTrackChart(chart: TrackChart, query: ChartQuery, limit = 100) {
-  const supabase = await createSupabaseServerClient();
-  const { data, error } = await supabase.rpc("music_chart", {
-    chart,
-    scope: query.scope,
-    code: query.code ?? undefined,
-    country: query.country ?? undefined,
-    max_results: limit,
-  });
-  if (error) throw error;
-  return data ?? [];
-}
+export const getTrackChart = publicQuery(
+  "charts:getTrackChart",
+  300,
+  async (supabase, chart: TrackChart, query: ChartQuery, limit: number = 100) => {
+    const { data, error } = await supabase.rpc("music_chart", {
+      chart,
+      scope: query.scope,
+      code: query.code ?? undefined,
+      country: query.country ?? undefined,
+      max_results: limit,
+    });
+    if (error) throw error;
+    return data ?? [];
+  },
+);
 
-export async function getArtistChart(chart: ArtistChart, query: ChartQuery, limit = 50) {
-  const supabase = await createSupabaseServerClient();
-  const { data, error } = await supabase.rpc("artist_chart", {
-    chart,
-    scope: query.scope === "city" ? "global" : query.scope,
-    code: query.code ?? undefined,
-    max_results: limit,
-  });
-  if (error) throw error;
-  return data ?? [];
-}
+export const getArtistChart = publicQuery(
+  "charts:getArtistChart",
+  300,
+  async (supabase, chart: ArtistChart, query: ChartQuery, limit: number = 50) => {
+    const { data, error } = await supabase.rpc("artist_chart", {
+      chart,
+      scope: query.scope === "city" ? "global" : query.scope,
+      code: query.code ?? undefined,
+      max_results: limit,
+    });
+    if (error) throw error;
+    return data ?? [];
+  },
+);
 
-export async function getFreshReleases(
-  hours: number,
-  country: string | null,
-  genre: string | null,
-) {
-  const supabase = await createSupabaseServerClient();
-  const { data, error } = await supabase.rpc("fresh_releases", {
-    hours,
-    country: country ?? undefined,
-    genre: genre ?? undefined,
-  });
-  if (error) throw error;
-  return data ?? [];
-}
+export const getFreshReleases = publicQuery(
+  "charts:getFreshReleases",
+  60,
+  async (supabase, hours: number, country: string | null, genre: string | null) => {
+    const { data, error } = await supabase.rpc("fresh_releases", {
+      hours,
+      country: country ?? undefined,
+      genre: genre ?? undefined,
+    });
+    if (error) throw error;
+    return data ?? [];
+  },
+);
 
-export async function getWorldTracks(excludeCountry: string | null) {
-  const supabase = await createSupabaseServerClient();
-  const { data, error } = await supabase.rpc("world_tracks", {
-    exclude_country: excludeCountry ?? undefined,
-  });
-  if (error) throw error;
-  return data ?? [];
-}
+export const getWorldTracks = publicQuery(
+  "charts:getWorldTracks",
+  300,
+  async (supabase, excludeCountry: string | null) => {
+    const { data, error } = await supabase.rpc("world_tracks", {
+      exclude_country: excludeCountry ?? undefined,
+    });
+    if (error) throw error;
+    return data ?? [];
+  },
+);
 
-export async function getMusicCities(country: string) {
-  const supabase = await createSupabaseServerClient();
-  const { data, error } = await supabase.rpc("music_cities", { country });
-  if (error) throw error;
-  return data ?? [];
-}
+export const getMusicCities = publicQuery(
+  "charts:getMusicCities",
+  300,
+  async (supabase, country: string) => {
+    const { data, error } = await supabase.rpc("music_cities", { country });
+    if (error) throw error;
+    return data ?? [];
+  },
+);

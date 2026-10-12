@@ -1,5 +1,6 @@
 import "server-only";
 
+import { cache } from "react";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 /** Releases of an artist; RLS shows drafts only to members and staff. */
@@ -95,7 +96,7 @@ export async function getLatestDeclaration(releaseId: string) {
 }
 
 /** A released release for its public page; null when it does not exist or is not out yet. */
-export async function getPublicRelease(artistSlug: string, releaseSlug: string) {
+export const getPublicRelease = cache(async (artistSlug: string, releaseSlug: string) => {
   const supabase = await createSupabaseServerClient();
   const { data: artist } = await supabase
     .from("artists")
@@ -128,4 +129,4 @@ export async function getPublicRelease(artistSlug: string, releaseSlug: string) 
     .order("track_number");
   if (error) throw error;
   return { artist, release, tracks };
-}
+});

@@ -9,6 +9,9 @@ export async function LegalLinks() {
       <nav aria-label={t("nav")}>
         <ul className="site-footer__links">
           <li>
+            <Link href="/for-artists">{t("forArtists")}</Link>
+          </li>
+          <li>
             <Link href="/terms">{t("terms")}</Link>
           </li>
           <li>

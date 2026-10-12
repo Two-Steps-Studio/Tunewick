@@ -1,5 +1,7 @@
 <!doctype html>
-<html lang="pl">
+<!-- In the account's interface language (user metadata "locale"; printf keeps a missing one
+     comparable), English otherwise. -->
+<html>
   <body
     style="
       margin: 0;
@@ -13,6 +15,7 @@
       <p style="font-size: 28px; font-weight: 800; letter-spacing: -0.03em; margin: 0 0 32px">
         tunewick
       </p>
+      {{ if eq (printf "%v" .Data.locale) "pl" }}
       <h1 style="font-size: 20px; margin: 0 0 12px">Potwierdź swoje konto</h1>
       <p style="line-height: 1.5; margin: 0 0 24px">
         Kliknij przycisk, aby potwierdzić adres e-mail i dokończyć rejestrację w Tunewick.
@@ -31,15 +34,123 @@
           >Potwierdź konto</a
         >
       </p>
-      <hr style="border: 0; border-top: 1px solid #c9c1b3; margin: 0 0 24px" />
-      <h2 style="font-size: 16px; margin: 0 0 8px">Confirm your account</h2>
-      <p style="line-height: 1.5; margin: 0 0 16px">
-        Click the button above to confirm your email address and finish signing up to Tunewick.
+      <p style="font-size: 12px; color: #6e6762; line-height: 1.5">
+        Jeśli to nie Ty zakładałeś(-aś) konto, zignoruj tę wiadomość.
+      </p>
+      {{ else if eq (printf "%v" .Data.locale) "de" }}
+      <h1 style="font-size: 20px; margin: 0 0 12px">Bestätige dein Konto</h1>
+      <p style="line-height: 1.5; margin: 0 0 24px">
+        Klicke auf den Button, um deine E-Mail-Adresse zu bestätigen und deine Registrierung bei
+        Tunewick abzuschließen.
+      </p>
+      <p style="margin: 0 0 32px">
+        <a
+          href="{{ .SiteURL }}/api/auth/confirm?token_hash={{ .TokenHash }}&type=email&next=/"
+          style="
+            display: inline-block;
+            background: #171515;
+            color: #d8ff3e;
+            padding: 14px 20px;
+            text-decoration: none;
+            font-weight: 700;
+          "
+          >Konto bestätigen</a
+        >
       </p>
       <p style="font-size: 12px; color: #6e6762; line-height: 1.5">
-        Jeśli to nie Ty zakładałeś konto, zignoruj tę wiadomość. / If you did not sign up, ignore
-        this email.
+        Wenn du dich nicht registriert hast, ignoriere diese E-Mail.
       </p>
+      {{ else if eq (printf "%v" .Data.locale) "es" }}
+      <h1 style="font-size: 20px; margin: 0 0 12px">Confirma tu cuenta</h1>
+      <p style="line-height: 1.5; margin: 0 0 24px">
+        Haz clic en el botón para confirmar tu correo electrónico y terminar de registrarte en
+        Tunewick.
+      </p>
+      <p style="margin: 0 0 32px">
+        <a
+          href="{{ .SiteURL }}/api/auth/confirm?token_hash={{ .TokenHash }}&type=email&next=/"
+          style="
+            display: inline-block;
+            background: #171515;
+            color: #d8ff3e;
+            padding: 14px 20px;
+            text-decoration: none;
+            font-weight: 700;
+          "
+          >Confirmar cuenta</a
+        >
+      </p>
+      <p style="font-size: 12px; color: #6e6762; line-height: 1.5">
+        Si no te registraste, ignora este correo.
+      </p>
+      {{ else if eq (printf "%v" .Data.locale) "fr" }}
+      <h1 style="font-size: 20px; margin: 0 0 12px">Confirme ton compte</h1>
+      <p style="line-height: 1.5; margin: 0 0 24px">
+        Clique sur le bouton pour confirmer ton adresse e-mail et finaliser ton inscription sur
+        Tunewick.
+      </p>
+      <p style="margin: 0 0 32px">
+        <a
+          href="{{ .SiteURL }}/api/auth/confirm?token_hash={{ .TokenHash }}&type=email&next=/"
+          style="
+            display: inline-block;
+            background: #171515;
+            color: #d8ff3e;
+            padding: 14px 20px;
+            text-decoration: none;
+            font-weight: 700;
+          "
+          >Confirmer mon compte</a
+        >
+      </p>
+      <p style="font-size: 12px; color: #6e6762; line-height: 1.5">
+        Si tu ne t’es pas inscrit·e, ignore cet e-mail.
+      </p>
+      {{ else if eq (printf "%v" .Data.locale) "pt" }}
+      <h1 style="font-size: 20px; margin: 0 0 12px">Confirme sua conta</h1>
+      <p style="line-height: 1.5; margin: 0 0 24px">
+        Clique no botão para confirmar seu e-mail e concluir seu cadastro no Tunewick.
+      </p>
+      <p style="margin: 0 0 32px">
+        <a
+          href="{{ .SiteURL }}/api/auth/confirm?token_hash={{ .TokenHash }}&type=email&next=/"
+          style="
+            display: inline-block;
+            background: #171515;
+            color: #d8ff3e;
+            padding: 14px 20px;
+            text-decoration: none;
+            font-weight: 700;
+          "
+          >Confirmar conta</a
+        >
+      </p>
+      <p style="font-size: 12px; color: #6e6762; line-height: 1.5">
+        Se você não se cadastrou, ignore este e-mail.
+      </p>
+      {{ else }}
+      <h1 style="font-size: 20px; margin: 0 0 12px">Confirm your account</h1>
+      <p style="line-height: 1.5; margin: 0 0 24px">
+        Click the button to confirm your email address and finish signing up to Tunewick.
+      </p>
+      <p style="margin: 0 0 32px">
+        <a
+          href="{{ .SiteURL }}/api/auth/confirm?token_hash={{ .TokenHash }}&type=email&next=/"
+          style="
+            display: inline-block;
+            background: #171515;
+            color: #d8ff3e;
+            padding: 14px 20px;
+            text-decoration: none;
+            font-weight: 700;
+          "
+          >Confirm account</a
+        >
+      </p>
+      <p style="font-size: 12px; color: #6e6762; line-height: 1.5">
+        If you did not sign up, ignore this email.
+      </p>
+      {{ end }}
     </div>
   </body>
 </html>

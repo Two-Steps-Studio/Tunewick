@@ -79,6 +79,14 @@ Settings → Environment Variables (Production **and** Preview):
 (Deployments → latest → Redeploy). No secret key is needed by the web app today; if one is added
 later it must not use the `NEXT_PUBLIC_` prefix (`pnpm check:client-bundle` guards this).
 
+### Public address (SEO)
+
+Set `NEXT_PUBLIC_SITE_URL` (Production) to the public domain, e.g. `https://tunewick.com`, and
+redeploy. Canonical URLs, hreflang alternates, `sitemap.xml`, `robots.txt`, link previews and
+structured data (schema.org JSON-LD for artists, releases, songs and venue events) use it.
+Without it the Vercel production domain is used. After the domain is live, submit
+`https://<domain>/sitemap.xml` in Google Search Console and Bing Webmaster Tools.
+
 ## 3a. Cloudflare R2 (audio masters)
 
 Until these variables exist the editor says "audio upload is coming soon" — nothing breaks.

@@ -190,6 +190,11 @@ body {
   }
 
   .locale-switcher {
+    position: relative;
+  }
+  .locale-switcher > summary {
+    list-style: none;
+    cursor: pointer;
     font-family: var(--tk-font-mono);
     font-size: var(--tk-text-xs);
     letter-spacing: 0.08em;
@@ -197,12 +202,43 @@ body {
     box-shadow: inset 0 0 0 1px var(--line);
     transition: transform var(--tk-dur-press) var(--tk-ease-out);
   }
-  .locale-switcher:active {
+  .locale-switcher > summary::-webkit-details-marker {
+    display: none;
+  }
+  .locale-switcher > summary:active {
     transform: scale(0.97);
   }
   @media (hover: hover) and (pointer: fine) {
-    .locale-switcher:hover {
+    .locale-switcher > summary:hover {
       box-shadow: inset 0 0 0 1px var(--text);
+    }
+  }
+  .locale-switcher__menu {
+    position: absolute;
+    inset-inline-end: 0;
+    top: calc(100% + var(--tk-space-1));
+    z-index: 60;
+    min-width: 10rem;
+    margin: 0;
+    padding: var(--tk-space-1);
+    list-style: none;
+    background: var(--bg-raised, var(--bg));
+    box-shadow:
+      inset 0 0 0 1px var(--line),
+      0 0.5rem 1.5rem rgb(0 0 0 / 0.35);
+  }
+  .locale-switcher__option {
+    display: block;
+    padding: var(--tk-space-2) var(--tk-space-3);
+    font-size: var(--tk-text-sm);
+  }
+  .locale-switcher__option[aria-current] {
+    color: var(--accent);
+    font-weight: 600;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .locale-switcher__option:hover {
+      background: var(--bg-sunken, var(--bg));
     }
   }
 
@@ -4322,6 +4358,109 @@ body {
     width: 4rem;
   }
   .atlas-artists small {
+    color: var(--text-muted);
+  }
+}
+
+@layer components {
+  /* For artists (launch) -------------------------------------------------------- */
+  .for-artists {
+    display: grid;
+    gap: var(--tk-space-12);
+    max-width: 60rem;
+  }
+  .for-artists__hero {
+    display: grid;
+    gap: var(--tk-space-4);
+    padding: var(--tk-space-8) var(--tk-space-6);
+    color: #f2ebdd;
+    background: linear-gradient(160deg, #7657ff 0%, #171515 70%);
+  }
+  .for-artists__eyebrow {
+    margin: 0;
+    font-family: var(--tk-font-mono);
+    font-size: var(--tk-text-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #d8ff3e;
+  }
+  .for-artists__title {
+    margin: 0;
+    font-family: var(--tk-font-display);
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+  .for-artists__lead {
+    margin: 0;
+    max-width: 40rem;
+    font-size: var(--tk-text-lg);
+    color: #ddd5c9;
+  }
+  .for-artists__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--tk-space-3);
+    margin: 0;
+  }
+  .for-artists__hero .button:not(.button--primary) {
+    color: #f2ebdd;
+    box-shadow: inset 0 0 0 1px rgb(242 235 221 / 0.5);
+  }
+  .for-artists__section {
+    display: grid;
+    gap: var(--tk-space-4);
+  }
+  .for-artists__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(16rem, 100%), 1fr));
+    gap: var(--tk-space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .for-artists__card {
+    padding: var(--tk-space-4);
+    background: var(--bg-raised);
+    box-shadow: inset 4px 0 0 #7657ff;
+  }
+  .for-artists__card h3,
+  .for-artists__steps h3 {
+    margin: 0 0 var(--tk-space-2);
+    font-size: var(--tk-text-lg);
+  }
+  .for-artists__card p,
+  .for-artists__steps p {
+    margin: 0;
+    color: var(--text-muted);
+  }
+  .for-artists__steps {
+    display: grid;
+    gap: var(--tk-space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  @media (min-width: 48rem) {
+    .for-artists__steps {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  .for-artists__faq {
+    display: grid;
+    gap: var(--tk-space-2);
+  }
+  .for-artists__faq details {
+    padding: var(--tk-space-3) 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .for-artists__faq summary {
+    cursor: pointer;
+    font-weight: 600;
+  }
+  .for-artists__faq p {
+    margin: var(--tk-space-2) 0 0;
     color: var(--text-muted);
   }
 }

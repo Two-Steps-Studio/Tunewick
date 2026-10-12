@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+import { JsonLd } from "@/components/seo/json-ld";
+import { absoluteUrl } from "@/lib/site";
+import { alternates } from "@/lib/site";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
@@ -8,8 +11,17 @@ import { EventList, getVenue } from "@/modules/events";
 type Params = PageProps<"/[locale]/venues/[slug]">["params"];
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
-  const data = await getVenue(decodeURIComponent((await params).slug));
-  return data ? { title: `${data.venue.name}, ${data.venue.city}` } : {};
+  const { locale, slug } = await params;
+  const data = await getVenue(decodeURIComponent(slug));
+  return data
+    ? {
+        title: `${data.venue.name}, ${data.venue.city}`,
+        alternates: alternates(
+          { pathname: "/venues/[slug]", params: { slug: data.venue.slug } },
+          locale as Locale,
+        ),
+      }
+    : {};
 }
 
 /** A venue's musical identity over time: what is coming and what has played there. */
@@ -23,8 +35,33 @@ export default async function VenuePage({ params }: PageProps<"/[locale]/venues/
   const tReports = await getTranslations("Reports");
   const tPlaces = await getTranslations("Places");
 
+  const place = {
+    "@type": "MusicVenue",
+    name: venue.name,
+    address: [venue.address, venue.city, "PL"].filter(Boolean).join(", "),
+    url: absoluteUrl(
+      { pathname: "/venues/[slug]", params: { slug: venue.slug } },
+      locale as Locale,
+    ),
+  };
   return (
     <section className="discover">
+      <JsonLd
+        data={{
+          ...place,
+          event: upcoming.map((e) => ({
+            "@type": "MusicEvent",
+            name: e.title,
+            startDate: e.starts_at,
+            eventStatus:
+              e.status === "cancelled"
+                ? "https://schema.org/EventCancelled"
+                : "https://schema.org/EventScheduled",
+            eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+            location: { "@type": "MusicVenue", name: venue.name, address: place.address },
+          })),
+        }}
+      />
       <header className="discover__head">
         <p className="artist-badge">{venue.verified ? t("verified") : t("unverified")}</p>
         <h1 className="discover__title">{venue.name}</h1>

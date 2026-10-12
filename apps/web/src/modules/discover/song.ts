@@ -1,5 +1,6 @@
 import "server-only";
 
+import { cache } from "react";
 import { previewWindow, type Json } from "@tunewick/shared";
 import { presignVariantGet } from "@/lib/media/storage";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
@@ -16,7 +17,7 @@ export function parseSongSegment(segment: string): string | null {
  * A public song by its share code, with its preview — for the share page, OG image and cards.
  * Only released music (RLS + explicit check); null for anything else.
  */
-export async function getSharedSong(code: string, coverWidth = 1280) {
+export const getSharedSong = cache(async (code: string, coverWidth = 1280) => {
   const supabase = await createSupabaseServerClient();
   const { data: track } = await supabase
     .from("tracks")
@@ -76,6 +77,6 @@ export async function getSharedSong(code: string, coverWidth = 1280) {
       sources,
     },
   };
-}
+});
 
 export type SharedSong = NonNullable<Awaited<ReturnType<typeof getSharedSong>>>;

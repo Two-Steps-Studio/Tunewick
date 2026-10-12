@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { alternates } from "@/lib/site";
 import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
@@ -12,7 +13,7 @@ export async function generateMetadata({
 }: PageProps<"/[locale]/rankings">): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale: locale as Locale, namespace: "Rankings" });
-  return { title: t("title") };
+  return { title: t("title"), alternates: alternates("/rankings", locale as Locale) };
 }
 
 const PERIODS: RankingPeriod[] = ["week", "month", "season", "last_season", "all"];

@@ -1,5 +1,6 @@
 import { VOIVODESHIPS } from "@tunewick/shared";
 import type { Metadata } from "next";
+import { alternates } from "@/lib/site";
 import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
@@ -16,7 +17,7 @@ export async function generateMetadata({
 }: PageProps<"/[locale]/browse">): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale: locale as Locale, namespace: "Browse" });
-  return { title: t("title") };
+  return { title: t("title"), alternates: alternates("/browse", locale as Locale) };
 }
 
 /**

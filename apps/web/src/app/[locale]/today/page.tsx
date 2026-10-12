@@ -1,5 +1,6 @@
 import { JOURNEYS, WEEKLY_SECTIONS } from "@tunewick/shared";
 import type { Metadata } from "next";
+import { alternates } from "@/lib/site";
 import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
@@ -14,7 +15,7 @@ export async function generateMetadata({
 }: PageProps<"/[locale]/today">): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale: locale as Locale, namespace: "Today" });
-  return { title: t("title") };
+  return { title: t("title"), alternates: alternates("/today", locale as Locale) };
 }
 
 /**

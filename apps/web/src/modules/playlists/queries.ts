@@ -1,5 +1,6 @@
 import "server-only";
 
+import { cache } from "react";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export type PlaylistVisibility = "public" | "unlisted" | "private";
@@ -27,7 +28,7 @@ export async function getMyPlaylists(userId: string) {
  * A playlist the caller may see (owner, or public/unlisted), with its items in order. Items
  * whose music is no longer public are hidden by RLS and reported as `hidden` (a count only).
  */
-export async function getPlaylist(id: string) {
+export const getPlaylist = cache(async (id: string) => {
   const supabase = await createSupabaseServerClient();
   const { data: playlist, error } = await supabase
     .from("playlists")
@@ -72,4 +73,4 @@ export async function getPlaylist(id: string) {
     items: visible,
     hidden: items.data.length - visible.length,
   };
-}
+});

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { alternates } from "@/lib/site";
 import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
 import { ScrollCurrent } from "@/components/feedback/scroll-current";
 import { Link } from "@/i18n/navigation";
@@ -32,7 +33,7 @@ export async function generateMetadata({
 }: PageProps<"/[locale]/charts">): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale: locale as Locale, namespace: "Charts" });
-  return { title: t("title") };
+  return { title: t("title"), alternates: alternates("/charts", locale as Locale) };
 }
 
 const TABS = [...TRACK_CHARTS, "artists", "fresh", "world"] as const;

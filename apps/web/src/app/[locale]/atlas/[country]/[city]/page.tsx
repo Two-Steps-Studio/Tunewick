@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { alternates } from "@/lib/site";
 import { notFound } from "next/navigation";
 import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
@@ -15,9 +16,18 @@ function cityName(param: string) {
 export async function generateMetadata({
   params,
 }: PageProps<"/[locale]/atlas/[country]/[city]">): Promise<Metadata> {
-  const { locale, city } = await params;
+  const { locale, country, city } = await params;
   const t = await getTranslations({ locale: locale as Locale, namespace: "Atlas" });
-  return { title: t("cityTitle", { city: cityName(city) }) };
+  return {
+    title: t("cityTitle", { city: cityName(city) }),
+    alternates: alternates(
+      {
+        pathname: "/atlas/[country]/[city]",
+        params: { country: country.toLowerCase(), city: decodeURIComponent(city).toLowerCase() },
+      },
+      locale as Locale,
+    ),
+  };
 }
 
 /** A city's scene: artists, genres, venues and upcoming events. */

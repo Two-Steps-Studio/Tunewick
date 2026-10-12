@@ -261,11 +261,11 @@ otp_expiry = 3600
 # Tunewick templates link to /api/auth/confirm with a token hash (works across browsers,
 # unlike the PKCE code flow). Production uses the same templates (see docs/security.md §2).
 [auth.email.template.confirmation]
-subject = "Potwierdź konto Tunewick / Confirm your Tunewick account"
+subject = "Tunewick: potwierdź konto / confirm your account"
 content_path = "./supabase/templates/confirmation.html"
 
 [auth.email.template.recovery]
-subject = "Ustaw nowe hasło Tunewick / Reset your Tunewick password"
+subject = "Tunewick: nowe hasło / reset your password"
 content_path = "./supabase/templates/recovery.html"
 
 [auth.sms]

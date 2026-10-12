@@ -1,17 +1,31 @@
 import { getLocale } from "next-intl/server";
+import type { Locale } from "@/i18n/routing";
+import { alternates } from "@/lib/site";
 import { en } from "../content/en";
 import { pl } from "../content/pl";
 import { getOperator } from "../operator";
 import { LEGAL_VERSION, type LegalContent, type LegalDocumentKey } from "../types";
 
+/** Legal texts exist in Polish and English; every other language reads the English version. */
 function contentFor(locale: string): LegalContent {
-  return locale === "en" ? en : pl;
+  return locale === "pl" ? pl : en;
 }
 
 /** Title and lead of a document, for page metadata. */
+const PATHS = {
+  terms: "/terms",
+  artistTerms: "/artist-terms",
+  privacy: "/privacy",
+  contentPolicy: "/content-policy",
+} as const satisfies Record<LegalDocumentKey, string>;
+
 export function legalMeta(locale: string, key: LegalDocumentKey) {
   const doc = contentFor(locale).documents[key];
-  return { title: doc.title, description: doc.lead };
+  return {
+    title: doc.title,
+    description: doc.lead,
+    alternates: alternates(PATHS[key], locale as Locale),
+  };
 }
 
 /** Fills {operator}, {address}, {email} and {version}; a missing operator detail is marked, not invented. */

@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+import { JsonLd } from "@/components/seo/json-ld";
+import { absoluteUrl } from "@/lib/site";
+import { alternates } from "@/lib/site";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
@@ -22,9 +25,26 @@ import { getArtistFollow, LibraryButton } from "@/modules/library";
 export async function generateMetadata({
   params,
 }: PageProps<"/[locale]/artists/[slug]">): Promise<Metadata> {
-  const { slug } = await params;
+  const { locale, slug } = await params;
   const artist = await getArtistBySlug(decodeURIComponent(slug));
-  return artist ? { title: artist.name, description: artist.bio ?? undefined } : {};
+  if (!artist) return {};
+  const photo = await getImageSources(artist.image_id, 1200);
+  return {
+    title: artist.name,
+    description: artist.bio ?? undefined,
+    alternates: alternates(
+      { pathname: "/artists/[slug]", params: { slug: artist.slug } },
+      locale as Locale,
+    ),
+    openGraph: {
+      type: "profile",
+      title: artist.name,
+      description: artist.bio ?? undefined,
+      images: photo
+        ? [{ url: photo.src, width: photo.width, height: photo.width, alt: artist.name }]
+        : undefined,
+    },
+  };
 }
 
 /** Public artist page: only real data — no invented stats, unverified profiles say so. */
@@ -76,8 +96,40 @@ export default async function ArtistPage({ params }: PageProps<"/[locale]/artist
     }
   };
 
+  const url = absoluteUrl(
+    { pathname: "/artists/[slug]", params: { slug: artist.slug } },
+    locale as Locale,
+  );
   return (
     <section className="profile">
+      <JsonLd
+        data={{
+          "@type": "MusicGroup",
+          name: artist.name,
+          url,
+          description: artist.bio ?? undefined,
+          image: photo?.src,
+          foundingDate: artist.formed_year ? String(artist.formed_year) : undefined,
+          foundingLocation:
+            artist.city || artist.country_code
+              ? {
+                  "@type": "Place",
+                  name: [artist.city, artist.country_code].filter(Boolean).join(", "),
+                }
+              : undefined,
+          album: published.map((r) => ({
+            "@type": "MusicAlbum",
+            name: r.title,
+            url: absoluteUrl(
+              {
+                pathname: "/artists/[slug]/releases/[release]",
+                params: { slug: artist.slug, release: r.slug },
+              },
+              locale as Locale,
+            ),
+          })),
+        }}
+      />
       <p className={`artist-badge artist-badge--${artist.verification_status}`}>
         {t(`verification.${artist.verification_status}`)}
       </p>

@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+import { JsonLd } from "@/components/seo/json-ld";
+import { absoluteUrl } from "@/lib/site";
+import { alternates } from "@/lib/site";
 import { notFound, permanentRedirect } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getPathname, Link } from "@/i18n/navigation";
@@ -26,6 +29,16 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   return {
     title,
     description,
+    alternates: alternates(
+      {
+        pathname: "/song/[artist]/[song]",
+        params: {
+          artist: data.artist.slug,
+          song: songSegment(data.track.title, data.track.code, slugify),
+        },
+      },
+      locale as Locale,
+    ),
     openGraph: { title, description, type: "music.song" },
     twitter: { card: "summary_large_image", title, description },
   };
@@ -67,6 +80,30 @@ export default async function SongPage({ params }: PageProps<"/[locale]/song/[ar
 
   return (
     <article className="song-page">
+      <JsonLd
+        data={{
+          "@type": "MusicRecording",
+          name: data.track.title,
+          url: absoluteUrl(
+            {
+              pathname: "/song/[artist]/[song]",
+              params: {
+                artist: data.artist.slug,
+                song: songSegment(data.track.title, data.track.code, slugify),
+              },
+            },
+            locale as Locale,
+          ),
+          byArtist: {
+            "@type": "MusicGroup",
+            name: data.artist.name,
+            url: absoluteUrl(
+              { pathname: "/artists/[slug]", params: { slug: data.artist.slug } },
+              locale as Locale,
+            ),
+          },
+        }}
+      />
       <Artwork
         image={data.cover}
         alt={t("coverAlt", { title: data.track.title, artist: data.artist.name })}

@@ -42,7 +42,8 @@ test("navigation marks the current page and keeps the player region", async ({ p
 
 test("language switch keeps the localized page", async ({ page }) => {
   await page.goto("/scena");
-  await page.getByRole("link", { name: /^EN/ }).click();
+  await page.locator(".locale-switcher > summary").click();
+  await page.getByRole("link", { name: "English", exact: true }).click();
   await expect(page).toHaveURL(/\/en\/scene$/);
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Scene");
 });
@@ -69,6 +70,18 @@ test.describe("locale detection", () => {
     await page.goto("/");
     await expect(page).toHaveURL(/\/en$/);
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("Discover");
+  });
+});
+
+test.describe("German browsers", () => {
+  test.use({ locale: "de-DE" });
+
+  test("get the German interface on English paths", async ({ page }) => {
+    await page.goto("/");
+    await expect(page).toHaveURL(/\/de$/);
+    await expect(page.locator("html")).toHaveAttribute("lang", "de");
+    await page.goto("/de/scene");
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Szene");
   });
 });
 

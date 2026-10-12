@@ -1,64 +1,48 @@
-# Closed beta launch checklist
+# Global launch checklist
 
-> Goal (D5/D6): a closed beta with invited small independent artists from all of Poland and their
-> listeners. Each line is either **done in code** (✅, with where) or **owner / external** (☐).
-> Nothing here is "done" until it is true in production.
+What the code already does is listed in `docs/discovery-v2.md` and `docs/deployment.md`. This page
+is what people have to decide or set up before Tunewick is promoted worldwide. Order matters.
 
-## 1. Infrastructure
+## Must have before promotion
 
-- ☐ Supabase project (EU, Frankfurt) — created; schema applied up to `20261006270000`.
-  Remaining SQL, in order: `supabase-update-m8.sql`, `supabase-update-m11.sql` (files are produced
-  locally; later the CLI `supabase db push` replaces this).
-- ☐ Supabase Auth settings (deployment.md §1): email confirmation, password ≥ 10, TOTP on, URL
-  configuration, **email templates** (token_hash links), **SMTP provider** (EU) — the built-in mailer
-  only reaches project members.
-- ☐ Vercel: production deploy of `main` after merging PR #4; env vars are set
-  (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`).
-- ☐ Cloudflare R2: `tunewick-ingest` and `tunewick-media` buckets, CORS, scoped token; Vercel
-  `MEDIA_*` vars (deployment.md §3a). Until then uploads say "coming soon".
-- ☐ Fly.io audio worker in `waw`/`fra` with the secret key and R2 vars (deployment.md §3b).
-- ☑ Listening partitions: a pg_cron job (`listening-partitions`, 03:15 on the 1st) keeps three
-  months ahead and moves rows that landed in the default partition (migration
-  `20261007140000`). Check once after the production update: `select * from cron.job;`
-- ☐ Error monitoring (Sentry EU or equivalent) — needs an account; not wired yet.
-- ☐ GitHub branch protection on `main`: required checks incl. `worker`.
+1. **Legal review for a worldwide audience.** The Terms, Artist Terms, Privacy Policy and Content
+   Policy (`apps/web/src/modules/legal/content/`) are written for Poland ("independent artists
+   from all of Poland", Polish law). A lawyer should review them for users outside Poland/EU
+   (consumer law, age of consent for data, DMCA-style takedowns in the US, etc.), and the operator
+   details must be filled in (`modules/legal/operator.ts`). Only then translate them.
+2. **Email that scales.** Supabase's built-in email sends only a few messages per hour — sign-up
+   confirmations and password resets would stop after the first handful of people. Set up a real
+   SMTP provider (e.g. Resend, Postmark, Amazon SES) in Supabase → Authentication → Emails → SMTP,
+   with a sending domain (SPF, DKIM, DMARC). Paste `supabase/templates/confirmation.html` and
+   `recovery.html` into Authentication → Email Templates ("Confirm signup", "Reset password"):
+   they write each email in the account's language (Polish, German, Spanish, French,
+   Portuguese, English for everyone else).
+3. **Your own domain.** Add it in Vercel, set `NEXT_PUBLIC_SITE_URL=https://<domain>` and redeploy;
+   add the domain to Supabase → Authentication → URL configuration (site URL and redirect URLs)
+   and to the R2 CORS rules.
+4. **Open sign-up.** The `closed_beta` feature flag requires an invite to sign up. An admin turns
+   it off in Admin → Feature flags when you are ready for the public.
+5. **Audio worker running** (TrueNAS or Fly.io, `docs/deployment.md` §3b) and **music published**
+   from several countries, so discovery, charts and the map are not empty on day one.
 
-## 2. People and access
+6. **Server next to the database.** Vercel → Project → Settings → Functions → Region: pick the
+   region closest to the Supabase project's region (Supabase → Project Settings → General). Every
+   page reads the database several times; across an ocean each read adds ~100 ms.
 
-- ☐ First admin: register with an invite, then `select public.system_grant_role('<email>', 'admin');`
-  in the SQL editor, then turn on TOTP in Settings → Security.
-- ✅ Invites: `scripts/create-invites.mjs` (closed beta flag `closed_beta`, admin page toggles it).
-- ✅ Staff tools: moderation (`/moderacja`: releases, verification, gigs, reports, appeals),
-  administration (`/admin`: roles, Premium for support, flags, audit log), promotions
-  (`/admin/promocje`).
-- ☐ At least two moderators (appeals are decided by a different moderator).
+## Right after launch
 
-## 3. Product readiness
+- Submit `https://<domain>/sitemap.xml` in Google Search Console and Bing Webmaster Tools.
+- Watch Vercel runtime errors and Supabase logs daily for the first week.
+- Supabase plan: check connection and database size limits against the expected traffic; the
+  free plan pauses inactive projects.
+- Moderation: someone on the moderation queue every day (reports, release review, verification).
 
-- ✅ Artist side: profile, location, verification, releases with rights/AI declarations, lossless
-  masters with authenticity checks, covers, credits, soundchecks, gigs.
-- ✅ Listener side: Discover with reasons, Scene, search, release/artist/venue/event pages, player
-  (gapless, honest quality), library, playlists, history, "Byłem przy tym", promo codes.
-- ✅ Safety: reports and takedowns with statements of reasons, appeals, copyright strikes.
-- ✅ Privacy: data export and account deletion in Settings (GDPR art. 15/17/20).
-- ✅ Security invariants tested on every migration (`security_invariants.test.sql`).
-- ☐ Real-device playback checks (iOS Safari, Android Chrome, desktop Firefox/Safari) on production
-  media — the CI matrix covers Chromium and Firefox only.
+## Good to have
 
-## 4. Legal (before inviting anyone outside the team)
-
-- ☐ Lawyer review of product.md §9: L1 collective licensing (ZAiKS, STOART, SAWP, ZPAV), L2 Artist
-  Terms, L3 DSA (contact point, notice form wording, transparency), L4 GDPR (legal bases, retention,
-  records of processing, DPO question), L5 minimum age, L6 consumer law for promo codes.
-- ☐ Published documents: Terms of Service, Artist Terms (current `terms_version` is a draft),
-  Privacy Policy, Cookie notice. **No public pages exist yet** — they need the reviewed text.
-- ☐ DSA contact point and an email for notices from people without an account.
-- ☐ Consent banner only when the first non-essential cookie or analytics arrives (today: none —
-  session cookies and the MFA hint cookie are strictly necessary).
-
-## 5. Known gaps (tracked in Guidon)
-
-- Reports on events and tracks; user blocking; follows between listeners; transparency report.
-- ☑ Payouts base (D2): `listening_monthly_artist_shares`, closed monthly by the pg_cron job `listening-shares` (04:00 on the 2nd). A payout policy document is still required before any paid plan.
-- Playback telemetry and performance budgets (home LCP < 2.5 s, first audio < 1 s) measured on
-  production.
+- Native-speaker review of the German, Spanish, French and Portuguese interface (machine-assisted
+  translations, checked automatically for keys and placeholders only). Legal texts for those
+  languages are the English version until reviewed translations exist.
+- Another language: add the code to `LOCALES` in `apps/web/src/i18n/routing.ts`, a
+  `messages/<code>.json` (the unit test checks it against English), the Open Graph locale in the
+  `[locale]` layout and the language list in `private.handle_new_user` (migration).
+- Uptime monitoring of `/` and `/api/discover/feed` (e.g. Better Stack, UptimeRobot).

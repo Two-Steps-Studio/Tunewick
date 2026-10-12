@@ -1,5 +1,6 @@
 import "server-only";
 
+import { cache } from "react";
 import type { Database } from "@tunewick/shared";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
@@ -24,7 +25,7 @@ export async function getUpcomingEvents(region: Voivodeship | null, max = 30) {
 }
 
 /** One event the caller may see, with its venue and lineup (artists with their images). */
-export async function getEvent(id: string) {
+export const getEvent = cache(async (id: string) => {
   if (!UUID.test(id)) return null;
   const supabase = await createSupabaseServerClient();
   const { data: event, error } = await supabase
@@ -46,10 +47,10 @@ export async function getEvent(id: string) {
     event: { ...event, venue: event.venue },
     lineup: lineup.flatMap((l) => (l.artist ? [l.artist] : [])),
   };
-}
+});
 
 /** A venue with its upcoming and past public events. */
-export async function getVenue(slug: string) {
+export const getVenue = cache(async (slug: string) => {
   const supabase = await createSupabaseServerClient();
   const { data: venue, error } = await supabase
     .from("venues")
@@ -72,7 +73,7 @@ export async function getVenue(slug: string) {
     upcoming: events.filter((e) => Date.parse(e.starts_at) >= now - 6 * 3600_000).reverse(),
     past: events.filter((e) => Date.parse(e.starts_at) < now - 6 * 3600_000),
   };
-}
+});
 
 /** Public events an artist plays (lineup), upcoming first. */
 export async function getArtistEvents(artistId: string) {

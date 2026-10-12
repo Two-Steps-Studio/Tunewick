@@ -86,7 +86,7 @@ test.describe("account settings and public profile", () => {
     await page.getByRole("button", { name: "Zapisz zmiany" }).click();
     await expect(page).toHaveURL(/\/en\/settings$/);
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("Account");
-    await expect(page.getByLabel("Language")).toHaveValue("en");
+    await expect(page.getByLabel("Language", { exact: true })).toHaveValue("en");
   });
 
   test("a validation error keeps everything the user typed", async ({ page }) => {

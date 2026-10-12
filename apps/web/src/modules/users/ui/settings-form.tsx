@@ -3,6 +3,8 @@
 import { useTranslations } from "next-intl";
 import { useActionState, useId } from "react";
 import { useFormStatus } from "react-dom";
+import { routing } from "@/i18n/routing";
+import { languageName } from "@/lib/intl";
 import { updateSettings } from "../actions";
 import type { SettingsErrorCode, SettingsFormState } from "../validation";
 
@@ -145,8 +147,11 @@ export function SettingsForm({ values }: { values: Values }) {
               defaultValue={state.values?.locale ?? values.locale}
               className="field__input"
             >
-              <option value="pl">{t("locales.pl")}</option>
-              <option value="en">{t("locales.en")}</option>
+              {routing.locales.map((code) => (
+                <option key={code} value={code} lang={code}>
+                  {languageName(code, code)}
+                </option>
+              ))}
             </select>
           )}
         </Field>
