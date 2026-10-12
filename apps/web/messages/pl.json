@@ -1,7 +1,8 @@
 {
   "Meta": {
     "title": "Tunewick",
-    "description": "Odkrywaj więcej, słuchaj lepiej, bądź bliżej sceny."
+    "description": "Odkrywaj więcej, słuchaj lepiej, bądź bliżej sceny.",
+    "tagline": "Niezależna muzyka z całego świata — odkrywana przez ludzi, nie playlisty."
   },
   "Shell": {
     "skipToContent": "Przejdź do treści",

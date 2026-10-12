@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+import { isoDuration, JsonLd } from "@/components/seo/json-ld";
+import { absoluteUrl } from "@/lib/site";
+import { alternates } from "@/lib/site";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
@@ -19,8 +22,28 @@ async function load(params: Params) {
 }
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
+  const { locale } = await params;
   const data = await load(params);
-  return data ? { title: `${data.release.title} — ${data.artist.name}` } : {};
+  if (!data) return {};
+  const title = `${data.release.title} — ${data.artist.name}`;
+  const cover = await getImageSources(data.release.artwork_image_id, 1200);
+  return {
+    title,
+    alternates: alternates(
+      {
+        pathname: "/artists/[slug]/releases/[release]",
+        params: { slug: data.artist.slug, release: data.release.slug },
+      },
+      locale as Locale,
+    ),
+    openGraph: {
+      type: "music.album",
+      title,
+      images: cover
+        ? [{ url: cover.src, width: cover.width, height: cover.width, alt: title }]
+        : undefined,
+    },
+  };
 }
 
 function formatDuration(ms: number) {
@@ -61,6 +84,35 @@ export default async function ReleasePage({
 
   return (
     <article className="release-page">
+      <JsonLd
+        data={{
+          "@type": "MusicAlbum",
+          name: release.title,
+          url: absoluteUrl(
+            {
+              pathname: "/artists/[slug]/releases/[release]",
+              params: { slug: artist.slug, release: release.slug },
+            },
+            locale as Locale,
+          ),
+          image: cover?.src,
+          datePublished: release.release_date ?? undefined,
+          numTracks: tracks.length,
+          byArtist: {
+            "@type": "MusicGroup",
+            name: artist.name,
+            url: absoluteUrl(
+              { pathname: "/artists/[slug]", params: { slug: artist.slug } },
+              locale as Locale,
+            ),
+          },
+          track: tracks.map((track) => ({
+            "@type": "MusicRecording",
+            name: track.title,
+            duration: isoDuration(track.duration_ms),
+          })),
+        }}
+      />
       <header className="release-page__head">
         <Artwork
           image={cover}

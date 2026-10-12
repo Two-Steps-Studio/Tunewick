@@ -1,5 +1,6 @@
 import { randomInt } from "node:crypto";
 import type { Metadata } from "next";
+import { alternates } from "@/lib/site";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { isJourney } from "@tunewick/shared";
 import type { Locale } from "@/i18n/routing";
@@ -15,7 +16,11 @@ import {
 export async function generateMetadata({ params }: PageProps<"/[locale]">): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale: locale as Locale, namespace: "Feed" });
-  return { title: t("title"), description: t("description") };
+  return {
+    title: t("title"),
+    description: t("description"),
+    alternates: alternates("/", locale as Locale),
+  };
 }
 
 const CODE = /^[a-z2-9]{10}$/;

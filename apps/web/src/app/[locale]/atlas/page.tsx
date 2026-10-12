@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { alternates } from "@/lib/site";
 import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
 import { getPathname, Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
@@ -11,7 +12,11 @@ export async function generateMetadata({
 }: PageProps<"/[locale]/atlas">): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale: locale as Locale, namespace: "Atlas" });
-  return { title: t("title"), description: t("lead") };
+  return {
+    title: t("title"),
+    description: t("lead"),
+    alternates: alternates("/atlas", locale as Locale),
+  };
 }
 
 const REGIONS = ["europe", "americas", "asia", "africa", "oceania"] as const;

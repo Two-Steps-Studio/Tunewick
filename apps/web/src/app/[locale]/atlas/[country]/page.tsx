@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { alternates } from "@/lib/site";
 import { notFound } from "next/navigation";
 import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
@@ -13,7 +14,15 @@ export async function generateMetadata({
   const { locale, country } = await params;
   const code = parseCountryParam(country);
   const t = await getTranslations({ locale: locale as Locale, namespace: "Atlas" });
-  return code ? { title: t("countryTitle", { country: countryName(code, locale) }) } : {};
+  return code
+    ? {
+        title: t("countryTitle", { country: countryName(code, locale) }),
+        alternates: alternates(
+          { pathname: "/atlas/[country]", params: { country: code.toLowerCase() } },
+          locale as Locale,
+        ),
+      }
+    : {};
 }
 
 /** A country: its cities and scenes, genres, and the artists people listen to most. */
