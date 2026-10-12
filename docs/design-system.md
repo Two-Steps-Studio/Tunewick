@@ -122,8 +122,9 @@ after seeing A in the app. A remains on the brand board for reference only.
 | --- | --- |
 | `tunewick-symbol-on-dark.svg` / `-on-light.svg` / `-on-lime.svg` / `-mono.svg` | Symbol B variants with the color rules applied |
 | `tunewick-wordmark-on-dark.svg` / `-on-light.svg` / `-mono.svg` | Wordmark outlined to paths (no font dependency) |
-| `apps/web/src/app/icon.svg`, `favicon.ico` (16/32/48), `apple-icon.png` (180) | Browser and iOS icons (symbol on a graphite square) |
-| `apps/web/public/icons/icon-192.png`, `icon-512.png`, `icon-maskable-512.png` | PWA manifest icons (maskable keeps the symbol in the 80% safe zone) |
+| `apps/web/public/icons/icon-512.png` | **Icon master** (hand-made: wordmark on a rounded graphite square). Replace this file to change every icon, then run the script |
+| `apps/web/src/app/icon.png`, `favicon.ico` (16/32/48), `apple-icon.png` (180, full-bleed) | Browser and iOS icons, derived from the master |
+| `apps/web/public/icons/icon-192.png`, `icon-maskable-512.png` | PWA manifest icons, derived from the master (maskable keeps it in the 80% safe zone) |
 | `apps/web/src/components/shell/wordmark-data.ts` | Wordmark path data for the in-app SVG component |
 
 Wordmark build parameters: Bricolage Grotesque wght 800, wdth 85, opsz 96, tracking −0.02em

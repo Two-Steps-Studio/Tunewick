@@ -154,36 +154,32 @@ writeFileSync(
 // ---------------------------------------------------------------------------
 // App icons
 // ---------------------------------------------------------------------------
-// Tab icon: symbol on a graphite square so it reads on light and dark browser chrome.
-const iconSvg = symbolSvg(C.ivory, C.coral, { background: C.graphite, padding: 6, size: 32 });
-writeFileSync(join(appDir, "icon.svg"), iconSvg);
+// The app icon master is hand-made: apps/web/public/icons/icon-512.png (the wordmark on a rounded
+// graphite square, transparent corners). Every other icon is derived from it.
+const GRAPHITE = { r: 0x17, g: 0x15, b: 0x15, alpha: 1 };
+const master = join(publicDir, "icons", "icon-512.png");
+const fromMaster = (size) => sharp(master).resize(size, size).png().toBuffer();
+// Full-bleed (the OS rounds the corners itself): the master over graphite.
+const fullBleed = (size) =>
+  sharp(master).flatten({ background: GRAPHITE }).resize(size, size).png().toBuffer();
 
-const png = (svg, size) =>
-  sharp(Buffer.from(svg), { density: 288 }) // 4x supersampling of the SVG's own size
-    .resize(size, size)
-    .png()
-    .toBuffer();
-
+writeFileSync(join(appDir, "icon.png"), await fromMaster(512));
 const icoSizes = [16, 32, 48];
-const icoPngs = await Promise.all(icoSizes.map((s) => png(iconSvg, s)));
-writeFileSync(join(appDir, "favicon.ico"), buildIco(icoSizes, icoPngs));
 writeFileSync(
-  join(appDir, "apple-icon.png"),
-  await png(symbolSvg(C.ivory, C.coral, { background: C.graphite, padding: 14, size: 180 }), 180),
+  join(appDir, "favicon.ico"),
+  buildIco(icoSizes, await Promise.all(icoSizes.map(fromMaster))),
 );
-
-mkdirSync(join(publicDir, "icons"), { recursive: true });
-for (const size of [192, 512]) {
-  writeFileSync(
-    join(publicDir, "icons", `icon-${size}.png`),
-    await png(symbolSvg(C.ivory, C.coral, { background: C.graphite, padding: 8, size }), size),
-  );
-}
-// Maskable: content within the central 80% safe zone.
+writeFileSync(join(appDir, "apple-icon.png"), await fullBleed(180));
+writeFileSync(join(publicDir, "icons", "icon-192.png"), await fromMaster(192));
+// Maskable: full-bleed, content within the central 80% safe zone.
 writeFileSync(
   join(publicDir, "icons", "icon-maskable-512.png"),
-  await png(symbolSvg(C.ivory, C.coral, { background: C.graphite, padding: 22, size: 512 }), 512),
+  await sharp({ create: { width: 512, height: 512, channels: 4, background: GRAPHITE } })
+    .composite([{ input: await fullBleed(400), left: 56, top: 56 }])
+    .png()
+    .toBuffer(),
 );
+const iconSvg = symbolSvg(C.ivory, C.coral, { background: C.graphite, padding: 6, size: 32 });
 
 // Preview PNGs for review.
 for (const [name, svg] of [

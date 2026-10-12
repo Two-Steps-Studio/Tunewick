@@ -4,7 +4,7 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set search_path = public, extensions;
 
-select plan(17);
+select plan(19);
 
 -- Fixtures (run as postgres): two users via auth.users so the signup trigger runs.
 insert into auth.users (id, email, raw_user_meta_data, raw_app_meta_data, aud, role)
@@ -84,9 +84,18 @@ insert into user_roles (user_id, role) values ('00000000-0000-0000-0000-00000000
 set local role authenticated;
 set local request.jwt.claims = '{"sub": "00000000-0000-0000-0000-00000000000a", "role": "authenticated"}';
 select is(has_app_role('admin'), true, 'has_app_role is true after grant');
+-- 17: an admin has every moderator permission
+select is(has_app_role('moderator'), true, 'an admin counts as a moderator');
 reset role;
 
--- 17: deleted profiles are hidden
+-- 18: a moderator is not an admin
+insert into user_roles (user_id, role) values ('00000000-0000-0000-0000-00000000000b', 'moderator');
+set local role authenticated;
+set local request.jwt.claims = '{"sub": "00000000-0000-0000-0000-00000000000b", "role": "authenticated"}';
+select is(has_app_role('admin'), false, 'a moderator does not count as an admin');
+reset role;
+
+-- 19: deleted profiles are hidden
 update profiles set deleted_at = now() where id = '00000000-0000-0000-0000-00000000000b';
 set local role anon;
 select is((select count(*)::int from profiles where id in ('00000000-0000-0000-0000-00000000000a', '00000000-0000-0000-0000-00000000000b')), 1, 'deleted profiles are not readable');
