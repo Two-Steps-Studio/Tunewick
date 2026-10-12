@@ -103,6 +103,11 @@ Until these variables exist the editor says "audio upload is coming soon" — no
    | `MEDIA_S3_SECRET_ACCESS_KEY` | token secret (mark *Sensitive*) |
    | `MEDIA_INGEST_BUCKET` | `tunewick-ingest` |
 
+   The web app also accepts Cloudflare's usual names when the `MEDIA_*` ones are absent:
+   `R2_ENDPOINT`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_BUCKET_NAME` (the ingest bucket),
+   `R2_REGION`, `R2_MEDIA_BUCKET`; an endpoint copied with the bucket appended works too. The audio
+   worker (§3b) reads only the `MEDIA_*` names.
+
    Redeploy. Locally the same variables point at `pnpm media:start` (SeaweedFS).
 
 ## 3b. Audio worker (Fly.io, EU)

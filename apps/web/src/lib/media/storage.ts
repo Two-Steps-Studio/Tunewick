@@ -18,19 +18,34 @@ interface MediaConfig {
   mediaBucket: string | null;
 }
 
+/** The first non-empty variable of `names` (MEDIA_* first, then Cloudflare's usual R2_* names). */
+function env(...names: string[]): string | undefined {
+  for (const name of names) {
+    const value = process.env[name]?.trim();
+    if (value) return value;
+  }
+  return undefined;
+}
+
+/** Cloudflare shows the endpoint with the bucket appended; requests need the account endpoint. */
+export function accountEndpoint(endpoint: string, bucket: string): string {
+  const base = endpoint.replace(/\/+$/, "");
+  return base.endsWith(`/${bucket}`) ? base.slice(0, -bucket.length - 1) : base;
+}
+
 function config(): MediaConfig | null {
-  const endpoint = process.env.MEDIA_S3_ENDPOINT;
-  const accessKeyId = process.env.MEDIA_S3_ACCESS_KEY_ID;
-  const secretAccessKey = process.env.MEDIA_S3_SECRET_ACCESS_KEY;
-  const ingestBucket = process.env.MEDIA_INGEST_BUCKET;
+  const endpoint = env("MEDIA_S3_ENDPOINT", "R2_ENDPOINT");
+  const accessKeyId = env("MEDIA_S3_ACCESS_KEY_ID", "R2_ACCESS_KEY_ID");
+  const secretAccessKey = env("MEDIA_S3_SECRET_ACCESS_KEY", "R2_SECRET_ACCESS_KEY");
+  const ingestBucket = env("MEDIA_INGEST_BUCKET", "R2_BUCKET_NAME");
   if (!endpoint || !accessKeyId || !secretAccessKey || !ingestBucket) return null;
   return {
-    endpoint: endpoint.replace(/\/+$/, ""),
-    region: process.env.MEDIA_S3_REGION || "auto",
+    endpoint: accountEndpoint(endpoint, ingestBucket),
+    region: env("MEDIA_S3_REGION", "R2_REGION") || "auto",
     accessKeyId,
     secretAccessKey,
     ingestBucket,
-    mediaBucket: process.env.MEDIA_BUCKET || null,
+    mediaBucket: env("MEDIA_BUCKET", "R2_MEDIA_BUCKET") ?? null,
   };
 }
 
