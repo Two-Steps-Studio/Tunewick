@@ -210,6 +210,9 @@ export default async function YouPage({ params, searchParams }: PageProps<"/[loc
           ))}
         </dl>
         <p className="field__hint">{t("stats.hint")}</p>
+        <Link href="/you/stats" className="button">
+          {t("stats.more")}
+        </Link>
       </section>
 
       <section aria-labelledby="recap" className="you__section recap">

@@ -2917,6 +2917,7 @@ export type Database = {
           skips: number;
         }[];
       };
+      my_listening_stats: { Args: { ends: string; starts: string }; Returns: Json };
       my_missions: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -2986,6 +2987,7 @@ export type Database = {
         }[];
       };
       my_taste: { Args: Record<PropertyKey, never>; Returns: Json };
+      my_today: { Args: Record<PropertyKey, never>; Returns: string };
       my_weekly_recap: { Args: { weeks_ago?: number }; Returns: Json };
       onboarding_artists: {
         Args: { country?: string; genres?: number[]; max_results?: number };

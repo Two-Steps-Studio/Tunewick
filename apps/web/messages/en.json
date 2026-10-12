@@ -1464,7 +1464,8 @@
         "follows": "Artists followed",
         "points": "XP"
       },
-      "hint": "Previews count as listening time; plays are full-player listens of at least 30 seconds."
+      "hint": "Previews count as listening time; plays are full-player listens of at least 30 seconds.",
+      "more": "More statistics →"
     },
     "recap": {
       "title": "Your week",
@@ -1874,6 +1875,110 @@
       "underground": "{target, plural, one {Find an artist with fewer than 10k listeners} other {Find # artists with fewer than 10k listeners}}",
       "artist_countries": "Discover artists from {target} different countries",
       "daily_set": "Complete your Daily Discovery"
+    }
+  },
+  "Stats": {
+    "title": "Your statistics",
+    "signedOut": "Sign in to see what, when and how you listen.",
+    "signIn": "Sign in",
+    "loading": "Counting your listening…",
+    "back": "← You",
+    "period": "Period",
+    "periods": {
+      "7d": "7 days",
+      "30d": "30 days",
+      "90d": "90 days",
+      "year": "This year"
+    },
+    "empty": "No listening in this period yet. Play something and your statistics start here.",
+    "startListening": "Start listening",
+    "hourName": "{hour}:00–{hour}:59",
+    "playsCount": "{count, plural, one {# play} other {# plays}}",
+    "labels": {
+      "listening": "Listening time",
+      "plays": "Plays",
+      "activeDays": "Active days",
+      "songs": "Songs",
+      "artists": "Artists",
+      "albums": "Releases",
+      "genres": "Genres",
+      "countries": "Countries",
+      "newSongs": "New songs",
+      "newArtists": "New artists",
+      "underground": "Underground finds",
+      "xp": "XP earned",
+      "newGenres": "New genres",
+      "newCountries": "New countries",
+      "discoveryXp": "Discovery XP",
+      "achievements": "Badges unlocked"
+    },
+    "charts": {
+      "time": "When you listen",
+      "byDay": "Listening per day",
+      "byMonth": "Listening per month",
+      "byHour": "Plays by hour",
+      "byWeekday": "Listening by weekday",
+      "table": "Show as table",
+      "day": "Day",
+      "month": "Month",
+      "hour": "Hour",
+      "weekday": "Weekday"
+    },
+    "facts": {
+      "topDay": "Your biggest day: {day} ({time}).",
+      "topHour": "You listen most around {hour}:00.",
+      "session": "Longest session: {time}.",
+      "streak": "Longest discovery streak: {count, plural, one {# day} other {# days}} in a row.",
+      "night": "{share} of your plays were at night (22:00–05:00)."
+    },
+    "tops": {
+      "artists": "Top artists",
+      "songs": "Top songs",
+      "more": "Also on top",
+      "album": "Top release",
+      "genres": "Genres",
+      "countries": "Countries"
+    },
+    "discoveries": {
+      "title": "Discoveries",
+      "biggest": "Biggest discovery: <artist></artist> — new to you in this period, {time} of listening since.",
+      "genre": "You discovered the most in {genre}: {count, plural, one {# new song} other {# new songs}}."
+    },
+    "personality": {
+      "title": "Your music personality",
+      "notYet": "Listen a bit more in this period and we will tell you your music personality.",
+      "types": {
+        "explorer": {
+          "name": "Explorer",
+          "text": "You keep reaching for artists you have never heard before.",
+          "trait": "{value} of the artists you played were new to you"
+        },
+        "night_listener": {
+          "name": "Night Listener",
+          "text": "Your music comes alive after dark.",
+          "trait": "{value} of your plays were at night"
+        },
+        "underground_hunter": {
+          "name": "Underground Hunter",
+          "text": "You find artists before everyone else does.",
+          "trait": "small artists made up {value} of the artists you played"
+        },
+        "global_discoverer": {
+          "name": "Global Discoverer",
+          "text": "Your listening crosses borders.",
+          "trait": "artists from {value} countries"
+        },
+        "genre_hopper": {
+          "name": "Genre Hopper",
+          "text": "No single genre holds you for long.",
+          "trait": "your top genre took only {value} of your plays"
+        },
+        "repeat_master": {
+          "name": "Repeat Master",
+          "text": "When you love a song, you play it again and again.",
+          "trait": "{value} plays per song on average"
+        }
+      }
     }
   }
 }

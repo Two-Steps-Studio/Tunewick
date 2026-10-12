@@ -92,3 +92,13 @@ states, mobile and desktop layouts, EN/PL, tests, and its line in §4.
   Discovery Machine (150 songs in a week), Year Explorer (20,000 discovery XP in a year). Mission
   names come from metric + target (a new mission is a row, no translation). UI: missions on You
   (all cadences) and Today (today's + events), completion notices. pgTAP `missions.test.sql`.
+- **M14.5 done** — `20261009140000_listening_stats`: `private.listening_stats(listener, starts,
+  ends)` (local days, ≤ 400) returns one JSON: totals and day/hour/weekday shapes from
+  `listening_daily`, tops (artists, songs, releases, genres, countries), longest session (30-minute
+  gap), longest discovery streak, night share, discoveries and XP from the ledger, biggest discovery,
+  most-discovered genre. `my_listening_stats` / `my_today` for the caller only. Recaps and Replay
+  will cache this result. Music Personality (`@tunewick/shared` `musicPersonality`): six traits from
+  real ratios with thresholds, none below 20 plays. Page `/you/stats` (`/ty/statystyki`): periods
+  7/30/90 days and this year, server-rendered SVG bar charts (one validated hue `#7657ff`, hover
+  titles, table view), personality card, tops, discoveries, empty/loading/error states.
+  pgTAP `listening_stats.test.sql`, unit tests, e2e `stats.spec.ts`.
