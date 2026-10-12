@@ -141,6 +141,14 @@ Until these variables exist the editor says "audio upload is coming soon" — no
    `R2_BUCKET_NAME`, then GitHub → Actions → **Deploy audio worker** → Run workflow. It creates the
    Fly app on the first run (`services/audio-worker/fly.toml`), sets the worker's secrets from
    those and deploys. Re-run it after worker changes.
+   **Own server instead of Fly (e.g. TrueNAS SCALE 24.10+ or any Docker host):** the "Audio
+   worker image" workflow publishes `ghcr.io/two-steps-studio/tunewick-audio:latest` on every
+   change to `services/audio-worker` on `main` (or run it by hand). On TrueNAS: Apps → Discover
+   Apps → ⋮ → **Install via YAML**, paste `services/audio-worker/truenas.yaml` and fill in the
+   marked values. No inbound ports are needed. The package is private by default: either make it
+   public (GitHub → Packages → tunewick-audio → Package settings → Change visibility; the image
+   holds no secrets) or log the host in with a token that has `read:packages`
+   (`docker login ghcr.io`). Elsewhere: `docker compose -f truenas.yaml up -d`.
 4. Check: upload a master in the editor → within a minute the track shows "Gotowe" (ready) and
    the *Listen* button plays it. Worker logs: `fly logs` (one JSON line per job).
 
