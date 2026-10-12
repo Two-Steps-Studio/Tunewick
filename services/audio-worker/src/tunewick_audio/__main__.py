@@ -12,6 +12,7 @@ import logging
 import sys
 
 from .pipeline import process
+from .wake import serve_wake
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -24,6 +25,12 @@ def main(argv: list[str] | None = None) -> int:
     worker = commands.add_parser("worker", help="process uploaded masters from the queue")
     worker.add_argument("--once", action="store_true", help="process at most one job and exit")
     worker.add_argument("--poll", type=float, default=5.0, help="seconds between empty polls")
+    worker.add_argument(
+        "--idle-exit", type=float, help="exit after this many seconds without work (Fly.io stops)"
+    )
+    worker.add_argument(
+        "--http-port", type=int, help="answer HTTP here, so a request can wake a stopped machine"
+    )
     args = parser.parse_args(argv)
 
     if args.command == "worker":
@@ -36,8 +43,13 @@ def main(argv: list[str] | None = None) -> int:
         queue, storage = SupabaseQueue.from_env(), S3Storage.from_env()
         if args.once:
             run_once(queue, storage)
-        else:
-            run_forever(queue, storage, args.poll)
+            return 0
+        server = serve_wake(args.http_port) if args.http_port else None
+        try:
+            run_forever(queue, storage, args.poll, args.idle_exit)
+        finally:
+            if server:
+                server.shutdown()
         return 0
 
     report = process(args.master, args.out)

@@ -8,6 +8,7 @@ import {
   type Goal,
   type Level,
   type ProgressInput,
+  type ReplayData,
 } from "@tunewick/shared";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
@@ -317,4 +318,41 @@ export async function getMyListeningStats(period: ListeningPeriod): Promise<List
   const { data, error } = await supabase.rpc("my_listening_stats", { starts, ends });
   if (error) throw error;
   return data as unknown as ListeningStats;
+}
+
+/** "2026-09" → "2026-09-01"; null when it is not a month. */
+export function parseMonth(value: unknown): string | null {
+  if (typeof value !== "string" || !/^\d{4}-(0[1-9]|1[0-2])$/.test(value)) return null;
+  return `${value}-01`;
+}
+
+/** The month before `month` ("YYYY-MM-01") or after it, as "YYYY-MM". */
+export function shiftMonth(month: string, by: number): string {
+  const d = new Date(`${month}T00:00:00Z`);
+  d.setUTCMonth(d.getUTCMonth() + by);
+  return d.toISOString().slice(0, 7);
+}
+
+/** The signed-in listener's recap for a month ("YYYY-MM-01"); null outside their months. */
+export async function getMyMonthRecap(month: string): Promise<ListeningStats | null> {
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase.rpc("my_month_recap", { month_start: month });
+  if (error) throw error;
+  return (data as unknown as ListeningStats | null) ?? null;
+}
+
+/** The listener's local today ("YYYY-MM-DD"). */
+export async function getMyToday(): Promise<string> {
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase.rpc("my_today");
+  if (error) throw error;
+  return data;
+}
+
+/** The signed-in listener's Replay for a year; null outside their years. */
+export async function getMyReplay(year: number): Promise<ReplayData | null> {
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase.rpc("my_replay", { replay_year: year });
+  if (error) throw error;
+  return (data as unknown as ReplayData | null) ?? null;
 }

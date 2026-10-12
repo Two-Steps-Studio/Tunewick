@@ -14,6 +14,10 @@ import {
   TUNING,
   explain,
   musicPersonality,
+  replayStory,
+  MAX_STORY_SCREENS,
+  MIN_REPLAY_PLAYS,
+  type ReplayData,
   PERSONALITIES,
   type PersonalityStats,
   periodSeed,
@@ -527,5 +531,90 @@ describe("music personality", () => {
     const result = musicPersonality(base);
     expect(result?.traits).toEqual([]);
     expect(PERSONALITIES).toContain(result?.personality);
+  });
+});
+
+describe("replay story", () => {
+  const artist = (name: string) => ({ name, slug: name, image_id: null, plays: 10, ms: 600000 });
+  const song = (title: string) => ({
+    title,
+    code: "c",
+    artist: "A",
+    artist_slug: "a",
+    artwork_image_id: null,
+    plays: 5,
+  });
+  const base: ReplayData = {
+    year: 2026,
+    complete: true,
+    stats: {
+      listening_ms: 36_000_000,
+      plays: 300,
+      active_days: 120,
+      tracks: 80,
+      artists: 30,
+      genres: 6,
+      countries: 4,
+      night_plays: 30,
+      hours: Array.from({ length: 24 }, (_, h) => (h === 21 ? 50 : 5)),
+      top_day: { day: "2026-05-01", ms: 7_200_000 },
+      longest_streak: 9,
+      top_artists: ["A", "B", "C"].map(artist),
+      top_tracks: ["x", "y", "z"].map(song),
+      top_albums: [{ title: "LP", artist: "A", artwork_image_id: null, plays: 40 }],
+      top_genres: [{ slug: "rock", name_pl: "Rock", name_en: "Rock", plays: 100 }],
+      top_countries: [{ code: "PL", plays: 200 }],
+      new_songs: 60,
+      new_artists: 12,
+      underground: 4,
+      discovery_xp: 2400,
+      biggest_discovery: artist("D"),
+      genre_spread: [10, 10, 5],
+    },
+    months: Array.from({ length: 12 }, (_, i) => ({
+      month: i + 1,
+      ms: i === 4 ? 9_000_000 : 1_000,
+    })),
+    first_song: { ...song("first"), at: "2026-01-01" },
+    previous: { listening_ms: 18_000_000, active_days: 60, new_artists: 5, discovery_xp: 900 },
+  };
+
+  it("tells the whole year, intro to outro, within the limit", () => {
+    const story = replayStory(base);
+    expect(story[0]).toEqual({ kind: "intro", year: 2026, complete: true });
+    expect(story.at(-1)).toEqual({ kind: "outro", year: 2026 });
+    expect(story.length).toBeLessThanOrEqual(MAX_STORY_SCREENS + 2);
+    expect(story.map((s) => s.kind)).toContain("year_vs_year");
+    expect(story.find((s) => s.kind === "top_month")).toMatchObject({ month: 5 });
+    expect(story.find((s) => s.kind === "listening_time")).toMatchObject({ hour: 21 });
+  });
+
+  it("leaves out what is not there and has no story for a quiet year", () => {
+    const light = replayStory({
+      ...base,
+      previous: null,
+      first_song: null,
+      stats: {
+        ...base.stats,
+        countries: 1,
+        underground: 0,
+        biggest_discovery: null,
+        longest_streak: 1,
+      },
+    });
+    const kinds = light.map((s) => s.kind);
+    for (const kind of [
+      "year_vs_year",
+      "first_song",
+      "countries",
+      "underground",
+      "discovery",
+      "streak",
+    ]) {
+      expect(kinds).not.toContain(kind);
+    }
+    expect(replayStory({ ...base, stats: { ...base.stats, plays: MIN_REPLAY_PLAYS - 1 } })).toEqual(
+      [],
+    );
   });
 });

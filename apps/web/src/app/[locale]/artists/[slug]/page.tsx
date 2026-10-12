@@ -6,6 +6,7 @@ import type { Locale } from "@/i18n/routing";
 import { countryName, flagEmoji, languageName, songSegment } from "@/lib/intl";
 import { slugify } from "@/lib/slug";
 import {
+  ArtistDiscovery,
   getArtistBySlug,
   getArtistDiscovery,
   getArtistReach,
@@ -148,6 +149,7 @@ export default async function ArtistPage({ params }: PageProps<"/[locale]/artist
         <p className="profile__meta">{t("profile.since", { year: artist.formed_year })}</p>
       ) : null}
       <p className="profile__bio">{artist.bio ?? t("profile.noBio")}</p>
+      <ArtistDiscovery artistId={artist.id} name={artist.name} />
       {discovery.topTracks.length ? (
         <section aria-labelledby="popular" className="discover__section">
           <h2 id="popular" className="section-title">

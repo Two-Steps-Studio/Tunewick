@@ -134,6 +134,15 @@ Until these variables exist the editor says "audio upload is coming soon" — no
    | `MEDIA_INGEST_BUCKET` / `MEDIA_BUCKET` | `tunewick-ingest` / `tunewick-media` |
 
    Process command: `worker --poll 5` (the image entrypoint is `python -m tunewick_audio`).
+
+   **Pay only while it works.** `fly.toml` runs `worker --idle-exit 120 --http-port 8080`: after two
+   minutes without work the worker exits and the machine stops. The database wakes it with one HTTP
+   request to `https://<app>.fly.dev/wake` when a master, image, share clip or storage deletion is
+   queued (at most every 20 s) and once an hour for retries and backfills
+   (`20261012100000_worker_wake.sql`). After the first deploy, run once in the SQL Editor:
+   `update private.worker_wake set url = 'https://tunewick-audio.fly.dev/wake';` (the workflow
+   summary shows the exact line). Without a URL nothing is sent, so always-on workers (TrueNAS,
+   local) are unaffected. Anyone who calls the URL can only start the worker for two idle minutes.
    One shared-cpu machine with 2 GB RAM is enough for the beta; more machines can run side by side
    (jobs are claimed with `FOR UPDATE SKIP LOCKED`).
    Without a terminal: add repository secrets `FLY_API_TOKEN` (fly.io → Account → Access Tokens),

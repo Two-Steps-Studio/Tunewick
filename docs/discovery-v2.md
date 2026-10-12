@@ -102,3 +102,50 @@ states, mobile and desktop layouts, EN/PL, tests, and its line in §4.
   7/30/90 days and this year, server-rendered SVG bar charts (one validated hue `#7657ff`, hover
   titles, table view), personality card, tops, discoveries, empty/loading/error states.
   pgTAP `listening_stats.test.sql`, unit tests, e2e `stats.spec.ts`.
+- **M14.6 done** — `20261012110000_monthly_recaps`: `my_month_recap(month)` returns the local
+  month's `listening_stats`; a finished month is stored in `listening_recaps` (own-row RLS, in the
+  data export, deleted with the account) from its second day, so pages and cards read one row; the
+  running month is live and never stored; no recap before joining or in the future. Page
+  `/you/recap?m=YYYY-MM` (`/ty/podsumowanie`): numbers, Discovery Score, #1 artist and song, biggest
+  discovery, personality and top genre, month navigation, empty states. Cards
+  `/api/cards/recap?month&kind=summary|artist|song|discovery|score&format=story|square` (private,
+  signed-in only, 404 when the month has nothing for that kind). pgTAP `monthly_recaps.test.sql`,
+  e2e `recap.spec.ts`.
+- **M14.7 done** — `20261012120000_replay`: `my_replay(year)` = the year's `listening_stats`,
+  listening per month, the first song of the year and the same stretch of the year before (for a
+  running year, 1 Jan → today vs the same dates a year earlier); finished years stored in
+  `listening_replays` (own-row RLS, export, account deletion) from 2 January. `replayStory()` in
+  `@tunewick/shared` builds up to 18 screens from real data only (screens without data are left
+  out; smaller facts give way first; no story below 10 plays). `/you/replay?y=` (`/ty/replay`):
+  story player (progress bars, tap/←/→/space, hold to pause, pauses in hidden tabs, no autoplay
+  with reduced motion), year vs year, Replay card `/api/cards/replay` (9:16 / square, private).
+  Unit tests, pgTAP `replay.test.sql`, e2e `replay.spec.ts`.
+- **M14.8 done** — `20261012130000_social_discovery`, all behind `private.can_view` and the owner's
+  switches (blocks hide everything both ways, a private profile hides all of it):
+  `friends_leaderboard(period)` (you + people you follow whose score you may see),
+  `friends_activity()` (new artists — stats switch; badges — badges switch; last 30 days),
+  `common_ground(handle)` (shared artists/genres of the last 90 days and how many of your artists
+  match — stats switch), `profile_overview(handle)` (score/level, badges, last 30 days, latest
+  finished Replay — each by its switch; visitors get public parts only). UI: `/you/friends`
+  (`/ty/znajomi`) ranking + activity; the profile's discovery section with common ground; the
+  "Discovery privacy" form in Settings (public profile + who sees statistics, score, badges,
+  Replay). pgTAP `social_discovery.test.sql` (15), e2e `friends.spec.ts`.
+- **M14.9 done** — `20261012140000_artist_discovery`, aggregates only (counts under 3 are null,
+  places need 3+ listeners): `artist_discovery(artist)` (public: listeners 7/30 days and growth,
+  discovered by, the XP those discoveries earned = the artist's 30-day Discovery Score, place in
+  Rising, countries and cities of listeners from their own preferences), `artist_discovery_weeks`
+  (team only: new listeners, discoveries and listeners per week, 12 weeks),
+  `why_artist_for_me(artist)` (the caller's own genres and related artists they play, followed
+  people who discovered the artist — behind their stats switch). Artist page: "Discovery" section
+  with a Rising badge and "Why you might like…"; small artists get one honest sentence instead of
+  empty numbers. Manage page: weekly bar charts and places. pgTAP `artist_discovery.test.sql`.
+- **M14.10 done** — `20261012150000_atlas`, public catalogue facts only (active artists with a
+  published release, their country and city, genres of published releases, published events at
+  venues; listener sums only from artists with 3+ weekly listeners): `atlas_countries()` (+ for the
+  signed-in listener, the countries they have heard), `atlas_country(code)` (cities, genres, most
+  listened artists), `atlas_city(code, city)` (artists, genres, and in Poland venues and the next
+  90 days of events). `/atlas` → `/atlas/[country]` → `/atlas/[country]/[city]`: a server-rendered
+  SVG world map (Natural Earth 1:110m, Equal Earth, prebuilt once by `scripts/build-world-map.mjs`
+  into `modules/atlas/world-paths.json` — no map library or tiles at runtime), one hue in four
+  steps with a legend, your countries outlined, every country also a plain link in the list below.
+  pgTAP `atlas.test.sql`, e2e `atlas.spec.ts`.

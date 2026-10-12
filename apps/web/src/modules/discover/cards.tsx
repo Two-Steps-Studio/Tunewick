@@ -287,3 +287,107 @@ export function statsCard(data: StatsCardData, format: Exclude<CardFormat, "og">
     { width, height, headers: { "Cache-Control": "private, no-store" } },
   );
 }
+
+export interface HighlightCardData {
+  /** Small caps line, e.g. "MY SEPTEMBER ON TUNEWICK". */
+  heading: string;
+  /** What the card is about, e.g. "Top artist". */
+  kicker: string;
+  title: string;
+  subtitle: string;
+  cover: string | null;
+  /** Round cover for artists. */
+  round?: boolean;
+  question: string;
+  url: string;
+  qr?: string | null;
+}
+
+/** One highlight of a listener's month (top artist, top song, biggest discovery). Private. */
+export function highlightCard(data: HighlightCardData, format: Exclude<CardFormat, "og">) {
+  const { width, height } = CARD_SIZES[format];
+  const vertical = format === "story";
+  const coverSize = vertical ? 720 : 440;
+  const titleSize = vertical ? 96 : 68;
+  return new ImageResponse(
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        padding: vertical ? 96 : 64,
+        background: `linear-gradient(170deg, ${C.purple} 0%, ${C.graphite} 58%)`,
+      }}
+    >
+      <div style={{ display: "flex", flexDirection: "column", gap: vertical ? 28 : 18 }}>
+        <Brand size={vertical ? 56 : 44} />
+        <div style={{ fontSize: vertical ? 40 : 30, color: C.lime, letterSpacing: 6 }}>
+          {data.heading}
+        </div>
+      </div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: vertical ? "column" : "row",
+          alignItems: vertical ? "flex-start" : "center",
+          gap: vertical ? 48 : 40,
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            borderRadius: data.round ? coverSize : 0,
+            overflow: "hidden",
+          }}
+        >
+          <Cover
+            src={data.cover}
+            color={null}
+            size={vertical ? coverSize : coverSize * 0.6}
+            letter={data.title.slice(0, 1)}
+          />
+        </div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 14,
+            ...(vertical ? { width: "100%" } : { flex: 1 }),
+          }}
+        >
+          <div
+            style={{
+              fontSize: vertical ? 34 : 26,
+              color: C.muted,
+              textTransform: "uppercase",
+              letterSpacing: 4,
+            }}
+          >
+            {data.kicker}
+          </div>
+          <div style={{ fontSize: titleSize, color: C.ivory, lineHeight: 1.02, letterSpacing: -2 }}>
+            {data.title}
+          </div>
+          <div style={{ fontSize: titleSize * 0.42, color: C.ivory }}>{data.subtitle}</div>
+        </div>
+      </div>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "flex-end",
+          justifyContent: "space-between",
+          gap: 32,
+        }}
+      >
+        <div style={{ display: "flex", flexDirection: "column", gap: 10, flex: 1 }}>
+          <div style={{ fontSize: vertical ? 50 : 38, color: C.ivory }}>{data.question}</div>
+          <div style={{ fontSize: vertical ? 30 : 24, color: C.muted }}>{data.url}</div>
+        </div>
+        {data.qr ? <Qr src={data.qr} size={vertical ? 180 : 140} /> : null}
+      </div>
+    </div>,
+    { width, height, headers: { "Cache-Control": "private, no-store" } },
+  );
+}

@@ -19,3 +19,4 @@ export {
 } from "./ui/forms";
 export { MyArtists } from "./ui/my-artists";
 export { ArtistListening } from "./ui/artist-listening";
+export { ArtistDiscovery, ArtistDiscoveryTeam } from "./ui/artist-discovery";

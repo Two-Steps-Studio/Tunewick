@@ -1465,7 +1465,10 @@
         "points": "XP"
       },
       "hint": "Previews count as listening time; plays are full-player listens of at least 30 seconds.",
-      "more": "More statistics →"
+      "more": "More statistics →",
+      "recap": "Monthly recap →",
+      "replay": "Replay →",
+      "friends": "Friends →"
     },
     "recap": {
       "title": "Your week",
@@ -1746,7 +1749,8 @@
       "lead": "The most listened song from each country this week.",
       "leadOutside": "The most listened song from each country this week — outside {country}.",
       "empty": "Music from other countries will show up here as soon as people listen to it."
-    }
+    },
+    "atlasLink": "Music map →"
   },
   "Segment": {
     "errorTitle": "Something went wrong",
@@ -1980,5 +1984,329 @@
         }
       }
     }
+  },
+  "Recap": {
+    "title": "Monthly recap",
+    "signedOut": "Sign in to see your month in music.",
+    "signIn": "Sign in",
+    "loading": "Putting your month together…",
+    "back": "← You",
+    "months": "Months",
+    "previous": "← Previous month",
+    "next": "Next month →",
+    "heading": "Your {month}",
+    "running": "This month is still running — the numbers grow until its last day.",
+    "empty": "No listening this month. Play something and your recap starts here.",
+    "outside": "There is no recap for this month.",
+    "startListening": "Start listening",
+    "labels": {
+      "listening": "Listening time",
+      "songs": "Songs",
+      "artists": "Artists",
+      "newArtists": "New artists",
+      "countries": "Countries",
+      "score": "Discovery Score"
+    },
+    "personality": "Music personality",
+    "personalities": {
+      "explorer": "Explorer",
+      "night_listener": "Night Listener",
+      "underground_hunter": "Underground Hunter",
+      "global_discoverer": "Global Discoverer",
+      "genre_hopper": "Genre Hopper",
+      "repeat_master": "Repeat Master"
+    },
+    "topGenre": "Most played genre: {genre}",
+    "allStats": "All statistics",
+    "share": {
+      "title": "Share your month",
+      "hint": "Cards for Stories, Reels, TikTok (9:16) or a post (square). Only your own numbers, only when you download them.",
+      "story": "9:16",
+      "square": "Square",
+      "kinds": {
+        "summary": "Month in numbers",
+        "artist": "Top artist",
+        "song": "Top song",
+        "discovery": "Biggest discovery",
+        "score": "Discovery Score"
+      }
+    },
+    "card": {
+      "heading": "My {month} on Tunewick",
+      "question": "What did you discover?",
+      "listening": "of listening",
+      "songs": "songs",
+      "newArtists": "new artists",
+      "countries": "countries",
+      "score": "Discovery Score",
+      "newSongs": "new songs",
+      "underground": "underground finds",
+      "topArtist": "Top artist",
+      "topSong": "Top song",
+      "discovery": "Biggest discovery",
+      "plays": "{count, plural, one {# play} other {# plays}}",
+      "since": "{time} of listening since discovering"
+    }
+  },
+  "Replay": {
+    "title": "TuneWick Replay",
+    "signedOut": "Sign in to see your year in music.",
+    "signIn": "Sign in",
+    "loading": "Rewinding your year…",
+    "back": "← You",
+    "years": "Years",
+    "previous": "← {year}",
+    "next": "{year} →",
+    "heading": "Replay {year}",
+    "tooLittle": "Too little listening this year for a story yet. Keep listening — your Replay grows with you.",
+    "outside": "There is no Replay for this year.",
+    "startListening": "Start listening",
+    "plays": "{count, plural, one {# play} other {# plays}}",
+    "player": {
+      "previous": "Previous",
+      "next": "Next",
+      "pause": "Pause",
+      "play": "Play",
+      "screen": "screen"
+    },
+    "intro": {
+      "title": "Your {year} in music",
+      "complete": "A whole year, told by your listening.",
+      "soFar": "Your year so far — it keeps growing until 31 December."
+    },
+    "minutes": {
+      "title": "Minutes listened",
+      "note": "{time} over {days, plural, one {# day} other {# days}}."
+    },
+    "firstSong": {
+      "title": "Your first song of the year",
+      "note": "{artist} · {date}"
+    },
+    "topMonth": {
+      "title": "Your biggest month",
+      "chart": "Listening per month",
+      "note": "{time} of music."
+    },
+    "topDay": {
+      "title": "Your biggest day",
+      "note": "{time} in one day."
+    },
+    "topArtist": {
+      "title": "Your artist of the year"
+    },
+    "topArtists": {
+      "title": "Your top artists"
+    },
+    "topSong": {
+      "title": "Your song of the year"
+    },
+    "topSongs": {
+      "title": "Your top songs"
+    },
+    "topAlbum": {
+      "title": "Your release of the year"
+    },
+    "topGenre": {
+      "title": "Your genre of the year",
+      "note": "Out of {count, plural, one {# genre} other {# genres}} you played."
+    },
+    "countries": {
+      "title": "Countries in your ears"
+    },
+    "newArtists": {
+      "title": "New artists discovered",
+      "note": "And {songs, plural, one {# song} other {# songs}} you heard for the first time."
+    },
+    "discovery": {
+      "title": "Your discovery of the year",
+      "note": "{time} of listening since you found them."
+    },
+    "underground": {
+      "title": "Underground finds",
+      "note": "Artists you found while they were still small."
+    },
+    "listeningTime": {
+      "title": "Your hour",
+      "note": "{share} of your plays were at night."
+    },
+    "streak": {
+      "title": "Your longest discovery streak",
+      "days": "{count, plural, one {# day} other {# days}}",
+      "note": "Something new every day, in a row."
+    },
+    "personality": {
+      "title": "Your music personality",
+      "types": {
+        "explorer": "Explorer",
+        "night_listener": "Night Listener",
+        "underground_hunter": "Underground Hunter",
+        "global_discoverer": "Global Discoverer",
+        "genre_hopper": "Genre Hopper",
+        "repeat_master": "Repeat Master"
+      }
+    },
+    "score": {
+      "title": "Your Discovery Score",
+      "note": "Earned by discovering — new songs, artists, genres and countries."
+    },
+    "vs": {
+      "title": "Compared with {year}",
+      "minutes": "Minutes",
+      "newArtists": "New artists",
+      "score": "Discovery Score"
+    },
+    "outro": {
+      "title": "That was your {year}",
+      "note": "Share it — and see what your friends discovered.",
+      "story": "Download for Stories (9:16)",
+      "square": "Square card"
+    },
+    "card": {
+      "heading": "My Replay {year}",
+      "minutes": "minutes",
+      "topArtist": "artist of the year",
+      "artists": "artists",
+      "newArtists": "new artists",
+      "score": "Discovery Score",
+      "question": "What did you discover?"
+    }
+  },
+  "Friends": {
+    "title": "Friends",
+    "signedOut": "Sign in to see what your friends discover.",
+    "signIn": "Sign in",
+    "loading": "Looking at your friends…",
+    "back": "← You",
+    "lead": "The people you follow — as far as each of them allows.",
+    "findPeople": "Find people",
+    "privacy": "Choose what others see about you →",
+    "ranking": {
+      "title": "Ranking among friends",
+      "period": "Period",
+      "periods": {
+        "week": "This week",
+        "month": "This month",
+        "all": "All time"
+      },
+      "empty": "Follow people to compare discoveries with them.",
+      "you": "You",
+      "xp": "{xp} XP",
+      "hint": "Only people whose score is visible to you take part."
+    },
+    "activity": {
+      "title": "What friends discovered",
+      "empty": "Nothing from your friends in the last 30 days.",
+      "newArtist": "<who></who> discovered <artist></artist>",
+      "badge": "<who></who> unlocked “{badge}”"
+    }
+  },
+  "ProfileDiscovery": {
+    "title": "Discovery",
+    "hidden": "{name} keeps their discoveries private.",
+    "score": "Discovery Score",
+    "level": "Level",
+    "title_": "Rank",
+    "last30": "Last 30 days",
+    "listening": "Listening time",
+    "newArtists": "New artists",
+    "newSongs": "New songs",
+    "badges": "Badges ({count})",
+    "noBadges": "No badges yet.",
+    "common": "In common with you · {percent} of your artists match",
+    "noCommon": "Nothing in common yet — a good reason to listen to each other's finds.",
+    "replay": "Replay {year}",
+    "replayLine": "{minutes} minutes of music, {artists} new artists.",
+    "replayArtist": "Artist of the year:"
+  },
+  "DiscoveryPrivacy": {
+    "title": "Discovery privacy",
+    "lead": "Decide who sees your discoveries. Blocked people never see anything.",
+    "profilePublic": "Public profile",
+    "profilePublicHint": "Off: nobody but you sees your score, badges, statistics or Replay, whatever the settings below.",
+    "fields": {
+      "stats": "Statistics and discoveries",
+      "score": "Discovery Score and rankings among friends",
+      "badges": "Badges",
+      "replay": "Replay"
+    },
+    "levels": {
+      "public": "Everyone",
+      "followers": "People who follow me",
+      "private": "Only me"
+    },
+    "save": "Save privacy",
+    "saving": "Saving…",
+    "saved": "Saved.",
+    "error": "Could not save. Try again."
+  },
+  "ArtistDiscovery": {
+    "title": "Discovery",
+    "rising": "Rising #{place}",
+    "fewer": "under 3",
+    "listeners30": "Listeners · 30 days",
+    "listeners7": "Listeners · 7 days",
+    "discovered": "Discovered by · 30 days",
+    "score": "Discovery Score · 30 days",
+    "places": "Listened to in",
+    "hint": "Real listeners only (a play counts from 30 seconds). Numbers under 3 are hidden so no listener can be singled out.",
+    "why": {
+      "title": "Why you might like {name}",
+      "friends": "{names} discovered them",
+      "related": "You listen to related artists: {artists}",
+      "genres": "They play genres you like: {genres}"
+    },
+    "team": {
+      "title": "Discovery — your listeners",
+      "lead": "Last 12 weeks. New listeners: people who played you for the first time that week.",
+      "newListeners": "New listeners",
+      "listeners": "Listeners",
+      "table": "Show as table",
+      "week": "Week of {date}",
+      "weekColumn": "Week",
+      "empty": "No listeners in the last 12 weeks yet.",
+      "countries": "Countries (3+ listeners)",
+      "cities": "Cities (3+ listeners)",
+      "charts": "See the charts →"
+    },
+    "early": "{name} is just starting out here — fewer than 3 listeners in the last 30 days. Be one of the first."
+  },
+  "Atlas": {
+    "title": "Music map",
+    "lead": "Where the music on Tunewick comes from — country by country, city by city, scene by scene.",
+    "loading": "Unfolding the map…",
+    "mine": "You have heard music from {count} of {total} countries.",
+    "empty": "No country has published music yet.",
+    "mapTitle": "World map of countries with music on Tunewick",
+    "countryLabel": "{country}: {count, plural, one {# artist} other {# artists}}",
+    "legend": {
+      "none": "No music yet",
+      "one": "1 artist",
+      "few": "2–4",
+      "many": "5–19",
+      "most": "20+",
+      "mine": "You have heard music from here"
+    },
+    "regions": {
+      "europe": "Europe",
+      "americas": "Americas",
+      "asia": "Asia",
+      "africa": "Africa",
+      "oceania": "Oceania"
+    },
+    "artists": "{count, plural, one {# artist} other {# artists}}",
+    "listening": "{count} listening this week",
+    "back": "← Music map",
+    "countryTitle": "Music from {country}",
+    "charts": "This country's charts →",
+    "cities": "Cities and scenes",
+    "genres": "Genres",
+    "topArtists": "Artists",
+    "listeners30": "{count} listeners this month",
+    "cityTitle": "{city} — the scene",
+    "scene": "{count, plural, one {# artist from here} other {# artists from here}}",
+    "cityArtists": "Artists",
+    "events": "Coming up",
+    "venues": "Venues",
+    "upcoming": "{count, plural, =0 {no upcoming events} one {# upcoming event} other {# upcoming events}}"
   }
 }

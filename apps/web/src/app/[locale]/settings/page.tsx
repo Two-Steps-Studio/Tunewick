@@ -7,7 +7,7 @@ import { MyArtists } from "@/modules/artists";
 import { PlanSummary } from "@/modules/plans";
 import { DecisionList } from "@/modules/reports";
 import { BlockedUsers } from "@/modules/social";
-import { getMyAccount, PrivacySection, SettingsForm } from "@/modules/users";
+import { DiscoveryPrivacyForm, getMyAccount, PrivacySection, SettingsForm } from "@/modules/users";
 
 export async function generateMetadata({
   params,
@@ -57,6 +57,15 @@ export default async function SettingsPage({ params }: PageProps<"/[locale]/sett
             bio: profile.bio,
             locale: settings.locale,
             activityVisibility: settings.activity_visibility,
+          }}
+        />
+        <DiscoveryPrivacyForm
+          values={{
+            profilePublic: settings.profile_public,
+            stats: settings.stats_visibility,
+            score: settings.score_visibility,
+            badges: settings.badges_visibility,
+            replay: settings.replay_visibility,
           }}
         />
         <PlanSummary />

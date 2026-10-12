@@ -4,7 +4,13 @@ import { getFormatter, getTranslations, setRequestLocale } from "next-intl/serve
 import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { getOptionalUser } from "@/modules/auth";
-import { BlockButton, FollowButton, getRelationship, ProfileActivity } from "@/modules/social";
+import {
+  BlockButton,
+  FollowButton,
+  getRelationship,
+  ProfileActivity,
+  ProfileDiscovery,
+} from "@/modules/social";
 import { getPublicProfile } from "@/modules/users";
 
 export async function generateMetadata({
@@ -51,6 +57,14 @@ export default async function ProfilePage({ params }: PageProps<"/[locale]/profi
           )}
           <BlockButton profileId={profile.id} blocked={relationship.i_blocked} name={name} />
         </div>
+      ) : null}
+      {profile.handle && !relationship.i_blocked ? (
+        <ProfileDiscovery
+          handle={profile.handle}
+          name={name}
+          viewerSignedIn={Boolean(user)}
+          own={own}
+        />
       ) : null}
       <ProfileActivity profileId={profile.id} visible={relationship.activity_visible} own={own} />
       {user && !own && relationship.activity_visible && profile.handle ? (

@@ -9,6 +9,7 @@ import { cancelEvent, EventForm, getManagedEvents } from "@/modules/events";
 import {
   ArtistInfoForm,
   ArtistReachForm,
+  ArtistDiscoveryTeam,
   ArtistListening,
   getArtistForManagement,
   getArtistReach,
@@ -218,6 +219,7 @@ export default async function ManageArtistPage({
             <EventForm artistId={artist.id} />
           </section>
         ) : null}
+        <ArtistDiscoveryTeam artistId={artist.id} />
         <ArtistListening artistId={artist.id} />
         <DecisionList
           filter={{ artistId: artist.id }}

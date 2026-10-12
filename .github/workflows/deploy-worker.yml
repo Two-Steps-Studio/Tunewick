@@ -16,6 +16,9 @@ on:
       fly_org:
         description: "Fly.io organization slug"
         default: personal
+      app:
+        description: "Fly.io app name (must be free worldwide; the default is usually fine)"
+        default: tunewick-audio
 
 permissions:
   contents: read
@@ -40,6 +43,7 @@ jobs:
       R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
       R2_BUCKET_NAME: ${{ secrets.R2_BUCKET_NAME }}
       MEDIA_BUCKET: ${{ inputs.media_bucket }}
+      APP: ${{ inputs.app }}
     steps:
       - uses: actions/checkout@v4
       - uses: superfly/flyctl-actions/setup-flyctl@master
@@ -49,7 +53,7 @@ jobs:
             if [ -z "${!name}" ]; then echo "::error::Missing repository secret $name"; exit 1; fi
           done
       - name: Create the app (first run only)
-        run: flyctl status --app tunewick-audio >/dev/null 2>&1 || flyctl apps create tunewick-audio --org "${{ inputs.fly_org }}"
+        run: flyctl status --app "$APP" >/dev/null 2>&1 || flyctl apps create "$APP" --org "${{ inputs.fly_org }}"
       - name: Worker secrets
         run: |
           # Cloudflare shows the endpoint with the bucket appended; the worker needs the account endpoint.
@@ -63,5 +67,14 @@ jobs:
             echo "MEDIA_S3_SECRET_ACCESS_KEY=$R2_SECRET_ACCESS_KEY"
             echo "MEDIA_INGEST_BUCKET=$R2_BUCKET_NAME"
             echo "MEDIA_BUCKET=$MEDIA_BUCKET"
-          } | flyctl secrets import --stage --app tunewick-audio
-      - run: flyctl deploy --remote-only --ha=false --app tunewick-audio
+          } | flyctl secrets import --stage --app "$APP"
+      - run: flyctl deploy --remote-only --ha=false --app "$APP"
+      - name: Next step
+        run: |
+          {
+            echo "### Worker deployed"
+            echo "Run once in Supabase → SQL Editor, so new uploads wake the worker:"
+            echo '```sql'
+            echo "update private.worker_wake set url = 'https://$APP.fly.dev/wake';"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

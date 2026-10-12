@@ -1465,7 +1465,10 @@
         "points": "XP"
       },
       "hint": "Fragmenty liczą się do czasu słuchania; odtworzenia to słuchanie w odtwarzaczu przez co najmniej 30 sekund.",
-      "more": "Więcej statystyk →"
+      "more": "Więcej statystyk →",
+      "recap": "Podsumowanie miesiąca →",
+      "replay": "Replay →",
+      "friends": "Znajomi →"
     },
     "recap": {
       "title": "Twój tydzień",
@@ -1746,7 +1749,8 @@
       "lead": "Najczęściej słuchany utwór z każdego kraju w tym tygodniu.",
       "leadOutside": "Najczęściej słuchany utwór z każdego kraju w tym tygodniu — spoza kraju: {country}.",
       "empty": "Muzyka z innych krajów pojawi się tu, gdy tylko ktoś zacznie jej słuchać."
-    }
+    },
+    "atlasLink": "Mapa muzyki →"
   },
   "Segment": {
     "errorTitle": "Coś poszło nie tak",
@@ -1980,5 +1984,329 @@
         }
       }
     }
+  },
+  "Recap": {
+    "title": "Podsumowanie miesiąca",
+    "signedOut": "Zaloguj się, aby zobaczyć swój miesiąc w muzyce.",
+    "signIn": "Zaloguj się",
+    "loading": "Składamy Twój miesiąc…",
+    "back": "← Ty",
+    "months": "Miesiące",
+    "previous": "← Poprzedni miesiąc",
+    "next": "Następny miesiąc →",
+    "heading": "Twój {month}",
+    "running": "Ten miesiąc jeszcze trwa — liczby rosną do jego ostatniego dnia.",
+    "empty": "W tym miesiącu nic nie słuchano. Włącz coś, a Twoje podsumowanie zacznie się tutaj.",
+    "outside": "Dla tego miesiąca nie ma podsumowania.",
+    "startListening": "Zacznij słuchać",
+    "labels": {
+      "listening": "Czas słuchania",
+      "songs": "Utwory",
+      "artists": "Artyści",
+      "newArtists": "Nowi artyści",
+      "countries": "Kraje",
+      "score": "Discovery Score"
+    },
+    "personality": "Muzyczna osobowość",
+    "personalities": {
+      "explorer": "Odkrywca",
+      "night_listener": "Nocny słuchacz",
+      "underground_hunter": "Łowca podziemia",
+      "global_discoverer": "Globalny odkrywca",
+      "genre_hopper": "Gatunkowy wędrowiec",
+      "repeat_master": "Mistrz powtórek"
+    },
+    "topGenre": "Najczęściej słuchany gatunek: {genre}",
+    "allStats": "Wszystkie statystyki",
+    "share": {
+      "title": "Udostępnij swój miesiąc",
+      "hint": "Karty do Stories, Reels, TikToka (9:16) albo posta (kwadrat). Tylko Twoje liczby i tylko wtedy, gdy je pobierzesz.",
+      "story": "9:16",
+      "square": "Kwadrat",
+      "kinds": {
+        "summary": "Miesiąc w liczbach",
+        "artist": "Top artysta",
+        "song": "Top utwór",
+        "discovery": "Największe odkrycie",
+        "score": "Discovery Score"
+      }
+    },
+    "card": {
+      "heading": "Mój {month} w Tunewick",
+      "question": "A co Ty odkryłeś/aś?",
+      "listening": "słuchania",
+      "songs": "utworów",
+      "newArtists": "nowych artystów",
+      "countries": "krajów",
+      "score": "Discovery Score",
+      "newSongs": "nowych utworów",
+      "underground": "odkryć z podziemia",
+      "topArtist": "Top artysta",
+      "topSong": "Top utwór",
+      "discovery": "Największe odkrycie",
+      "plays": "{count, plural, one {# odtworzenie} few {# odtworzenia} many {# odtworzeń} other {# odtworzenia}}",
+      "since": "{time} słuchania od odkrycia"
+    }
+  },
+  "Replay": {
+    "title": "TuneWick Replay",
+    "signedOut": "Zaloguj się, aby zobaczyć swój rok w muzyce.",
+    "signIn": "Zaloguj się",
+    "loading": "Przewijamy Twój rok…",
+    "back": "← Ty",
+    "years": "Lata",
+    "previous": "← {year}",
+    "next": "{year} →",
+    "heading": "Replay {year}",
+    "tooLittle": "W tym roku jest jeszcze za mało słuchania na historię. Słuchaj dalej — Twój Replay rośnie razem z Tobą.",
+    "outside": "Dla tego roku nie ma Replay.",
+    "startListening": "Zacznij słuchać",
+    "plays": "{count, plural, one {# odtworzenie} few {# odtworzenia} many {# odtworzeń} other {# odtworzenia}}",
+    "player": {
+      "previous": "Poprzedni",
+      "next": "Następny",
+      "pause": "Pauza",
+      "play": "Odtwarzaj",
+      "screen": "ekran"
+    },
+    "intro": {
+      "title": "Twój {year} w muzyce",
+      "complete": "Cały rok opowiedziany Twoim słuchaniem.",
+      "soFar": "Twój rok do tej pory — rośnie aż do 31 grudnia."
+    },
+    "minutes": {
+      "title": "Minut słuchania",
+      "note": "{time} w {days, plural, one {# dzień} other {# dni}}."
+    },
+    "firstSong": {
+      "title": "Twój pierwszy utwór roku",
+      "note": "{artist} · {date}"
+    },
+    "topMonth": {
+      "title": "Twój największy miesiąc",
+      "chart": "Słuchanie miesiąc po miesiącu",
+      "note": "{time} muzyki."
+    },
+    "topDay": {
+      "title": "Twój największy dzień",
+      "note": "{time} w jeden dzień."
+    },
+    "topArtist": {
+      "title": "Twój artysta roku"
+    },
+    "topArtists": {
+      "title": "Twoi top artyści"
+    },
+    "topSong": {
+      "title": "Twój utwór roku"
+    },
+    "topSongs": {
+      "title": "Twoje top utwory"
+    },
+    "topAlbum": {
+      "title": "Twoje wydanie roku"
+    },
+    "topGenre": {
+      "title": "Twój gatunek roku",
+      "note": "Spośród {count, plural, one {# gatunku} other {# gatunków}}, których słuchasz."
+    },
+    "countries": {
+      "title": "Kraje w Twoich słuchawkach"
+    },
+    "newArtists": {
+      "title": "Nowi odkryci artyści",
+      "note": "I {songs, plural, one {# utwór} few {# utwory} many {# utworów} other {# utworu}} usłyszanych po raz pierwszy."
+    },
+    "discovery": {
+      "title": "Twoje odkrycie roku",
+      "note": "{time} słuchania od chwili odkrycia."
+    },
+    "underground": {
+      "title": "Odkrycia z podziemia",
+      "note": "Artyści znalezieni, zanim zrobiło się o nich głośno."
+    },
+    "listeningTime": {
+      "title": "Twoja godzina",
+      "note": "{share} Twoich odtworzeń było nocą."
+    },
+    "streak": {
+      "title": "Najdłuższa seria odkryć",
+      "days": "{count, plural, one {# dzień} other {# dni}}",
+      "note": "Coś nowego każdego dnia, z rzędu."
+    },
+    "personality": {
+      "title": "Twoja muzyczna osobowość",
+      "types": {
+        "explorer": "Odkrywca",
+        "night_listener": "Nocny słuchacz",
+        "underground_hunter": "Łowca podziemia",
+        "global_discoverer": "Globalny odkrywca",
+        "genre_hopper": "Gatunkowy wędrowiec",
+        "repeat_master": "Mistrz powtórek"
+      }
+    },
+    "score": {
+      "title": "Twój Discovery Score",
+      "note": "Zdobyty za odkrywanie — nowe utwory, artystów, gatunki i kraje."
+    },
+    "vs": {
+      "title": "W porównaniu z {year}",
+      "minutes": "Minuty",
+      "newArtists": "Nowi artyści",
+      "score": "Discovery Score"
+    },
+    "outro": {
+      "title": "Tak wyglądał Twój {year}",
+      "note": "Udostępnij go — i zobacz, co odkryli znajomi.",
+      "story": "Pobierz do Stories (9:16)",
+      "square": "Karta kwadratowa"
+    },
+    "card": {
+      "heading": "Mój Replay {year}",
+      "minutes": "minut",
+      "topArtist": "artysta roku",
+      "artists": "artystów",
+      "newArtists": "nowych artystów",
+      "score": "Discovery Score",
+      "question": "A co Ty odkryłeś/aś?"
+    }
+  },
+  "Friends": {
+    "title": "Znajomi",
+    "signedOut": "Zaloguj się, aby zobaczyć, co odkrywają Twoi znajomi.",
+    "signIn": "Zaloguj się",
+    "loading": "Zaglądamy do znajomych…",
+    "back": "← Ty",
+    "lead": "Osoby, które obserwujesz — w takim zakresie, na jaki każda z nich pozwala.",
+    "findPeople": "Znajdź ludzi",
+    "privacy": "Wybierz, co inni widzą o Tobie →",
+    "ranking": {
+      "title": "Ranking wśród znajomych",
+      "period": "Okres",
+      "periods": {
+        "week": "Ten tydzień",
+        "month": "Ten miesiąc",
+        "all": "Od początku"
+      },
+      "empty": "Obserwuj ludzi, aby porównywać z nimi odkrycia.",
+      "you": "Ty",
+      "xp": "{xp} XP",
+      "hint": "Biorą udział tylko osoby, których wynik jest dla Ciebie widoczny."
+    },
+    "activity": {
+      "title": "Co odkryli znajomi",
+      "empty": "Brak aktywności znajomych w ostatnich 30 dniach.",
+      "newArtist": "<who></who> odkrywa: <artist></artist>",
+      "badge": "<who></who> — odznaka „{badge}”"
+    }
+  },
+  "ProfileDiscovery": {
+    "title": "Odkrywanie",
+    "hidden": "{name} nie pokazuje swoich odkryć.",
+    "score": "Discovery Score",
+    "level": "Poziom",
+    "title_": "Ranga",
+    "last30": "Ostatnie 30 dni",
+    "listening": "Czas słuchania",
+    "newArtists": "Nowi artyści",
+    "newSongs": "Nowe utwory",
+    "badges": "Odznaki ({count})",
+    "noBadges": "Jeszcze bez odznak.",
+    "common": "Wspólne z Tobą · {percent} Twoich artystów się pokrywa",
+    "noCommon": "Na razie nic wspólnego — dobry powód, żeby posłuchać nawzajem swoich odkryć.",
+    "replay": "Replay {year}",
+    "replayLine": "{minutes} minut muzyki, {artists} nowych artystów.",
+    "replayArtist": "Artysta roku:"
+  },
+  "DiscoveryPrivacy": {
+    "title": "Prywatność odkryć",
+    "lead": "Zdecyduj, kto widzi Twoje odkrycia. Zablokowane osoby nie widzą niczego.",
+    "profilePublic": "Publiczny profil",
+    "profilePublicHint": "Wyłączony: nikt poza Tobą nie widzi Twojego wyniku, odznak, statystyk ani Replay, niezależnie od ustawień poniżej.",
+    "fields": {
+      "stats": "Statystyki i odkrycia",
+      "score": "Discovery Score i ranking wśród znajomych",
+      "badges": "Odznaki",
+      "replay": "Replay"
+    },
+    "levels": {
+      "public": "Wszyscy",
+      "followers": "Osoby, które mnie obserwują",
+      "private": "Tylko ja"
+    },
+    "save": "Zapisz prywatność",
+    "saving": "Zapisywanie…",
+    "saved": "Zapisano.",
+    "error": "Nie udało się zapisać. Spróbuj ponownie."
+  },
+  "ArtistDiscovery": {
+    "title": "Odkrywanie",
+    "rising": "Zyskujący #{place}",
+    "fewer": "poniżej 3",
+    "listeners30": "Słuchacze · 30 dni",
+    "listeners7": "Słuchacze · 7 dni",
+    "discovered": "Odkryło · 30 dni",
+    "score": "Discovery Score · 30 dni",
+    "places": "Słuchają w:",
+    "hint": "Tylko prawdziwi słuchacze (odtworzenie liczy się od 30 sekund). Liczby poniżej 3 są ukryte, żeby nie dało się wskazać konkretnej osoby.",
+    "why": {
+      "title": "Dlaczego {name} może Ci się spodobać",
+      "friends": "Odkryli ich: {names}",
+      "related": "Słuchasz pokrewnych artystów: {artists}",
+      "genres": "Grają gatunki, które lubisz: {genres}"
+    },
+    "team": {
+      "title": "Odkrywanie — Twoi słuchacze",
+      "lead": "Ostatnie 12 tygodni. Nowi słuchacze: osoby, które w danym tygodniu zagrały Cię po raz pierwszy.",
+      "newListeners": "Nowi słuchacze",
+      "listeners": "Słuchacze",
+      "table": "Pokaż jako tabelę",
+      "week": "Tydzień od {date}",
+      "weekColumn": "Tydzień",
+      "empty": "W ostatnich 12 tygodniach nie było jeszcze słuchaczy.",
+      "countries": "Kraje (3+ słuchaczy)",
+      "cities": "Miasta (3+ słuchaczy)",
+      "charts": "Zobacz listy przebojów →"
+    },
+    "early": "{name} dopiero tu startuje — mniej niż 3 słuchaczy w ostatnich 30 dniach. Posłuchaj jako jedna z pierwszych osób."
+  },
+  "Atlas": {
+    "title": "Mapa muzyki",
+    "lead": "Skąd pochodzi muzyka w Tunewick — kraj po kraju, miasto po mieście, scena po scenie.",
+    "loading": "Rozkładamy mapę…",
+    "mine": "Słuchasz muzyki z {count} z {total} krajów.",
+    "empty": "Żaden kraj nie ma jeszcze opublikowanej muzyki.",
+    "mapTitle": "Mapa świata z krajami, z których jest muzyka w Tunewick",
+    "countryLabel": "{country}: {count, plural, one {# artysta} few {# artystów} many {# artystów} other {# artysty}}",
+    "legend": {
+      "none": "Jeszcze bez muzyki",
+      "one": "1 artysta",
+      "few": "2–4",
+      "many": "5–19",
+      "most": "20+",
+      "mine": "Słuchasz muzyki stąd"
+    },
+    "regions": {
+      "europe": "Europa",
+      "americas": "Ameryki",
+      "asia": "Azja",
+      "africa": "Afryka",
+      "oceania": "Oceania"
+    },
+    "artists": "{count, plural, one {# artysta} few {# artystów} many {# artystów} other {# artysty}}",
+    "listening": "{count} słuchaczy w tym tygodniu",
+    "back": "← Mapa muzyki",
+    "countryTitle": "Muzyka z kraju: {country}",
+    "charts": "Listy przebojów tego kraju →",
+    "cities": "Miasta i sceny",
+    "genres": "Gatunki",
+    "topArtists": "Artyści",
+    "listeners30": "{count} słuchaczy w tym miesiącu",
+    "cityTitle": "{city} — scena",
+    "scene": "{count, plural, one {# artysta stąd} few {# artystów stąd} many {# artystów stąd} other {# artysty stąd}}",
+    "cityArtists": "Artyści",
+    "events": "Nadchodzące wydarzenia",
+    "venues": "Miejsca",
+    "upcoming": "{count, plural, =0 {brak nadchodzących wydarzeń} one {# nadchodzące wydarzenie} few {# nadchodzące wydarzenia} many {# nadchodzących wydarzeń} other {# nadchodzącego wydarzenia}}"
   }
 }

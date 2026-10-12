@@ -70,6 +70,8 @@ export async function GET() {
     seasons,
     clips,
     daily,
+    recaps,
+    replays,
   ] = await Promise.all([
     supabase.from("profiles").select("handle, display_name, bio, created_at").eq("id", user.id),
     supabase.from("profile_settings").select("*").eq("user_id", user.id),
@@ -122,6 +124,8 @@ export async function GET() {
       .from("listening_daily")
       .select("day, ms_played, plays, tracks, artists, hours")
       .order("day"),
+    supabase.from("listening_recaps").select("month, stats, created_at").order("month"),
+    supabase.from("listening_replays").select("year, data, created_at").order("year"),
   ]);
 
   const body = {
@@ -156,6 +160,8 @@ export async function GET() {
     season_results: own(seasons),
     share_videos_requested: own(clips),
     listening_by_day: own(daily),
+    monthly_recaps: own(recaps),
+    yearly_replays: own(replays),
   };
 
   return new NextResponse(JSON.stringify(body, null, 2), {

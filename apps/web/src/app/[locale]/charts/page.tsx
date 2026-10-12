@@ -153,6 +153,9 @@ export default async function ChartsPage({ params, searchParams }: PageProps<"/[
       <header className="charts__head">
         <h1 className="charts__title">{t("title")}</h1>
         <p className="charts__lead">{t("lead")}</p>
+        <p className="charts__lead">
+          <Link href="/atlas">{t("atlasLink")}</Link>
+        </p>
       </header>
 
       <ScrollCurrent className="charts__tabs" label={t("tabsLabel")}>

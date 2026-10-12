@@ -1043,6 +1043,48 @@ export type Database = {
           },
         ];
       };
+      listening_recaps: {
+        Row: {
+          created_at: string;
+          month: string;
+          stats: NonNullable<Json>;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          month: string;
+          stats: NonNullable<Json>;
+          user_id: string;
+        };
+        Update: {
+          created_at?: string;
+          month?: string;
+          stats?: NonNullable<Json>;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
+      listening_replays: {
+        Row: {
+          created_at: string;
+          data: NonNullable<Json>;
+          user_id: string;
+          year: number;
+        };
+        Insert: {
+          created_at?: string;
+          data: NonNullable<Json>;
+          user_id: string;
+          year: number;
+        };
+        Update: {
+          created_at?: string;
+          data?: NonNullable<Json>;
+          user_id?: string;
+          year?: number;
+        };
+        Relationships: [];
+      };
       moderation_decisions: {
         Row: {
           action: string;
@@ -2423,6 +2465,16 @@ export type Database = {
         }[];
       };
       artist_copyright_strikes: { Args: { artist: string }; Returns: number };
+      artist_discovery: { Args: { artist: string }; Returns: Json };
+      artist_discovery_weeks: {
+        Args: { artist: string };
+        Returns: {
+          discoveries: number;
+          listeners: number;
+          new_listeners: number;
+          week: string;
+        }[];
+      };
       artist_follower_count: { Args: { artist: string }; Returns: number };
       artist_monthly_listening: {
         Args: { artist: string };
@@ -2445,6 +2497,18 @@ export type Database = {
           track_id: string;
         }[];
       };
+      atlas_city: { Args: { city: string; code: string }; Returns: Json };
+      atlas_countries: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          artists: number;
+          country_code: string;
+          discovered: boolean;
+          listeners_7d: number;
+          region: string;
+        }[];
+      };
+      atlas_country: { Args: { code: string }; Returns: Json };
       begin_audio_upload: {
         Args: { file_name: string; size_bytes: number; track: string };
         Returns: {
@@ -2573,6 +2637,7 @@ export type Database = {
           object_key: string;
         }[];
       };
+      common_ground: { Args: { handle: string }; Returns: Json };
       compare_with: { Args: { days?: number; handle: string }; Returns: Json };
       complete_audio_upload: {
         Args: { upload: string };
@@ -2803,6 +2868,31 @@ export type Database = {
           type: string;
         }[];
       };
+      friends_activity: {
+        Args: { max_results?: number };
+        Returns: {
+          artist_image_id: string;
+          artist_name: string;
+          artist_slug: string;
+          at: string;
+          badge: string;
+          country_code: string;
+          display_name: string;
+          handle: string;
+          kind: string;
+        }[];
+      };
+      friends_leaderboard: {
+        Args: { period?: string };
+        Returns: {
+          discoveries: number;
+          display_name: string;
+          handle: string;
+          is_me: boolean;
+          points: number;
+          rank: number;
+        }[];
+      };
       has_app_role: {
         Args: { required: Database["public"]["Enums"]["app_role"] };
         Returns: boolean;
@@ -2931,6 +3021,7 @@ export type Database = {
           xp: number;
         }[];
       };
+      my_month_recap: { Args: { month_start: string }; Returns: Json };
       my_plan: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -2975,6 +3066,7 @@ export type Database = {
         }[];
       };
       my_records: { Args: Record<PropertyKey, never>; Returns: Json };
+      my_replay: { Args: { replay_year: number }; Returns: Json };
       my_share_clips: {
         Args: Record<PropertyKey, never>;
         Returns: {
@@ -3012,6 +3104,7 @@ export type Database = {
           venue_name: string;
         }[];
       };
+      profile_overview: { Args: { handle: string }; Returns: Json };
       profile_playlists: {
         Args: { profile: string };
         Returns: {
@@ -3233,6 +3326,7 @@ export type Database = {
           voivodeship: Database["public"]["Enums"]["voivodeship"];
         }[];
       };
+      why_artist_for_me: { Args: { artist: string }; Returns: Json };
       withdraw_release_submission: { Args: { release: string }; Returns: undefined };
       world_tracks: {
         Args: { exclude_country?: string; max_results?: number };
