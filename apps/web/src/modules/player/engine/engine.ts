@@ -25,12 +25,15 @@ import type {
   PlayerReason,
   PlayerState,
   PlayerTrack,
+  RepeatMode,
   TrackRendition,
 } from "../types";
 import { MseSession } from "./mse-session";
 import { AAC_MIME, FLAC_MIME, probeCapabilities } from "./probe";
 
 const VOLUME_KEY = "tw.player.volume";
+const MODES_KEY = "tw.player.modes";
+const SKIP_S = 10;
 const STALL_MS = 4000;
 const RESTART_THRESHOLD_S = 3;
 
@@ -45,7 +48,20 @@ export const IDLE_STATE: PlayerState = {
   outputSampleRateHz: null,
   error: null,
   clip: null,
+  repeat: "off",
+  shuffle: false,
+  occurrence: 0,
 };
+
+/** Fisher-Yates on a copy. */
+function shuffled<T>(items: readonly T[]): T[] {
+  const copy = items.slice();
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j]!, copy[i]!];
+  }
+  return copy;
+}
 
 function readNetwork(): NetworkInfo {
   const connection = (
@@ -82,6 +98,10 @@ export class PlayerEngine {
   private stallTimer: ReturnType<typeof setTimeout> | null = null;
   /** Invalidates async work started for an earlier play/jump. */
   private generation = 0;
+  /** The queue in its own order while shuffle is on (restored when shuffle goes off). */
+  private original: PlayerTrack[] | null = null;
+  /** Volume before mute (the M key). */
+  private unmutedVolume = 1;
 
   constructor() {
     this.audio = document.createElement("audio");
@@ -92,7 +112,12 @@ export class PlayerEngine {
       if (localStorage.getItem(VOLUME_KEY) !== null && stored >= 0 && stored <= 1) volume = stored;
     } catch {}
     this.audio.volume = volume;
-    this.state = { ...IDLE_STATE, volume };
+    let modes: { repeat?: RepeatMode; shuffle?: boolean } = {};
+    try {
+      modes = JSON.parse(localStorage.getItem(MODES_KEY) ?? "{}") as typeof modes;
+    } catch {}
+    const repeat = (["off", "all", "one"] as const).includes(modes.repeat!) ? modes.repeat! : "off";
+    this.state = { ...IDLE_STATE, volume, repeat, shuffle: modes.shuffle === true };
 
     this.audio.addEventListener("timeupdate", () => this.syncPosition());
     this.audio.addEventListener("durationchange", () => this.syncPosition());
@@ -136,16 +161,35 @@ export class PlayerEngine {
     if (!queue.length) return;
     this.stallCap = null;
     this.measureOutputRate();
-    this.update({ queue, index: startIndex, error: null, clip: null });
-    await this.start(startIndex, 0);
+    let order = queue;
+    let index = startIndex;
+    if (this.state.shuffle) {
+      // Shuffle mode: the chosen track first, the rest in random order.
+      this.original = queue.slice();
+      const chosen = queue[startIndex]!;
+      order = [chosen, ...shuffled(queue.filter((_, i) => i !== startIndex))];
+      index = 0;
+    } else {
+      this.original = null;
+    }
+    this.update({ queue: order, index, error: null, clip: null });
+    await this.start(index, 0, true, true);
+  }
+
+  /** Plays the queue from a random track, with shuffle mode on (the "Shuffle" buttons). */
+  async playShuffled(queue: readonly PlayerTrack[]) {
+    if (!queue.length) return;
+    this.setShuffleMode(true);
+    await this.playQueue(queue, Math.floor(Math.random() * queue.length));
   }
 
   /** Plays a soundcheck: `length` seconds of `track` from `start`, then stops. */
   async playClip(track: PlayerTrack, start: number, length: number) {
     this.stallCap = null;
     this.measureOutputRate();
+    this.original = null;
     this.update({ queue: [track], index: 0, error: null, clip: { start, end: start + length } });
-    await this.start(0, start);
+    await this.start(0, start, true, true);
   }
 
   toggle() {
@@ -158,7 +202,7 @@ export class PlayerEngine {
     // A finished soundcheck plays again from the start of the excerpt.
     const clip = this.state.clip;
     if (clip && this.state.position >= clip.end - 0.25) {
-      await this.start(this.state.index, clip.start);
+      await this.start(this.state.index, clip.start, true, true);
       return;
     }
     try {
@@ -175,6 +219,7 @@ export class PlayerEngine {
   async next() {
     const target = this.state.index + 1;
     if (target < this.state.queue.length) await this.jump(target);
+    else if (this.state.repeat === "all" && this.state.queue.length) await this.jump(0);
   }
 
   async previous() {
@@ -193,11 +238,100 @@ export class PlayerEngine {
       if (this.session.isBuffered(time)) {
         this.audio.currentTime = time;
       } else {
-        await this.start(this.state.index, target, !this.audio.paused);
+        await this.start(this.state.index, target, !this.audio.paused, false);
       }
     } else if (this.state.now) {
       this.audio.currentTime = target;
     }
+  }
+
+  /** Skips within the track (keyboard arrows, headphone/lock-screen seek buttons). */
+  async skipBy(seconds: number) {
+    if (!this.state.now) return;
+    await this.seek(this.state.position + seconds);
+  }
+
+  toggleMute() {
+    if (this.state.volume > 0) {
+      this.unmutedVolume = this.state.volume;
+      this.setVolume(0);
+    } else {
+      this.setVolume(this.unmutedVolume || 1);
+    }
+  }
+
+  /** off → all → one → off, like most players. */
+  cycleRepeat() {
+    const next: Record<RepeatMode, RepeatMode> = { off: "all", all: "one", one: "off" };
+    this.update({ repeat: next[this.state.repeat] });
+    this.saveModes();
+  }
+
+  /**
+   * Shuffle on: the playing track stays, everything else is shuffled. Off: the queue's own order
+   * comes back, continuing from the playing track.
+   */
+  toggleShuffle() {
+    this.setShuffleMode(!this.state.shuffle);
+  }
+
+  private setShuffleMode(on: boolean) {
+    if (on === this.state.shuffle) return;
+    const { queue, index } = this.state;
+    const current = queue[index];
+    if (on) {
+      this.original = queue.slice();
+      if (current && !this.state.clip) {
+        this.reorder([current, ...shuffled(queue.filter((_, i) => i !== index))], 0);
+      }
+    } else if (this.original && current) {
+      const back = this.original.indexOf(current);
+      if (back >= 0) this.reorder(this.original, back);
+      this.original = null;
+    } else {
+      this.original = null;
+    }
+    this.update({ shuffle: on });
+    this.saveModes();
+  }
+
+  /** Plays `track` right after the current one. */
+  playNext(track: PlayerTrack) {
+    if (!this.state.queue.length || this.state.clip) return void this.playQueue([track], 0);
+    const at = this.state.index + 1;
+    const queue = [...this.state.queue.slice(0, at), track, ...this.state.queue.slice(at)];
+    if (this.original) {
+      const current = this.state.queue[this.state.index];
+      const pos = current ? this.original.indexOf(current) + 1 : this.original.length;
+      this.original.splice(pos, 0, track);
+    }
+    this.reorder(queue, this.state.index);
+  }
+
+  /** Adds `track` at the end of the queue. */
+  addToQueue(track: PlayerTrack) {
+    if (!this.state.queue.length || this.state.clip) return void this.playQueue([track], 0);
+    this.original?.push(track);
+    // Nothing already planned moves: the gapless session picks the new track up, or the player
+    // starts it when the planned ones end.
+    this.update({ queue: [...this.state.queue, track] });
+  }
+
+  /** Removes an upcoming queue item (not the playing one). */
+  removeFromQueue(index: number) {
+    if (index <= this.state.index || index >= this.state.queue.length) return;
+    const removed = this.state.queue[index];
+    const queue = this.state.queue.filter((_, i) => i !== index);
+    if (this.original && removed) {
+      const pos = this.original.indexOf(removed);
+      if (pos >= 0) this.original.splice(pos, 1);
+    }
+    this.reorder(queue, this.state.index);
+  }
+
+  /** Plays the queue item at `index` (from the queue panel). */
+  async playAt(index: number) {
+    if (index >= 0 && index < this.state.queue.length) await this.jump(index);
   }
 
   setVolume(volume: number) {
@@ -265,17 +399,47 @@ export class PlayerEngine {
     };
   }
 
+  /**
+   * Replaces the queue while the same track keeps playing at `index`. A gapless session has the
+   * old order queued (by index), so it is rebuilt from the current position - a short rebuffer,
+   * the song does not restart. The listen goes on (same occurrence).
+   */
+  private reorder(queue: readonly PlayerTrack[], index: number) {
+    this.update({ queue, index });
+    if (this.session && this.state.now) {
+      void this.start(index, this.state.position, !this.audio.paused, false);
+    }
+  }
+
+  private saveModes() {
+    try {
+      localStorage.setItem(
+        MODES_KEY,
+        JSON.stringify({ repeat: this.state.repeat, shuffle: this.state.shuffle }),
+      );
+    } catch {}
+  }
+
   private closeSession() {
     this.session?.close();
     this.session = null;
   }
 
-  /** Starts playback of queue[index] at `offset` seconds, rebuilding the pipeline. */
-  private async start(index: number, offset: number, autoplay = true) {
+  /**
+   * Starts playback of queue[index] at `offset` seconds, rebuilding the pipeline. `fresh`: a new
+   * start of the track (a new listen), as opposed to resuming it elsewhere (seek, stall, reorder).
+   */
+  private async start(index: number, offset: number, autoplay = true, fresh = true) {
     const generation = ++this.generation;
     this.clearStall();
     this.closeSession();
-    this.update({ index, position: offset, status: "loading", error: null });
+    this.update({
+      index,
+      position: offset,
+      status: "loading",
+      error: null,
+      occurrence: fresh ? this.state.occurrence + 1 : this.state.occurrence,
+    });
 
     const now = await this.decide(index);
     if (generation !== this.generation) return;
@@ -315,6 +479,8 @@ export class PlayerEngine {
 
   /** Appends following tracks to the same MediaSource while they use the same codec. */
   private async extendSession(session: MseSession<NowPlaying>, from: number, generation: number) {
+    // Repeat one: nothing follows; the track restarts when it ends (onEnded).
+    if (this.state.repeat === "one") return session.finish();
     for (let index = from + 1; index < this.state.queue.length; index++) {
       const now = await this.decide(index);
       if (generation !== this.generation || session.closed) return;
@@ -330,7 +496,7 @@ export class PlayerEngine {
       this.audio.currentTime = entry.plan.start;
       return;
     }
-    await this.start(index, 0, true);
+    await this.start(index, 0, true, true);
   }
 
   private syncPosition() {
@@ -338,8 +504,15 @@ export class PlayerEngine {
       const entry = this.session.entryAt(this.audio.currentTime);
       if (!entry) return;
       const trackChanged = entry.index !== this.state.index;
+      // Repeat one inside a gapless session: the next track was already queued - go back.
+      if (trackChanged && this.state.repeat === "one" && entry.index === this.state.index + 1) {
+        this.update({ occurrence: this.state.occurrence + 1 }); // the replay is a new listen
+        void this.jump(this.state.index);
+        return;
+      }
       this.update({
         index: entry.index,
+        occurrence: trackChanged ? this.state.occurrence + 1 : this.state.occurrence,
         now: entry.data,
         position: Math.max(0, this.audio.currentTime - entry.plan.start),
         duration: entry.plan.end - entry.plan.start,
@@ -360,10 +533,16 @@ export class PlayerEngine {
   }
 
   private onEnded() {
+    if (this.state.repeat === "one" && !this.state.clip) {
+      void this.start(this.state.index, 0, true, true);
+      return;
+    }
     const last = this.session?.entries.at(-1)?.index ?? this.state.index;
     const next = last + 1;
     if (next < this.state.queue.length) {
-      void this.start(next, 0, true);
+      void this.start(next, 0, true, true);
+    } else if (this.state.repeat === "all" && !this.state.clip) {
+      void this.start(0, 0, true, true);
     } else {
       this.update({ status: "paused", position: this.state.duration });
     }
@@ -380,7 +559,7 @@ export class PlayerEngine {
       const lower = tierAfterStall(now.tier, available);
       if (!lower) return;
       this.stallCap = lower;
-      void this.start(this.state.index, this.state.position, true);
+      void this.start(this.state.index, this.state.position, true, false);
     }, STALL_MS);
   }
 
@@ -412,6 +591,8 @@ export class PlayerEngine {
       ["nexttrack", () => void this.next()],
       ["previoustrack", () => void this.previous()],
       ["seekto", (details) => void this.seek(details.seekTime ?? 0)],
+      ["seekbackward", (details) => void this.skipBy(-(details.seekOffset ?? SKIP_S))],
+      ["seekforward", (details) => void this.skipBy(details.seekOffset ?? SKIP_S)],
     ];
     for (const [action, handler] of handlers) {
       try {

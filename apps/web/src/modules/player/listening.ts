@@ -42,8 +42,8 @@ export class ListeningTracker {
 
   update(state: PlayerState) {
     const track = state.queue[state.index];
-    // The same track twice in a row (playlist duplicates) is a new occurrence: key by index too.
-    const key = track ? `${state.index}:${track.id}:${state.clip ? "clip" : "full"}` : "";
+    // Each start of a track is its own listen (duplicates, repeat); reordering the queue is not.
+    const key = track ? `${state.occurrence}:${track.id}:${state.clip ? "clip" : "full"}` : "";
     if (!track || state.status === "idle" || state.status === "error") {
       this.flush();
       return;

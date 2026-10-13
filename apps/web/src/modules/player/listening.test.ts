@@ -6,8 +6,17 @@ import type { PlayerState, PlayerTrack } from "./types";
 const track = (id: string) => ({ id, title: id, artist: "A" }) as unknown as PlayerTrack;
 const queue = [track("a"), track("b"), track("a")];
 
+// In these tests every index change is a new start of a track (occurrence follows the index).
 function state(index: number, position: number, status: PlayerState["status"] = "playing") {
-  return { ...IDLE_STATE, queue, index, position, duration: 120, status } as PlayerState;
+  return {
+    ...IDLE_STATE,
+    queue,
+    index,
+    occurrence: index,
+    position,
+    duration: 120,
+    status,
+  } as PlayerState;
 }
 
 function setup() {
@@ -26,6 +35,16 @@ describe("ListeningTracker", () => {
     tracker.update(state(1, 0));
     expect(sent).toHaveLength(1);
     expect(sent[0]).toMatchObject({ trackId: "a", msPlayed: 30000, completed: false });
+  });
+
+  it("keeps one listen when the queue is reordered under the playing track (shuffle)", () => {
+    const { sent, tracker } = setup();
+    for (let s = 0; s <= 10; s += 0.25) tracker.update(state(0, s));
+    // Shuffle moved the playing track "a" from index 0 to index 2; same occurrence.
+    for (let s = 10.25; s <= 20; s += 0.25) tracker.update({ ...state(2, s), occurrence: 0 });
+    tracker.flush();
+    expect(sent).toHaveLength(1);
+    expect(sent[0]).toMatchObject({ trackId: "a", msPlayed: 20000 });
   });
 
   it("does not count seeks or paused time", () => {

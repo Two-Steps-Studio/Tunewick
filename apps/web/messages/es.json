@@ -54,7 +54,24 @@
       "unplayable": "Este navegador no puede reproducir ninguna versión de esta canción.",
       "stream_error": "Se interrumpió la transmisión de audio."
     },
-    "soundcheck": "Soundcheck"
+    "soundcheck": "Soundcheck",
+    "queue": "Cola",
+    "nowPlaying": "Sonando ahora",
+    "upNext": "A continuación",
+    "removeFromQueue": "Quitar de la cola: {title}",
+    "queueEmpty": "No hay nada más en la cola.",
+    "queueRepeats": "La cola volverá a empezar desde el principio.",
+    "queueMore": "{count, plural, one {y # canción más} other {y # canciones más}}",
+    "shuffle": "Aleatorio",
+    "repeat": {
+      "off": "Repetir: desactivado",
+      "all": "Repetir: toda la cola",
+      "one": "Repetir: esta canción"
+    },
+    "playNext": "Reproducir a continuación",
+    "addToQueue": "Añadir a la cola",
+    "queuedNext": "Sonará a continuación.",
+    "queuedLast": "Añadida a la cola."
   },
   "Scene": {
     "title": "Escena",

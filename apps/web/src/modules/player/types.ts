@@ -53,4 +53,15 @@ export interface PlayerState {
   error: PlayerError | null;
   /** A soundcheck: only this excerpt (seconds into the track) plays, then the player stops. */
   clip: { start: number; end: number } | null;
+  /** Repeat the whole queue or the current track (remembered on this device). */
+  repeat: RepeatMode;
+  /** Shuffle mode (remembered on this device): new queues play in random order too. */
+  shuffle: boolean;
+  /**
+   * Counts track starts (next track, a jump, a repeat, a new queue) - not reorders or seeks. The
+   * listening history keys a listen by it, so shuffling the queue mid-song is still one listen.
+   */
+  occurrence: number;
 }
+
+export type RepeatMode = "off" | "all" | "one";
