@@ -75,7 +75,9 @@
     "autoplay": "Autoplay",
     "autoplayHint": "Wenn deine Warteschlange endet, laufen ähnliche Songs weiter.",
     "autoplayLabel": "Autoplay: ähnliche Songs",
-    "autoplayNext": "Danach laufen ähnliche Songs."
+    "autoplayNext": "Danach laufen ähnliche Songs.",
+    "openNowPlaying": "Player im Vollbild zeigen",
+    "closeNowPlaying": "Player einklappen"
   },
   "Scene": {
     "title": "Szene",

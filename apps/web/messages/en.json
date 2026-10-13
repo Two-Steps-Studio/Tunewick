@@ -75,7 +75,9 @@
     "autoplay": "Autoplay",
     "autoplayHint": "When your queue ends, similar songs keep playing.",
     "autoplayLabel": "Autoplay: similar songs",
-    "autoplayNext": "Similar songs will play next."
+    "autoplayNext": "Similar songs will play next.",
+    "openNowPlaying": "Show the full-screen player",
+    "closeNowPlaying": "Collapse the player"
   },
   "Scene": {
     "title": "Scene",

@@ -75,7 +75,9 @@
     "autoplay": "Autoodtwarzanie",
     "autoplayHint": "Gdy kolejka się skończy, zagrają podobne utwory.",
     "autoplayLabel": "Autoodtwarzanie: podobne utwory",
-    "autoplayNext": "Potem zagrają podobne utwory."
+    "autoplayNext": "Potem zagrają podobne utwory.",
+    "openNowPlaying": "Pokaż odtwarzacz na pełnym ekranie",
+    "closeNowPlaying": "Zwiń odtwarzacz"
   },
   "Scene": {
     "title": "Scena",

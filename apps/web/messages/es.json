@@ -75,7 +75,9 @@
     "autoplay": "Reproducción automática",
     "autoplayHint": "Cuando termine tu cola, seguirán canciones parecidas.",
     "autoplayLabel": "Reproducción automática: canciones parecidas",
-    "autoplayNext": "Después sonarán canciones parecidas."
+    "autoplayNext": "Después sonarán canciones parecidas.",
+    "openNowPlaying": "Mostrar el reproductor a pantalla completa",
+    "closeNowPlaying": "Contraer el reproductor"
   },
   "Scene": {
     "title": "Escena",

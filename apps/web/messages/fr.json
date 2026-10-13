@@ -75,7 +75,9 @@
     "autoplay": "Lecture automatique",
     "autoplayHint": "Quand ta file d’attente se termine, des titres similaires prennent le relais.",
     "autoplayLabel": "Lecture automatique : titres similaires",
-    "autoplayNext": "Des titres similaires suivront."
+    "autoplayNext": "Des titres similaires suivront.",
+    "openNowPlaying": "Afficher le lecteur en plein écran",
+    "closeNowPlaying": "Réduire le lecteur"
   },
   "Scene": {
     "title": "Scène",

@@ -492,11 +492,37 @@ summary,
     min-width: 0;
   }
   .player-bar__title {
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+  .player-bar__names {
     display: flex;
     gap: var(--tk-space-2);
     min-width: 0;
     font-size: var(--tk-text-sm);
     white-space: nowrap;
+  }
+  .player-bar__expand {
+    display: block;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    transition: transform var(--tk-dur-press) var(--tk-ease-out);
+  }
+  .player-bar__expand:active {
+    transform: scale(0.94);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .player-bar__title:hover .player-bar__track {
+      text-decoration: underline;
+    }
   }
   .player-bar__soundcheck {
     flex: none;
@@ -608,6 +634,174 @@ summary,
     grid-column: 1 / -1;
     font-size: var(--tk-text-xs);
     color: var(--signal);
+  }
+
+  /* Full-screen player ------------------------------------------------------- */
+  /* A sheet over everything: slides up from the bar, dragged down to close. The page behind
+     does not scroll while it is open. */
+  html:has(.now-playing[open]) {
+    overflow: hidden;
+  }
+  .now-playing {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: var(--bg);
+    color: var(--text);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    animation: sheet-in var(--tk-dur-sheet) var(--tk-ease-drawer);
+    transition: transform var(--tk-dur-base) var(--tk-ease-out);
+  }
+  .now-playing::backdrop {
+    background: rgb(0 0 0 / 0.5);
+  }
+  .now-playing[data-closing] {
+    animation: sheet-out var(--tk-dur-base) var(--tk-ease-in-out) forwards;
+  }
+  @keyframes sheet-in {
+    from {
+      transform: translateY(100%);
+    }
+  }
+  @keyframes sheet-out {
+    to {
+      transform: translateY(100%);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .now-playing {
+      animation-name: menu-fade-in;
+    }
+    .now-playing[data-closing] {
+      animation-name: sheet-fade-out;
+    }
+  }
+  @keyframes sheet-fade-out {
+    to {
+      opacity: 0;
+    }
+  }
+  .now-playing__inner {
+    display: grid;
+    gap: var(--tk-space-4);
+    width: min(28rem, 100%);
+    margin-inline: auto;
+    padding: calc(env(safe-area-inset-top) + var(--tk-space-2)) var(--tk-space-4)
+      calc(env(safe-area-inset-bottom) + var(--tk-space-6));
+  }
+  .now-playing__header {
+    position: relative;
+    display: grid;
+    grid-template-columns: 2.75rem minmax(0, 1fr) 2.75rem;
+    align-items: center;
+    text-align: center;
+    touch-action: none;
+  }
+  .now-playing__grabber {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 2.25rem;
+    height: 0.25rem;
+    margin-left: -1.125rem;
+    background: var(--line);
+  }
+  .now-playing__art {
+    touch-action: none;
+  }
+  .now-playing__art > img,
+  .now-playing__art > span {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: cover;
+    background: var(--bg-sunken, var(--line));
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+  /* Short phones in landscape: the cover gives way to the controls. */
+  @media (max-height: 560px) {
+    .now-playing__art {
+      width: min(40vh, 100%);
+      margin-inline: auto;
+    }
+  }
+  .now-playing__meta {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--tk-space-3);
+  }
+  .now-playing__names {
+    display: grid;
+    min-width: 0;
+  }
+  .now-playing__title {
+    margin: 0;
+    font-size: var(--tk-text-xl);
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+  }
+  .now-playing__artist {
+    color: var(--text-muted);
+    overflow-wrap: anywhere;
+  }
+  .now-playing__actions {
+    position: relative;
+  }
+  .now-playing__timeline {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: var(--tk-space-1);
+  }
+  .now-playing__timeline .player-bar__seek {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+  .now-playing__timeline .player-bar__time:last-child {
+    justify-self: end;
+  }
+  .now-playing__controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .player-button--large {
+    width: 3.25rem;
+    height: 3.25rem;
+  }
+  .player-button--large svg {
+    width: 28px;
+    height: 28px;
+  }
+  .player-button--hero {
+    width: 4.5rem;
+    height: 4.5rem;
+  }
+  .player-button--hero svg {
+    width: 32px;
+    height: 32px;
+  }
+  .now-playing .player-bar__quality {
+    flex-wrap: wrap;
+    justify-content: center;
+    white-space: normal;
+    text-align: center;
+  }
+  .now-playing__queue {
+    display: grid;
+    gap: var(--tk-space-2);
+    padding-top: var(--tk-space-4);
+    border-top: 1px solid var(--line);
   }
 
   /* Master upload (release editor) ---------------------------------------- */

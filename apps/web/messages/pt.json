@@ -75,7 +75,9 @@
     "autoplay": "Reprodução automática",
     "autoplayHint": "Quando a fila acabar, tocam músicas parecidas.",
     "autoplayLabel": "Reprodução automática: músicas parecidas",
-    "autoplayNext": "Depois tocam músicas parecidas."
+    "autoplayNext": "Depois tocam músicas parecidas.",
+    "openNowPlaying": "Mostrar o player em tela cheia",
+    "closeNowPlaying": "Recolher o player"
   },
   "Scene": {
     "title": "Cena",

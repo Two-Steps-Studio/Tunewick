@@ -1,4 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
+import { expectNoSidewaysScroll } from "./helpers";
 
 // Drives the real engine on /dev/player with the sweep album made by the audio worker
 // (pnpm dev:media, Docker). The web server runs with TUNEWICK_DEV_PAGES=1.
@@ -176,4 +177,29 @@ test("autoplay can be switched off and the choice is remembered", async ({ page 
   await bar.getByLabel("Kolejka").click();
   await expect(bar.getByRole("switch", { name: "Autoodtwarzanie" })).not.toBeChecked();
   await bar.getByRole("switch", { name: "Autoodtwarzanie" }).click();
+});
+
+test("the full-screen player opens from the bar and closes again", async ({ page }) => {
+  await playAlbum(page, "high", "high");
+  const bar = player(page);
+
+  await bar.getByRole("button", { name: /Sweep 1/ }).click();
+  const sheet = page.getByRole("dialog", { name: "Teraz gra" });
+  await expect(sheet).toBeVisible();
+  await expect(sheet.getByRole("heading", { name: "Sweep 1" })).toBeVisible();
+  // Its own controls and the queue.
+  await expect(sheet.getByRole("button", { name: /^Sweep 2/ })).toBeVisible();
+  await sheet.getByRole("button", { name: "Następny utwór" }).click();
+  await expect(sheet.getByRole("heading", { name: "Sweep 2" })).toBeVisible();
+  await expectNoSidewaysScroll(page);
+
+  await sheet.getByRole("button", { name: "Zwiń odtwarzacz" }).click();
+  await expect(sheet).toHaveCount(0);
+
+  // Escape closes it too; the music goes on.
+  await bar.getByRole("button", { name: /Sweep 2/ }).click();
+  await expect(sheet).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(sheet).toHaveCount(0);
+  await expect.poll(async () => (await debug(page)).status).toBe("playing");
 });
