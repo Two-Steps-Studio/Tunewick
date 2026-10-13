@@ -11501,4 +11501,31 @@ $tw_20261013100000$;
   end if;
 end $run$;
 
+-- 20261013110000_schema_version.sql
+do $run$ begin
+  if not exists (select 1 from supabase_migrations.schema_migrations where version = '20261013110000') then
+    execute $tw_20261013110000$-- The newest migration the database has, so the admin panel can say when the database is behind
+-- the deployed app (e.g. the migration bundle was not pasted yet). Admins only.
+
+create function public.admin_schema_version()
+returns text
+language plpgsql
+stable
+security definer
+set search_path = ''
+as $$
+begin
+  perform public.require_staff('admin');
+  return (select max(version) from supabase_migrations.schema_migrations);
+end;
+$$;
+
+revoke execute on function public.admin_schema_version() from public, anon;
+grant execute on function public.admin_schema_version() to authenticated;
+$tw_20261013110000$;
+    insert into supabase_migrations.schema_migrations (version, name) values ('20261013110000', 'schema_version');
+    raise notice 'applied 20261013110000_schema_version.sql';
+  end if;
+end $run$;
+
 select version, name from supabase_migrations.schema_migrations order by version desc limit 5;
