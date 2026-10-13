@@ -423,9 +423,15 @@ export class PlayerEngine {
   private updateMediaSession() {
     const track = this.state.queue[this.state.index];
     if (!("mediaSession" in navigator) || !track) return;
+    // Without artwork, iOS and Android show the site icon on the lock screen instead of the cover.
     navigator.mediaSession.metadata = new MediaMetadata({
       title: track.title,
       artist: track.artist,
+      artwork: (track.artwork ?? []).map((image) => ({
+        src: image.url,
+        sizes: `${image.width}x${image.width}`,
+        type: "image/webp",
+      })),
     });
   }
 

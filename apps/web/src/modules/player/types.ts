@@ -20,6 +20,8 @@ export interface PlayerTrack {
   artist: string;
   source: SourceQuality;
   renditions: TrackRendition[];
+  /** Cover of the track's release, smallest first: the player bar and the OS lock screen. */
+  artwork?: { url: string; width: number }[];
 }
 
 /** Why the delivered tier is below the best one (chooseTier reasons + engine-level ones). */

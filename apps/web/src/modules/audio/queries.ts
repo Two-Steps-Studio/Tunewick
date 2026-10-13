@@ -1,5 +1,6 @@
 import "server-only";
 
+import { cache } from "react";
 import {
   type Authenticity,
   type Database,
@@ -10,6 +11,7 @@ import {
 } from "@tunewick/shared";
 import { isMediaStorageConfigured, presignVariantGet } from "@/lib/media/storage";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { getImageVariants } from "@/modules/images";
 import type { PlayerTrack, TrackRendition, WorkerReport } from "@/modules/player";
 
 export type AudioUploadStatus = Database["public"]["Enums"]["audio_upload_status"];
@@ -170,6 +172,17 @@ function sourceQuality(source: PlaybackSource): SourceQuality {
   };
 }
 
+/** A release's cover in every size, once per request however many tracks ask for it. */
+const releaseArtwork = cache(async (releaseId: string) => {
+  const supabase = await createSupabaseServerClient();
+  const { data } = await supabase
+    .from("releases")
+    .select("artwork_image_id")
+    .eq("id", releaseId)
+    .maybeSingle();
+  return getImageVariants(data?.artwork_image_id ?? null);
+});
+
 /**
  * Playable tracks of a release the caller may see (public once released; members and staff
  * earlier), in release order. Only variants up to `maxTier` get a URL - a Free listener's page
@@ -183,7 +196,10 @@ export async function getPlayableTracks(
   maxTier: QualityTier,
 ): Promise<PlayerTrack[]> {
   const supabase = await createSupabaseServerClient();
-  const { data, error } = await supabase.rpc("release_playback", { release: releaseId });
+  const [{ data, error }, artwork] = await Promise.all([
+    supabase.rpc("release_playback", { release: releaseId }),
+    releaseArtwork(releaseId),
+  ]);
   if (error) throw error;
 
   const result: PlayerTrack[] = [];
@@ -218,6 +234,7 @@ export async function getPlayableTracks(
       artist: artistName,
       source: sourceQuality(row.source as unknown as PlaybackSource),
       renditions,
+      ...(artwork.length ? { artwork } : {}),
     });
   }
   return result;
