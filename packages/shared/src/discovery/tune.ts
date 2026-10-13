@@ -16,7 +16,7 @@ export interface ReasonOutcome {
 /**
  * The features a reason stands for: the reason is the strongest signal behind an item, so how
  * well a reason works says how much that signal should count for this listener. Exploration
- * reasons are absent on purpose — the share of experiments is the listener's own setting.
+ * reasons are absent on purpose - the share of experiments is the listener's own setting.
  */
 const REASON_FEATURES: Partial<Record<ReasonCode, readonly (keyof FeatureWeights)[]>> = {
   followed_artist: ["artist"],
@@ -42,7 +42,7 @@ const success = (o: Pick<ReasonOutcome, "hits" | "completes">) =>
 /**
  * Per-listener weights: each reason's success rate (likes, saves, follows, finished previews per
  * song shown) compared with the listener's overall rate, shrunk toward it while there is little
- * evidence (`prior` songs of pseudo-data), square-rooted and clamped — a nudge, never a takeover.
+ * evidence (`prior` songs of pseudo-data), square-rooted and clamped - a nudge, never a takeover.
  * Without enough history the weights come back unchanged.
  */
 export function tuneWeights(base: FeatureWeights, outcomes: readonly ReasonOutcome[]): Tuning {

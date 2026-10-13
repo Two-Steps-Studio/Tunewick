@@ -4,7 +4,7 @@ import type { QualityTier, Rendition, SourceQuality, TierReason } from "@tunewic
 export interface TrackRendition extends Rendition {
   url: string;
   bitDepth: number | null;
-  /** Real average bitrate of this file (bytes × 8 / duration), kbit/s — for throughput decisions. */
+  /** Real average bitrate of this file (bytes × 8 / duration), kbit/s - for throughput decisions. */
   bitrateKbps: number;
   /** Encoder target for lossy variants (shown to listeners, e.g. "AAC 256 kbps"); null for FLAC. */
   nominalKbps: number | null;
@@ -20,6 +20,8 @@ export interface PlayerTrack {
   artist: string;
   source: SourceQuality;
   renditions: TrackRendition[];
+  /** Cover of the track's release, smallest first: the player bar and the OS lock screen. */
+  artwork?: { url: string; width: number }[];
 }
 
 /** Why the delivered tier is below the best one (chooseTier reasons + engine-level ones). */

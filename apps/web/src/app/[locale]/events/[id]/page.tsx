@@ -12,7 +12,7 @@ type Params = PageProps<"/[locale]/events/[id]">["params"];
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const data = await getEvent((await params).id);
-  return data ? { title: `${data.event.title} — ${data.event.venue.name}` } : {};
+  return data ? { title: `${data.event.title} - ${data.event.venue.name}` } : {};
 }
 
 /** An event is playable: every artist in the lineup with a soundcheck of their newest release. */

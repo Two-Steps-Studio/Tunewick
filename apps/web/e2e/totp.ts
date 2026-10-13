@@ -15,7 +15,7 @@ function base32Decode(input: string): Buffer {
   return Buffer.from(bytes);
 }
 
-/** RFC 6238 TOTP (SHA-1, 30 s, 6 digits) — what authenticator apps compute. */
+/** RFC 6238 TOTP (SHA-1, 30 s, 6 digits) - what authenticator apps compute. */
 export function totp(secret: string, at = Date.now(), stepOffset = 0): string {
   const counter = Math.floor(at / 1000 / 30) + stepOffset;
   const buffer = Buffer.alloc(8);

@@ -1,6 +1,6 @@
 /**
  * Names of countries and languages in any interface language, from the platform's CLDR data
- * (Intl.DisplayNames) — no lists of names to translate, so a new locale works immediately.
+ * (Intl.DisplayNames) - no lists of names to translate, so a new locale works immediately.
  */
 
 const cache = new Map<string, Intl.DisplayNames>();
@@ -38,7 +38,7 @@ export function flagEmoji(code: string): string {
   return String.fromCodePoint(...[...code].map((c) => 0x1f1e6 + c.charCodeAt(0) - 65));
 }
 
-/** "1h 05m" / "14h 32m" / "42m" / "<1m" — listening time without seconds. */
+/** "1h 05m" / "14h 32m" / "42m" / "<1m" - listening time without seconds. */
 export function formatListening(ms: number): string {
   if (ms > 0 && ms < 60_000) return "<1m";
   const minutes = Math.floor(ms / 60_000);

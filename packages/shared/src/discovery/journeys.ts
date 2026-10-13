@@ -1,7 +1,7 @@
 /**
  * Surprise Me journeys and the Daily Discovery / Weekly Drop picks (docs/discovery-v2.md M14.3).
  * Each journey is a lens on the same candidates and ranking as the feed: different weights,
- * exploration, randomness and a filter — never a separate catalogue.
+ * exploration, randomness and a filter - never a separate catalogue.
  */
 
 import { MODE_WEIGHTS, type DiscoveryMode, type FeatureWeights } from "./config";

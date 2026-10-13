@@ -15,7 +15,7 @@ function Submit() {
   );
 }
 
-/** "I have a code" — the result message comes from the database's typed reason. */
+/** "I have a code" - the result message comes from the database's typed reason. */
 export function RedeemForm() {
   const t = useTranslations("Plan.redeem");
   const [state, action] = useActionState(redeemCode, {} as RedeemState);

@@ -22,7 +22,7 @@ export async function generateMetadata({
 
 /**
  * Browse: new music from small independent artists, by country (and voivodeship in Poland).
- * Ordered by release date only — nothing here pretends to be "popular" or "for you"; the
+ * Ordered by release date only - nothing here pretends to be "popular" or "for you"; the
  * Discover feed does that, with reasons. Every item says why it is here.
  */
 export default async function BrowsePage({ params, searchParams }: PageProps<"/[locale]/browse">) {

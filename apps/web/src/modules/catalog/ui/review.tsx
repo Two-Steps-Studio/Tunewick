@@ -7,7 +7,7 @@ import { type SubmissionState, submitRelease, withdrawSubmission } from "../acti
 
 const initial: SubmissionState = {};
 
-/** Send for review — offered only when the checklist is complete (the database checks again). */
+/** Send for review - offered only when the checklist is complete (the database checks again). */
 export function SubmitReleaseForm({ releaseId }: { releaseId: string }) {
   const t = useTranslations("Releases.review");
   const [state, action, pending] = useActionState(() => submitRelease(releaseId), initial);

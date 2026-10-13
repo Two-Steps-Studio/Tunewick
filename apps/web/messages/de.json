@@ -205,7 +205,7 @@
   },
   "Settings": {
     "title": "Konto",
-    "lead": "Dein öffentliches Profil und private Einstellungen.",
+    "lead": "Das ist dein Hörer*innen-Konto: Profil, Privatsphäre und Plan. Ein Artist-Profil - die Seite mit deiner Musik - ist eine eigene Seite; du findest es unten unter „Deine Artist-Projekte“.",
     "publicSection": "Öffentliches Profil",
     "publicHint": "Das sieht jeder, der dein Profil öffnet.",
     "privateSection": "Private Einstellungen",
@@ -275,7 +275,7 @@
   "Artists": {
     "my": {
       "title": "Deine Artist-Projekte",
-      "empty": "Du bist noch an keinem Projekt beteiligt.",
+      "empty": "Du hast noch kein Artist-Profil. Lege eines an, um Musik zu veröffentlichen - dein Hörer*innen-Konto bleibt, wie es ist.",
       "create": "Artist-Profil erstellen",
       "invitedAs": "Eingeladen als: {role}",
       "accept": "Einladung annehmen",
@@ -447,11 +447,13 @@
       "back": "Zurück zum Artist-Profil",
       "aiMissing": "Gib die KI-Beteiligung an, bevor du zur Prüfung einreichst.",
       "cover": "Cover",
-      "coverAlt": "Cover des Releases {title}"
+      "coverAlt": "Cover des Releases {title}",
+      "more": "Weitere Optionen"
     },
     "fields": {
       "title": "Titel",
       "slug": "Release-Adresse",
+      "slugHint": "Das Ende der Adresse der Release-Seite, z. B. tunewick.com/de/artists/dein-name/releases/titel.",
       "type": "Typ",
       "releaseDate": "Veröffentlichungsdatum",
       "explicit": "Expliziter Inhalt",
@@ -465,9 +467,12 @@
       "creditRole": "Rolle",
       "creditDetail": "Details (z. B. Instrument)",
       "creditArtist": "Tunewick-Profil (optional)",
-      "creditArtistHint": "Die Profiladresse des Artists, z. B. halda-kolektyw. Verknüpft den Track mit dem Profil und hilft Hörer*innen, ähnliche Artists zu finden.",
+      "creditArtistHint": "Gib den Namen eines Artists auf Tunewick ein und wähle ihn aus der Liste. Verknüpft den Track mit seinem Profil und hilft Hörer*innen, verwandte Artists zu finden.",
       "soundcheckStart": "Soundcheck-Start (m:ss)",
-      "soundcheckStartHint": "Der 30-Sekunden-Ausschnitt, der den Track in Entdecken vorstellt. Leer = von Anfang an."
+      "soundcheckStartHint": "Der 30-Sekunden-Ausschnitt, der den Track in Entdecken vorstellt. Leer = von Anfang an.",
+      "creditArtistLinked": "Verknüpft mit dem Profil: {name}.",
+      "creditArtistClear": "Verknüpfung lösen",
+      "creditArtistNone": "Kein Artist mit diesem Namen gefunden."
     },
     "types": {
       "single": "Single",
@@ -613,7 +618,7 @@
       "processing": "{file} wird geprüft und verarbeitet …",
       "accepted": "Bereit: {file} ({size} MB).",
       "rejected": "{file} wurde abgelehnt.",
-      "failed": "Upload von {file} fehlgeschlagen – bitte versuch es noch einmal."
+      "failed": "{file} konnte nicht hochgeladen oder verarbeitet werden - bitte lade die Datei erneut hoch."
     },
     "error": {
       "unsupported_type": "Dieser Dateityp wird nicht unterstützt. Lade einen verlustfreien Master hoch: WAV, AIFF, FLAC oder ALAC.",
@@ -1114,7 +1119,13 @@
     "sharesArtist": "Artist",
     "sharesListeners": "Hörer*innen",
     "sharesPlays": "Plays",
-    "sharesHours": "Stunden"
+    "sharesHours": "Stunden",
+    "fieldErrors": {
+      "handleRequired": "Gib den Profilnamen der Person ein.",
+      "handleNotFound": "Kein Konto hat diesen Profilnamen. Prüfe ihn unter Konto → Profilname (ohne @).",
+      "daysInvalid": "Gib eine Anzahl von 1 bis 3660 Tagen ein oder lass das Feld leer (dauerhaft).",
+      "noteShort": "Gib einen Grund ein (mindestens 3 Zeichen) - er landet im Änderungsprotokoll."
+    }
   },
   "Events": {
     "badge": "Gig",

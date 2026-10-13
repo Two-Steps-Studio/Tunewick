@@ -64,14 +64,17 @@ test.describe("release editor", () => {
     expect(overflow, "no horizontal scroll with track details open").toBe(0);
 
     // Release details: declare AI involvement, explicit, date.
-    await page.getByLabel("Udział sztucznej inteligencji").first().selectOption("human");
-    await page.getByLabel("Data wydania").fill("2026-11-20");
-    await page.getByLabel("Kod UPC/EAN (opcjonalnie)").fill("123");
-    await page.getByRole("button", { name: "Zapisz" }).first().click();
-    await expect(page.getByText("Kod UPC/EAN ma 12 lub 13 cyfr.")).toBeVisible();
-    await page.getByLabel("Kod UPC/EAN (opcjonalnie)").fill("");
-    await page.getByRole("button", { name: "Zapisz" }).first().click();
-    await expect(page.getByRole("status").filter({ hasText: "Zapisano." }).first()).toBeVisible();
+    const details = page.locator(`[aria-labelledby="details"]`);
+    await details.getByLabel("Udział sztucznej inteligencji").selectOption("human");
+    await details.getByLabel("Data wydania").fill("2026-11-20");
+    // Rarely needed fields are folded under "More options".
+    await details.getByText("Więcej opcji").click();
+    await details.getByLabel("Kod UPC/EAN (opcjonalnie)").fill("123");
+    await details.getByRole("button", { name: "Zapisz" }).click();
+    await expect(details.getByText("Kod UPC/EAN ma 12 lub 13 cyfr.")).toBeVisible();
+    await details.getByLabel("Kod UPC/EAN (opcjonalnie)").fill("");
+    await details.getByRole("button", { name: "Zapisz" }).click();
+    await expect(details.getByRole("status").filter({ hasText: "Zapisano." })).toBeVisible();
     await page.reload();
     await expect(page.getByText("Określ udział AI przed wysłaniem do weryfikacji.")).toHaveCount(0);
 

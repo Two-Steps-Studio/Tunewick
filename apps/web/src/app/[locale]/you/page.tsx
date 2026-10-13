@@ -324,16 +324,16 @@ export default async function YouPage({ params, searchParams }: PageProps<"/[loc
         <ul className="records">
           <li>
             <span>🏆 {t("records.mostSongsDay")}</span>
-            <strong>{records.most_songs_day ? n(records.most_songs_day.value) : "—"}</strong>
+            <strong>{records.most_songs_day ? n(records.most_songs_day.value) : "-"}</strong>
           </li>
           <li>
             <span>🏆 {t("records.mostArtistsWeek")}</span>
-            <strong>{records.most_artists_week ? n(records.most_artists_week.value) : "—"}</strong>
+            <strong>{records.most_artists_week ? n(records.most_artists_week.value) : "-"}</strong>
           </li>
           <li>
             <span>🏆 {t("records.longestStreak")}</span>
             <strong>
-              {records.longest_streak ? t("records.days", { count: records.longest_streak }) : "—"}
+              {records.longest_streak ? t("records.days", { count: records.longest_streak }) : "-"}
             </strong>
           </li>
           <li>
@@ -345,7 +345,7 @@ export default async function YouPage({ params, searchParams }: PageProps<"/[loc
             <strong>
               {records.longest_session
                 ? formatListening(Number(records.longest_session.value))
-                : "—"}
+                : "-"}
             </strong>
           </li>
         </ul>
@@ -445,7 +445,7 @@ export default async function YouPage({ params, searchParams }: PageProps<"/[loc
   );
 }
 
-/** How points work — the real values from the database rules. */
+/** How points work - the real values from the database rules. */
 async function PointRules() {
   const t = await getTranslations("You.rules");
   const supabase = await createSupabaseServerClient();

@@ -5,6 +5,10 @@ import { useActionState } from "react";
 import { FormMessage, InputField, SelectField, Submit } from "@/components/form/field";
 import { type AdminFormState, grantPremium, grantStaffRole } from "../actions";
 
+type T = ReturnType<typeof useTranslations<"Admin">>;
+const fieldError = (t: T, code?: NonNullable<AdminFormState["fieldErrors"]>["handle"]) =>
+  code ? t(`fieldErrors.${code}`) : undefined;
+
 export function GrantRoleForm() {
   const t = useTranslations("Admin");
   const [state, action] = useActionState(grantStaffRole, {} as AdminFormState);
@@ -20,6 +24,7 @@ export function GrantRoleForm() {
           label={t("fields.handle")}
           hint={t("fields.handleHint")}
           defaultValue={state.values?.handle}
+          error={fieldError(t, state.fieldErrors?.handle)}
           autoCapitalize="none"
           spellCheck={false}
         />
@@ -51,7 +56,9 @@ export function GrantPremiumForm() {
         <InputField
           name="handle"
           label={t("fields.handle")}
+          hint={t("fields.handleHint")}
           defaultValue={state.values?.handle}
+          error={fieldError(t, state.fieldErrors?.handle)}
           autoCapitalize="none"
           spellCheck={false}
         />
@@ -61,6 +68,7 @@ export function GrantPremiumForm() {
           hint={t("fields.daysHint")}
           inputMode="numeric"
           defaultValue={state.values?.days ?? "30"}
+          error={fieldError(t, state.fieldErrors?.days)}
         />
       </div>
       <InputField
@@ -69,6 +77,7 @@ export function GrantPremiumForm() {
         hint={t("fields.noteHint")}
         maxLength={120}
         defaultValue={state.values?.note}
+        error={fieldError(t, state.fieldErrors?.note)}
       />
       <Submit>{t("grantPremium")}</Submit>
     </form>

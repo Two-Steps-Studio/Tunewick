@@ -83,7 +83,7 @@ export async function isArtistMember(artistId: string) {
   return data === true;
 }
 
-/** Genres (ids, names in both languages) and links of an artist — public data. */
+/** Genres (ids, names in both languages) and links of an artist - public data. */
 export async function getArtistReach(artistId: string) {
   const supabase = await createSupabaseServerClient();
   const [genres, links] = await Promise.all([

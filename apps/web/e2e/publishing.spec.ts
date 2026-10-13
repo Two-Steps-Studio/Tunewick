@@ -63,10 +63,13 @@ async function readyRelease(page: Page) {
   await expect(track.getByText("Zapisano.")).toBeVisible();
   await track.getByLabel("Imię i nazwisko lub pseudonim").fill("Kopalnia");
   await track.getByLabel("Rola").selectOption("producer");
-  await track.getByLabel("Profil w Tunewick (opcjonalnie)").fill("nie-ma-takiego-profilu");
-  await track.getByRole("button", { name: "Dodaj twórcę" }).click();
-  await expect(track.getByText("Nie ma aktywnego profilu artysty o takim adresie.")).toBeVisible();
-  await track.getByLabel("Profil w Tunewick (opcjonalnie)").fill(`${slug}-prod`);
+  // The Tunewick profile is picked by name from search results.
+  const picker = track.getByLabel("Profil w Tunewick (opcjonalnie)");
+  await picker.fill("nie-ma-takiego-profilu");
+  await expect(track.getByText("Nie znaleziono artysty o tej nazwie.")).toBeVisible();
+  await picker.fill(`Kopalnia ${slug}`);
+  await track.getByRole("button", { name: new RegExp(`Kopalnia ${slug}`) }).click();
+  await expect(track.getByText(`Połączono z profilem: Kopalnia ${slug}.`)).toBeVisible();
   await track.getByRole("button", { name: "Dodaj twórcę" }).click();
   await expect(track.getByText(`Kopalnia → Kopalnia ${slug}`)).toBeVisible();
   await track.getByLabel("Imię i nazwisko lub pseudonim").fill("Ola Nowak");
@@ -117,7 +120,7 @@ test.describe("review and publishing", () => {
   }) => {
     const { slug, email } = await readyRelease(page);
     const editor = page.url();
-    const submission = `Familok ${slug} — Szychta`;
+    const submission = `Familok ${slug} - Szychta`;
 
     await page.getByRole("button", { name: "Wyślij do weryfikacji" }).click();
     await expect(page.getByText(/^Wysłane do weryfikacji/)).toBeVisible();
@@ -140,7 +143,7 @@ test.describe("review and publishing", () => {
 
     await moderator.goto("/moderacja");
     await moderator.getByRole("link", { name: submission }).click();
-    await expect(moderator.getByText("Bez AI — utworzone przez ludzi").first()).toBeVisible();
+    await expect(moderator.getByText("Bez AI - utworzone przez ludzi").first()).toBeVisible();
     await expect(moderator.getByText("WAV 16/44.1 · 0:12")).toBeVisible();
 
     await moderator.getByRole("button", { name: "Zwróć do poprawy" }).click();
@@ -174,7 +177,7 @@ test.describe("review and publishing", () => {
     await expect(listener.getByRole("heading", { level: 1 })).toHaveText("Szychta");
     await expect(listener.getByRole("img", { name: /^Okładka: Szychta/ })).toBeVisible();
     await expect(listener.getByText("1 utwór · 0:12")).toBeVisible();
-    await expect(listener.getByText("Bez AI — utworzone przez ludzi.")).toBeVisible();
+    await expect(listener.getByText("Bez AI - utworzone przez ludzi.")).toBeVisible();
     const credits = listener.locator("section", {
       has: listener.getByRole("heading", { name: "Twórcy" }),
     });
@@ -199,7 +202,7 @@ test.describe("review and publishing", () => {
     await expect(card.getByText(/^Debiut · /)).toBeVisible();
     // Its soundcheck: 10 s from 0:02 (the 12 s track ends there), marked in the player.
     await card
-      .getByRole("button", { name: `Posłuchaj fragmentu: Nocna zmiana — Familok ${slug}` })
+      .getByRole("button", { name: `Posłuchaj fragmentu: Nocna zmiana - Familok ${slug}` })
       .click();
     const soundcheckBar = listener.getByRole("region", { name: "Odtwarzacz" });
     await expect(soundcheckBar.getByText("Soundcheck", { exact: true })).toBeVisible();
@@ -227,7 +230,7 @@ test.describe("review and publishing", () => {
     await page.getByRole("button", { name: "Udostępnij" }).click();
     await page.getByRole("button", { name: "Wideo do relacji (MP4)" }).click();
     await expect(
-      page.getByRole("button", { name: "Wideo gotowe — udostępnij lub pobierz" }),
+      page.getByRole("button", { name: "Wideo gotowe - udostępnij lub pobierz" }),
     ).toBeVisible({ timeout: 90_000 });
 
     await listener.getByRole("link", { name: "Odkrywaj więcej na Tunewick" }).click();
@@ -235,7 +238,7 @@ test.describe("review and publishing", () => {
     await expect(first.getByRole("heading", { level: 2 })).toHaveText("Nocna zmiana");
     await expect(first.getByText("Ktoś Ci to udostępnił")).toBeVisible();
 
-    // Search finds the newly published music — no Polish characters needed.
+    // Search finds the newly published music - no Polish characters needed.
     await listener.goto(`/szukaj?q=${encodeURIComponent(`familok ${slug}`)}`);
     await expect(
       listener.getByRole("link", { name: `Familok ${slug}`, exact: true }),
@@ -248,7 +251,7 @@ test.describe("review and publishing", () => {
 
     // Premium (from the database, granted server-side) unlocks the lossless variant.
     await page.goto("/ustawienia");
-    await expect(page.getByText(/^Free — /)).toBeVisible();
+    await expect(page.getByText(/^Free - /)).toBeVisible();
     grantPremium(email, 30);
     await page.reload();
     await expect(page.getByText(/^Premium do \d{1,2} \S+ \d{4}/)).toBeVisible();
@@ -292,7 +295,7 @@ test.describe("review and publishing", () => {
     await listener.goto("/biblioteka");
     await expect(listener.getByRole("link", { name: "Zaloguj się" }).last()).toBeVisible();
 
-    // Playlists: create, add (twice — duplicates are allowed), reorder, remove, share, delete.
+    // Playlists: create, add (twice - duplicates are allowed), reorder, remove, share, delete.
     await page.goto("/biblioteka");
     await page.getByLabel("Nowa playlista").fill("Na nocną zmianę");
     await page.getByRole("button", { name: "Utwórz" }).click();

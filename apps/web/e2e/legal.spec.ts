@@ -10,7 +10,7 @@ test("the legal documents are linked from every page and say they are drafts", a
     "nie został jeszcze sprawdzony przez prawnika",
   );
   // Retention promised here is enforced by the daily job (supabase retention test).
-  await expect(page.getByText(/Historia słuchania — 25 miesięcy/)).toBeVisible();
+  await expect(page.getByText(/Historia słuchania - 25 miesięcy/)).toBeVisible();
 
   for (const [name, path, heading] of [
     ["Regulamin", /\/regulamin$/, "Regulamin"],

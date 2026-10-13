@@ -41,7 +41,7 @@ export function EventForm({ artistId }: { artistId: string }) {
             label={tPlaces("voivodeshipLabel")}
             defaultValue={v.voivodeship ?? ""}
             options={[
-              { value: "", label: "—" },
+              { value: "", label: "-" },
               ...VOIVODESHIPS.map((x) => ({ value: x, label: tPlaces(`voivodeship.${x}`) })),
             ]}
           />

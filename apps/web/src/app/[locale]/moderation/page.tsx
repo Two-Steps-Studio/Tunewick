@@ -67,7 +67,7 @@ export default async function ModerationPage({ params }: PageProps<"/[locale]/mo
                   className="artist-list__name"
                   href={{ pathname: "/moderation/[release]", params: { release: s.id } }}
                 >
-                  {s.artist?.name} — {s.title}
+                  {s.artist?.name} - {s.title}
                 </Link>
                 <span className="field__hint">
                   {tReleases(`types.${s.type}`)} ·{" "}

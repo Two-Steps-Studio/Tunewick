@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 // GDPR art. 15/20: everything we hold about the signed-in person, as one JSON file.
-// Read with the person's own session — RLS decides what is theirs, nothing more.
+// Read with the person's own session - RLS decides what is theirs, nothing more.
 
 const PAGE = 1000;
 

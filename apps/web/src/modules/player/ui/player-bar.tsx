@@ -74,7 +74,7 @@ function QualityChip({ quality, now }: { quality: QualityDescription; now: NowPl
 }
 
 /**
- * Persistent player in the shell. With an empty queue it shows the honest idle state — no fake
+ * Persistent player in the shell. With an empty queue it shows the honest idle state - no fake
  * track, no dead controls.
  */
 /** `reportListens`: keep a listening history for the signed-in listener. */
@@ -102,6 +102,8 @@ export function PlayerBar({ reportListens = false }: { reportListens?: boolean }
   const playing = state.status === "playing" || state.status === "loading";
   const quality = state.now ? qualityOf(track, state.now, state.outputSampleRateHz) : null;
   const position = scrub ?? state.position;
+  // The smallest cover size that is still sharp at 48 px on a 2× screen.
+  const cover = track.artwork?.find((image) => image.width >= 96) ?? track.artwork?.at(-1);
   const commit = () => {
     if (scrub !== null) void player.seek(scrub);
     setScrub(null);
@@ -141,6 +143,12 @@ export function PlayerBar({ reportListens = false }: { reportListens?: boolean }
         </button>
       </div>
 
+      {cover ? (
+        // eslint-disable-next-line @next/next/no-img-element -- pre-sized WebP variant of the cover
+        <img className="player-bar__cover" src={cover.url} alt="" width={48} height={48} />
+      ) : (
+        <span className="player-bar__cover" aria-hidden="true" />
+      )}
       <div className="player-bar__now">
         <p className="player-bar__title" aria-live="polite">
           {state.clip ? <span className="player-bar__soundcheck">{t("soundcheck")}</span> : null}

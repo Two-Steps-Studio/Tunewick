@@ -19,7 +19,7 @@ export function diversity(genreCounts: readonly number[]): number {
 
 /**
  * Discovery Score: XP earned by discovering (new songs, artists, genres, countries, underground
- * finds, finished discoveries — not missions, saves or shares), up to +25 % for diverse
+ * finds, finished discoveries - not missions, saves or shares), up to +25 % for diverse
  * discovering. Levels follow total XP (`levelFor`).
  */
 export function discoveryScore(discoveryXp: number, genreCounts: readonly number[]): number {
@@ -95,7 +95,7 @@ export interface ProgressInput {
 
 /**
  * Light goals that follow the listener's own pace: a bit above their recent average, within
- * bounds — never a chore for someone who listens a little.
+ * bounds - never a chore for someone who listens a little.
  */
 export function goalsFor(progress: ProgressInput): Goal[] {
   const goal = (key: GoalKey, period: Goal["period"], target: number, value: number): Goal => ({

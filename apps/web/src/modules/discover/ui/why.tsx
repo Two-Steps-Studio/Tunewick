@@ -3,7 +3,7 @@
 import type { WhyLine } from "@tunewick/shared";
 import { useTranslations } from "next-intl";
 
-/** "Why this song?" — the real signals behind a recommendation, in plain words. */
+/** "Why this song?" - the real signals behind a recommendation, in plain words. */
 export function WhyPanel({ id, lines }: { id: string; lines: WhyLine[] }) {
   const t = useTranslations("Why");
   return (

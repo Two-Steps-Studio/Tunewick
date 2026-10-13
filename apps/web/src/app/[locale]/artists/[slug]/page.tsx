@@ -47,7 +47,7 @@ export async function generateMetadata({
   };
 }
 
-/** Public artist page: only real data — no invented stats, unverified profiles say so. */
+/** Public artist page: only real data - no invented stats, unverified profiles say so. */
 export default async function ArtistPage({ params }: PageProps<"/[locale]/artists/[slug]">) {
   const { locale, slug } = await params;
   setRequestLocale(locale as Locale);

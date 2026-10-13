@@ -2,7 +2,7 @@
   "Meta": {
     "title": "Tunewick",
     "description": "Découvre plus, écoute mieux, rapproche-toi de la scène.",
-    "tagline": "De la musique indépendante de partout — découverte par des gens, pas par des playlists."
+    "tagline": "De la musique indépendante de partout - découverte par des gens, pas par des playlists."
   },
   "Shell": {
     "skipToContent": "Aller au contenu",
@@ -50,7 +50,7 @@
     },
     "error": {
       "media_error": "Impossible de lire ce titre.",
-      "playback_blocked": "Le navigateur a bloqué la lecture — appuie sur Lecture.",
+      "playback_blocked": "Le navigateur a bloqué la lecture - appuie sur Lecture.",
       "unplayable": "Ce navigateur ne peut lire aucune version de ce titre.",
       "stream_error": "Le flux audio a été interrompu."
     },
@@ -60,7 +60,7 @@
     "title": "Scène",
     "lead": "Concerts, clubs et salles près de chez toi.",
     "empty": "Aucun événement pour l’instant. Nous n’affichons que de vrais événements ajoutés par les artistes et les salles.",
-    "leadEvents": "De vrais concerts de petits artistes indépendants de toute la Pologne — ajoutés par eux et vérifiés par les modérateurs.",
+    "leadEvents": "De vrais concerts de petits artistes indépendants de toute la Pologne - ajoutés par eux et vérifiés par les modérateurs.",
     "regionLabel": "Région",
     "allPoland": "Toute la Pologne",
     "upcoming": "Concerts à venir",
@@ -68,9 +68,9 @@
   },
   "Search": {
     "title": "Recherche",
-    "lead": "Des artistes indépendants de partout — tape un nom, un titre ou une partie. Les accents sont facultatifs.",
+    "lead": "Des artistes indépendants de partout - tape un nom, un titre ou une partie. Les accents sont facultatifs.",
     "empty": "La recherche sera disponible dès qu’il y aura de la musique dans le catalogue.",
-    "titleFor": "« {query} » — recherche",
+    "titleFor": "« {query} » - recherche",
     "label": "Rechercher des artistes, sorties et titres",
     "placeholder": "Artiste, sortie ou titre",
     "submit": "Rechercher",
@@ -84,7 +84,7 @@
   "Library": {
     "title": "Bibliothèque",
     "lead": "Ta musique : titres et sorties aimés, et les artistes que tu suis.",
-    "empty": "Rien ici pour l’instant. Aime un titre ou une sortie et suis des artistes — ils apparaîtront ici.",
+    "empty": "Rien ici pour l’instant. Aime un titre ou une sortie et suis des artistes - ils apparaîtront ici.",
     "signedOut": "Connecte-toi pour enregistrer des titres, des sorties et des artistes.",
     "signIn": "Se connecter",
     "likedTracks": "Titres aimés ({count})",
@@ -118,7 +118,7 @@
     "gigsLead": "Les concerts que tu as marqués. Toi seul peux les voir.",
     "saved": {
       "title": "Enregistrés depuis Découvrir",
-      "lead": "Les morceaux enregistrés pendant tes découvertes — reviens-y quand tu veux.",
+      "lead": "Les morceaux enregistrés pendant tes découvertes - reviens-y quand tu veux.",
       "play": "Lire les enregistrés"
     }
   },
@@ -147,7 +147,7 @@
     },
     "hints": {
       "password": "Au moins 10 caractères.",
-      "inviteCode": "Tunewick est en bêta fermée — il te faut un code de notre part ou d’un artiste."
+      "inviteCode": "Tunewick est en bêta fermée - il te faut un code de notre part ou d’un artiste."
     },
     "login": {
       "title": "Se connecter",
@@ -193,7 +193,7 @@
       "displayNameTooLong": "Le nom peut comporter au maximum 80 caractères.",
       "ageRequired": "Tu dois avoir au moins 16 ans pour créer un compte.",
       "invalidCredentials": "E-mail ou mot de passe incorrect.",
-      "emailNotConfirmed": "Confirme d’abord ton e-mail — le lien est dans notre message.",
+      "emailNotConfirmed": "Confirme d’abord ton e-mail - le lien est dans notre message.",
       "weakPassword": "Ce mot de passe est trop facile à deviner. Choisis-en un autre.",
       "samePassword": "Le nouveau mot de passe doit être différent de l’actuel.",
       "rateLimited": "Trop de tentatives. Réessaie dans quelques minutes.",
@@ -205,7 +205,7 @@
   },
   "Settings": {
     "title": "Compte",
-    "lead": "Ton profil public et tes paramètres privés.",
+    "lead": "Voici ton compte d’auditeur : profil, confidentialité et offre. Le profil d’artiste - la page avec ta musique - est une page à part ; tu le trouveras plus bas, dans « Tes projets d’artiste ».",
     "publicSection": "Profil public",
     "publicHint": "Toute personne qui ouvre ton profil peut voir ces informations.",
     "privateSection": "Paramètres privés",
@@ -275,7 +275,7 @@
   "Artists": {
     "my": {
       "title": "Tes projets d’artiste",
-      "empty": "Tu ne fais encore partie d’aucun projet.",
+      "empty": "Tu n’as pas encore de profil d’artiste. Crée-le pour publier ta musique - ton compte d’auditeur reste inchangé.",
       "create": "Créer un profil d’artiste",
       "invitedAs": "Invité en tant que : {role}",
       "accept": "Accepter l’invitation",
@@ -297,9 +297,9 @@
       "note": "Message aux modérateurs (facultatif)",
       "city": "Ville ou localité",
       "voivodeship": "Voïvodie (région)",
-      "voivodeshipNone": "— non indiquée —",
+      "voivodeshipNone": "- non indiquée -",
       "country": "Pays",
-      "countryNone": "— non indiqué —",
+      "countryNone": "- non indiqué -",
       "region": "Région ou État",
       "languages": "Langues dans lesquelles tu chantes ou parles",
       "genres": "Genres (jusqu’à 5)",
@@ -309,11 +309,11 @@
       "slug": "Lettres minuscules, chiffres et tirets. Adresse : tunewick.com/fr/artists/adresse",
       "evidence": "P. ex. site officiel, Bandcamp, profil du groupe sur les réseaux sociaux. Jusqu’à 5 liens.",
       "handle": "La personne doit avoir un compte avec un nom de profil.",
-      "city": "D’où tu viens — p. ex. Rzeszów, Gliwice, Suwałki. Ça aide les auditeurs à trouver la musique de leur région.",
+      "city": "D’où tu viens - p. ex. Rzeszów, Gliwice, Suwałki. Ça aide les auditeurs à trouver la musique de leur région.",
       "country": "Les auditeurs découvrent la musique par pays.",
       "region": "Facultatif, p. ex. Bavière, Catalogne, Texas. En Pologne, la voïvodie ci-dessus suffit.",
       "languages": "Codes de langue séparés par des virgules, p. ex. pl, en, es.",
-      "genres": "Ce qu’est ta musique — le fil s’en sert pour trouver tes auditeurs.",
+      "genres": "Ce qu’est ta musique - le fil s’en sert pour trouver tes auditeurs.",
       "links": "Site web, Bandcamp, Instagram, TikTok, YouTube… https uniquement, jusqu’à 10."
     },
     "roles": {
@@ -442,16 +442,18 @@
       "credits": "Crédits",
       "addCredit": "Ajouter un crédit",
       "deleteCredit": "Retirer",
-      "readOnly": "Cette sortie n’est plus un brouillon — la modification est verrouillée.",
+      "readOnly": "Cette sortie n’est plus un brouillon - la modification est verrouillée.",
       "deleteDraft": "Supprimer le brouillon",
       "back": "Retour au profil de l’artiste",
       "aiMissing": "Déclare l’implication de l’IA avant de soumettre pour examen.",
       "cover": "Pochette",
-      "coverAlt": "Pochette de la sortie {title}"
+      "coverAlt": "Pochette de la sortie {title}",
+      "more": "Plus d’options"
     },
     "fields": {
       "title": "Titre",
       "slug": "Adresse de la sortie",
+      "slugHint": "La fin de l’adresse de la page de la sortie, par ex. tunewick.com/fr/artists/ton-nom/releases/titre.",
       "type": "Type",
       "releaseDate": "Date de sortie",
       "explicit": "Contenu explicite",
@@ -465,9 +467,12 @@
       "creditRole": "Rôle",
       "creditDetail": "Détails (p. ex. instrument)",
       "creditArtist": "Profil Tunewick (facultatif)",
-      "creditArtistHint": "L’adresse du profil de l’artiste, p. ex. halda-kolektyw. Relie le titre à son profil et aide les auditeurs à trouver des artistes similaires.",
+      "creditArtistHint": "Tape le nom d’un artiste présent sur Tunewick et choisis-le dans la liste. Cela relie le titre à son profil et aide les auditeurs à découvrir des artistes proches.",
       "soundcheckStart": "Début du soundcheck (m:ss)",
-      "soundcheckStartHint": "L’extrait de 30 secondes qui présente le titre dans Découvrir. Vide = depuis le début."
+      "soundcheckStartHint": "L’extrait de 30 secondes qui présente le titre dans Découvrir. Vide = depuis le début.",
+      "creditArtistLinked": "Relié au profil : {name}.",
+      "creditArtistClear": "Délier",
+      "creditArtistNone": "Aucun artiste trouvé avec ce nom."
     },
     "types": {
       "single": "Single",
@@ -487,7 +492,7 @@
     },
     "ai": {
       "unknown": "Non déclarée (obligatoire avant soumission)",
-      "human": "Sans IA — faite par des humains",
+      "human": "Sans IA - faite par des humains",
       "ai_assisted": "Assistée par IA",
       "ai_generated": "Générée par IA"
     },
@@ -549,7 +554,7 @@
       "samplesQuestion": "Samples et extraits d’autres enregistrements",
       "samples": {
         "none": "Il n’y a pas de samples",
-        "cleared": "Il y a des samples — j’ai l’autorisation de les utiliser"
+        "cleared": "Il y a des samples - j’ai l’autorisation de les utiliser"
       },
       "samplesDescription": "Décris les samples et les autorisations (auteur, source, type d’autorisation)",
       "aiContent": "Implication de l’intelligence artificielle",
@@ -575,10 +580,10 @@
       "tracks": "Au moins un titre",
       "ai": "Implication de l’IA déclarée",
       "rights": "Déclaration de droits envoyée",
-      "audio": "Fichiers master pour chaque titre — vérifiés",
+      "audio": "Fichiers master pour chaque titre - vérifiés",
       "note": "Quand tout est prêt, envoie la sortie pour examen. Avant publication, nous vérifions les droits, les métadonnées et les enregistrements.",
       "audioMissing": "Fichiers master pour chaque titre",
-      "audioProcessing": "Fichiers master envoyés — en attente de vérification et de traitement",
+      "audioProcessing": "Fichiers master envoyés - en attente de vérification et de traitement",
       "artwork": "Pochette (carrée, au moins 1400 × 1400 px)"
     },
     "review": {
@@ -589,10 +594,10 @@
       "returned": "La sortie a été renvoyée pour modifications :",
       "returnedHint": "Fais les modifications et renvoie-la.",
       "published": "Publiée le {date}.",
-      "scheduled": "Approuvée — sortie le {date}.",
+      "scheduled": "Approuvée - sortie le {date}.",
       "viewPublic": "Voir la page de la sortie",
       "error": {
-        "not_ready": "La sortie n’est pas encore prête — vérifie la liste ci-dessus.",
+        "not_ready": "La sortie n’est pas encore prête - vérifie la liste ci-dessus.",
         "not_allowed": "Tu ne peux pas soumettre cette sortie.",
         "failed": "Une erreur s’est produite. Réessaie."
       }
@@ -603,17 +608,17 @@
     "choose": "Choisir le fichier master",
     "replace": "Envoyer un nouveau fichier",
     "hint": "Fichiers sans perte uniquement : WAV, AIFF, FLAC ou ALAC, jusqu’à 4 Go. Nous vérifions la qualité du fichier et préparons les versions de lecture.",
-    "unavailable": "L’envoi audio arrive bientôt — le stockage de fichiers n’est pas encore connecté.",
+    "unavailable": "L’envoi audio arrive bientôt - le stockage de fichiers n’est pas encore connecté.",
     "uploading": "Envoi… {percent} %",
     "progressLabel": "Progression de l’envoi",
     "finishing": "Vérification du fichier envoyé…",
     "status": {
       "pending": "L’envoi de {file} n’a pas été terminé.",
-      "uploaded": "{file} envoyé ({size} Mo) — en attente de vérification et de traitement.",
+      "uploaded": "{file} envoyé ({size} Mo) - en attente de vérification et de traitement.",
       "processing": "Vérification et traitement de {file}…",
       "accepted": "Prêt : {file} ({size} Mo).",
       "rejected": "{file} a été refusé.",
-      "failed": "L’envoi de {file} a échoué — réessaie."
+      "failed": "Impossible d’envoyer ou de traiter {file} - envoie-le à nouveau."
     },
     "error": {
       "unsupported_type": "Ce type de fichier n’est pas pris en charge. Envoie un master sans perte : WAV, AIFF, FLAC ou ALAC.",
@@ -630,13 +635,13 @@
     "versions": "Versions de lecture : {list}.",
     "note": {
       "lossy": "Le fichier semble converti depuis un format avec perte (p. ex. MP3) : il ne sera donc disponible qu’en qualité Haute et Économie de données. Si tu as le master original, envoie-le.",
-      "upsampled": "Le fichier semble suréchantillonné depuis {rate} kHz — les versions Hi-Res utilisent la résolution réelle, sans la gonfler.",
-      "padded": "Le fichier est en 24 bits mais contient un enregistrement 16 bits — nous le traitons comme du 16 bits."
+      "upsampled": "Le fichier semble suréchantillonné depuis {rate} kHz - les versions Hi-Res utilisent la résolution réelle, sans la gonfler.",
+      "padded": "Le fichier est en 24 bits mais contient un enregistrement 16 bits - nous le traitons comme du 16 bits."
     },
     "rejection": {
       "unreadable": "Le fichier n’a pas pu être lu comme de l’audio.",
       "unsupported_container": "Seuls les fichiers WAV/BWF, AIFF, FLAC et ALAC (.m4a) sont acceptés.",
-      "unsupported_codec": "Le fichier contient de l’audio avec perte — envoie le master original sans perte.",
+      "unsupported_codec": "Le fichier contient de l’audio avec perte - envoie le master original sans perte.",
       "audio_streams": "Le fichier doit contenir exactement un flux audio.",
       "bit_depth": "La profondeur doit être de 16, 24 ou 32 bits.",
       "sample_rate": "La fréquence d’échantillonnage doit être standard : 44,1–192 kHz.",
@@ -644,10 +649,10 @@
       "duration": "Un titre doit durer entre 10 secondes et 4 heures.",
       "decode_error": "Le fichier est endommagé et ne se lit pas jusqu’au bout. Exporte à nouveau le master.",
       "empty": "Le fichier ne contient pas d’audio.",
-      "integrity": "La somme de contrôle FLAC ne correspond pas à l’audio — le fichier est endommagé.",
+      "integrity": "La somme de contrôle FLAC ne correspond pas à l’audio - le fichier est endommagé.",
       "processing_failed": "Nous n’avons pas pu traiter le fichier après plusieurs tentatives. Envoie-le à nouveau ou contacte-nous."
     },
-    "bestMoment": "L’analyse a trouvé le meilleur moment à {start} (en surbrillance) — les aperçus de Découvrir commencent là tant que tu n’as pas défini ton propre début de soundcheck."
+    "bestMoment": "L’analyse a trouvé le meilleur moment à {start} (en surbrillance) - les aperçus de Découvrir commencent là tant que tu n’as pas défini ton propre début de soundcheck."
   },
   "Release": {
     "trackCount": "{count, plural, one {# titre} other {# titres}}",
@@ -659,16 +664,16 @@
     "qualityNote": "Tu écoutes au maximum en qualité Haute (AAC 256 kbps). Lossless et Hi-Res feront partie de l’offre Premium.",
     "ai": {
       "unknown": "L’implication de l’IA n’a pas été déclarée.",
-      "human": "Sans IA — fait par des humains.",
+      "human": "Sans IA - fait par des humains.",
       "ai_assisted": "Réalisé avec l’assistance de l’IA.",
       "ai_generated": "Généré par IA."
     },
-    "coverAlt": "Pochette : {title} — {artist}",
+    "coverAlt": "Pochette : {title} - {artist}",
     "credits": "Crédits"
   },
   "Moderation": {
     "title": "Modération",
-    "lead": "Sorties en attente d’examen — les plus anciennes d’abord.",
+    "lead": "Sorties en attente d’examen - les plus anciennes d’abord.",
     "empty": "Rien n’attend d’examen.",
     "trackCount": "{count, plural, one {# titre} other {# titres}}",
     "submitted": "soumise le {date}",
@@ -698,7 +703,7 @@
     "decision": {
       "title": "Décision",
       "note": "Remarques pour l’artiste",
-      "noteHint": "Obligatoire en cas de renvoi (au moins 10 caractères) — l’artiste les voit dans l’éditeur. Ignoré en cas d’approbation.",
+      "noteHint": "Obligatoire en cas de renvoi (au moins 10 caractères) - l’artiste les voit dans l’éditeur. Ignoré en cas d’approbation.",
       "approve": "Approuver et publier",
       "return": "Renvoyer pour modifications",
       "error": {
@@ -714,7 +719,7 @@
       "title": "Vérification d’artistes ({count})",
       "empty": "Aucune demande de vérification.",
       "note": "Motif de la décision pour : {artist}",
-      "noteHint": "Obligatoire en cas de refus (au moins 10 caractères) — l’artiste le voit dans son panneau de profil.",
+      "noteHint": "Obligatoire en cas de refus (au moins 10 caractères) - l’artiste le voit dans son panneau de profil.",
       "approve": "Vérifier : {artist}",
       "reject": "Refuser : {artist}",
       "error": {
@@ -735,7 +740,7 @@
       "replace": "Changer la pochette",
       "processing": "Préparation de la pochette…",
       "rejected": "La pochette a été refusée.",
-      "failed": "L’envoi de la pochette a échoué — réessaie.",
+      "failed": "L’envoi de la pochette a échoué - réessaie.",
       "hint": "Carrée, au moins 1400 × 1400 px (idéalement 3000 × 3000), JPEG, PNG ou WebP jusqu’à 25 Mo. Nous supprimons les métadonnées (p. ex. la localisation de l’appareil) du fichier."
     },
     "photo": {
@@ -743,7 +748,7 @@
       "replace": "Changer la photo",
       "processing": "Préparation de la photo…",
       "rejected": "La photo a été refusée.",
-      "failed": "L’envoi de la photo a échoué — réessaie.",
+      "failed": "L’envoi de la photo a échoué - réessaie.",
       "hint": "Au moins 400 × 400 px, JPEG, PNG ou WebP jusqu’à 25 Mo. Nous la recadrons en carré depuis le centre et supprimons les métadonnées."
     },
     "rejection": {
@@ -791,10 +796,10 @@
   },
   "Plan": {
     "title": "Offre",
-    "free": "Gratuit — tu écoutes en qualité Haute.",
+    "free": "Gratuit - tu écoutes en qualité Haute.",
     "until": "{plan} jusqu’au {date}",
     "lifetime": "{plan} à vie",
-    "freeQuality": "Tout le catalogue, sans pub et sans limite de passages. Lossless et Hi-Res sont dans Premium — pendant la bêta, via des codes promo.",
+    "freeQuality": "Tout le catalogue, sans pub et sans limite de passages. Lossless et Hi-Res sont dans Premium - pendant la bêta, via des codes promo.",
     "premiumQuality": "Le lecteur choisit Lossless ou Hi-Res quand un titre en dispose et que ton appareil peut le lire.",
     "source": {
       "promo": "Avec le code : {ref}",
@@ -812,11 +817,11 @@
         "invalid": "Ce code ne fonctionne pas. Vérifie que tu l’as tapé exactement.",
         "inactive": "Cette promotion est désactivée.",
         "expired": "Ce code a expiré.",
-        "not_yet_valid": "Ce code ne fonctionne pas encore — vérifie quand la promotion commence.",
+        "not_yet_valid": "Ce code ne fonctionne pas encore - vérifie quand la promotion commence.",
         "not_eligible": "Ce code n’est pas destiné à ton compte (p. ex. nouveaux comptes uniquement, ou e-mail confirmé requis).",
         "exhausted": "Ce code a été utilisé par le nombre maximal de personnes.",
         "already_redeemed": "Ce code (ou un code de la même promotion) est déjà utilisé sur ton compte.",
-        "already_lifetime": "Tu as déjà Premium à vie — garde le code pour quelqu’un d’autre, il n’a pas été utilisé.",
+        "already_lifetime": "Tu as déjà Premium à vie - garde le code pour quelqu’un d’autre, il n’a pas été utilisé.",
         "unavailable": "Ce type de code fonctionnera dès que nous introduirons les paiements.",
         "rate_limited": "Trop de tentatives. Réessaie dans 15 minutes.",
         "unexpected": "Une erreur s’est produite. Réessaie."
@@ -825,7 +830,7 @@
   },
   "PromoAdmin": {
     "title": "Promotions",
-    "lead": "Campagnes et codes Premium. Les codes sont stockés uniquement sous forme de hachage — un code n’est visible qu’une fois, à sa création.",
+    "lead": "Campagnes et codes Premium. Les codes sont stockés uniquement sous forme de hachage - un code n’est visible qu’une fois, à sa création.",
     "link": "Promotions",
     "campaigns": "Campagnes",
     "noCampaigns": "Aucune campagne pour l’instant.",
@@ -834,8 +839,8 @@
     "back": "← Toutes les campagnes",
     "active": "active",
     "inactive": "désactivée",
-    "campaignActive": "La campagne est active — ses codes fonctionnent.",
-    "campaignInactive": "La campagne est désactivée — aucun de ses codes ne fonctionne.",
+    "campaignActive": "La campagne est active - ses codes fonctionnent.",
+    "campaignInactive": "La campagne est désactivée - aucun de ses codes ne fonctionne.",
     "activate": "Activer",
     "deactivate": "Désactiver",
     "redemptions": "{count, plural, one {# utilisation} other {# utilisations}} sur {max}",
@@ -843,7 +848,7 @@
     "generateTitle": "Codes à usage unique",
     "generateHint": "Codes uniques, une personne chacun (p. ex. pour un partenaire ou des artistes invités).",
     "generate": "Générer des codes",
-    "generated": "{count, plural, one {# code généré} other {# codes générés}}. Enregistre-les maintenant — ils ne pourront plus être affichés une fois cette page quittée.",
+    "generated": "{count, plural, one {# code généré} other {# codes générés}}. Enregistre-les maintenant - ils ne pourront plus être affichés une fois cette page quittée.",
     "generatedList": "Codes générés",
     "downloadCsv": "Télécharger le CSV",
     "sharedTitle": "Code partagé",
@@ -895,11 +900,11 @@
       "reason": "Motif (conservé dans le journal d’audit)"
     },
     "errors": {
-      "invalid": "Vérifie les champs — l’un d’eux contient une valeur invalide.",
+      "invalid": "Vérifie les champs - l’un d’eux contient une valeur invalide.",
       "duplicate": "Ce code ou ce nom de campagne existe déjà.",
       "mfa_required": "Cette action nécessite une connexion à deux facteurs dans cette session.",
       "not_allowed": "Tu n’as pas l’autorisation de gérer les promotions.",
-      "not_found": "Introuvable — l’élément a peut-être été supprimé.",
+      "not_found": "Introuvable - l’élément a peut-être été supprimé.",
       "failed": "Ça n’a pas marché. Réessaie."
     }
   },
@@ -941,10 +946,10 @@
     "add": "Ajouter",
     "added": "Ajouté à : {playlist}",
     "addFailed": "Impossible d’ajouter. Réessaie.",
-    "noPlaylists": "Tu n’as pas encore de playlist — crées-en une dans ta Bibliothèque.",
+    "noPlaylists": "Tu n’as pas encore de playlist - crées-en une dans ta Bibliothèque.",
     "errors": {
       "title": "Le nom doit comporter de 1 à 100 caractères.",
-      "limit": "Tu as déjà 200 playlists — c’est le maximum.",
+      "limit": "Tu as déjà 200 playlists - c’est le maximum.",
       "failed": "Impossible d’enregistrer. Réessaie."
     }
   },
@@ -988,7 +993,7 @@
     "errors": {
       "details": "Décris le problème (10 à 2000 caractères).",
       "copyright": "Pour le droit d’auteur, indique un nom, un e-mail valide et coche la déclaration.",
-      "duplicate": "Tu as déjà signalé ceci — le signalement attend une décision.",
+      "duplicate": "Tu as déjà signalé ceci - le signalement attend une décision.",
       "limit": "Trop de signalements aujourd’hui. Réessaie demain.",
       "gone": "Ce contenu n’est plus public.",
       "signedOut": "Connecte-toi pour signaler un contenu.",
@@ -1019,7 +1024,7 @@
         "reset_profile": "Nom de profil et bio effacés"
       },
       "statement": "Exposé des motifs (le propriétaire le lira)",
-      "statementHint": "Ce qui a été décidé et pourquoi, en termes simples — au moins 20 caractères.",
+      "statementHint": "Ce qui a été décidé et pourquoi, en termes simples - au moins 20 caractères.",
       "decide": "Enregistrer la décision",
       "appealNote": "Motifs de la décision sur le recours",
       "reverse": "Accepter le recours (rétablir)",
@@ -1039,7 +1044,7 @@
         "none": "tu peux faire un recours",
         "pending": "recours en cours",
         "upheld": "recours rejeté",
-        "reversed": "recours accepté — rétabli"
+        "reversed": "recours accepté - rétabli"
       },
       "appealDecided": "Décision sur le recours : {note}",
       "appeal": "Recours",
@@ -1064,7 +1069,7 @@
       "moderator": "modérateur",
       "admin": "administrateur"
     },
-    "you": "c’est toi — tu ne peux pas retirer ton propre rôle d’admin",
+    "you": "c’est toi - tu ne peux pas retirer ton propre rôle d’admin",
     "revoke": "Retirer le rôle",
     "revokeLabel": "Retirer le rôle {role} : {who}",
     "grantRole": "Attribuer le rôle",
@@ -1114,7 +1119,13 @@
     "sharesArtist": "Artiste",
     "sharesListeners": "Auditeurs",
     "sharesPlays": "Écoutes",
-    "sharesHours": "Heures"
+    "sharesHours": "Heures",
+    "fieldErrors": {
+      "handleRequired": "Saisis le nom de profil de la personne.",
+      "handleNotFound": "Aucun compte n’a ce nom de profil. Vérifie-le dans Compte → Nom de profil (sans @).",
+      "daysInvalid": "Saisis un nombre de jours de 1 à 3660, ou laisse vide (à vie).",
+      "noteShort": "Saisis une raison (au moins 3 caractères) - elle va dans le journal des modifications."
+    }
   },
   "Events": {
     "badge": "Concert",
@@ -1129,7 +1140,7 @@
     "tickets": "Billets (site de l’organisateur)",
     "lineup": "Qui joue",
     "soundcheck": "Écouter",
-    "soundcheckLabel": "Écouter un extrait : {artist} — {title}",
+    "soundcheckLabel": "Écouter un extrait : {artist} - {title}",
     "noMusic": "Pas encore de musique sur Tunewick",
     "artistUpcoming": "Concerts à venir",
     "manage": {
@@ -1153,7 +1164,7 @@
       "saved": "Ajouté. Le concert attend un modérateur.",
       "errors": {
         "title": "Saisis le nom de l’événement (2 à 160 caractères).",
-        "date": "Saisis une date et une heure — d’aujourd’hui à deux ans maximum.",
+        "date": "Saisis une date et une heure - d’aujourd’hui à deux ans maximum.",
         "venue": "Saisis le nom de la salle, la ville et la voïvodie.",
         "ticket": "Le lien vers les billets doit commencer par https://",
         "lineup": "L’une des adresses de profil n’est pas un artiste Tunewick actif.",
@@ -1180,7 +1191,7 @@
     "attended": {
       "mark": "J’y étais",
       "marked": "J’y étais ✓",
-      "private": "Toi seul vois ceci — c’est ton historique de concerts, pas un compteur.",
+      "private": "Toi seul vois ceci - c’est ton historique de concerts, pas un compteur.",
       "later": "Dès le début du concert et pendant 30 jours, tu peux marquer « J’y étais ».",
       "errors": {
         "not_started": "Le concert n’a pas encore commencé.",
@@ -1199,9 +1210,9 @@
   },
   "Privacy": {
     "title": "Tes données",
-    "exportLead": "Télécharge tout ce que Tunewick conserve sur toi : compte, profil, offre, j’aime, playlists, historique d’écoute et de concerts, signalements — dans un seul fichier JSON.",
+    "exportLead": "Télécharge tout ce que Tunewick conserve sur toi : compte, profil, offre, j’aime, playlists, historique d’écoute et de concerts, signalements - dans un seul fichier JSON.",
     "export": "Télécharger mes données",
-    "deleteLead": "Supprimer ton compte efface ton profil, tes paramètres, tes j’aime, tes playlists, ton historique et ton offre. Les déclarations de droits pour la musique publiée restent comme preuve — sans tes données.",
+    "deleteLead": "Supprimer ton compte efface ton profil, tes paramètres, tes j’aime, tes playlists, ton historique et ton offre. Les déclarations de droits pour la musique publiée restent comme preuve - sans tes données.",
     "blocked": "Ajoute d’abord un autre propriétaire aux profils d’artiste dont tu es le seul propriétaire, ou écris-nous pour les supprimer :",
     "delete": "Supprimer le compte",
     "deleteWarning": "Cette action est irréversible. Pour confirmer, saisis l’adresse e-mail du compte.",
@@ -1211,7 +1222,7 @@
     "errors": {
       "email_mismatch": "Ce n’est pas l’adresse e-mail de ce compte.",
       "sole_owner": "Transfère ou supprime d’abord les profils d’artiste dont tu es le seul propriétaire.",
-      "staff": "Les comptes de l’équipe Tunewick sont supprimés par un administrateur — le rôle doit d’abord être retiré.",
+      "staff": "Les comptes de l’équipe Tunewick sont supprimés par un administrateur - le rôle doit d’abord être retiré.",
       "failed": "Impossible de supprimer le compte. Réessaie."
     }
   },
@@ -1251,7 +1262,7 @@
   },
   "Browse": {
     "title": "Parcourir",
-    "lead": "La nouvelle musique de petits artistes indépendants, des plus récentes aux plus anciennes — par pays, et par région en Pologne. Pas d’algorithme de popularité ici : chaque élément dit pourquoi il est affiché.",
+    "lead": "La nouvelle musique de petits artistes indépendants, des plus récentes aux plus anciennes - par pays, et par région en Pologne. Pas d’algorithme de popularité ici : chaque élément dit pourquoi il est affiché.",
     "empty": "Il n’y a encore rien ici. Les premiers artistes indépendants arrivent pendant la bêta fermée.",
     "countryLabel": "Pays",
     "allCountries": "Tous les pays",
@@ -1267,12 +1278,12 @@
       "firstRelease": "Première sortie {when} · {count, plural, one {# sortie} other {# sorties}}"
     },
     "soundcheck": "Soundcheck {seconds} s",
-    "soundcheckLabel": "Écouter un extrait : {title} — {artist}",
+    "soundcheckLabel": "Écouter un extrait : {title} - {artist}",
     "charts": "Voir les charts de la semaine →"
   },
   "Feed": {
     "title": "Découvrir",
-    "description": "Découvre de la nouvelle musique indépendante, un aperçu de 30 secondes à la fois — avec la raison de la présence de chaque morceau.",
+    "description": "Découvre de la nouvelle musique indépendante, un aperçu de 30 secondes à la fois - avec la raison de la présence de chaque morceau.",
     "card": "morceau",
     "modeLabel": "Quoi découvrir",
     "modes": {
@@ -1307,7 +1318,7 @@
     "shareLink": "Partager le lien",
     "copied": "Lien copié",
     "copyPrompt": "Copie le lien :",
-    "shareText": "{title} par {artist} — je l’ai trouvé sur Tunewick",
+    "shareText": "{title} par {artist} - je l’ai trouvé sur Tunewick",
     "cardStory": "Carte story (9:16)",
     "cardSquare": "Carte carrée",
     "more": "Plus : {title}",
@@ -1320,7 +1331,7 @@
     "failed": "Impossible de charger plus de morceaux.",
     "retry": "Réessayer",
     "end": "C’est tout dans {mode} pour l’instant. Essaie une autre porte d’entrée :",
-    "empty": "Pas encore de musique ici. Essaie un autre mode — ou reviens bientôt, de nouveaux artistes arrivent chaque semaine.",
+    "empty": "Pas encore de musique ici. Essaie un autre mode - ou reviens bientôt, de nouveaux artistes arrivent chaque semaine.",
     "reason": {
       "followed_artist": "Tu suis {artist}",
       "artist_you_like": "Plus d’un artiste que tu aimes",
@@ -1333,7 +1344,7 @@
       "new_release": "Nouvelle sortie",
       "new_genre": "Du nouveau pour toi : {genre}",
       "new_country": "Du nouveau pour toi : musique de ce pays : {country}",
-      "wildcard": "Un joker — quelque chose que tu n’as pas entendu",
+      "wildcard": "Un joker - quelque chose que tu n’as pas entendu",
       "shared": "Partagé avec toi",
       "artist_spotlight": "À la découverte de {artist}",
       "daily_discovery": "Ta Découverte du jour",
@@ -1346,12 +1357,12 @@
     "report": "Signaler cette sortie",
     "clip": "Vidéo pour les stories (MP4)",
     "clipWorking": "Préparation de la vidéo…",
-    "clipReady": "Vidéo prête — partage-la ou télécharge-la",
+    "clipReady": "Vidéo prête - partage-la ou télécharge-la",
     "clipState": {
       "failed": "La vidéo n’a pas pu être préparée. Réessaie dans un instant.",
       "unavailable": "Aucune vidéo n’est disponible pour ce morceau.",
       "signin": "Connecte-toi pour préparer une vidéo.",
-      "limit": "Tu as créé beaucoup de vidéos cette heure-ci — réessaie plus tard."
+      "limit": "Tu as créé beaucoup de vidéos cette heure-ci - réessaie plus tard."
     },
     "charts": "Charts",
     "why": "Pourquoi ?",
@@ -1370,16 +1381,16 @@
   },
   "Onboarding": {
     "title": "Préférences de découverte",
-    "lead": "Tunewick te fait découvrir la musique avant qu’elle devienne populaire. Dis-nous-en un peu — ou passe et commence à écouter.",
+    "lead": "Tunewick te fait découvrir la musique avant qu’elle devienne populaire. Dis-nous-en un peu - ou passe et commence à écouter.",
     "question": "Que veux-tu découvrir ?",
     "language": "Langue",
     "country": "Pays",
-    "countryHint": "Facultatif. Utilisé pour « Près de toi » et le classement de ton pays — jamais ta position exacte.",
+    "countryHint": "Facultatif. Utilisé pour « Près de toi » et le classement de ton pays - jamais ta position exacte.",
     "noCountry": "Je préfère ne pas le dire",
     "genres": "Quelques genres que tu aimes",
-    "genresHint": "Choisis-en trois ou plus — ou aucun, et on te surprendra.",
+    "genresHint": "Choisis-en trois ou plus - ou aucun, et on te surprendra.",
     "artists": "Des artistes qui pourraient te plaire",
-    "artistsHint": "Suis-en quelques-uns — le fil part d’eux.",
+    "artistsHint": "Suis-en quelques-uns - le fil part d’eux.",
     "artistsEmpty": "Pas encore de suggestions pour ces choix.",
     "artistsSignIn": "Connecte-toi plus tard pour suivre des artistes et garder tes découvertes.",
     "mode": "Par où commencer",
@@ -1394,8 +1405,8 @@
   },
   "Song": {
     "badge": "Morceau",
-    "metaDescription": "Écoute un aperçu de {title} par {artist} sur Tunewick — la musique indépendante avant qu’elle devienne populaire.",
-    "coverAlt": "Pochette : {title} — {artist}",
+    "metaDescription": "Écoute un aperçu de {title} par {artist} sur Tunewick - la musique indépendante avant qu’elle devienne populaire.",
+    "coverAlt": "Pochette : {title} - {artist}",
     "discoverMore": "Découvre-en plus sur Tunewick",
     "fullRelease": "Sortie complète : {title}",
     "pitch": "Pas besoin de compte pour écouter. Tunewick fait découvrir la musique indépendante avant qu’elle devienne populaire.",
@@ -1437,7 +1448,7 @@
         "weekly_countries": "Découvre la musique de {target} pays",
         "weekly_artists": "Découvre {target} nouveaux artistes"
       },
-      "hint": "Les objectifs suivent ton propre rythme — ils augmentent un peu quand tu découvres davantage, et ne demandent jamais des heures d’écoute."
+      "hint": "Les objectifs suivent ton propre rythme - ils augmentent un peu quand tu découvres davantage, et ne demandent jamais des heures d’écoute."
     },
     "stats": {
       "title": "Statistiques d’écoute",
@@ -1564,14 +1575,14 @@
       "title": "Tes saisons",
       "name": "Saison {quarter} · {year}",
       "place": "#{rank} sur {participants} · {points} XP",
-      "hint": "Une saison dure un trimestre. Ta place tient compte de tous les découvreurs, y compris ceux qui restent hors du classement public — toi seul la vois."
+      "hint": "Une saison dure un trimestre. Ta place tient compte de tous les découvreurs, y compris ceux qui restent hors du classement public - toi seul la vois."
     },
-    "scoreHint": "Ton Score de découverte n’augmente qu’en découvrant — nouveaux morceaux, artistes, genres, pays et petites scènes — et davantage quand tu découvres largement. Tu gagnes de l’XP pour tout ce que tu fais sur TuneWick ; ton niveau suit ton XP.",
+    "scoreHint": "Ton Score de découverte n’augmente qu’en découvrant - nouveaux morceaux, artistes, genres, pays et petites scènes - et davantage quand tu découvres largement. Tu gagnes de l’XP pour tout ce que tu fais sur TuneWick ; ton niveau suit ton XP.",
     "missions": "Missions"
   },
   "Rankings": {
     "title": "Classements",
-    "lead": "Les meilleurs découvreurs — classés par points de découverte : nouveaux morceaux, artistes, genres et pays. Le temps d’écoute seul ne gagne jamais.",
+    "lead": "Les meilleurs découvreurs - classés par points de découverte : nouveaux morceaux, artistes, genres et pays. Le temps d’écoute seul ne gagne jamais.",
     "period": "Période",
     "periods": {
       "week": "Cette semaine",
@@ -1594,8 +1605,8 @@
     "heading": "{scope} · {period}",
     "you": "Toi : #{rank} sur {participants} · {points} XP",
     "percentile": "plus que {percentile} % des auditeurs",
-    "notListed": "Tu n’es pas affiché publiquement — définis un nom de profil.",
-    "notRanked": "Pas encore de points sur cette période — découvre quelque chose de nouveau.",
+    "notListed": "Tu n’es pas affiché publiquement - définis un nom de profil.",
+    "notRanked": "Pas encore de points sur cette période - découvre quelque chose de nouveau.",
     "signIn": "Connecte-toi pour voir ta place.",
     "empty": "Personne ici pour cette période. Sois le premier.",
     "discoveries": "{count, plural, one {# découverte} other {# découvertes}}",
@@ -1652,7 +1663,7 @@
   },
   "Charts": {
     "title": "Charts",
-    "lead": "Ce que les gens écoutent et découvrent cette semaine — compté en auditeurs, jamais en écoutes, donc les boucles et les bots ne changent rien.",
+    "lead": "Ce que les gens écoutent et découvrent cette semaine - compté en auditeurs, jamais en écoutes, donc les boucles et les bots ne changent rien.",
     "loading": "Chargement des charts…",
     "tabsLabel": "Chart",
     "scopeLabel": "Où",
@@ -1692,10 +1703,10 @@
       "oceania": "Océanie"
     },
     "about": {
-      "top": "Auditeurs des 7 derniers jours. « Populaire : … » compte les auditeurs sur place — affiché dès qu’au moins 3 d’entre eux écoutent.",
+      "top": "Auditeurs des 7 derniers jours. « Populaire : … » compte les auditeurs sur place - affiché dès qu’au moins 3 d’entre eux écoutent.",
       "rising": "Les morceaux qui gagnent le plus d’auditeurs par rapport à la semaine précédente.",
       "underground": "Les morceaux les plus écoutés d’artistes à moins de 10 000 auditeurs par mois.",
-      "discovered": "Les morceaux que le plus de gens ont entendus pour la première fois cette semaine — le chart maison de TuneWick.",
+      "discovered": "Les morceaux que le plus de gens ont entendus pour la première fois cette semaine - le chart maison de TuneWick.",
       "saved": "Morceaux enregistrés dans les bacs cette semaine.",
       "shared": "Morceaux partagés cette semaine."
     },
@@ -1731,10 +1742,10 @@
       "h720": "30 derniers jours"
     },
     "empty": {
-      "top": "Pas encore de chart ici — pas assez d’auditeurs cette semaine.",
+      "top": "Pas encore de chart ici - pas assez d’auditeurs cette semaine.",
       "rising": "Rien n’est en hausse ici pour l’instant.",
       "underground": "Pas encore de morceaux underground ici cette semaine.",
-      "discovered": "Personne n’a encore découvert de musique ici cette semaine — sois le premier.",
+      "discovered": "Personne n’a encore découvert de musique ici cette semaine - sois le premier.",
       "saved": "Rien d’enregistré ici cette semaine pour l’instant.",
       "shared": "Rien de partagé ici cette semaine pour l’instant."
     },
@@ -1744,21 +1755,21 @@
     "world": {
       "title": "Découvre le monde",
       "lead": "Le morceau le plus écouté de chaque pays cette semaine.",
-      "leadOutside": "Le morceau le plus écouté de chaque pays cette semaine — hors {country}.",
+      "leadOutside": "Le morceau le plus écouté de chaque pays cette semaine - hors {country}.",
       "empty": "La musique d’autres pays apparaîtra ici dès que des gens l’écouteront."
     },
     "atlasLink": "Carte musicale →"
   },
   "Segment": {
     "errorTitle": "Une erreur s’est produite",
-    "errorText": "Cette partie de TuneWick n’a pas pu se charger. Tes données sont en sécurité — réessaie.",
+    "errorText": "Cette partie de TuneWick n’a pas pu se charger. Tes données sont en sécurité - réessaie.",
     "retry": "Réessayer"
   },
   "Why": {
     "title": "Pourquoi ce morceau ?",
-    "note": "D’après tes écoutes sur TuneWick et le nombre public d’auditeurs — sans devinettes, sans IA.",
+    "note": "D’après tes écoutes sur TuneWick et le nombre public d’auditeurs - sans devinettes, sans IA.",
     "followed_artist": "Tu suis {artist}.",
-    "artist_you_like": "Tu as écouté {artist} — voici plus de sa musique.",
+    "artist_you_like": "Tu as écouté {artist} - voici plus de sa musique.",
     "genre_you_like": "Tu découvres souvent du {genre}, et voici du {genre} que tu n’as pas encore entendu.",
     "genre_you_like_plain": "C’est proche des genres que tu découvres le plus.",
     "listeners_like_you": "Les gens qui ont des goûts comme les tiens écoutent {artist}.",
@@ -1768,28 +1779,28 @@
     "popular": "{listeners, plural, one {# personne l’a écouté} other {# personnes l’ont écouté}} ce mois-ci.",
     "rising": "{more, plural, one {# auditeur de plus} other {# auditeurs de plus}} cette semaine que la précédente.",
     "new_release": "{days, plural, =0 {Sorti aujourd’hui.} one {Sorti hier.} other {Sorti il y a # jours.}}",
-    "new_genre": "{genre} est nouveau pour toi — un pas hors de tes habitudes.",
+    "new_genre": "{genre} est nouveau pour toi - un pas hors de tes habitudes.",
     "new_country": "Musique d’un pays que tu n’as pas encore découvert : {country}.",
     "shared": "Quelqu’un a partagé ce morceau avec toi.",
     "artist_spotlight": "Tu as demandé à découvrir {artist}.",
-    "daily_discovery": "Il fait partie de ta Découverte du jour — choisi pour toi aujourd’hui.",
+    "daily_discovery": "Il fait partie de ta Découverte du jour - choisi pour toi aujourd’hui.",
     "weekly_drop": "Il fait partie de ton Drop de la semaine : {section, select, new {nouvelles sorties} new_artists {nouveaux artistes} underground {underground} trending {tendances} outside {hors de tes habitudes} other {sélection de la semaine}}.",
     "similar_to": "Il ressemble à « {title} » : mêmes genres, ou artistes liés.",
-    "wildcard": "Un joker — quelque chose de différent pour garder ton fil frais.",
-    "first": "Presque personne ne l’a encore entendu — tu pourrais être parmi les premiers.",
-    "small": "Seulement {listeners, plural, one {# auditeur} other {# auditeurs}} ce mois-ci — un petit artiste qui vaut le détour.",
+    "wildcard": "Un joker - quelque chose de différent pour garder ton fil frais.",
+    "first": "Presque personne ne l’a encore entendu - tu pourrais être parmi les premiers.",
+    "small": "Seulement {listeners, plural, one {# auditeur} other {# auditeurs}} ce mois-ci - un petit artiste qui vaut le détour.",
     "growing": "En forte hausse : {more, plural, one {# auditeur de plus} other {# auditeurs de plus}} cette semaine."
   },
   "Today": {
     "title": "Aujourd’hui",
     "lead": "Que vas-tu découvrir aujourd’hui ? Dix nouveaux morceaux choisis pour toi, un drop hebdo, et des voyages quand tu veux être surpris.",
     "loading": "Sélection de la musique du jour…",
-    "signedOut": "Connecte-toi pour recevoir ta Découverte du jour et ton Drop de la semaine — ils sont choisis d’après ce que tu as découvert jusqu’ici. « Surprends-moi » fonctionne sans compte.",
+    "signedOut": "Connecte-toi pour recevoir ta Découverte du jour et ton Drop de la semaine - ils sont choisis d’après ce que tu as découvert jusqu’ici. « Surprends-moi » fonctionne sans compte.",
     "signIn": "Se connecter",
-    "noDaily": "Pas de nouvelle musique à proposer pour le moment — essaie un voyage ci-dessous ou reviens plus tard.",
+    "noDaily": "Pas de nouvelle musique à proposer pour le moment - essaie un voyage ci-dessous ou reviens plus tard.",
     "progressLabel": "Morceaux découverts",
     "progress": "{progress} sur {target} découverts · +{xp} XP une fois terminé",
-    "completed": "Terminé — +{xp} XP. Nouvelle sélection demain.",
+    "completed": "Terminé - +{xp} XP. Nouvelle sélection demain.",
     "start": "Commencer",
     "continue": "Continuer",
     "heard": "Découvert",
@@ -1812,7 +1823,7 @@
     },
     "surprise": {
       "title": "Surprends-moi",
-      "lead": "Choisis une direction — le fil démarre tout de suite."
+      "lead": "Choisis une direction - le fil démarre tout de suite."
     },
     "journeys": {
       "surprise": {
@@ -1851,7 +1862,7 @@
     "allMissions": "Toutes les missions →"
   },
   "Missions": {
-    "empty": "Aucune mission pour le moment — de nouvelles arrivent bientôt.",
+    "empty": "Aucune mission pour le moment - de nouvelles arrivent bientôt.",
     "cadence": {
       "daily": "Aujourd’hui",
       "weekly": "Cette semaine",
@@ -1942,7 +1953,7 @@
     },
     "discoveries": {
       "title": "Découvertes",
-      "biggest": "Plus grande découverte : <artist></artist> — nouveau pour toi sur cette période, {time} d’écoute depuis.",
+      "biggest": "Plus grande découverte : <artist></artist> - nouveau pour toi sur cette période, {time} d’écoute depuis.",
       "genre": "C’est en {genre} que tu as le plus découvert : {count, plural, one {# nouveau morceau} other {# nouveaux morceaux}}."
     },
     "personality": {
@@ -1992,7 +2003,7 @@
     "previous": "← Mois précédent",
     "next": "Mois suivant →",
     "heading": "Ton mois : {month}",
-    "running": "Ce mois n’est pas terminé — les chiffres augmentent jusqu’à son dernier jour.",
+    "running": "Ce mois n’est pas terminé - les chiffres augmentent jusqu’à son dernier jour.",
     "empty": "Aucune écoute ce mois-ci. Lance quelque chose et ton récap commence ici.",
     "outside": "Il n’y a pas de récap pour ce mois.",
     "startListening": "Commencer l’écoute",
@@ -2055,7 +2066,7 @@
     "previous": "← {year}",
     "next": "{year} →",
     "heading": "Replay {year}",
-    "tooLittle": "Trop peu d’écoutes cette année pour une story. Continue d’écouter — ton Replay grandit avec toi.",
+    "tooLittle": "Trop peu d’écoutes cette année pour une story. Continue d’écouter - ton Replay grandit avec toi.",
     "outside": "Il n’y a pas de Replay pour cette année.",
     "startListening": "Commencer l’écoute",
     "plays": "{count, plural, one {# écoute} other {# écoutes}}",
@@ -2069,7 +2080,7 @@
     "intro": {
       "title": "Ton année {year} en musique",
       "complete": "Une année entière, racontée par tes écoutes.",
-      "soFar": "Ton année jusqu’ici — elle continue de grandir jusqu’au 31 décembre."
+      "soFar": "Ton année jusqu’ici - elle continue de grandir jusqu’au 31 décembre."
     },
     "minutes": {
       "title": "Minutes écoutées",
@@ -2144,7 +2155,7 @@
     },
     "score": {
       "title": "Ton Score de découverte",
-      "note": "Gagné en découvrant — nouveaux morceaux, artistes, genres et pays."
+      "note": "Gagné en découvrant - nouveaux morceaux, artistes, genres et pays."
     },
     "vs": {
       "title": "Comparé à {year}",
@@ -2154,7 +2165,7 @@
     },
     "outro": {
       "title": "C’était ton année {year}",
-      "note": "Partage-la — et regarde ce que tes amis ont découvert.",
+      "note": "Partage-la - et regarde ce que tes amis ont découvert.",
       "story": "Télécharger pour les Stories (9:16)",
       "square": "Carte carrée"
     },
@@ -2174,7 +2185,7 @@
     "signIn": "Se connecter",
     "loading": "On regarde du côté de tes amis…",
     "back": "← Toi",
-    "lead": "Les personnes que tu suis — dans la mesure où chacune le permet.",
+    "lead": "Les personnes que tu suis - dans la mesure où chacune le permet.",
     "findPeople": "Trouver des gens",
     "privacy": "Choisis ce que les autres voient de toi →",
     "ranking": {
@@ -2210,7 +2221,7 @@
     "badges": "Badges ({count})",
     "noBadges": "Pas encore de badges.",
     "common": "En commun avec toi · {percent} de tes artistes correspondent",
-    "noCommon": "Rien en commun pour l’instant — une bonne raison d’écouter les trouvailles de l’autre.",
+    "noCommon": "Rien en commun pour l’instant - une bonne raison d’écouter les trouvailles de l’autre.",
     "replay": "Replay {year}",
     "replayLine": "{minutes} minutes de musique, {artists} nouveaux artistes.",
     "replayArtist": "Artiste de l’année :"
@@ -2253,7 +2264,7 @@
       "genres": "Joue des genres que tu aimes : {genres}"
     },
     "team": {
-      "title": "Découverte — tes auditeurs",
+      "title": "Découverte - tes auditeurs",
       "lead": "12 dernières semaines. Nouveaux auditeurs : les personnes qui t’ont écouté pour la première fois cette semaine-là.",
       "newListeners": "Nouveaux auditeurs",
       "listeners": "Auditeurs",
@@ -2265,11 +2276,11 @@
       "cities": "Villes (3+ auditeurs)",
       "charts": "Voir les charts →"
     },
-    "early": "{name} débute tout juste ici — moins de 3 auditeurs ces 30 derniers jours. Sois parmi les premiers."
+    "early": "{name} débute tout juste ici - moins de 3 auditeurs ces 30 derniers jours. Sois parmi les premiers."
   },
   "Atlas": {
     "title": "Carte musicale",
-    "lead": "D’où vient la musique de Tunewick — pays par pays, ville par ville, scène par scène.",
+    "lead": "D’où vient la musique de Tunewick - pays par pays, ville par ville, scène par scène.",
     "loading": "On déplie la carte…",
     "mine": "Tu as écouté de la musique de {count} pays sur {total}.",
     "empty": "Aucun pays n’a encore de musique publiée.",
@@ -2299,7 +2310,7 @@
     "genres": "Genres",
     "topArtists": "Artistes",
     "listeners30": "{count} auditeurs ce mois-ci",
-    "cityTitle": "{city} — la scène",
+    "cityTitle": "{city} - la scène",
     "scene": "{count, plural, one {# artiste d’ici} other {# artistes d’ici}}",
     "cityArtists": "Artistes",
     "events": "À venir",
@@ -2309,7 +2320,7 @@
   "ForArtists": {
     "eyebrow": "Pour les artistes",
     "title": "Ta musique, trouvée par ceux qui la cherchent",
-    "lead": "Tunewick est conçu pour la musique indépendante : les auditeurs viennent ici pour découvrir, et le service est pensé pour leur présenter de nouveaux artistes — pas pour recycler ce qui est déjà populaire.",
+    "lead": "Tunewick est conçu pour la musique indépendante : les auditeurs viennent ici pour découvrir, et le service est pensé pour leur présenter de nouveaux artistes - pas pour recycler ce qui est déjà populaire.",
     "ctaSignUp": "Créer un compte",
     "ctaCreate": "Crée ton profil d’artiste",
     "terms": "Lire les conditions pour artistes",
@@ -2317,11 +2328,11 @@
     "reasons": {
       "rights": {
         "title": "Tes droits restent à toi",
-        "text": "Publier accorde une licence non exclusive pour diffuser ta musique sur Tunewick uniquement — pas de téléchargement, pas de transmission à d’autres services. Retire une sortie quand tu veux."
+        "text": "Publier accorde une licence non exclusive pour diffuser ta musique sur Tunewick uniquement - pas de téléchargement, pas de transmission à d’autres services. Retire une sortie quand tu veux."
       },
       "quality": {
         "title": "Sans perte, vérifié",
-        "text": "Envoie des masters WAV, AIFF, FLAC ou ALAC. Les auditeurs entendent de l’AAC haute qualité, les abonnés Premium du FLAC sans perte — et chaque fichier est vérifié par rapport à ton master avant sa mise en ligne."
+        "text": "Envoie des masters WAV, AIFF, FLAC ou ALAC. Les auditeurs entendent de l’AAC haute qualité, les abonnés Premium du FLAC sans perte - et chaque fichier est vérifié par rapport à ton master avant sa mise en ligne."
       },
       "fair": {
         "title": "Uniquement de vrais auditeurs",
@@ -2333,7 +2344,7 @@
       },
       "stats": {
         "title": "Connais tes auditeurs",
-        "text": "Vois tes nouveaux auditeurs semaine après semaine, où ils se trouvent et combien t’ont découvert — en données agrégées qui n’exposent jamais un auditeur en particulier."
+        "text": "Vois tes nouveaux auditeurs semaine après semaine, où ils se trouvent et combien t’ont découvert - en données agrégées qui n’exposent jamais un auditeur en particulier."
       },
       "share": {
         "title": "Conçu pour être partagé",
@@ -2375,7 +2386,7 @@
       },
       "where": {
         "q": "Où peuvent se trouver mes auditeurs ?",
-        "a": "Partout. Les auditeurs découvrent la musique par pays, ville et genre — ta sortie peut toucher des gens loin de là où elle a été créée."
+        "a": "Partout. Les auditeurs découvrent la musique par pays, ville et genre - ta sortie peut toucher des gens loin de là où elle a été créée."
       }
     }
   }

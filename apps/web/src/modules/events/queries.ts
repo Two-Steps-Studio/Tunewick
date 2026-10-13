@@ -94,7 +94,7 @@ export async function getArtistEvents(artistId: string) {
     .sort((a, b) => a.starts_at.localeCompare(b.starts_at));
 }
 
-/** Every event the artist added (any status) — the manage page. */
+/** Every event the artist added (any status) - the manage page. */
 export async function getManagedEvents(artistId: string) {
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase

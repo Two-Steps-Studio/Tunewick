@@ -11,7 +11,7 @@ export interface PlaybackMetric {
 
 /**
  * Turns player state changes into telemetry: time from "loading" to "playing" (time to first
- * audio), and errors. One metric per load. Pure logic — tested without a browser.
+ * audio), and errors. One metric per load. Pure logic - tested without a browser.
  */
 export class PlaybackMetrics {
   private loadingSince: number | null = null;
@@ -52,7 +52,7 @@ export class PlaybackMetrics {
   }
 }
 
-/** Browser family only — never the full user agent. */
+/** Browser family only - never the full user agent. */
 export function browserFamily(userAgent: string) {
   if (/Edg\//.test(userAgent)) return "edge";
   if (/Firefox\//.test(userAgent)) return "firefox";

@@ -15,7 +15,7 @@ export interface ImageSources {
   width: number;
 }
 
-/** Latest upload attempt for an owner (members only, via RLS) — drives the upload status. */
+/** Latest upload attempt for an owner (members only, via RLS) - drives the upload status. */
 export interface ImageUploadState {
   id: string;
   status: Database["public"]["Enums"]["audio_upload_status"];
@@ -90,4 +90,25 @@ export async function getImageSourcesMany(
     if (sources) result.set(image.id, sources);
   }
   return result;
+}
+
+/** Every size of an accepted image, smallest first (e.g. for the lock-screen "now playing"). */
+export async function getImageVariants(
+  imageId: string | null,
+): Promise<{ url: string; width: number }[]> {
+  if (!imageId) return [];
+  const supabase = await createSupabaseServerClient();
+  const { data } = await supabase
+    .from("images")
+    .select("variants, status")
+    .eq("id", imageId)
+    .maybeSingle();
+  if (!data || data.status !== "accepted") return [];
+  const variants = (data.variants ?? []) as { width: number; key: string }[];
+  const signed = await Promise.all(
+    variants.map(async (v) => ({ width: v.width, url: await presignImageGet(v.key) })),
+  );
+  return signed
+    .filter((v): v is { width: number; url: string } => Boolean(v.url))
+    .sort((a, b) => a.width - b.width);
 }

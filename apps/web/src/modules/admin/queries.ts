@@ -12,7 +12,7 @@ export const AUDIT_FILTERS = [
 ] as const;
 export type AuditFilter = (typeof AUDIT_FILTERS)[number];
 
-/** Everything the admin page shows (admin + aal2 — the database checks again). */
+/** Everything the admin page shows (admin + aal2 - the database checks again). */
 export async function getAdminOverview(filter: AuditFilter | null) {
   const supabase = await createSupabaseServerClient();
   // The last closed month (the monthly job closes it on the 2nd).

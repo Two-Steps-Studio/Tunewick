@@ -20,7 +20,7 @@ const PERIODS: RankingPeriod[] = ["week", "month", "season", "last_season", "all
 const REGIONS = ["europe", "americas", "asia", "africa", "oceania"] as const;
 
 /**
- * Top discoverers — ranked by discovery points (new songs, artists, genres, countries, saves),
+ * Top discoverers - ranked by discovery points (new songs, artists, genres, countries, saves),
  * never by listening time. Listed: listeners with a public handle who did not opt out.
  */
 export default async function RankingsPage({

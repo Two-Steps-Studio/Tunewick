@@ -140,7 +140,7 @@ export default async function SubmissionPage({
                     dateStyle: "medium",
                     timeStyle: "short",
                   })}
-                  {` — ${t(`events.${event.kind}`)}`}
+                  {` - ${t(`events.${event.kind}`)}`}
                   {event.note ? `: ${event.note}` : ""}
                 </li>
               ))}

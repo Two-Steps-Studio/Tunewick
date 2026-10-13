@@ -22,7 +22,7 @@ const REASONS = ["rights", "quality", "fair", "discovery", "stats", "share"] as 
 const STEPS = ["profile", "upload", "found"] as const;
 const QUESTIONS = ["cost", "rights", "formats", "withdraw", "where"] as const;
 
-/** Why and how to put your music on Tunewick — every claim backed by how the service works. */
+/** Why and how to put your music on Tunewick - every claim backed by how the service works. */
 export default async function ForArtistsPage({ params }: PageProps<"/[locale]/for-artists">) {
   const { locale } = await params;
   setRequestLocale(locale as Locale);

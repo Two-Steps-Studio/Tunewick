@@ -78,7 +78,7 @@ test.describe("artist onboarding", () => {
     await expect(page.getByRole("status").filter({ hasText: "Weryfikacja w toku" })).toBeVisible();
 
     // A moderator (role + MFA) rejects with a reason, the artist sees it and asks again,
-    // then the moderator verifies — the badge comes only from that decision.
+    // then the moderator verifies - the badge comes only from that decision.
     const staffContext = await browser.newContext({ locale: "pl-PL" });
     const moderator = await staffContext.newPage();
     grantRole(await createConfirmedUser(moderator, "verify-moderator"), "moderator");

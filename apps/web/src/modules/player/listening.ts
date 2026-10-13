@@ -30,7 +30,7 @@ interface Current {
 /**
  * Turns player state updates into listens: one per track occurrence, with the milliseconds
  * actually played (seeks and pauses excluded). `send` is called when the track changes, the
- * player stops, or `flush()` (page hide). Pure logic — tested without a browser.
+ * player stops, or `flush()` (page hide). Pure logic - tested without a browser.
  */
 export class ListeningTracker {
   private current: Current | null = null;

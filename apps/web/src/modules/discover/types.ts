@@ -1,7 +1,7 @@
 import type { DiscoveryMode, Journey, Reason, WhyLine } from "@tunewick/shared";
 import type { ImageSources } from "@/modules/images";
 
-/** One card of the Discover feed — everything the client needs, nothing private. */
+/** One card of the Discover feed - everything the client needs, nothing private. */
 export interface FeedItem {
   trackId: string;
   code: string;

@@ -55,7 +55,7 @@ body {
 }
 
 /* ------------------------------------------------------------------ */
-/* Shell — docs/design-system.md §6–7                                  */
+/* Shell - docs/design-system.md §6–7                                  */
 /* ------------------------------------------------------------------ */
 @layer components {
   .skip-link {
@@ -350,6 +350,13 @@ body {
     .player-button:not(.player-button--main):not(:disabled):hover {
       box-shadow: inset 0 0 0 1px var(--line);
     }
+  }
+  .player-bar__cover {
+    flex: none;
+    width: 2.5rem;
+    height: 2.5rem;
+    object-fit: cover;
+    background: var(--bg-sunken, var(--line));
   }
   .player-bar__now {
     display: grid;
@@ -1821,6 +1828,47 @@ body {
     font-weight: 700;
   }
 
+  /* Rarely needed fields, folded ("More options") */
+  .form-more summary {
+    cursor: pointer;
+    font-size: var(--tk-text-sm);
+    color: var(--text-muted);
+    padding: var(--tk-space-2) 0;
+  }
+  .form-more[open] {
+    display: grid;
+    gap: var(--tk-space-4);
+  }
+
+  /* Credit → Tunewick artist picker */
+  .artist-picker__results {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: var(--tk-space-1);
+  }
+  .artist-picker__results:empty {
+    display: none;
+  }
+  .artist-picker__option {
+    width: 100%;
+    text-align: start;
+    padding: var(--tk-space-2) var(--tk-space-3);
+    box-shadow: inset 0 0 0 1px var(--line);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .artist-picker__option:hover {
+      box-shadow: inset 0 0 0 1px var(--text);
+    }
+  }
+  .artist-picker__picked {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--tk-space-2);
+  }
+
   /* Rights declaration & readiness ---------------------------------------- */
   .choice-group {
     display: grid;
@@ -1897,7 +1945,7 @@ body {
 }
 
 /* ------------------------------------------------------------------ */
-/* Discover feed — docs/discovery-expansion.md                         */
+/* Discover feed - docs/discovery-expansion.md                         */
 /* A dark stage in both themes: covers and their colour carry the card. */
 /* ------------------------------------------------------------------ */
 @layer components {

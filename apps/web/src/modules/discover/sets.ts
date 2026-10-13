@@ -28,7 +28,7 @@ export interface StoredSet {
 
 /**
  * The listener's set for the current day/week: the stored one, or a new one picked from the same
- * candidates and taste as the feed (and stored — the first pick of a period wins).
+ * candidates and taste as the feed (and stored - the first pick of a period wins).
  */
 export async function ensureSet(
   supabase: Supabase,

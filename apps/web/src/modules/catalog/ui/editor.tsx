@@ -30,6 +30,7 @@ import {
   formatSoundcheckStart,
   TERRITORIES,
 } from "../validation";
+import { ArtistPicker } from "./artist-picker";
 
 const initial: ReleaseFormState = {};
 
@@ -56,25 +57,30 @@ export function NewReleaseForm({ artist }: { artist: { id: string; slug: string 
         required
         onChange={(e) => !touched && setSlug(slugify(e.target.value, 80))}
       />
-      <InputField
-        name="slug"
-        label={t("fields.slug")}
-        value={slug}
-        onChange={(e) => {
-          setTouched(true);
-          setSlug(e.target.value);
-        }}
-        autoCapitalize="none"
-        spellCheck={false}
-        error={err(state.fieldErrors?.slug)}
-        required
-      />
       <SelectField
         name="type"
         label={t("fields.type")}
         defaultValue={state.values?.type ?? "single"}
         options={RELEASE_TYPES.map((v) => ({ value: v, label: t(`types.${v}`) }))}
       />
+      {/* The address follows the title by itself; changing it is rarely needed. */}
+      <details className="form-more" open={Boolean(state.fieldErrors?.slug)}>
+        <summary>{t("editor.more")}</summary>
+        <InputField
+          name="slug"
+          label={t("fields.slug")}
+          hint={t("fields.slugHint")}
+          value={slug}
+          onChange={(e) => {
+            setTouched(true);
+            setSlug(e.target.value);
+          }}
+          autoCapitalize="none"
+          spellCheck={false}
+          error={err(state.fieldErrors?.slug)}
+          required
+        />
+      </details>
       <Submit>{t("create.submit")}</Submit>
     </form>
   );
@@ -119,15 +125,6 @@ export function ReleaseDetailsForm({
         error={err(state.fieldErrors?.title)}
         required
       />
-      <InputField
-        name="slug"
-        label={t("fields.slug")}
-        defaultValue={v?.slug ?? release.slug}
-        autoCapitalize="none"
-        spellCheck={false}
-        error={err(state.fieldErrors?.slug)}
-        required
-      />
       <SelectField
         name="type"
         label={t("fields.type")}
@@ -158,25 +155,47 @@ export function ReleaseDetailsForm({
         defaultValue={v?.territory ?? territory}
         options={TERRITORIES.map((v) => ({ value: v, label: t(`territories.${v}`) }))}
       />
-      <InputField
-        name="upc"
-        label={t("fields.upc")}
-        inputMode="numeric"
-        defaultValue={v?.upc ?? release.upc ?? ""}
-        error={err(state.fieldErrors?.upc)}
-      />
-      <InputField
-        name="pLine"
-        label={t("fields.pLine")}
-        defaultValue={v?.pLine ?? release.p_line ?? ""}
-        error={err(state.fieldErrors?.pLine)}
-      />
-      <InputField
-        name="cLine"
-        label={t("fields.cLine")}
-        defaultValue={v?.cLine ?? release.c_line ?? ""}
-        error={err(state.fieldErrors?.cLine)}
-      />
+      {/* Rarely needed: open by itself only when one of these fields has an error. */}
+      <details
+        className="form-more"
+        open={Boolean(
+          state.fieldErrors?.slug ||
+          state.fieldErrors?.upc ||
+          state.fieldErrors?.pLine ||
+          state.fieldErrors?.cLine,
+        )}
+      >
+        <summary>{t("editor.more")}</summary>
+        <InputField
+          name="slug"
+          label={t("fields.slug")}
+          hint={t("fields.slugHint")}
+          defaultValue={v?.slug ?? release.slug}
+          autoCapitalize="none"
+          spellCheck={false}
+          error={err(state.fieldErrors?.slug)}
+          required
+        />
+        <InputField
+          name="upc"
+          label={t("fields.upc")}
+          inputMode="numeric"
+          defaultValue={v?.upc ?? release.upc ?? ""}
+          error={err(state.fieldErrors?.upc)}
+        />
+        <InputField
+          name="pLine"
+          label={t("fields.pLine")}
+          defaultValue={v?.pLine ?? release.p_line ?? ""}
+          error={err(state.fieldErrors?.pLine)}
+        />
+        <InputField
+          name="cLine"
+          label={t("fields.cLine")}
+          defaultValue={v?.cLine ?? release.c_line ?? ""}
+          error={err(state.fieldErrors?.cLine)}
+        />
+      </details>
       <Submit>{t("editor.save")}</Submit>
     </form>
   );
@@ -315,13 +334,6 @@ export function TrackItem({
               required
             />
             <InputField
-              name="isrc"
-              label={t("fields.isrc")}
-              defaultValue={state.values?.isrc ?? track.isrc ?? ""}
-              autoCapitalize="characters"
-              error={err(state.fieldErrors?.isrc)}
-            />
-            <InputField
               name="soundcheckStart"
               label={t("fields.soundcheckStart")}
               hint={t("fields.soundcheckStartHint")}
@@ -343,6 +355,16 @@ export function TrackItem({
               label={t("fields.explicit")}
               defaultChecked={state.values ? state.values.explicit === "on" : track.explicit}
             />
+            <details className="form-more" open={Boolean(state.fieldErrors?.isrc)}>
+              <summary>{t("editor.more")}</summary>
+              <InputField
+                name="isrc"
+                label={t("fields.isrc")}
+                defaultValue={state.values?.isrc ?? track.isrc ?? ""}
+                autoCapitalize="characters"
+                error={err(state.fieldErrors?.isrc)}
+              />
+            </details>
             <Submit variant="quiet">{t("editor.save")}</Submit>
           </form>
 
@@ -385,14 +407,10 @@ export function TrackItem({
               label={t("fields.creditDetail")}
               defaultValue={creditState.values?.detail}
             />
-            <InputField
-              name="artistSlug"
-              label={t("fields.creditArtist")}
-              hint={t("fields.creditArtistHint")}
-              defaultValue={creditState.values?.artistSlug}
+            <ArtistPicker
+              key={creditState.saved ? track.credits.length : "draft"}
+              initialSlug={creditState.values?.artistSlug || undefined}
               error={err(creditState.fieldErrors?.artistSlug)}
-              autoCapitalize="none"
-              spellCheck={false}
             />
             <Submit variant="quiet">{t("editor.addCredit")}</Submit>
           </form>

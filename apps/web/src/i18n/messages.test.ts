@@ -15,7 +15,7 @@ function entries(value: unknown, prefix = ""): [string, unknown][] {
   return Object.entries(value).flatMap(([k, v]) => entries(v, prefix ? `${prefix}.${k}` : k));
 }
 
-/** The arguments (name:type) and rich-text tags a message uses — translations must keep them. */
+/** The arguments (name:type) and rich-text tags a message uses - translations must keep them. */
 function signature(message: string): string[] {
   const found = new Set<string>();
   const walk = (elements: MessageFormatElement[]) => {

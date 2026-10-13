@@ -92,10 +92,13 @@ export function ImageUpload({
       const reason = latest.rejectionCode && t.has(key) ? t(key) : t("rejection.unreadable");
       return `${t(`${label}.rejected`)} ${reason}`;
     }
-    if (latest.status === "failed" || latest.status === "pending") return t(`${label}.failed`);
+    // The upload never finished (pending) vs. the file arrived but could not be processed.
+    if (latest.status === "pending") return t(`${label}.failed`);
+    if (latest.status === "failed") return t("rejection.processing_failed");
     return null;
   }
-  const status = statusText();
+  // While a new file is on its way, the outcome of the previous attempt no longer matters.
+  const status = busy ? null : statusText();
 
   return (
     <div className="image-upload">

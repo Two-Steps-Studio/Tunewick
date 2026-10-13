@@ -26,7 +26,7 @@ export function absoluteUrl(href: Href, locale: Locale): string {
 
 /**
  * Canonical URL of the page in this locale and its other language versions (hreflang), with
- * x-default pointing at English (the version for visitors whose language isn't offered) — so
+ * x-default pointing at English (the version for visitors whose language isn't offered) - so
  * search engines index each language once.
  */
 export function alternates(href: Href, locale: Locale): Metadata["alternates"] {

@@ -32,7 +32,7 @@ export async function getReportSubject(type: string, id: string) {
       ? {
           type: "release" as const,
           id,
-          title: `${data.artist.name} — ${data.title}`,
+          title: `${data.artist.name} - ${data.title}`,
           artistSlug: data.artist.slug,
           releaseSlug: data.slug,
         }
@@ -147,7 +147,7 @@ async function describeForStaff(type: ReportSubject, id: string): Promise<StaffS
         .maybeSingle();
       return data?.artist
         ? {
-            title: `${data.artist.name} — ${data.title}`,
+            title: `${data.artist.name} - ${data.title}`,
             artistId: data.artist.id,
             href: {
               pathname: "/artists/[slug]/releases/[release]",
@@ -202,7 +202,7 @@ async function describeForStaff(type: ReportSubject, id: string): Promise<StaffS
         .maybeSingle();
       if (!data) return null;
       return {
-        title: data.display_name ?? (data.handle ? `@${data.handle}` : "—"),
+        title: data.display_name ?? (data.handle ? `@${data.handle}` : "-"),
         artistId: null,
         href: data.handle
           ? { pathname: "/profile/[handle]", params: { handle: data.handle } }

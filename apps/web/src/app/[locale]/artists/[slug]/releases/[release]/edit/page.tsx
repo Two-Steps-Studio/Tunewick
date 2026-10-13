@@ -99,36 +99,17 @@ export default async function ReleaseEditorPage({
       </div>
 
       <div className="auth-page__body">
+        {/* What is left to do comes first, then the steps in the order artists usually take. */}
         {editable ? (
-          <section className="settings-form__group" aria-labelledby="details">
-            <h2 id="details" className="section-title">
-              {t("editor.details")}
-            </h2>
-            <ReleaseDetailsForm release={release} artistSlug={artist.slug} />
-          </section>
+          <ReadinessChecklist
+            hasTracks={tracks.length > 0}
+            aiDeclared={release.ai_content !== "unknown"}
+            rightsDeclared={Boolean(declaration)}
+            artwork={Boolean(cover)}
+            audio={audioState}
+          />
         ) : null}
-
-        <section className="settings-form__group" aria-labelledby="cover">
-          <h2 id="cover" className="section-title">
-            {t("editor.cover")}
-          </h2>
-          <div className="cover-editor">
-            <Artwork
-              image={cover}
-              alt={t("editor.coverAlt", { title: release.title })}
-              sizes="10rem"
-            />
-            {editable ? (
-              <ImageUpload
-                kind="release_artwork"
-                ownerId={release.id}
-                hasImage={Boolean(cover)}
-                latest={coverUpload}
-              />
-            ) : null}
-          </div>
-        </section>
-
+        {editable && readyToSubmit ? <SubmitReleaseForm releaseId={release.id} /> : null}
         <section className="settings-form__group" aria-labelledby="tracks">
           <h2 id="tracks" className="section-title">
             {t("editor.tracks")}
@@ -157,7 +138,26 @@ export default async function ReleaseEditorPage({
           </ol>
           {editable ? <AddTrackForm releaseId={release.id} /> : null}
         </section>
-
+        <section className="settings-form__group" aria-labelledby="cover">
+          <h2 id="cover" className="section-title">
+            {t("editor.cover")}
+          </h2>
+          <div className="cover-editor">
+            <Artwork
+              image={cover}
+              alt={t("editor.coverAlt", { title: release.title })}
+              sizes="10rem"
+            />
+            {editable ? (
+              <ImageUpload
+                kind="release_artwork"
+                ownerId={release.id}
+                hasImage={Boolean(cover)}
+                latest={coverUpload}
+              />
+            ) : null}
+          </div>
+        </section>
         {editable ? (
           <section className="settings-form__group" aria-labelledby="genres">
             <h2 id="genres" className="section-title">
@@ -166,7 +166,6 @@ export default async function ReleaseEditorPage({
             <GenresForm releaseId={release.id} selected={genreIds} genres={allGenres} />
           </section>
         ) : null}
-
         <section className="settings-form__group" aria-labelledby="rights">
           <h2 id="rights" className="section-title">
             {t("rights.title")}
@@ -190,17 +189,14 @@ export default async function ReleaseEditorPage({
             </details>
           ) : null}
         </section>
-
         {editable ? (
-          <ReadinessChecklist
-            hasTracks={tracks.length > 0}
-            aiDeclared={release.ai_content !== "unknown"}
-            rightsDeclared={Boolean(declaration)}
-            artwork={Boolean(cover)}
-            audio={audioState}
-          />
+          <section className="settings-form__group" aria-labelledby="details">
+            <h2 id="details" className="section-title">
+              {t("editor.details")}
+            </h2>
+            <ReleaseDetailsForm release={release} artistSlug={artist.slug} />
+          </section>
         ) : null}
-        {editable && readyToSubmit ? <SubmitReleaseForm releaseId={release.id} /> : null}
 
         {release.status === "draft" ? (
           <DeleteReleaseButton releaseId={release.id} artistSlug={artist.slug} />

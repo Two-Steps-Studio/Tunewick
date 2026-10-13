@@ -4,7 +4,7 @@ import { AwsClient } from "aws4fetch";
 
 /**
  * S3-compatible object storage for masters: Cloudflare R2 in production, local SeaweedFS in
- * development and CI (pnpm media:start). Path-style URLs work with both. Server-only — the
+ * development and CI (pnpm media:start). Path-style URLs work with both. Server-only - the
  * browser only ever receives short-lived presigned URLs.
  */
 
@@ -69,7 +69,7 @@ function objectUrl(cfg: MediaConfig, key: string, bucket = cfg.ingestBucket) {
 
 const UPLOAD_URL_TTL_S = 60 * 60; // large masters on slow connections
 
-/** Presigned PUT into the ingest (quarantine) bucket — masters and original images. */
+/** Presigned PUT into the ingest (quarantine) bucket - masters and original images. */
 export async function presignIngestUpload(key: string): Promise<string> {
   const cfg = config();
   if (!cfg) throw new Error("Media storage is not configured");
@@ -108,7 +108,7 @@ const PREVIEW_URL_TTL_S = 2 * 60 * 60;
 const DAY_MS = 24 * 60 * 60 * 1000;
 
 /**
- * Short-lived GET URL for a delivery variant — members' preview of their own processed tracks.
+ * Short-lived GET URL for a delivery variant - members' preview of their own processed tracks.
  * Public playback will go through the media edge with playback tokens (docs/architecture.md §6.4).
  */
 export async function presignVariantGet(

@@ -27,7 +27,7 @@ const CODE = /^[a-z2-9]{10}$/;
 const SLUG = /^[a-z0-9-]{2,60}$/;
 
 /**
- * Discover — the center of Tunewick: a feed of previews, one song at a time, each with the reason
+ * Discover - the center of Tunewick: a feed of previews, one song at a time, each with the reason
  * it is here. First visit: one short screen of choices (or skip) so the first feed already fits.
  */
 export default async function DiscoverPage({ params, searchParams }: PageProps<"/[locale]">) {

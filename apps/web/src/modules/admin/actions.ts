@@ -7,6 +7,17 @@ export interface AdminFormState {
   error?: "notFound" | "invalid" | "mfa_required" | "not_allowed" | "already_lifetime" | "failed";
   done?: boolean;
   values?: Record<string, string>;
+  /** Shown next to the field it is about (keys: Admin.fieldErrors.*). */
+  fieldErrors?: Partial<Record<"handle" | "days" | "note", FieldError>>;
+}
+
+type FieldError = "handleRequired" | "handleNotFound" | "daysInvalid" | "noteShort";
+
+/** A profile-handle lookup that failed: "no such account" belongs next to the handle field. */
+function userError(error: AdminFormState["error"], values: Record<string, string>): AdminFormState {
+  return error === "notFound"
+    ? { fieldErrors: { handle: "handleNotFound" }, values }
+    : { error, values };
 }
 
 function adminError(error: { code?: string; hint?: string }): AdminFormState["error"] {
@@ -33,11 +44,10 @@ export async function grantStaffRole(
     handle: String(formData.get("handle") ?? "").trim(),
     role: String(formData.get("role") ?? ""),
   };
-  if (!values.handle || !["moderator", "admin"].includes(values.role)) {
-    return { error: "invalid", values };
-  }
+  if (!values.handle) return { fieldErrors: { handle: "handleRequired" }, values };
+  if (!["moderator", "admin"].includes(values.role)) return { error: "invalid", values };
   const user = await findUser(values.handle);
-  if ("error" in user) return { error: user.error, values };
+  if ("error" in user) return userError(user.error, values);
   const supabase = await createSupabaseServerClient();
   const { error } = await supabase.rpc("admin_grant_role", {
     target_user: user.id,
@@ -73,15 +83,15 @@ export async function grantPremium(
     note: String(formData.get("note") ?? "").trim(),
   };
   const days = values.days === "" ? null : Number(values.days);
-  if (
-    !values.handle ||
-    (days !== null && !(Number.isInteger(days) && days >= 1 && days <= 3660)) ||
-    values.note.length < 3
-  ) {
-    return { error: "invalid", values };
+  const fieldErrors: AdminFormState["fieldErrors"] = {};
+  if (!values.handle) fieldErrors.handle = "handleRequired";
+  if (days !== null && !(Number.isInteger(days) && days >= 1 && days <= 3660)) {
+    fieldErrors.days = "daysInvalid";
   }
+  if (values.note.length < 3) fieldErrors.note = "noteShort";
+  if (Object.keys(fieldErrors).length) return { fieldErrors, values };
   const user = await findUser(values.handle);
-  if ("error" in user) return { error: user.error, values };
+  if ("error" in user) return userError(user.error, values);
   const supabase = await createSupabaseServerClient();
   const { error } = await supabase.rpc("admin_grant_entitlement", {
     target_user: user.id,

@@ -73,6 +73,9 @@ export default async function ManageArtistPage({
       </div>
 
       <div className="auth-page__body">
+        {/* Music first: adding and finishing releases is why artists come here. */}
+        <ArtistReleaseList artist={{ id: artist.id, slug: artist.slug }} />
+
         {myRole !== "member" ? (
           <section className="settings-form__group" aria-labelledby="info">
             <h2 id="info" className="section-title">
@@ -129,8 +132,6 @@ export default async function ManageArtistPage({
             </div>
           </section>
         ) : null}
-
-        <ArtistReleaseList artist={{ id: artist.id, slug: artist.slug }} />
 
         <section className="settings-form__group" aria-labelledby="members">
           <h2 id="members" className="section-title">

@@ -300,3 +300,19 @@ export async function withdrawSubmission(releaseId: string): Promise<SubmissionS
   refresh();
   return error ? { error: "failed" } : {};
 }
+
+/** Active artist profiles matching a name, for linking a credit (picker in the release editor). */
+export async function findArtistsForCredit(
+  query: string,
+): Promise<{ slug: string; name: string }[]> {
+  const q = query.trim().slice(0, 80);
+  if (q.length < 2) return [];
+  const supabase = await createSupabaseServerClient();
+  const { data } = await supabase.rpc("search_catalog", { query: q, max_results: 8 });
+  const seen = new Set<string>();
+  return (data ?? []).flatMap((hit) => {
+    if (hit.kind !== "artist" || seen.has(hit.artist_slug)) return [];
+    seen.add(hit.artist_slug);
+    return [{ slug: hit.artist_slug, name: hit.artist_name }];
+  });
+}

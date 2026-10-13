@@ -1,8 +1,8 @@
 /**
  * Which file to play and how (docs/audio.md §4, spike results §9.2).
  *
- * Strategy MSE: fMP4 through MediaSource / ManagedMediaSource — truly gapless.
- * Strategy native: the file in an <audio> element — gapless best-effort (compromise C2).
+ * Strategy MSE: fMP4 through MediaSource / ManagedMediaSource - truly gapless.
+ * Strategy native: the file in an <audio> element - gapless best-effort (compromise C2).
  *
  * Capabilities must come from a real decode probe; `canPlayType`/`isTypeSupported` alone lie
  * (the Windows WebKit port answered "probably" for FLAC and never played it). The known-broken

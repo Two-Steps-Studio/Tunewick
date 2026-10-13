@@ -26,7 +26,7 @@ export function usePlayerState(): PlayerState {
 let reporting = false;
 
 /**
- * Sends listens of this tab to the server (signed-in listeners only — the server checks again)
+ * Sends listens of this tab to the server (signed-in listeners only - the server checks again)
  * and shows what they earned, plus playback telemetry. keepalive lets the last listen leave even
  * while the page is closing.
  */

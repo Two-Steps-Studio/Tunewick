@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const { locale } = await params;
   const data = await load(params);
   if (!data) return {};
-  const title = `${data.release.title} — ${data.artist.name}`;
+  const title = `${data.release.title} - ${data.artist.name}`;
   const cover = await getImageSources(data.release.artwork_image_id, 1200);
   return {
     title,

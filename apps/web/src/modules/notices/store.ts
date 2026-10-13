@@ -2,7 +2,7 @@
 
 /**
  * In-app progress feedback: what a listen earned, goals reached, streaks, "on a roll". One small
- * notice at a time, each celebration at most once per day — progress should feel like part of
+ * notice at a time, each celebration at most once per day - progress should feel like part of
  * listening, never like popups.
  */
 

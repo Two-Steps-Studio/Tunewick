@@ -31,7 +31,7 @@ test.describe("two-factor sign-in (TOTP)", () => {
     await signIn(page, email);
     await expect(page).toHaveURL(/\/weryfikacja$/);
 
-    // The password alone does not open the data either — not even straight through the API.
+    // The password alone does not open the data either - not even straight through the API.
     const aal1 = await dataApi(await accessToken(page), "profiles?select=handle");
     expect(aal1.status).toBe(403);
     expect(((await aal1.json()) as { hint?: string }).hint).toBe("mfa_required");

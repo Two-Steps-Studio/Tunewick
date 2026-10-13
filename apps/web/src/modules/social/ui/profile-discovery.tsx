@@ -5,8 +5,8 @@ import { formatListening } from "@/lib/intl";
 import { getCommonGround, getProfileOverview } from "../queries";
 
 /**
- * A profile's discovery side: level and Discovery Score, badges, the last 30 days and — for a
- * signed-in visitor — what you have in common. Every part appears only if its owner allows it.
+ * A profile's discovery side: level and Discovery Score, badges, the last 30 days and - for a
+ * signed-in visitor - what you have in common. Every part appears only if its owner allows it.
  */
 export async function ProfileDiscovery({
   handle,

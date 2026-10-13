@@ -61,7 +61,7 @@ function NoticeView({ notice }: { notice: Notice }) {
   );
 }
 
-/** Where progress shows up — one quiet line above the player, announced politely. */
+/** Where progress shows up - one quiet line above the player, announced politely. */
 export function ProgressNotices() {
   const notice = useCurrentNotice();
   return (

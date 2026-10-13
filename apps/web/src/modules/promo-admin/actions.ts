@@ -19,7 +19,7 @@ export interface PromoFormState {
   error?: PromoAdminError;
   /** What was submitted, kept on failure (React resets forms after every action). */
   values?: Record<string, string>;
-  /** Generated codes — returned once, never stored in plaintext. */
+  /** Generated codes - returned once, never stored in plaintext. */
   codes?: string[];
   done?: boolean;
 }

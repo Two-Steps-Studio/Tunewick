@@ -1,5 +1,5 @@
 /**
- * One MediaSource feeding consecutive tracks into a single SourceBuffer — the gapless path
+ * One MediaSource feeding consecutive tracks into a single SourceBuffer - the gapless path
  * (docs/audio.md §4.2). Each track's fMP4 file is streamed with fetch and appended as it
  * arrives, placed on the timeline by planGaplessAppends (AAC priming/padding trimmed by the
  * append window). Appending stays ~30 s ahead of the playhead and played data is evicted, so the
