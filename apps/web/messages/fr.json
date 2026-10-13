@@ -54,7 +54,24 @@
       "unplayable": "Ce navigateur ne peut lire aucune version de ce titre.",
       "stream_error": "Le flux audio a été interrompu."
     },
-    "soundcheck": "Soundcheck"
+    "soundcheck": "Soundcheck",
+    "queue": "File d’attente",
+    "nowPlaying": "En cours",
+    "upNext": "Ensuite",
+    "removeFromQueue": "Retirer de la file : {title}",
+    "queueEmpty": "Plus rien dans la file d’attente.",
+    "queueRepeats": "La file recommencera depuis le début.",
+    "queueMore": "{count, plural, one {et # titre de plus} other {et # titres de plus}}",
+    "shuffle": "Lecture aléatoire",
+    "repeat": {
+      "off": "Répéter : désactivé",
+      "all": "Répéter : toute la file",
+      "one": "Répéter : ce titre"
+    },
+    "playNext": "Lire ensuite",
+    "addToQueue": "Ajouter à la file d’attente",
+    "queuedNext": "Sera lu ensuite.",
+    "queuedLast": "Ajouté à la file d’attente."
   },
   "Scene": {
     "title": "Scène",

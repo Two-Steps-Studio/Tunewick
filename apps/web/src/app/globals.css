@@ -428,9 +428,11 @@ summary,
   }
 
   /* Active player ---------------------------------------------------------- */
+  /* Phones: controls | cover | title, then a row with quality and the mode buttons.
+     Desktop: everything in one row. The title column is the one that stretches. */
   .player-bar--active {
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-columns: auto auto minmax(0, 1fr);
     gap: var(--tk-space-3);
     padding-block: var(--tk-space-2);
   }
@@ -539,9 +541,22 @@ summary,
     flex: 1;
   }
   .player-bar__side {
+    grid-column: 1 / -1;
     display: flex;
     align-items: center;
-    gap: var(--tk-space-3);
+    justify-content: flex-end;
+    gap: var(--tk-space-1);
+  }
+  .player-bar__side > .player-bar__quality {
+    margin-right: auto;
+  }
+  @media (min-width: 1024px) {
+    .player-bar--active {
+      grid-template-columns: auto auto minmax(0, 1fr) auto;
+    }
+    .player-bar__side {
+      grid-column: auto;
+    }
   }
   .player-bar__volume {
     display: none;
@@ -768,7 +783,7 @@ summary,
   }
   /* Room to scroll the open panel above the fixed player bar, even on the last row. */
   .release-tracks:has(.add-to-playlist[open]) {
-    padding-bottom: 14rem;
+    padding-bottom: 20rem;
   }
   .add-to-playlist > summary {
     list-style: none;
@@ -823,6 +838,129 @@ summary,
     animation: menu-in var(--tk-dur-fast) var(--tk-ease-out);
     transform-origin: top right;
   }
+  /* Shuffle / repeat: lit in the accent with a spark under it while on (not colour alone:
+     aria-pressed, and the repeat-one icon carries a "1"). */
+  .player-button--mode {
+    position: relative;
+  }
+  .player-button--mode[aria-pressed="true"] {
+    color: var(--accent);
+  }
+  .player-button--mode[aria-pressed="true"]::after {
+    content: "";
+    position: absolute;
+    bottom: 0.35rem;
+    left: 50%;
+    width: 0.25rem;
+    height: 0.25rem;
+    margin-left: -0.125rem;
+    background: var(--accent);
+  }
+  .player-button:disabled {
+    opacity: 0.4;
+  }
+
+  /* Queue: a panel above the bar, out of its button. */
+  .queue-menu > summary {
+    list-style: none;
+  }
+  .queue-menu > summary::-webkit-details-marker {
+    display: none;
+  }
+  .queue-menu[open] > summary {
+    color: var(--accent);
+  }
+  .queue-menu__panel {
+    position: absolute;
+    z-index: 5;
+    right: var(--tk-space-3);
+    bottom: calc(100% + var(--tk-space-2));
+    display: grid;
+    gap: var(--tk-space-2);
+    width: min(24rem, calc(100% - var(--tk-space-6)));
+    max-height: min(28rem, 60dvh);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: var(--tk-space-4);
+    background: var(--bg-raised, var(--bg));
+    box-shadow:
+      inset 0 0 0 1px var(--line),
+      0 12px 32px rgb(0 0 0 / 0.25);
+    transform-origin: bottom right;
+    animation: menu-in var(--tk-dur-fast) var(--tk-ease-out);
+  }
+  .queue-menu__label {
+    font-family: var(--tk-font-mono);
+    font-size: var(--tk-text-xs);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .queue-menu__now,
+  .queue-menu__play {
+    display: grid;
+    min-width: 0;
+    text-align: left;
+  }
+  .queue-menu__now .queue-menu__title {
+    color: var(--accent);
+  }
+  .queue-menu__list {
+    display: grid;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .queue-menu__item {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 2.75rem;
+    align-items: center;
+    border-top: 1px solid var(--line);
+  }
+  .queue-menu__play {
+    min-height: 2.75rem;
+    padding: var(--tk-space-1) 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+  }
+  .queue-menu__title,
+  .queue-menu__artist {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .queue-menu__title {
+    font-weight: 600;
+  }
+  .queue-menu__artist {
+    font-size: var(--tk-text-sm);
+    color: var(--text-muted);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .queue-menu__play:hover .queue-menu__title {
+      text-decoration: underline;
+    }
+  }
+  .queue-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--tk-space-2);
+    padding-bottom: var(--tk-space-3);
+    border-bottom: 1px solid var(--line);
+  }
+  .queue-actions .field__hint {
+    flex-basis: 100%;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .queue-menu__panel,
+    .add-to-playlist__panel {
+      animation-name: menu-fade-in;
+    }
+  }
+
   /* In the player bar the menu opens upwards, out of the "+", above the bar. */
   .player-bar {
     position: relative;

@@ -12,7 +12,7 @@ import { Artwork, getImageSources } from "@/modules/images";
 import { getOptionalUser } from "@/modules/auth";
 import { getReleaseLikes, LibraryButton } from "@/modules/library";
 import { AddToPlaylist, getMyPlaylists } from "@/modules/playlists";
-import { PlayButton } from "@/modules/player";
+import { PlayButton, QueueActions } from "@/modules/player";
 
 type Params = PageProps<"/[locale]/artists/[slug]/releases/[release]">["params"];
 
@@ -213,6 +213,7 @@ export default async function ReleasePage({
                   trackId={track.id}
                   trackTitle={track.title}
                   playlists={playlists.map((p) => ({ id: p.id, title: p.title }))}
+                  extra={index >= 0 ? <QueueActions track={playable[index]!} /> : null}
                 />
               ) : null}
             </li>

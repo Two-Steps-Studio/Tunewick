@@ -54,7 +54,24 @@
       "unplayable": "Ta przeglądarka nie odtwarza żadnej wersji tego utworu.",
       "stream_error": "Połączenie z serwerem audio zostało przerwane."
     },
-    "soundcheck": "Soundcheck"
+    "soundcheck": "Soundcheck",
+    "queue": "Kolejka",
+    "nowPlaying": "Teraz gra",
+    "upNext": "Dalej w kolejce",
+    "removeFromQueue": "Usuń z kolejki: {title}",
+    "queueEmpty": "Nic więcej w kolejce.",
+    "queueRepeats": "Kolejka zacznie się od początku.",
+    "queueMore": "{count, plural, one {i # utwór więcej} few {i # utwory więcej} many {i # utworów więcej} other {i # utworu więcej}}",
+    "shuffle": "Losowa kolejność",
+    "repeat": {
+      "off": "Powtarzanie: wyłączone",
+      "all": "Powtarzanie: cała kolejka",
+      "one": "Powtarzanie: ten utwór"
+    },
+    "playNext": "Odtwórz jako następny",
+    "addToQueue": "Dodaj do kolejki",
+    "queuedNext": "Zagra jako następny.",
+    "queuedLast": "Dodano do kolejki."
   },
   "Scene": {
     "title": "Scena",

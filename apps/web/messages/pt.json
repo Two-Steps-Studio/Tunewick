@@ -54,7 +54,24 @@
       "unplayable": "Este navegador não reproduz nenhuma versão desta faixa.",
       "stream_error": "O stream de áudio foi interrompido."
     },
-    "soundcheck": "Soundcheck"
+    "soundcheck": "Soundcheck",
+    "queue": "Fila",
+    "nowPlaying": "Tocando agora",
+    "upNext": "A seguir",
+    "removeFromQueue": "Remover da fila: {title}",
+    "queueEmpty": "Nada mais na fila.",
+    "queueRepeats": "A fila vai recomeçar do início.",
+    "queueMore": "{count, plural, one {e mais # faixa} other {e mais # faixas}}",
+    "shuffle": "Aleatório",
+    "repeat": {
+      "off": "Repetir: desligado",
+      "all": "Repetir: fila inteira",
+      "one": "Repetir: esta faixa"
+    },
+    "playNext": "Tocar a seguir",
+    "addToQueue": "Adicionar à fila",
+    "queuedNext": "Toca a seguir.",
+    "queuedLast": "Adicionada à fila."
   },
   "Scene": {
     "title": "Cena",

@@ -117,3 +117,44 @@ test("Free plan gets High and the player says why", async ({ page }) => {
   );
   await expect(player(page).getByText("Lossless i Hi-Res w Premium")).toBeAttached();
 });
+
+test("queue, repeat, shuffle and keyboard work like a music app", async ({ page }) => {
+  await playAlbum(page, "high", "high");
+  const bar = player(page);
+  const nowTitle = bar.locator(".player-bar__track");
+  await expect(nowTitle).toHaveText("Sweep 1");
+
+  // The queue lists what comes next; an item can be taken out without stopping the music.
+  await bar.getByLabel("Kolejka").click();
+  await expect(bar.getByRole("button", { name: /^Sweep 2/ })).toBeVisible();
+  await bar.getByRole("button", { name: "Usuń z kolejki: Sweep 3" }).click();
+  await expect(bar.getByRole("button", { name: /^Sweep 3/ })).toHaveCount(0);
+  await expect(nowTitle).toHaveText("Sweep 1");
+  await expect.poll(async () => (await debug(page)).status).toBe("playing");
+  await bar.getByLabel("Kolejka").click();
+
+  // Repeat cycles off → whole queue → this track → off.
+  await bar.getByRole("button", { name: "Powtarzanie: wyłączone" }).click();
+  await bar.getByRole("button", { name: "Powtarzanie: cała kolejka" }).click();
+  await expect(bar.getByRole("button", { name: "Powtarzanie: ten utwór" })).toHaveAttribute(
+    "aria-pressed",
+    "true",
+  );
+  await bar.getByRole("button", { name: "Powtarzanie: ten utwór" }).click();
+
+  // Shuffle keeps the playing track; turning it off brings the order back.
+  const shuffle = bar.getByRole("button", { name: "Losowa kolejność" });
+  await shuffle.click();
+  await expect(shuffle).toHaveAttribute("aria-pressed", "true");
+  await expect(nowTitle).toHaveText("Sweep 1");
+  await shuffle.click();
+  await expect(shuffle).toHaveAttribute("aria-pressed", "false");
+
+  // Keyboard (focus on the page, not on a control): Shift+→ next track, M mutes.
+  await page.evaluate(() => (document.activeElement as HTMLElement | null)?.blur());
+  await page.keyboard.press("Shift+ArrowRight");
+  await expect(nowTitle).toHaveText("Sweep 2");
+  await page.keyboard.press("m");
+  // (The volume slider is hidden on phones, so it is read directly.)
+  await expect(bar.locator(".player-bar__volume")).toHaveValue("0");
+});

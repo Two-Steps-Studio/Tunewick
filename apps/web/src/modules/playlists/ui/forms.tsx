@@ -144,11 +144,14 @@ export function AddToPlaylist({
   trackTitle,
   playlists: given,
   placement = "below",
+  extra = null,
 }: {
   trackId: string;
   trackTitle: string;
   playlists?: { id: string; title: string }[];
   placement?: "below" | "above";
+  /** More actions for the track, shown first (e.g. play next / add to queue). */
+  extra?: React.ReactNode;
 }) {
   const t = useTranslations("Playlists");
   const [loaded, setLoaded] = useState<{ id: string; title: string }[] | null>(null);
@@ -191,6 +194,7 @@ export function AddToPlaylist({
         </svg>
       </summary>
       <div className="add-to-playlist__panel">
+        {extra}
         {playlists === null ? (
           <p className="field__hint" aria-busy="true">
             {t("loading")}

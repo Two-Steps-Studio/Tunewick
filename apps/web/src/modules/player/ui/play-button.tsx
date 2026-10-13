@@ -20,7 +20,7 @@ export function PlayButton({
   label: string;
   children: React.ReactNode;
   className?: string;
-  /** Plays the tracks in a fresh random order (from the first of the shuffled list). */
+  /** Turns shuffle mode on and plays the tracks in random order, from a random one. */
   shuffle?: boolean;
 }) {
   return (
@@ -31,20 +31,10 @@ export function PlayButton({
       onClick={() => {
         const player = getPlayer();
         player.configure({ setting: "auto", entitlement });
-        void player.playQueue(shuffle ? shuffled(tracks) : tracks, shuffle ? 0 : index);
+        void (shuffle ? player.playShuffled(tracks) : player.playQueue(tracks, index));
       }}
     >
       {children}
     </button>
   );
-}
-
-/** Fisher-Yates on a copy: every order equally likely, the original list untouched. */
-function shuffled<T>(items: T[]): T[] {
-  const copy = items.slice();
-  for (let i = copy.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [copy[i], copy[j]] = [copy[j]!, copy[i]!];
-  }
-  return copy;
 }

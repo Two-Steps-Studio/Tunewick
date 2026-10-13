@@ -54,7 +54,24 @@
       "unplayable": "Dieser Browser kann keine Version dieses Tracks abspielen.",
       "stream_error": "Der Audiostream wurde unterbrochen."
     },
-    "soundcheck": "Soundcheck"
+    "soundcheck": "Soundcheck",
+    "queue": "Warteschlange",
+    "nowPlaying": "Läuft gerade",
+    "upNext": "Als Nächstes",
+    "removeFromQueue": "Aus der Warteschlange entfernen: {title}",
+    "queueEmpty": "Sonst nichts in der Warteschlange.",
+    "queueRepeats": "Die Warteschlange beginnt wieder von vorn.",
+    "queueMore": "{count, plural, one {und # weiterer Titel} other {und # weitere Titel}}",
+    "shuffle": "Zufallswiedergabe",
+    "repeat": {
+      "off": "Wiederholen: aus",
+      "all": "Wiederholen: ganze Warteschlange",
+      "one": "Wiederholen: dieser Titel"
+    },
+    "playNext": "Als Nächstes abspielen",
+    "addToQueue": "Zur Warteschlange hinzufügen",
+    "queuedNext": "Läuft als Nächstes.",
+    "queuedLast": "Zur Warteschlange hinzugefügt."
   },
   "Scene": {
     "title": "Szene",

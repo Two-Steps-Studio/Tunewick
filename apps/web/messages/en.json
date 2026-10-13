@@ -54,7 +54,24 @@
       "unplayable": "This browser can't play any version of this track.",
       "stream_error": "The audio stream was interrupted."
     },
-    "soundcheck": "Soundcheck"
+    "soundcheck": "Soundcheck",
+    "queue": "Queue",
+    "nowPlaying": "Now playing",
+    "upNext": "Next in queue",
+    "removeFromQueue": "Remove from queue: {title}",
+    "queueEmpty": "Nothing else in the queue.",
+    "queueRepeats": "The queue will start again from the top.",
+    "queueMore": "{count, plural, one {and # more track} other {and # more tracks}}",
+    "shuffle": "Shuffle",
+    "repeat": {
+      "off": "Repeat: off",
+      "all": "Repeat: whole queue",
+      "one": "Repeat: this track"
+    },
+    "playNext": "Play next",
+    "addToQueue": "Add to queue",
+    "queuedNext": "Plays next.",
+    "queuedLast": "Added to the queue."
   },
   "Scene": {
     "title": "Scene",
