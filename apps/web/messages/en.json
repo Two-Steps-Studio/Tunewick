@@ -205,7 +205,7 @@
   },
   "Settings": {
     "title": "Account",
-    "lead": "Your public profile and private settings.",
+    "lead": "This is your listener account: profile, privacy and plan. An artist profile - the page with your music - is a separate page; find it below under “Your artist projects”.",
     "publicSection": "Public profile",
     "publicHint": "Anyone who opens your profile can see this.",
     "privateSection": "Private settings",
@@ -275,7 +275,7 @@
   "Artists": {
     "my": {
       "title": "Your artist projects",
-      "empty": "You are not part of any project yet.",
+      "empty": "You don't have an artist profile yet. Create one to publish music - your listener account stays as it is.",
       "create": "Create an artist profile",
       "invitedAs": "Invited as: {role}",
       "accept": "Accept invitation",
@@ -447,11 +447,13 @@
       "back": "Back to the artist profile",
       "aiMissing": "Declare AI involvement before submitting for review.",
       "cover": "Cover",
-      "coverAlt": "Cover of the release {title}"
+      "coverAlt": "Cover of the release {title}",
+      "more": "More options"
     },
     "fields": {
       "title": "Title",
       "slug": "Release address",
+      "slugHint": "The end of the release page address, e.g. tunewick.com/en/artists/your-name/releases/title.",
       "type": "Type",
       "releaseDate": "Release date",
       "explicit": "Explicit content",
@@ -465,9 +467,12 @@
       "creditRole": "Role",
       "creditDetail": "Details (e.g. instrument)",
       "creditArtist": "Tunewick profile (optional)",
-      "creditArtistHint": "The artist's profile address, e.g. halda-kolektyw. Links the track to their profile and helps listeners find related artists.",
+      "creditArtistHint": "Type the name of an artist on Tunewick and pick them from the list. Links the track to their profile and helps listeners find related artists.",
       "soundcheckStart": "Soundcheck start (m:ss)",
-      "soundcheckStartHint": "The 30-second excerpt that introduces the track in Discover. Empty = from the beginning."
+      "soundcheckStartHint": "The 30-second excerpt that introduces the track in Discover. Empty = from the beginning.",
+      "creditArtistLinked": "Linked to the profile: {name}.",
+      "creditArtistClear": "Unlink",
+      "creditArtistNone": "No artist with this name."
     },
     "types": {
       "single": "Single",
@@ -613,7 +618,7 @@
       "processing": "Checking and processing {file}…",
       "accepted": "Ready: {file} ({size} MB).",
       "rejected": "{file} was rejected.",
-      "failed": "Uploading {file} failed - please try again."
+      "failed": "{file} could not be uploaded or processed - please upload it again."
     },
     "error": {
       "unsupported_type": "This file type isn't supported. Upload a lossless master: WAV, AIFF, FLAC or ALAC.",
@@ -1114,7 +1119,13 @@
     "sharesArtist": "Artist",
     "sharesListeners": "Listeners",
     "sharesPlays": "Plays",
-    "sharesHours": "Hours"
+    "sharesHours": "Hours",
+    "fieldErrors": {
+      "handleRequired": "Enter the person's profile handle.",
+      "handleNotFound": "No account has this profile name. Check it under Account → Profile name (address), without @.",
+      "daysInvalid": "Enter a number of days from 1 to 3660, or leave it empty (for life).",
+      "noteShort": "Enter a reason (at least 3 characters) - it goes into the change log."
+    }
   },
   "Events": {
     "badge": "Gig",

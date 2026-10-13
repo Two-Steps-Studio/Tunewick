@@ -205,7 +205,7 @@
   },
   "Settings": {
     "title": "Konto",
-    "lead": "Twój profil publiczny i ustawienia prywatne.",
+    "lead": "To Twoje konto słuchacza: profil, prywatność i plan. Profil artysty, czyli strona z Twoją muzyką, to osobna strona - znajdziesz go niżej w sekcji „Twoje projekty artystyczne”.",
     "publicSection": "Profil publiczny",
     "publicHint": "Te dane widzi każdy, kto otworzy Twój profil.",
     "privateSection": "Ustawienia prywatne",
@@ -275,7 +275,7 @@
   "Artists": {
     "my": {
       "title": "Twoje projekty artystyczne",
-      "empty": "Nie należysz jeszcze do żadnego projektu.",
+      "empty": "Nie masz jeszcze profilu artysty. Załóż go, żeby publikować muzykę - Twoje konto słuchacza zostaje bez zmian.",
       "create": "Załóż profil artysty",
       "invitedAs": "Zaproszenie jako: {role}",
       "accept": "Przyjmij zaproszenie",
@@ -447,11 +447,13 @@
       "back": "Wróć do profilu artysty",
       "aiMissing": "Określ udział AI przed wysłaniem do weryfikacji.",
       "cover": "Okładka",
-      "coverAlt": "Okładka wydawnictwa {title}"
+      "coverAlt": "Okładka wydawnictwa {title}",
+      "more": "Więcej opcji"
     },
     "fields": {
       "title": "Tytuł",
       "slug": "Adres wydawnictwa",
+      "slugHint": "Końcówka adresu strony wydawnictwa, np. tunewick.com/artysci/twoja-nazwa/wydawnictwa/tytul.",
       "type": "Rodzaj",
       "releaseDate": "Data wydania",
       "explicit": "Treści dla dorosłych (explicit)",
@@ -465,9 +467,12 @@
       "creditRole": "Rola",
       "creditDetail": "Szczegóły (np. instrument)",
       "creditArtist": "Profil w Tunewick (opcjonalnie)",
-      "creditArtistHint": "Adres profilu artysty, np. halda-kolektyw. Połączy utwór z jego profilem i pomoże słuchaczom trafić do powiązanych artystów.",
+      "creditArtistHint": "Wpisz nazwę artysty z Tunewick i wybierz go z listy. Połączy utwór z jego profilem i pomoże słuchaczom trafić do powiązanych artystów.",
       "soundcheckStart": "Początek soundchecku (m:ss)",
-      "soundcheckStartHint": "30-sekundowy fragment, którym utwór przedstawia się w Odkrywaj. Puste = od początku."
+      "soundcheckStartHint": "30-sekundowy fragment, którym utwór przedstawia się w Odkrywaj. Puste = od początku.",
+      "creditArtistLinked": "Połączono z profilem: {name}.",
+      "creditArtistClear": "Odłącz",
+      "creditArtistNone": "Nie znaleziono artysty o tej nazwie."
     },
     "types": {
       "single": "Singiel",
@@ -613,7 +618,7 @@
       "processing": "Sprawdzamy i przetwarzamy {file}…",
       "accepted": "Gotowe: {file} ({size} MB).",
       "rejected": "Plik {file} został odrzucony.",
-      "failed": "Przesyłanie pliku {file} nie powiodło się - spróbuj ponownie."
+      "failed": "Pliku {file} nie udało się przesłać lub przetworzyć - prześlij go ponownie."
     },
     "error": {
       "unsupported_type": "Ten typ pliku nie jest obsługiwany. Prześlij bezstratny master: WAV, AIFF, FLAC lub ALAC.",
@@ -1114,7 +1119,13 @@
     "sharesArtist": "Artysta",
     "sharesListeners": "Słuchacze",
     "sharesPlays": "Odtworzenia",
-    "sharesHours": "Godziny"
+    "sharesHours": "Godziny",
+    "fieldErrors": {
+      "handleRequired": "Wpisz nazwę profilu osoby.",
+      "handleNotFound": "Nie ma konta z taką nazwą profilu. Sprawdź ją w Konto → Nazwa profilu (bez @).",
+      "daysInvalid": "Wpisz liczbę dni od 1 do 3660 albo zostaw puste (na zawsze).",
+      "noteShort": "Wpisz powód (co najmniej 3 znaki) - trafi do dziennika zmian."
+    }
   },
   "Events": {
     "badge": "Koncert",

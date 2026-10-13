@@ -63,10 +63,13 @@ async function readyRelease(page: Page) {
   await expect(track.getByText("Zapisano.")).toBeVisible();
   await track.getByLabel("Imię i nazwisko lub pseudonim").fill("Kopalnia");
   await track.getByLabel("Rola").selectOption("producer");
-  await track.getByLabel("Profil w Tunewick (opcjonalnie)").fill("nie-ma-takiego-profilu");
-  await track.getByRole("button", { name: "Dodaj twórcę" }).click();
-  await expect(track.getByText("Nie ma aktywnego profilu artysty o takim adresie.")).toBeVisible();
-  await track.getByLabel("Profil w Tunewick (opcjonalnie)").fill(`${slug}-prod`);
+  // The Tunewick profile is picked by name from search results.
+  const picker = track.getByLabel("Profil w Tunewick (opcjonalnie)");
+  await picker.fill("nie-ma-takiego-profilu");
+  await expect(track.getByText("Nie znaleziono artysty o tej nazwie.")).toBeVisible();
+  await picker.fill(`Kopalnia ${slug}`);
+  await track.getByRole("button", { name: new RegExp(`Kopalnia ${slug}`) }).click();
+  await expect(track.getByText(`Połączono z profilem: Kopalnia ${slug}.`)).toBeVisible();
   await track.getByRole("button", { name: "Dodaj twórcę" }).click();
   await expect(track.getByText(`Kopalnia → Kopalnia ${slug}`)).toBeVisible();
   await track.getByLabel("Imię i nazwisko lub pseudonim").fill("Ola Nowak");

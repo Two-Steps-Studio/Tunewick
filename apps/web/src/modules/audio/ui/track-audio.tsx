@@ -199,7 +199,8 @@ export function TrackAudioUpload({
 
   return (
     <div className="track-audio">
-      {audio ? (
+      {/* While a new file is on its way, the previous attempt's outcome no longer matters. */}
+      {busy ? null : audio ? (
         <p className={`track-audio__status track-audio__status--${audio.status}`} role="status">
           {t(`status.${audio.status}`, { file: audio.fileName, size })}
           {audio.status === "rejected" ? ` ${rejectionText(audio)}` : ""}

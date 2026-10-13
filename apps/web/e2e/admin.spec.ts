@@ -39,7 +39,8 @@ test("an admin manages staff roles and grants Premium; everything is in the audi
   });
   await staff.getByLabel("Nazwa profilu osoby").fill("nie-ma-takiej-osoby");
   await staff.getByRole("button", { name: "Nadaj rolę" }).click();
-  await expect(staff.getByRole("alert")).toHaveText("Nie ma konta z taką nazwą profilu.");
+  // The error is shown next to the field it is about.
+  await expect(staff.getByText(/^Nie ma konta z taką nazwą profilu\./)).toBeVisible();
   await staff.getByLabel("Nazwa profilu osoby").fill(`osoba-${run}`);
   await staff.getByRole("button", { name: "Nadaj rolę" }).click();
   await expect(staff.getByText(`@osoba-${run} · moderator`)).toBeVisible();

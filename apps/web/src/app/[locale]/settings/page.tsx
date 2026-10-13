@@ -50,6 +50,8 @@ export default async function SettingsPage({ params }: PageProps<"/[locale]/sett
         </p>
       </div>
       <div className="auth-page__body">
+        {/* Artist profiles first: "where is my music?" is the question artists come here with. */}
+        <MyArtists userId={user.id} />
         <SettingsForm
           values={{
             handle: profile.handle,
@@ -69,7 +71,6 @@ export default async function SettingsPage({ params }: PageProps<"/[locale]/sett
           }}
         />
         <PlanSummary />
-        <MyArtists userId={user.id} />
         <BlockedUsers />
         <DecisionList filter={{ ownerId: user.id }} canAppeal />
         <PrivacySection />
