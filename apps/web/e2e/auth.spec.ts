@@ -64,7 +64,7 @@ test.describe("authentication", () => {
     await page.getByRole("button", { name: "Wyślij link" }).click();
     await expect(page).toHaveURL(/\/sprawdz-poczte\?reason=reset$/);
 
-    await page.goto(await emailLinkPath(email, "Ustaw nowe hasło"));
+    await page.goto(await emailLinkPath(email, "nowe hasło"));
     await expect(page).toHaveURL(/\/nowe-haslo$/);
 
     await page.getByLabel("Nowe hasło").fill("nowe-haslo-scena-1");
