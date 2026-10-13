@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { siteUrl } from "@/lib/site";
 import { Bricolage_Grotesque, Instrument_Sans, Martian_Mono } from "next/font/google";
 import { notFound } from "next/navigation";
@@ -33,6 +33,21 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
+/**
+ * Phones: the page runs edge to edge (content is padded back from the notch and the home
+ * indicator with env(safe-area-inset-*)), and the browser bar takes the colour at the top of the
+ * page in each scheme. The keyboard keeps resizing only the visual viewport, so the fixed player
+ * and navigation stay behind it instead of riding above it.
+ */
+export const viewport: Viewport = {
+  viewportFit: "cover",
+  colorScheme: "dark light",
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)", color: "#171515" },
+    { media: "(prefers-color-scheme: light)", color: "#f2ebdd" },
+  ],
+};
+
 /** Open Graph locale per interface language (language_TERRITORY). */
 const OG_LOCALES: Record<Locale, string> = {
   pl: "pl_PL",
@@ -52,6 +67,8 @@ export async function generateMetadata({ params }: LayoutProps<"/[locale]">): Pr
     title: { default: t("title"), template: `%s · ${t("title")}` },
     description: t("description"),
     applicationName: "Tunewick",
+    // Installed on iOS: full screen with the status bar over the page (the header pads below it).
+    appleWebApp: { capable: true, title: "Tunewick", statusBarStyle: "black-translucent" },
     openGraph: {
       siteName: "Tunewick",
       type: "website",

@@ -3,7 +3,7 @@
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
-import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
+import type { createSupabaseBrowserClient } from "@/lib/supabase/browser";
 import { forgetMfaHint } from "../mfa-actions";
 
 type PasskeyError = "unsupported" | "cancelled" | "disabled" | "unexpected";
@@ -46,6 +46,15 @@ function supported() {
 }
 
 type Supabase = ReturnType<typeof createSupabaseBrowserClient>;
+
+/**
+ * The Supabase browser client (~70 KB) is only needed for a passkey ceremony, so it is loaded
+ * when someone presses the button - not shipped with every page that links this module.
+ */
+async function browserClient(): Promise<Supabase> {
+  const { createSupabaseBrowserClient } = await import("@/lib/supabase/browser");
+  return createSupabaseBrowserClient();
+}
 /** The credential types auth-js expects in `mfa.verify` (its WebAuthn Level 3 typings). */
 type WebauthnVerify = Extract<
   Parameters<Supabase["auth"]["mfa"]["verify"]>[0],
@@ -160,7 +169,7 @@ export function PasskeyAdd() {
     setError(null);
     if (!supported()) return setError("unsupported");
     startTransition(async () => {
-      const supabase = createSupabaseBrowserClient();
+      const supabase = await browserClient();
       // Names must differ per account: the device and the time tell two passkeys apart.
       const friendlyName = `${deviceName()} · ${new Date().toISOString().slice(0, 16).replace("T", " ")}`;
       const failed = await registerPasskey(supabase, friendlyName);
@@ -209,7 +218,7 @@ export function PasskeyVerify({
     setError(null);
     if (!supported()) return setError("unsupported");
     startTransition(async () => {
-      const supabase = createSupabaseBrowserClient();
+      const supabase = await browserClient();
       const failed = await authenticatePasskey(supabase, factorId);
       if (failed) return setError(passkeyError(failed));
       await forgetMfaHint();

@@ -1,4 +1,24 @@
 import { z } from "zod";
+import {
+  AI_CONTENT,
+  ARTIST_TERMS_VERSION,
+  CMO_OPTIONS,
+  CREDIT_ROLES,
+  formatSoundcheckStart,
+  RELEASE_TYPES,
+  TERRITORIES,
+} from "./options";
+
+// Plain option lists live in ./options so client components can use them without bundling zod.
+export {
+  AI_CONTENT,
+  ARTIST_TERMS_VERSION,
+  CMO_OPTIONS,
+  CREDIT_ROLES,
+  formatSoundcheckStart,
+  RELEASE_TYPES,
+  TERRITORIES,
+};
 
 export type ReleaseErrorCode =
   | "titleRequired"
@@ -30,20 +50,6 @@ export interface ReleaseFormState {
   fieldErrors?: Partial<Record<string, ReleaseErrorCode>>;
   values?: Record<string, string>;
 }
-
-export const RELEASE_TYPES = ["single", "ep", "album", "compilation", "live"] as const;
-export const AI_CONTENT = ["unknown", "human", "ai_assisted", "ai_generated"] as const;
-export const TERRITORIES = ["WORLD", "EU", "PL"] as const;
-export const CREDIT_ROLES = [
-  "producer",
-  "songwriter",
-  "composer",
-  "lyricist",
-  "performer",
-  "mixing_engineer",
-  "mastering_engineer",
-  "other",
-] as const;
 
 const optional = (schema: z.ZodType<string, string>) =>
   z
@@ -112,13 +118,6 @@ export const trackSchema = z.object({
     }),
 });
 
-/** "m:ss" for a soundcheck start in milliseconds. */
-export function formatSoundcheckStart(ms: number | null) {
-  if (ms === null) return "";
-  const seconds = Math.round(ms / 1000);
-  return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
-}
-
 export const creditSchema = z.object({
   name: z.string().trim().min(1, { error: "nameRequired" }).max(120, { error: "nameRequired" }),
   role: z.enum(CREDIT_ROLES),
@@ -138,17 +137,6 @@ export const genresSchema = z
   .max(3, { error: "tooManyGenres" });
 
 /** Artist terms version recorded with each declaration (draft until the legal review). */
-export const ARTIST_TERMS_VERSION = "draft-2026-10";
-export const CMO_OPTIONS = [
-  "zaiks",
-  "stoart",
-  "sawp",
-  "zpav",
-  "other_cmo",
-  "none",
-  "unknown",
-] as const;
-
 /** Rights declaration (docs/licensing.md §3); mirrors the database constraints. */
 export const rightsSchema = z
   .object({

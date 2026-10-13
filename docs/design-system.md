@@ -163,6 +163,14 @@ Rules (from `emil-design-eng`, adapted):
 6. Exit faster than enter.
 7. Hover effects only under `@media (hover: hover) and (pointer: fine)`.
 8. `prefers-reduced-motion`: remove movement, keep short opacity/color transitions.
+9. Feedback on press, not on release (from `apple-design`): every pressable has an `:active`
+   state; a passive `touchstart` listener (`TouchPress`) makes iOS Safari apply it, and the grey
+   system tap flash is turned off where we draw our own.
+10. Menus and popovers grow out of their trigger: `scale(0.96)` + opacity with
+    `transform-origin` set to the corner next to the button; reduced motion gets a plain fade.
+
+Not taken from `apple-design`: translucent "glass" bars (`backdrop-filter`). They clash with
+the identity above (flat color fields, no frosted glass), so chrome stays solid.
 
 **Musical motion (Tunewick-specific, used sparingly):** the spark may pulse once on play start
 (single 240ms scale 1→1.15→1, not looping). No beat-synced visualizers, no constant motion
@@ -197,6 +205,8 @@ Full component specs come with the UI implementation tasks.
 - Full keyboard control of the player (space, arrows, shortcuts documented), with no animation on keyboard actions.
 - Screen readers: player state announced (track, artist, quality as words: "lossless, 24-bit, 48 kilohertz").
 - Touch targets ≥44px; reduced motion respected; color never the only signal.
+- `prefers-contrast: more` firms up hairlines (`--line` → n-500) and muted text.
+- Headings use `text-wrap: balance`, paragraphs `text-wrap: pretty` (no one-word last lines).
 
 ## 11. Internationalization
 

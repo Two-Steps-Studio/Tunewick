@@ -19,7 +19,8 @@ import {
   updateArtist,
   updateArtistReach,
 } from "../actions";
-import { type ArtistFormState, slugify } from "../validation";
+import { slugify } from "@/lib/slug";
+import type { ArtistFormState } from "../validation";
 
 const initial: ArtistFormState = {};
 

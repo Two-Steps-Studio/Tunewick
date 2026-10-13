@@ -10,7 +10,7 @@ import {
   type PromoFormState,
   revokeRedemption,
 } from "../actions";
-import { BENEFITS, toCsv } from "../validation";
+import { BENEFITS, toCsv } from "../codes";
 
 const initial: PromoFormState = {};
 

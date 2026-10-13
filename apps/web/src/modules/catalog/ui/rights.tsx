@@ -11,7 +11,8 @@ import {
   TextareaField,
 } from "@/components/form/field";
 import { declareRights } from "../actions";
-import { ARTIST_TERMS_VERSION, CMO_OPTIONS, type ReleaseFormState } from "../validation";
+import { ARTIST_TERMS_VERSION, CMO_OPTIONS } from "../options";
+import type { ReleaseFormState } from "../validation";
 
 const initial: ReleaseFormState = {};
 
