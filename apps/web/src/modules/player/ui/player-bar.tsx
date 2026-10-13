@@ -77,8 +77,17 @@ function QualityChip({ quality, now }: { quality: QualityDescription; now: NowPl
  * Persistent player in the shell. With an empty queue it shows the honest idle state - no fake
  * track, no dead controls.
  */
-/** `reportListens`: keep a listening history for the signed-in listener. */
-export function PlayerBar({ reportListens = false }: { reportListens?: boolean }) {
+/**
+ * `reportListens`: keep a listening history for the signed-in listener. `actions`: extra controls
+ * for the current track from other modules (e.g. add to playlist), shown while something plays.
+ */
+export function PlayerBar({
+  reportListens = false,
+  actions = null,
+}: {
+  reportListens?: boolean;
+  actions?: React.ReactNode;
+}) {
   const t = useTranslations("Player");
   const state = usePlayerState();
   useEffect(() => {
@@ -180,6 +189,7 @@ export function PlayerBar({ reportListens = false }: { reportListens?: boolean }
 
       <div className="player-bar__side">
         {quality && state.now ? <QualityChip quality={quality} now={state.now} /> : null}
+        {actions}
         <input
           type="range"
           className="player-bar__volume"

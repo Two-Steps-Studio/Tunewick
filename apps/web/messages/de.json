@@ -953,7 +953,7 @@
     "playAll": "Playlist {title} abspielen",
     "playTrack": "Abspielen: {title}",
     "empty": "Diese Playlist ist leer.",
-    "emptyMine": "Die Playlist ist leer. Füge Tracks mit dem +-Button neben einem Track auf einer Release-Seite hinzu.",
+    "emptyMine": "Die Playlist ist leer. Füge Titel mit der Taste + neben einem Titel oder im Player hinzu.",
     "moveUp": "Nach oben: {title} (Position {position})",
     "moveDown": "Nach unten: {title} (Position {position})",
     "remove": "Aus Playlist entfernen: {title} (Position {position})",
@@ -977,12 +977,24 @@
     "add": "Hinzufügen",
     "added": "Hinzugefügt zu: {playlist}",
     "addFailed": "Hinzufügen fehlgeschlagen. Bitte versuch es noch einmal.",
-    "noPlaylists": "Du hast noch keine Playlists – erstelle eine in deiner Bibliothek.",
     "errors": {
       "title": "Der Name braucht 1 bis 100 Zeichen.",
       "limit": "Du hast schon 200 Playlists – das ist das Maximum.",
       "failed": "Speichern fehlgeschlagen. Bitte versuch es noch einmal."
-    }
+    },
+    "loading": "Deine Playlists werden geladen…",
+    "duplicate": "Dieser Titel ist schon in {playlist}.",
+    "addAnyway": "Noch einmal hinzufügen",
+    "newInline": "Oder in eine neue Playlist",
+    "firstInline": "Neue Playlist",
+    "newPlaceholder": "Name der Playlist",
+    "createAndAdd": "Erstellen und hinzufügen",
+    "shuffle": "Zufällig",
+    "shuffleAll": "Playlist {title} in zufälliger Reihenfolge abspielen",
+    "share": "Teilen",
+    "shareCopied": "Link kopiert.",
+    "shareFailed": "Der Link konnte nicht kopiert werden.",
+    "sharePrivate": "Die Playlist ist privat. Um sie zu teilen, ändere unten „Wer sie sehen kann“."
   },
   "Reports": {
     "link": "Problem melden",

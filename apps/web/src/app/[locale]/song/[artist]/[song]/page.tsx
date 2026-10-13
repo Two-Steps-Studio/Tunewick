@@ -9,7 +9,9 @@ import type { Locale } from "@/i18n/routing";
 import { countryName, flagEmoji, songSegment } from "@/lib/intl";
 import { slugify } from "@/lib/slug";
 import { getSharedSong, parseSongSegment, ShareButton, SongPreview } from "@/modules/discover";
+import { getOptionalUser } from "@/modules/auth";
 import { Artwork } from "@/modules/images";
+import { AddToPlaylist } from "@/modules/playlists";
 
 type Params = PageProps<"/[locale]/song/[artist]/[song]">["params"];
 
@@ -175,6 +177,10 @@ export default async function SongPage({ params }: PageProps<"/[locale]/song/[ar
               artistSlug: data.artist.slug,
             }}
           />
+          {/* Signed in: the "+" loads the listener's playlists when opened (no extra query here). */}
+          {(await getOptionalUser()) ? (
+            <AddToPlaylist trackId={data.track.id} trackTitle={data.track.title} />
+          ) : null}
         </div>
         <p className="song-page__pitch">{t("pitch")}</p>
       </div>

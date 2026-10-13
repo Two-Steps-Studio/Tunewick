@@ -953,7 +953,7 @@
     "playAll": "Play playlist {title}",
     "playTrack": "Play: {title}",
     "empty": "This playlist is empty.",
-    "emptyMine": "The playlist is empty. Add tracks with the + button next to a track on a release page.",
+    "emptyMine": "The playlist is empty. Add tracks with the + button next to a track or in the player.",
     "moveUp": "Move up: {title} (position {position})",
     "moveDown": "Move down: {title} (position {position})",
     "remove": "Remove from playlist: {title} (position {position})",
@@ -977,12 +977,24 @@
     "add": "Add",
     "added": "Added to: {playlist}",
     "addFailed": "Could not add. Please try again.",
-    "noPlaylists": "You have no playlists yet - create one in your Library.",
     "errors": {
       "title": "The name needs 1 to 100 characters.",
       "limit": "You already have 200 playlists - that is the maximum.",
       "failed": "Could not save. Please try again."
-    }
+    },
+    "loading": "Loading your playlists…",
+    "duplicate": "This track is already on {playlist}.",
+    "addAnyway": "Add it again",
+    "newInline": "Or to a new playlist",
+    "firstInline": "New playlist",
+    "newPlaceholder": "Playlist name",
+    "createAndAdd": "Create and add",
+    "shuffle": "Shuffle",
+    "shuffleAll": "Play playlist {title} in random order",
+    "share": "Share",
+    "shareCopied": "Link copied.",
+    "shareFailed": "Could not copy the link.",
+    "sharePrivate": "This playlist is private. To share it, change “Who can see it” below."
   },
   "Reports": {
     "link": "Report a problem",

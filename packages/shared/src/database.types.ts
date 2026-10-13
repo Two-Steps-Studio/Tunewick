@@ -3118,6 +3118,13 @@ export type Database = {
           name: string;
         }[];
       };
+      playlist_covers: {
+        Args: { ids: string[] };
+        Returns: {
+          artwork_ids: string[];
+          playlist_id: string;
+        }[];
+      };
       profile_attended_events: {
         Args: { profile: string };
         Returns: {

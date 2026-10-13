@@ -7,6 +7,7 @@ import { MainNav } from "./main-nav";
 import { TouchPress } from "./touch-press";
 import { ProgressNotices } from "@/modules/notices";
 import { PlayerBar } from "@/modules/player";
+import { PlayerAddToPlaylist } from "@/modules/playlists";
 import { Avatar, getMyBadge } from "@/modules/users";
 import { Wordmark } from "./wordmark";
 
@@ -59,7 +60,7 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
       </main>
       <div className="site-bottom">
         <ProgressNotices />
-        <PlayerBar reportListens={user !== null} />
+        <PlayerBar reportListens={user !== null} actions={user ? <PlayerAddToPlaylist /> : null} />
         <MainNav variant="bottom" />
       </div>
     </>

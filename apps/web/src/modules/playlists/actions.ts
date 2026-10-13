@@ -73,21 +73,67 @@ export async function deletePlaylist(id: string) {
 }
 
 export interface AddState {
-  status?: "added" | "failed";
+  status?: "added" | "duplicate" | "failed" | "title" | "limit";
   playlist?: string;
+  /** Title of the playlist the track went to (also for one created on the spot). */
+  playlistTitle?: string;
 }
 
-/** Appends a track to one of the listener's playlists (the database checks owner and track). */
+/**
+ * Appends a track to one of the listener's playlists (the database checks owner and track).
+ * A track already on that playlist is not added twice unless the listener confirms (`again`).
+ */
 export async function addToPlaylist(
   trackId: string,
   _prev: AddState,
   formData: FormData,
 ): Promise<AddState> {
   const playlist = String(formData.get("playlist") ?? "");
+  const again = formData.get("again") === "1";
   const supabase = await createSupabaseServerClient();
+  if (!again) {
+    const { count } = await supabase
+      .from("playlist_tracks")
+      .select("id", { count: "exact", head: true })
+      .eq("playlist_id", playlist)
+      .eq("track_id", trackId);
+    if (count) return { status: "duplicate", playlist };
+  }
   const { error } = await supabase.rpc("add_playlist_track", { playlist, track: trackId });
   if (error) return { status: "failed", playlist };
   return { status: "added", playlist };
+}
+
+/** "New playlist" right in the add menu: creates it and puts the track in, in one step. */
+export async function createPlaylistWithTrack(
+  trackId: string,
+  _prev: AddState,
+  formData: FormData,
+): Promise<AddState> {
+  const title = String(formData.get("title") ?? "").trim();
+  if (!title || title.length > 100) return { status: "title" };
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase.from("playlists").insert({ title }).select("id").single();
+  if (error) return { status: error.code === "42501" ? "limit" : "failed" };
+  const added = await supabase.rpc("add_playlist_track", { playlist: data.id, track: trackId });
+  if (added.error) return { status: "failed", playlist: data.id, playlistTitle: title };
+  refresh();
+  return { status: "added", playlist: data.id, playlistTitle: title };
+}
+
+/** The listener's playlists for a picker opened outside a page render (the player bar). */
+export async function listMyPlaylists(): Promise<{ id: string; title: string }[]> {
+  const supabase = await createSupabaseServerClient();
+  const { data: claims } = await supabase.auth.getClaims();
+  const userId = claims?.claims.sub;
+  if (!userId) return [];
+  const { data } = await supabase
+    .from("playlists")
+    .select("id, title")
+    .eq("owner_id", userId)
+    .order("updated_at", { ascending: false })
+    .limit(200);
+  return data ?? [];
 }
 
 export async function removePlaylistItem(itemId: string) {

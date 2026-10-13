@@ -1,13 +1,15 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useActionState, useId } from "react";
+import { useActionState, useId, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { ConfirmAction } from "@/components/confirm-action";
 import {
   type AddState,
   addToPlaylist,
   createPlaylist,
+  createPlaylistWithTrack,
+  listMyPlaylists,
   type PlaylistFormState,
   updatePlaylist,
 } from "../actions";
@@ -132,26 +134,44 @@ export function PlaylistEditForm({
   );
 }
 
-/** "+" on a track row: pick one of your playlists. A disclosure, no animation (used often). */
+/**
+ * "+" on a track: pick one of your playlists, or name a new one and the track goes straight in.
+ * Adding a track that is already there asks first. A disclosure, no animation (used often).
+ * Without `playlists` (the player bar) the list loads the first time the menu opens.
+ */
 export function AddToPlaylist({
   trackId,
   trackTitle,
-  playlists,
+  playlists: given,
+  placement = "below",
 }: {
   trackId: string;
   trackTitle: string;
-  playlists: { id: string; title: string }[];
+  playlists?: { id: string; title: string }[];
+  placement?: "below" | "above";
 }) {
   const t = useTranslations("Playlists");
+  const [loaded, setLoaded] = useState<{ id: string; title: string }[] | null>(null);
+  const playlists = given ?? loaded;
   const [state, action] = useActionState(addToPlaylist.bind(null, trackId), {} as AddState);
+  const [created, create] = useActionState(
+    createPlaylistWithTrack.bind(null, trackId),
+    {} as AddState,
+  );
   const selectId = useId();
-  const added = playlists.find((p) => p.id === state.playlist)?.title;
+  const newId = useId();
+  const [selected, setSelected] = useState<string | null>(null);
+  const last = created.status ? created : state;
+  const title = last.playlistTitle ?? playlists?.find((p) => p.id === last.playlist)?.title ?? "";
+
   return (
     <details
-      className="add-to-playlist"
+      className={`add-to-playlist add-to-playlist--${placement}`}
       onToggle={(event) => {
         const details = event.currentTarget;
-        if (details.open) {
+        if (!details.open) return;
+        if (!given && loaded === null) void listMyPlaylists().then(setLoaded);
+        if (placement === "below") {
           details.querySelector(".add-to-playlist__panel")?.scrollIntoView({
             // Centre it: the last rows sit right above the fixed player bar.
             block: "center",
@@ -171,14 +191,22 @@ export function AddToPlaylist({
         </svg>
       </summary>
       <div className="add-to-playlist__panel">
-        {playlists.length === 0 ? (
-          <p className="field__hint">{t("noPlaylists")}</p>
-        ) : (
+        {playlists === null ? (
+          <p className="field__hint" aria-busy="true">
+            {t("loading")}
+          </p>
+        ) : playlists.length ? (
           <form action={action} className="add-to-playlist__form">
             <label htmlFor={selectId} className="field__label">
               {t("addTo")}
             </label>
-            <select id={selectId} name="playlist" className="field__input">
+            <select
+              id={selectId}
+              name="playlist"
+              className="field__input"
+              value={selected ?? playlists[0]?.id}
+              onChange={(event) => setSelected(event.target.value)}
+            >
               {playlists.map((p) => (
                 <option key={p.id} value={p.id}>
                   {p.title}
@@ -187,15 +215,46 @@ export function AddToPlaylist({
             </select>
             <Submit label={t("add")} />
           </form>
-        )}
-        {state.status === "added" ? (
+        ) : null}
+
+        {last.status === "added" ? (
           <p role="status" className="field__hint">
-            {t("added", { playlist: added ?? "" })}
+            {t("added", { playlist: title })}
           </p>
-        ) : state.status === "failed" ? (
+        ) : last.status === "duplicate" ? (
+          <form action={action} className="add-to-playlist__again" role="alert">
+            <p className="field__hint">{t("duplicate", { playlist: title })}</p>
+            <input type="hidden" name="playlist" value={last.playlist} />
+            <input type="hidden" name="again" value="1" />
+            <Submit label={t("addAnyway")} primary={false} />
+          </form>
+        ) : last.status ? (
           <p role="alert" className="field__error">
-            {t("addFailed")}
+            {last.status === "title"
+              ? t("errors.title")
+              : last.status === "limit"
+                ? t("errors.limit")
+                : t("addFailed")}
           </p>
+        ) : null}
+
+        {playlists !== null ? (
+          <form action={create} className="add-to-playlist__new">
+            <label htmlFor={newId} className="field__label">
+              {playlists.length ? t("newInline") : t("firstInline")}
+            </label>
+            <div className="add-to-playlist__row">
+              <input
+                id={newId}
+                name="title"
+                maxLength={100}
+                required
+                className="field__input"
+                placeholder={t("newPlaceholder")}
+              />
+              <Submit label={t("createAndAdd")} primary={false} />
+            </div>
+          </form>
         ) : null}
       </div>
     </details>
