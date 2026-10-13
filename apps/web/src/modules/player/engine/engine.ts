@@ -33,7 +33,6 @@ import { AAC_MIME, FLAC_MIME, probeCapabilities } from "./probe";
 
 const VOLUME_KEY = "tw.player.volume";
 const MODES_KEY = "tw.player.modes";
-const SKIP_S = 10;
 const STALL_MS = 4000;
 const RESTART_THRESHOLD_S = 3;
 
@@ -243,12 +242,6 @@ export class PlayerEngine {
     } else if (this.state.now) {
       this.audio.currentTime = target;
     }
-  }
-
-  /** Skips within the track (keyboard arrows, headphone/lock-screen seek buttons). */
-  async skipBy(seconds: number) {
-    if (!this.state.now) return;
-    await this.seek(this.state.position + seconds);
   }
 
   toggleMute() {
@@ -585,14 +578,16 @@ export class PlayerEngine {
 
   private setupMediaSession() {
     if (!("mediaSession" in navigator)) return;
-    const handlers: [MediaSessionAction, MediaSessionActionHandler][] = [
+    const handlers: [MediaSessionAction, MediaSessionActionHandler | null][] = [
       ["play", () => void this.resume()],
       ["pause", () => this.pause()],
       ["nexttrack", () => void this.next()],
       ["previoustrack", () => void this.previous()],
       ["seekto", (details) => void this.seek(details.seekTime ?? 0)],
-      ["seekbackward", (details) => void this.skipBy(-(details.seekOffset ?? SKIP_S))],
-      ["seekforward", (details) => void this.skipBy(details.seekOffset ?? SKIP_S)],
+      // No ±10 s seek actions: with them, lock screens and headphones show skip-10-s instead
+      // of previous/next track.
+      ["seekbackward", null],
+      ["seekforward", null],
     ];
     for (const [action, handler] of handlers) {
       try {
