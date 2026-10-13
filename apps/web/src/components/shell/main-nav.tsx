@@ -1,5 +1,6 @@
 "use client";
 
+import { useLinkStatus } from "next/link";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import type { AppPathname } from "@/i18n/routing";
@@ -31,6 +32,7 @@ export function MainNav({ variant }: { variant: "top" | "bottom" }) {
                 aria-current={active ? "page" : undefined}
               >
                 {t(item.key)}
+                <PendingMark />
               </Link>
             </li>
           );
@@ -38,4 +40,14 @@ export function MainNav({ variant }: { variant: "top" | "bottom" }) {
       </ul>
     </nav>
   );
+}
+
+/**
+ * Tapped, next page still rendering on the server: a line grows under the item, so the tap is
+ * answered at once. Always rendered (no layout shift); CSS delays it so fast navigations never
+ * flash it.
+ */
+function PendingMark() {
+  const { pending } = useLinkStatus();
+  return <span aria-hidden className="main-nav__pending" data-pending={pending || undefined} />;
 }

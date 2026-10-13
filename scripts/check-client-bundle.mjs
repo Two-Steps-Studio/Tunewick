@@ -1,5 +1,6 @@
 // Fails if anything that looks like a server secret ends up in the browser bundle
-// (docs/security.md §3). Run after `pnpm build`.
+// (docs/security.md §3), or if a server-only library is shipped to every phone for nothing.
+// Run after `pnpm build`.
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 
@@ -25,6 +26,10 @@ for (const name of [
     patterns.push(new RegExp(value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
 }
 
+// Server-only libraries: validation runs in server actions; client components import plain
+// option lists (e.g. modules/catalog/options.ts) instead. zod alone is ~90 KB gzipped.
+const heavy = [{ name: "zod", pattern: /"not_multiple_of"/ }];
+
 function* files(dir) {
   for (const entry of readdirSync(dir)) {
     const path = join(dir, entry);
@@ -41,6 +46,11 @@ for (const file of files(root)) {
   for (const pattern of patterns) {
     if (pattern.test(content)) findings.push(`${file}: matches ${pattern.source.slice(0, 40)}`);
   }
+  if (file.endsWith(".js")) {
+    for (const lib of heavy) {
+      if (lib.pattern.test(content)) findings.push(`${file}: bundles ${lib.name} (server-only)`);
+    }
+  }
 }
 
 if (checked === 0) {
@@ -48,7 +58,7 @@ if (checked === 0) {
   process.exit(1);
 }
 if (findings.length > 0) {
-  console.error("Possible server secrets in the client bundle:\n" + findings.join("\n"));
+  console.error("Client bundle problems (secrets or server-only code):\n" + findings.join("\n"));
   process.exit(1);
 }
 console.log(`Client bundle clean (${checked} files checked).`);

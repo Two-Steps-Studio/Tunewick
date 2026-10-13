@@ -56,6 +56,25 @@ p {
   text-wrap: pretty;
 }
 
+html {
+  -webkit-text-size-adjust: 100%; /* no font inflation when a phone turns to landscape */
+  text-size-adjust: 100%;
+}
+
+/* Controls fire on the first tap (no double-tap-zoom wait), and holding a finger on one does not
+   select its label. Content text and links stay selectable. */
+button,
+summary,
+[role="button"],
+.button {
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
+}
+a {
+  touch-action: manipulation;
+}
+
 /* Pressables draw their own press state (:active), so the grey system tap flash would double it. */
 button,
 summary,
@@ -111,6 +130,10 @@ summary,
     max-width: 80rem;
     margin: 0 auto;
     padding: var(--tk-space-4);
+    /* Clear of the notch (landscape) and the status bar (installed app). */
+    padding-top: max(var(--tk-space-4), env(safe-area-inset-top));
+    padding-inline: max(var(--tk-space-4), env(safe-area-inset-left))
+      max(var(--tk-space-4), env(safe-area-inset-right));
     border-bottom: 1px solid var(--line);
   }
   .site-header__home {
@@ -168,6 +191,29 @@ summary,
   }
   .main-nav__link[aria-current="page"]::before {
     background: var(--accent);
+  }
+  .main-nav__pending {
+    position: absolute;
+    inset: auto 0 0;
+    height: 2px;
+    background: var(--accent);
+    opacity: 0;
+    transform: scaleX(0);
+    transform-origin: left;
+    pointer-events: none;
+  }
+  .main-nav__pending[data-pending] {
+    opacity: 1;
+    transform: scaleX(1);
+    /* Waits 120ms (fast pages never show it), then grows over the time a slow render takes. */
+    transition:
+      opacity var(--tk-dur-fast) var(--tk-ease-out) 120ms,
+      transform 1.6s var(--tk-ease-out) 120ms;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .main-nav__pending {
+      transform: none;
+    }
   }
   @media (hover: hover) and (pointer: fine) {
     .main-nav__link:hover {
@@ -312,6 +358,8 @@ summary,
     margin: 0 auto;
     padding: var(--tk-space-8) var(--tk-space-4)
       calc(var(--shell-bar-h) * 2 + var(--tk-space-12) + env(safe-area-inset-bottom));
+    padding-inline: max(var(--tk-space-4), env(safe-area-inset-left))
+      max(var(--tk-space-4), env(safe-area-inset-right));
     outline: none;
   }
   @media (min-width: 1024px) {
@@ -339,6 +387,7 @@ summary,
     background: var(--bg);
     border-top: 1px solid var(--line);
     padding-bottom: env(safe-area-inset-bottom);
+    padding-inline: env(safe-area-inset-left) env(safe-area-inset-right);
   }
 
   .player-bar {

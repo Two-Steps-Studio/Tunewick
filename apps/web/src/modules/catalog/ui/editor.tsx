@@ -25,11 +25,11 @@ import {
 import {
   AI_CONTENT,
   CREDIT_ROLES,
-  RELEASE_TYPES,
-  type ReleaseFormState,
   formatSoundcheckStart,
+  RELEASE_TYPES,
   TERRITORIES,
-} from "../validation";
+} from "../options";
+import type { ReleaseFormState } from "../validation";
 import { ArtistPicker } from "./artist-picker";
 
 const initial: ReleaseFormState = {};

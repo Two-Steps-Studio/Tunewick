@@ -1,7 +1,8 @@
 import { z } from "zod";
+import { BENEFITS, type Benefit, toCsv } from "./codes";
 
-export const BENEFITS = ["premium_days", "premium_months", "premium_lifetime"] as const;
-export type Benefit = (typeof BENEFITS)[number];
+// Plain helpers live in ./codes so client components can use them without bundling zod.
+export { BENEFITS, type Benefit, toCsv };
 
 const optionalInt = (min: number, max: number) =>
   z
@@ -63,9 +64,4 @@ export function endOfDayInPoland(date: string | null) {
 /** The database stores no value for lifetime codes. */
 export function benefitValue(v: { benefit: Benefit; value: number | null }) {
   return v.benefit === "premium_lifetime" ? null : v.value;
-}
-
-export function toCsv(codes: string[], campaign: string) {
-  const quoted = `"${campaign.replaceAll('"', '""')}"`;
-  return `code,campaign\n${codes.map((code) => `${code},${quoted}`).join("\n")}\n`;
 }
