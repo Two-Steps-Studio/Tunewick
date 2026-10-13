@@ -18,7 +18,10 @@ see `apps/web/src/proxy.ts`) instead of a bare 500.
    - Minimum password length **10**.
    - Anonymous sign-ins **OFF**, manual linking **OFF**.
 3. **Authentication → Multi-Factor** → TOTP (authenticator app): enroll **and** verify enabled.
-   Phone MFA off.
+   WebAuthn (passkeys): enroll **and** verify enabled; relying party ID = the site's host
+   (`tunewick.vercel.app`, later the own domain), origins = `https://<that host>`, display name
+   `Tunewick`. A passkey is bound to its host: after a domain change users add passkeys again (the
+   authenticator app keeps working). Phone MFA off (SMS costs per message and is phishable).
 4. **Authentication → URL Configuration**
    - Site URL: the production domain, e.g. `https://tunewick.vercel.app` (later the custom
      domain).

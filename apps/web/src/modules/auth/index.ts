@@ -7,6 +7,8 @@ export {
   requireUser,
 } from "./session";
 export { MfaVerifyForm, TotpDisable, TotpEnrollment } from "./ui/mfa";
+export { PasskeyAdd, PasskeyVerify } from "./ui/passkeys";
+export { removePasskey } from "./mfa-actions";
 export {
   ResetRequestForm,
   SignInForm,
@@ -15,4 +17,4 @@ export {
   UpdatePasswordForm,
 } from "./ui/forms";
 export { AuthPage } from "./ui/auth-page";
-export type { AuthErrorCode } from "./validation";
+export { safeNextPath, type AuthErrorCode } from "./validation";

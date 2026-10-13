@@ -252,7 +252,7 @@
   },
   "Security": {
     "title": "Seguridad",
-    "lead": "Un segundo factor de inicio de sesión protege tu cuenta aunque alguien conozca tu contraseña.",
+    "lead": "Un segundo factor protege tu cuenta aunque alguien sepa tu contraseña. Elige una llave de acceso o una app de autenticación, o ambas.",
     "link": "Seguridad e inicio de sesión en dos pasos",
     "staffNote": "Las cuentas de moderadores y administradores deben usar el inicio de sesión en dos pasos.",
     "statusOn": "El inicio de sesión en dos pasos está activado.",
@@ -267,7 +267,7 @@
     "disableNeedsVerify": "Para desactivar el segundo factor, primero confirma tu inicio de sesión con un código de la app.",
     "verify": {
       "title": "Confirmar inicio de sesión",
-      "lead": "Introduce el código de 6 dígitos de tu app de autenticación.",
+      "lead": "Confirma que eres tú: con una llave de acceso (huella, cara, PIN) o con un código de 6 dígitos de tu app de autenticación.",
       "submit": "Confirmar"
     },
     "errors": {
@@ -275,7 +275,25 @@
       "codeFormat": "El código tiene 6 dígitos.",
       "rateLimited": "Demasiados intentos. Vuelve a intentarlo en breve.",
       "unexpected": "Algo salió mal. Inténtalo de nuevo."
-    }
+    },
+    "passkey": {
+      "title": "Llave de acceso (recomendado)",
+      "lead": "Confirmas el inicio de sesión con tu huella, tu cara o el PIN de tu móvil u ordenador. No necesitas otra app, y una llave de acceso no se puede robar en una web falsa.",
+      "add": "Añadir llave de acceso",
+      "use": "Confirmar con llave de acceso",
+      "listTitle": "Tus llaves de acceso",
+      "added": "Añadida el {date}",
+      "remove": "Quitar llave",
+      "another": "Añadir otra llave (p. ej. en otro dispositivo)",
+      "errors": {
+        "unsupported": "Este navegador no admite llaves de acceso. Usa un navegador actualizado o una app de autenticación.",
+        "cancelled": "Cancelado o tiempo agotado. Inténtalo de nuevo.",
+        "disabled": "Las llaves de acceso aún no están activadas en el servidor. Usa una app de autenticación.",
+        "unexpected": "No funcionó. Inténtalo de nuevo."
+      }
+    },
+    "totpTitle": "App de autenticación",
+    "or": "o"
   },
   "Artists": {
     "my": {

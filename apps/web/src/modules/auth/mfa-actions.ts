@@ -87,6 +87,26 @@ export async function verifySignIn(_prev: VerifyState, formData: FormData): Prom
   return redirect({ href: "/", locale: await getLocale() });
 }
 
+/**
+ * After a passkey was added or used in the browser: forget the cached "has a factor?" answer, so
+ * the next request asks the Auth server again.
+ */
+export async function forgetMfaHint(): Promise<void> {
+  (await cookies()).delete(MFA_HINT_COOKIE);
+}
+
+/** Removes one passkey (needs an aal2 session, enforced by Supabase Auth as well). */
+export async function removePasskey(factorId: string): Promise<void> {
+  const supabase = await createSupabaseServerClient();
+  const { data: factors } = await supabase.auth.mfa.listFactors();
+  // Only the caller's own passkeys: the id must be one of their WebAuthn factors.
+  if (factors?.all.some((f) => f.id === factorId && f.factor_type === "webauthn")) {
+    await supabase.auth.mfa.unenroll({ factorId });
+  }
+  (await cookies()).delete(MFA_HINT_COOKIE);
+  redirect({ href: "/settings/security", locale: await getLocale() });
+}
+
 /** Removing the factor requires an aal2 session (enforced by Supabase Auth as well). */
 export async function disableTotp(): Promise<void> {
   const supabase = await createSupabaseServerClient();

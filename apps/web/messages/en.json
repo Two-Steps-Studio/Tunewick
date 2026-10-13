@@ -252,7 +252,7 @@
   },
   "Security": {
     "title": "Security",
-    "lead": "A second sign-in factor protects your account even if someone learns your password.",
+    "lead": "A second sign-in factor protects your account even if someone learns your password. Choose a passkey or an authenticator app - or both.",
     "link": "Security and two-factor sign-in",
     "staffNote": "Moderator and administrator accounts must use two-factor sign-in.",
     "statusOn": "Two-factor sign-in is on.",
@@ -267,7 +267,7 @@
     "disableNeedsVerify": "To turn off the second factor, first confirm your sign-in with a code from the app.",
     "verify": {
       "title": "Confirm sign-in",
-      "lead": "Enter the 6-digit code from your authenticator app.",
+      "lead": "Confirm it's you: with a passkey (fingerprint, face, PIN) or a 6-digit code from your authenticator app.",
       "submit": "Confirm"
     },
     "errors": {
@@ -275,7 +275,25 @@
       "codeFormat": "The code has 6 digits.",
       "rateLimited": "Too many attempts. Try again shortly.",
       "unexpected": "Something went wrong. Please try again."
-    }
+    },
+    "passkey": {
+      "title": "Passkey (recommended)",
+      "lead": "You confirm sign-in with your fingerprint, face or your phone's or computer's PIN. No extra app needed, and a passkey cannot be phished on a fake site.",
+      "add": "Add a passkey",
+      "use": "Confirm with a passkey",
+      "listTitle": "Your passkeys",
+      "added": "Added {date}",
+      "remove": "Remove passkey",
+      "another": "Add another passkey (e.g. on a second device)",
+      "errors": {
+        "unsupported": "This browser does not support passkeys. Use an up-to-date browser or an authenticator app.",
+        "cancelled": "Cancelled or timed out. Please try again.",
+        "disabled": "Passkeys are not enabled on the server yet. Use an authenticator app.",
+        "unexpected": "That didn't work. Please try again."
+      }
+    },
+    "totpTitle": "Authenticator app",
+    "or": "or"
   },
   "Artists": {
     "my": {

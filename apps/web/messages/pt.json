@@ -252,7 +252,7 @@
   },
   "Security": {
     "title": "Segurança",
-    "lead": "Um segundo fator de login protege sua conta mesmo que alguém descubra sua senha.",
+    "lead": "Um segundo fator protege sua conta mesmo que alguém saiba sua senha. Escolha uma chave de acesso ou um app autenticador - ou os dois.",
     "link": "Segurança e login em duas etapas",
     "staffNote": "Contas de moderadores e administradores precisam usar login em duas etapas.",
     "statusOn": "O login em duas etapas está ativado.",
@@ -267,7 +267,7 @@
     "disableNeedsVerify": "Para desativar o segundo fator, primeiro confirme seu login com um código do app.",
     "verify": {
       "title": "Confirmar login",
-      "lead": "Digite o código de 6 dígitos do seu app autenticador.",
+      "lead": "Confirme que é você: com uma chave de acesso (digital, rosto, PIN) ou um código de 6 dígitos do seu app autenticador.",
       "submit": "Confirmar"
     },
     "errors": {
@@ -275,7 +275,25 @@
       "codeFormat": "O código tem 6 dígitos.",
       "rateLimited": "Tentativas demais. Tente novamente em instantes.",
       "unexpected": "Algo deu errado. Tente novamente."
-    }
+    },
+    "passkey": {
+      "title": "Chave de acesso (recomendado)",
+      "lead": "Você confirma o login com a digital, o rosto ou o PIN do celular ou computador. Sem app extra, e uma chave de acesso não pode ser roubada num site falso.",
+      "add": "Adicionar chave de acesso",
+      "use": "Confirmar com chave de acesso",
+      "listTitle": "Suas chaves de acesso",
+      "added": "Adicionada em {date}",
+      "remove": "Remover chave",
+      "another": "Adicionar outra chave (ex.: em outro aparelho)",
+      "errors": {
+        "unsupported": "Este navegador não suporta chaves de acesso. Use um navegador atualizado ou um app autenticador.",
+        "cancelled": "Cancelado ou tempo esgotado. Tente de novo.",
+        "disabled": "As chaves de acesso ainda não estão ativadas no servidor. Use um app autenticador.",
+        "unexpected": "Não deu certo. Tente de novo."
+      }
+    },
+    "totpTitle": "App autenticador",
+    "or": "ou"
   },
   "Artists": {
     "my": {

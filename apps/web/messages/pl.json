@@ -252,7 +252,7 @@
   },
   "Security": {
     "title": "Bezpieczeństwo",
-    "lead": "Drugi składnik logowania chroni konto nawet wtedy, gdy ktoś pozna Twoje hasło.",
+    "lead": "Drugi składnik logowania chroni konto nawet wtedy, gdy ktoś pozna Twoje hasło. Wybierz klucz dostępu albo aplikację uwierzytelniającą - albo oba.",
     "link": "Bezpieczeństwo i logowanie dwuskładnikowe",
     "staffNote": "Konta moderatorów i administratorów muszą mieć włączone logowanie dwuskładnikowe.",
     "statusOn": "Logowanie dwuskładnikowe jest włączone.",
@@ -267,7 +267,7 @@
     "disableNeedsVerify": "Aby wyłączyć drugi składnik, najpierw potwierdź logowanie kodem z aplikacji.",
     "verify": {
       "title": "Potwierdź logowanie",
-      "lead": "Wpisz 6-cyfrowy kod z aplikacji uwierzytelniającej.",
+      "lead": "Potwierdź, że to Ty: kluczem dostępu (odcisk palca, twarz, PIN) albo 6-cyfrowym kodem z aplikacji uwierzytelniającej.",
       "submit": "Potwierdź"
     },
     "errors": {
@@ -275,7 +275,25 @@
       "codeFormat": "Kod ma 6 cyfr.",
       "rateLimited": "Zbyt wiele prób. Spróbuj ponownie za chwilę.",
       "unexpected": "Coś poszło nie tak. Spróbuj ponownie."
-    }
+    },
+    "passkey": {
+      "title": "Klucz dostępu (zalecane)",
+      "lead": "Logowanie potwierdzasz odciskiem palca, twarzą albo kodem PIN telefonu lub komputera. Nie potrzebujesz żadnej dodatkowej aplikacji, a klucza nie da się wyłudzić na fałszywej stronie.",
+      "add": "Dodaj klucz dostępu",
+      "use": "Potwierdź kluczem dostępu",
+      "listTitle": "Twoje klucze dostępu",
+      "added": "Dodany {date}",
+      "remove": "Usuń klucz",
+      "another": "Dodaj kolejny klucz (np. na drugim urządzeniu)",
+      "errors": {
+        "unsupported": "Ta przeglądarka nie obsługuje kluczy dostępu. Użyj aktualnej przeglądarki albo aplikacji uwierzytelniającej.",
+        "cancelled": "Anulowano albo minął czas. Spróbuj ponownie.",
+        "disabled": "Klucze dostępu nie są jeszcze włączone na serwerze. Użyj aplikacji uwierzytelniającej.",
+        "unexpected": "Nie udało się. Spróbuj ponownie."
+      }
+    },
+    "totpTitle": "Aplikacja uwierzytelniająca",
+    "or": "albo"
   },
   "Artists": {
     "my": {

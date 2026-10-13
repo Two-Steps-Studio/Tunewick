@@ -252,7 +252,7 @@
   },
   "Security": {
     "title": "Sicherheit",
-    "lead": "Ein zweiter Anmeldefaktor schützt dein Konto, selbst wenn jemand dein Passwort kennt.",
+    "lead": "Ein zweiter Anmeldefaktor schützt dein Konto, selbst wenn jemand dein Passwort kennt. Wähle einen Passkey oder eine Authenticator-App - oder beides.",
     "link": "Sicherheit und Zwei-Faktor-Anmeldung",
     "staffNote": "Moderations- und Admin-Konten müssen die Zwei-Faktor-Anmeldung nutzen.",
     "statusOn": "Die Zwei-Faktor-Anmeldung ist aktiv.",
@@ -267,7 +267,7 @@
     "disableNeedsVerify": "Um den zweiten Faktor auszuschalten, bestätige zuerst deine Anmeldung mit einem Code aus der App.",
     "verify": {
       "title": "Anmeldung bestätigen",
-      "lead": "Gib den 6-stelligen Code aus deiner Authenticator-App ein.",
+      "lead": "Bestätige, dass du es bist: mit einem Passkey (Fingerabdruck, Gesicht, PIN) oder einem 6-stelligen Code aus deiner Authenticator-App.",
       "submit": "Bestätigen"
     },
     "errors": {
@@ -275,7 +275,25 @@
       "codeFormat": "Der Code hat 6 Ziffern.",
       "rateLimited": "Zu viele Versuche. Versuch es gleich noch einmal.",
       "unexpected": "Etwas ist schiefgelaufen. Bitte versuch es noch einmal."
-    }
+    },
+    "passkey": {
+      "title": "Passkey (empfohlen)",
+      "lead": "Du bestätigst die Anmeldung mit Fingerabdruck, Gesicht oder der PIN deines Handys oder Computers. Keine zusätzliche App nötig, und ein Passkey lässt sich auf gefälschten Seiten nicht abgreifen.",
+      "add": "Passkey hinzufügen",
+      "use": "Mit Passkey bestätigen",
+      "listTitle": "Deine Passkeys",
+      "added": "Hinzugefügt am {date}",
+      "remove": "Passkey entfernen",
+      "another": "Weiteren Passkey hinzufügen (z. B. auf einem zweiten Gerät)",
+      "errors": {
+        "unsupported": "Dieser Browser unterstützt keine Passkeys. Nutze einen aktuellen Browser oder eine Authenticator-App.",
+        "cancelled": "Abgebrochen oder Zeit abgelaufen. Bitte versuch es noch einmal.",
+        "disabled": "Passkeys sind auf dem Server noch nicht aktiviert. Nutze eine Authenticator-App.",
+        "unexpected": "Das hat nicht geklappt. Bitte versuch es noch einmal."
+      }
+    },
+    "totpTitle": "Authenticator-App",
+    "or": "oder"
   },
   "Artists": {
     "my": {

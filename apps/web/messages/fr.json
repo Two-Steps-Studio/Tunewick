@@ -252,7 +252,7 @@
   },
   "Security": {
     "title": "Sécurité",
-    "lead": "Un second facteur de connexion protège ton compte même si quelqu’un découvre ton mot de passe.",
+    "lead": "Un second facteur protège ton compte même si quelqu’un connaît ton mot de passe. Choisis une clé d’accès ou une appli d’authentification - ou les deux.",
     "link": "Sécurité et connexion à deux facteurs",
     "staffNote": "Les comptes de modérateur et d’administrateur doivent utiliser la connexion à deux facteurs.",
     "statusOn": "La connexion à deux facteurs est activée.",
@@ -267,7 +267,7 @@
     "disableNeedsVerify": "Pour désactiver le second facteur, confirme d’abord ta connexion avec un code de l’app.",
     "verify": {
       "title": "Confirmer la connexion",
-      "lead": "Saisis le code à 6 chiffres de ton app d’authentification.",
+      "lead": "Confirme que c’est bien toi : avec une clé d’accès (empreinte, visage, PIN) ou un code à 6 chiffres de ton appli d’authentification.",
       "submit": "Confirmer"
     },
     "errors": {
@@ -275,7 +275,25 @@
       "codeFormat": "Le code comporte 6 chiffres.",
       "rateLimited": "Trop de tentatives. Réessaie dans un instant.",
       "unexpected": "Une erreur s’est produite. Réessaie."
-    }
+    },
+    "passkey": {
+      "title": "Clé d’accès (recommandé)",
+      "lead": "Tu confirmes la connexion avec ton empreinte, ton visage ou le code PIN de ton téléphone ou ordinateur. Aucune appli en plus, et une clé d’accès ne peut pas être volée sur un faux site.",
+      "add": "Ajouter une clé d’accès",
+      "use": "Confirmer avec une clé d’accès",
+      "listTitle": "Tes clés d’accès",
+      "added": "Ajoutée le {date}",
+      "remove": "Supprimer la clé",
+      "another": "Ajouter une autre clé (par ex. sur un second appareil)",
+      "errors": {
+        "unsupported": "Ce navigateur ne prend pas en charge les clés d’accès. Utilise un navigateur à jour ou une appli d’authentification.",
+        "cancelled": "Annulé ou délai dépassé. Réessaie.",
+        "disabled": "Les clés d’accès ne sont pas encore activées sur le serveur. Utilise une appli d’authentification.",
+        "unexpected": "Ça n’a pas marché. Réessaie."
+      }
+    },
+    "totpTitle": "Appli d’authentification",
+    "or": "ou"
   },
   "Artists": {
     "my": {
