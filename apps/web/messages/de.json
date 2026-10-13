@@ -238,6 +238,11 @@
       "displayNameTooLong": "Der Name darf höchstens 80 Zeichen haben.",
       "bioTooLong": "Die Beschreibung darf höchstens 500 Zeichen haben.",
       "unexpected": "Speichern fehlgeschlagen. Bitte versuch es noch einmal."
+    },
+    "avatar": {
+      "title": "Profilbild",
+      "remove": "Bild entfernen",
+      "alt": "Dein Profilbild"
     }
   },
   "Profile": {
@@ -770,6 +775,14 @@
       "incomplete": "Die Datei ist nicht vollständig angekommen. Bitte versuch es noch einmal.",
       "transfer": "Der Upload wurde unterbrochen. Prüfe deine Verbindung und versuch es noch einmal.",
       "failed": "Etwas ist schiefgelaufen. Bitte versuch es noch einmal."
+    },
+    "avatar": {
+      "choose": "Profilbild hinzufügen",
+      "replace": "Profilbild ändern",
+      "processing": "Dein Bild wird vorbereitet…",
+      "rejected": "Das Bild wurde abgelehnt.",
+      "failed": "Das Hochladen ist fehlgeschlagen - bitte versuch es noch einmal.",
+      "hint": "Mindestens 200 × 200 px, JPEG, PNG oder WebP bis 25 MB. Wir schneiden es mittig quadratisch zu und entfernen Metadaten."
     }
   },
   "Places": {
@@ -1574,9 +1587,10 @@
         "challenge": "Eine abgeschlossene Mission (eigene XP)",
         "underground": "Ein Artist mit weniger als 10.000 Hörer*innen (einmal pro Artist)",
         "daily_complete": "Deine Entdeckung des Tages abschließen (einmal am Tag)",
-        "weekly_complete": "Deinen Wochen-Drop abschließen (einmal pro Woche)"
+        "weekly_complete": "Deinen Wochen-Drop abschließen (einmal pro Woche)",
+        "listening": "Alle 10 Minuten Hören (bis zu 2 Stunden am Tag)"
       },
-      "fair": "Punkte belohnen das Entdecken, nicht stundenlanges Abspielen: Wiederholungen, Loops und schnelles Skippen bringen nichts, und jede Punkteart hat ein Tageslimit."
+      "fair": "Punkte belohnen vor allem das Entdecken. Für reine Hörzeit gibt es XP pro 10 Minuten, aber höchstens für 2 Stunden am Tag - Endlosschleifen und schnelles Überspringen bringen nicht mehr, und jede Punkteart hat ein Tageslimit. Der Entdeckungs-Score zählt nur Entdeckungen."
     },
     "card": {
       "heading": "MEINE TUNEWICK-WOCHE",
@@ -1644,7 +1658,8 @@
       "save": "Gespeichert",
       "full_listen": "Ganz gehört",
       "share": "Geteilt",
-      "underground": "kleine Szene"
+      "underground": "kleine Szene",
+      "listening": "Hörzeit"
     },
     "goal": {
       "daily_artists": "Tagesziel erreicht: {target} neue Artists!",

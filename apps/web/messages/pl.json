@@ -238,6 +238,11 @@
       "displayNameTooLong": "Nazwa może mieć najwyżej 80 znaków.",
       "bioTooLong": "Opis może mieć najwyżej 500 znaków.",
       "unexpected": "Nie udało się zapisać. Spróbuj ponownie."
+    },
+    "avatar": {
+      "title": "Zdjęcie profilowe",
+      "remove": "Usuń zdjęcie",
+      "alt": "Twoje zdjęcie profilowe"
     }
   },
   "Profile": {
@@ -770,6 +775,14 @@
       "incomplete": "Plik nie dotarł w całości. Spróbuj ponownie.",
       "transfer": "Przesyłanie zostało przerwane. Sprawdź połączenie i spróbuj ponownie.",
       "failed": "Coś poszło nie tak. Spróbuj ponownie."
+    },
+    "avatar": {
+      "choose": "Dodaj zdjęcie profilowe",
+      "replace": "Zmień zdjęcie profilowe",
+      "processing": "Przygotowujemy zdjęcie…",
+      "rejected": "Zdjęcie zostało odrzucone.",
+      "failed": "Przesyłanie zdjęcia nie powiodło się - spróbuj ponownie.",
+      "hint": "Co najmniej 200 × 200 px, JPEG, PNG lub WebP do 25 MB. Przytniemy je do kwadratu od środka i usuniemy metadane."
     }
   },
   "Places": {
@@ -1574,9 +1587,10 @@
         "challenge": "Ukończona misja (XP zależne od misji)",
         "underground": "Artysta z mniej niż 10 000 słuchaczy (raz na artystę)",
         "daily_complete": "Ukończone Daily Discovery (raz dziennie)",
-        "weekly_complete": "Ukończony Weekly Drop (raz w tygodniu)"
+        "weekly_complete": "Ukończony Weekly Drop (raz w tygodniu)",
+        "listening": "Każde 10 minut słuchania (do 2 godzin dziennie)"
       },
-      "fair": "Punkty nagradzają odkrywanie, nie godziny odtwarzania: powtórki, zapętlanie i szybkie pomijanie nic nie dają, a każdy rodzaj punktów ma dzienny limit."
+      "fair": "Punkty nagradzają przede wszystkim odkrywanie. Za sam czas słuchania dostajesz XP za każde 10 minut, ale najwyżej za 2 godziny dziennie - zapętlanie i szybkie pomijanie nic więcej nie dają, a każdy rodzaj punktów ma dzienny limit. Discovery Score liczy tylko odkrycia."
     },
     "card": {
       "heading": "MÓJ TYDZIEŃ NA TUNEWICK",
@@ -1644,7 +1658,8 @@
       "save": "Zapisane",
       "full_listen": "Całe wysłuchane",
       "share": "Udostępnione",
-      "underground": "mała scena"
+      "underground": "mała scena",
+      "listening": "Czas słuchania"
     },
     "goal": {
       "daily_artists": "Cel dnia zrobiony: {target} nowych artystów!",

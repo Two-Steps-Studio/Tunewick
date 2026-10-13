@@ -7,7 +7,15 @@ import { MyArtists } from "@/modules/artists";
 import { PlanSummary } from "@/modules/plans";
 import { DecisionList } from "@/modules/reports";
 import { BlockedUsers } from "@/modules/social";
-import { DiscoveryPrivacyForm, getMyAccount, PrivacySection, SettingsForm } from "@/modules/users";
+import { getImageSources, getLatestImageUpload, ImageUpload } from "@/modules/images";
+import {
+  Avatar,
+  DiscoveryPrivacyForm,
+  getMyAccount,
+  PrivacySection,
+  RemoveProfileImageButton,
+  SettingsForm,
+} from "@/modules/users";
 
 export async function generateMetadata({
   params,
@@ -29,6 +37,10 @@ export default async function SettingsPage({ params }: PageProps<"/[locale]/sett
   const user = await requireUser(signIn);
   const { profile, settings } = await getMyAccount(user.id);
   const t = await getTranslations("Settings");
+  const [picture, pictureUpload] = await Promise.all([
+    getImageSources(profile.image_id, 320),
+    getLatestImageUpload("profile_image", user.id),
+  ]);
   const tSecurity = await getTranslations("Security");
 
   return (
@@ -52,6 +64,21 @@ export default async function SettingsPage({ params }: PageProps<"/[locale]/sett
       <div className="auth-page__body">
         {/* Artist profiles first: "where is my music?" is the question artists come here with. */}
         <MyArtists userId={user.id} />
+        <section className="settings-form__group" aria-labelledby="avatar">
+          <h2 id="avatar" className="section-title">
+            {t("avatar.title")}
+          </h2>
+          <div className="cover-editor">
+            <Avatar image={picture} name={profile.display_name ?? profile.handle} size="6rem" />
+            <ImageUpload
+              kind="profile_image"
+              ownerId={user.id}
+              hasImage={Boolean(picture)}
+              latest={pictureUpload}
+            />
+          </div>
+          {picture ? <RemoveProfileImageButton /> : null}
+        </section>
         <SettingsForm
           values={{
             handle: profile.handle,

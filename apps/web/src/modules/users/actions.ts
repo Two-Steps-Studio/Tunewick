@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 import { getLocale } from "next-intl/server";
 import { redirect } from "@/i18n/navigation";
@@ -130,4 +131,12 @@ export async function updateDiscoveryPrivacy(
     })
     .eq("user_id", auth.user.id);
   return error ? { error: "unexpected" } : { saved: true };
+}
+
+/** Removes the profile picture (its files go to the storage sweep). */
+export async function removeProfileImage(): Promise<void> {
+  const supabase = await createSupabaseServerClient();
+  const { error } = await supabase.rpc("remove_profile_image");
+  if (error) throw error;
+  revalidatePath("/", "layout");
 }

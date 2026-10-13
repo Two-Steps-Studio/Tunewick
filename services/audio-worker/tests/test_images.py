@@ -81,6 +81,17 @@ def test_artist_photo_is_centre_cropped(tmp_path):
     assert [v["width"] for v in report["variants"]] == [160, 320, 600]
 
 
+def test_profile_picture_is_small_and_square(tmp_path):
+    source = save(photo((500, 300)), tmp_path / "me.jpg", "JPEG")
+    report = process_image(source, "profile_image", str(tmp_path / "out"))
+    assert report["status"] == "accepted"
+    assert [v["width"] for v in report["variants"]] == [96, 160, 300]
+    assert (
+        rejection(tmp_path, save(photo((150, 150)), tmp_path / "tiny.png", "PNG"), "profile_image")
+        == "too_small"
+    )
+
+
 def rejection(tmp_path, source: str, kind: str = "release_artwork") -> str:
     report = process_image(source, kind, str(tmp_path / "out"))
     assert report["status"] == "rejected"

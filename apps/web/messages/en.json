@@ -238,6 +238,11 @@
       "displayNameTooLong": "The name can have at most 80 characters.",
       "bioTooLong": "The description can have at most 500 characters.",
       "unexpected": "Could not save. Please try again."
+    },
+    "avatar": {
+      "title": "Profile picture",
+      "remove": "Remove picture",
+      "alt": "Your profile picture"
     }
   },
   "Profile": {
@@ -770,6 +775,14 @@
       "incomplete": "The file didn't arrive completely. Please try again.",
       "transfer": "The upload was interrupted. Check your connection and try again.",
       "failed": "Something went wrong. Please try again."
+    },
+    "avatar": {
+      "choose": "Add a profile picture",
+      "replace": "Change profile picture",
+      "processing": "Preparing your picture…",
+      "rejected": "The picture was rejected.",
+      "failed": "The picture upload failed - please try again.",
+      "hint": "At least 200 × 200 px, JPEG, PNG or WebP up to 25 MB. We crop it to a square from the centre and remove metadata."
     }
   },
   "Places": {
@@ -1574,9 +1587,10 @@
         "challenge": "A completed mission (its own XP)",
         "underground": "An artist with fewer than 10,000 listeners (once per artist)",
         "daily_complete": "Completing your Daily Discovery (once a day)",
-        "weekly_complete": "Completing your Weekly Drop (once a week)"
+        "weekly_complete": "Completing your Weekly Drop (once a week)",
+        "listening": "Every 10 minutes of listening (up to 2 hours a day)"
       },
-      "fair": "Points reward discovering, not hours of playback: replays, loops and quick skips earn nothing, and every kind of point has a daily cap."
+      "fair": "Points mostly reward discovering. Listening time alone earns XP for every 10 minutes, but for 2 hours a day at most - looping and quick skipping add nothing more, and every kind of points has a daily limit. The Discovery Score counts discoveries only."
     },
     "card": {
       "heading": "MY TUNEWICK WEEK",
@@ -1644,7 +1658,8 @@
       "save": "Saved",
       "full_listen": "Full listen",
       "share": "Shared",
-      "underground": "small scene"
+      "underground": "small scene",
+      "listening": "Listening time"
     },
     "goal": {
       "daily_artists": "Daily goal completed: {target} new artists!",

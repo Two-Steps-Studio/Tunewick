@@ -11528,4 +11528,310 @@ $tw_20261013110000$;
   end if;
 end $run$;
 
+-- 20261013120000_listening_xp.sql
+do $run$ begin
+  if not exists (select 1 from supabase_migrations.schema_migrations where version = '20261013120000') then
+    execute $tw_20261013120000$-- Listening time earns XP too, not only discovering: +10 XP for every 10 minutes listened in a
+-- day (the listener's own day), at most 120 XP a day (2 hours). Plays under 30 seconds and
+-- soundchecks don't count. It is XP only: the Discovery Score still rewards discovering alone.
+
+alter table public.discovery_point_rules drop constraint discovery_point_rules_kind;
+alter table public.discovery_point_rules add constraint discovery_point_rules_kind check (kind in (
+  'new_song', 'new_artist', 'new_genre', 'new_country', 'save', 'full_listen', 'share', 'challenge',
+  'underground', 'daily_complete', 'weekly_complete', 'listening'
+));
+insert into public.discovery_point_rules (kind, points, daily_cap) values ('listening', 10, 120);
+
+/** XP for the 10-minute steps the listener has reached today; each step is paid once. */
+create function private.award_listening_time(listener uuid)
+returns jsonb
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare
+  tz text := private.listener_tz(listener);
+  today date := (now() at time zone tz)::date;
+  listened bigint;
+  steps integer;
+  step integer;
+  granted integer;
+  awards jsonb := '[]'::jsonb;
+begin
+  select coalesce(sum(e.ms_played), 0) into listened
+  from public.listening_events e
+  where e.user_id = listener
+    and e.started_at >= today::timestamp at time zone tz
+    and not e.soundcheck and e.ms_played >= 30000;
+  steps := least(listened / 600000, 12)::integer;
+  for step in 1..steps loop
+    granted := private.award(listener, 'listening', today::text || ':' || step);
+    if granted is not null and granted > 0 then
+      awards := awards || jsonb_build_object('kind', 'listening', 'points', granted, 'minutes', step * 10);
+    end if;
+  end loop;
+  return awards;
+end;
+$$;
+
+revoke execute on function private.award_listening_time(uuid) from public, anon, authenticated;
+
+create or replace function public.record_listen(
+  track uuid,
+  started_at timestamptz,
+  ms_played integer,
+  completed boolean default false,
+  tier public.quality_tier default null,
+  soundcheck boolean default false
+)
+returns jsonb
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare
+  caller uuid := (select auth.uid());
+  t record;
+  result jsonb;
+begin
+  if caller is null then
+    raise exception 'sign in to keep a history' using errcode = '42501';
+  end if;
+  select tr.id, tr.duration_ms, r.id as release_id, r.artist_id into t
+  from public.tracks tr join public.releases r on r.id = tr.release_id
+  where tr.id = track;
+  if t.id is null or not public.release_is_public(t.release_id) then
+    raise exception 'not a public track' using errcode = '42501';
+  end if;
+  if ms_played < 1000 or ms_played > coalesce(t.duration_ms + 30000, 21600000)
+    or (record_listen.soundcheck and ms_played > 35000) then
+    raise exception 'implausible listening time' using errcode = '22023';
+  end if;
+  if record_listen.started_at > now() + interval '1 minute' or record_listen.started_at < now() - interval '1 day' then
+    raise exception 'implausible start time' using errcode = '22023';
+  end if;
+  if (select count(*) from public.listening_events e
+      where e.user_id = caller and e.created_at > now() - interval '1 minute') >= 120 then
+    raise exception 'too many listens' using errcode = '54000';
+  end if;
+  insert into public.listening_events (user_id, track_id, release_id, artist_id, started_at, ms_played,
+    completed, tier, soundcheck)
+  values (caller, track, t.release_id, t.artist_id, record_listen.started_at, record_listen.ms_played,
+    coalesce(record_listen.completed, false), record_listen.tier, coalesce(record_listen.soundcheck, false));
+  result := private.award_listen(caller, track, record_listen.ms_played, coalesce(record_listen.completed, false),
+    coalesce(record_listen.soundcheck, false));
+  if not coalesce(record_listen.soundcheck, false) and record_listen.ms_played >= 30000 then
+    result := jsonb_set(result, '{awards}',
+      coalesce(result -> 'awards', '[]'::jsonb) || private.award_listening_time(caller));
+  end if;
+  return result;
+end;
+$$;
+$tw_20261013120000$;
+    insert into supabase_migrations.schema_migrations (version, name) values ('20261013120000', 'listening_xp');
+    raise notice 'applied 20261013120000_listening_xp.sql';
+  end if;
+end $run$;
+
+-- 20261013130000_profile_images.sql
+do $run$ begin
+  if not exists (select 1 from supabase_migrations.schema_migrations where version = '20261013130000') then
+    execute $tw_20261013130000$-- Profile pictures for every account (shown in the top bar and on the public profile). Same path
+-- as covers and artist photos: presigned upload to the ingest bucket, the worker re-encodes it to
+-- small WebP sizes, the result is attached to the profile. Comparisons use kind::text so the new
+-- enum value is never cast while this migration's transaction is still open.
+
+alter type public.image_kind add value if not exists 'profile_image';
+
+alter table public.images
+  add column profile_id uuid references public.profiles (id) on delete cascade;
+alter table public.images drop constraint images_owner;
+alter table public.images add constraint images_owner check (
+  (kind::text = 'release_artwork' and release_id is not null and artist_id is null and profile_id is null)
+  or (kind::text = 'artist_image' and artist_id is not null and release_id is null and profile_id is null)
+  or (kind::text = 'profile_image' and profile_id is not null and release_id is null and artist_id is null)
+);
+create index images_profile_idx on public.images (profile_id, created_at desc) where profile_id is not null;
+
+alter table public.profiles
+  add column image_id uuid references public.images (id) on delete set null;
+
+/** As before, plus: your own profile pictures, and the one attached to a visible profile. */
+create or replace function public.can_view_image(image uuid)
+returns boolean
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select exists (
+    select 1 from public.images i
+    left join public.releases r on r.id = i.release_id
+    left join public.artists a on a.id = coalesce(i.artist_id, r.artist_id)
+    left join public.profiles p on p.id = i.profile_id
+    where i.id = image
+      and (
+        (i.profile_id is not null and i.profile_id = (select auth.uid()))
+        or public.is_staff()
+        or (a.id is not null and public.is_artist_member(a.id))
+        or (i.status = 'accepted' and (
+          (i.kind::text = 'release_artwork' and r.artwork_image_id = i.id and public.release_is_public(r.id))
+          or (i.kind::text = 'artist_image' and a.image_id = i.id and a.status = 'active')
+          or (i.kind::text = 'profile_image' and p.image_id = i.id and p.deleted_at is null)
+        ))
+      )
+  );
+$$;
+
+create or replace function public.begin_image_upload(
+  kind public.image_kind, owner uuid, extension text, size_bytes bigint
+)
+returns public.images
+language plpgsql
+volatile
+security definer
+set search_path = ''
+as $$
+declare
+  ext text := lower(btrim(begin_image_upload.extension, '. '));
+  new_id uuid := gen_random_uuid();
+  result public.images;
+begin
+  if begin_image_upload.kind::text = 'release_artwork' then
+    if not public.can_edit_release(begin_image_upload.owner) then
+      raise exception 'not allowed to change this release' using errcode = '42501';
+    end if;
+  elsif begin_image_upload.kind::text = 'profile_image' then
+    if begin_image_upload.owner is distinct from (select auth.uid()) then
+      raise exception 'only your own profile picture' using errcode = '42501';
+    end if;
+  elsif not public.is_artist_member(begin_image_upload.owner, array['owner', 'manager']::public.artist_member_role[]) then
+    raise exception 'not allowed to change this artist' using errcode = '42501';
+  end if;
+
+  if ext not in ('jpg', 'jpeg', 'png', 'webp') then
+    raise exception 'only JPEG, PNG and WebP images are accepted' using errcode = '22023';
+  end if;
+
+  if (
+    select count(*) from public.images i
+    where coalesce(i.release_id, i.artist_id, i.profile_id) = begin_image_upload.owner
+      and i.created_at > now() - interval '1 hour'
+  ) >= 10 then
+    raise exception 'too many uploads, try again later' using errcode = '54000';
+  end if;
+
+  insert into public.images (id, kind, release_id, artist_id, profile_id, uploaded_by, object_key, size_bytes)
+  values (
+    new_id,
+    begin_image_upload.kind,
+    case when begin_image_upload.kind::text = 'release_artwork' then begin_image_upload.owner end,
+    case when begin_image_upload.kind::text = 'artist_image' then begin_image_upload.owner end,
+    case when begin_image_upload.kind::text = 'profile_image' then begin_image_upload.owner end,
+    (select auth.uid()),
+    format('images/%s/%s.%s', begin_image_upload.kind, new_id, ext),
+    begin_image_upload.size_bytes
+  )
+  returning * into result;
+  return result;
+end;
+$$;
+
+create or replace function public.finish_image_upload(image uuid, result jsonb)
+returns public.audio_upload_status
+language plpgsql
+volatile
+security definer
+set search_path = ''
+as $$
+declare
+  current public.images;
+begin
+  select * into current from public.images i
+  where i.id = finish_image_upload.image and i.status = 'processing'
+  for update;
+  if current.id is null then
+    raise exception 'image is not being processed' using errcode = '55000';
+  end if;
+
+  if finish_image_upload.result ->> 'status' = 'accepted' then
+    update public.images i
+    set status = 'accepted',
+        processed_at = now(),
+        rejection_code = null,
+        width = (finish_image_upload.result ->> 'width')::integer,
+        height = (finish_image_upload.result ->> 'height')::integer,
+        dominant_color = finish_image_upload.result ->> 'dominant_color',
+        variants = finish_image_upload.result -> 'variants'
+    where i.id = current.id;
+
+    if current.kind::text = 'release_artwork' then
+      update public.releases r set artwork_image_id = current.id
+      where r.id = current.release_id and r.status in ('draft', 'rejected');
+    elsif current.kind::text = 'profile_image' then
+      update public.profiles p set image_id = current.id where p.id = current.profile_id;
+    else
+      update public.artists a set image_id = current.id where a.id = current.artist_id;
+    end if;
+    return 'accepted'::public.audio_upload_status;
+  end if;
+
+  update public.images i
+  set status = 'rejected',
+      processed_at = now(),
+      rejection_code = left(finish_image_upload.result -> 'rejection' ->> 'code', 64)
+  where i.id = current.id;
+  return 'rejected'::public.audio_upload_status;
+end;
+$$;
+
+/** Removes your profile picture (the file goes to the storage sweep with the row). */
+create function public.remove_profile_image()
+returns void
+language plpgsql
+volatile
+security definer
+set search_path = ''
+as $$
+begin
+  if (select auth.uid()) is null then
+    raise exception 'sign in required' using errcode = '42501';
+  end if;
+  delete from public.images i where i.profile_id = (select auth.uid());
+end;
+$$;
+
+revoke execute on function public.remove_profile_image() from public, anon;
+grant execute on function public.remove_profile_image() to authenticated;
+
+-- Any image row that goes away (account deletion, a removed picture, a deleted release) takes its
+-- files with it: the original in the ingest bucket and every processed size in the media bucket.
+create function private.image_objects_forgotten()
+returns trigger
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare
+  variant jsonb;
+begin
+  insert into private.storage_deletions (bucket, object_key) values ('ingest', old.object_key);
+  for variant in select * from jsonb_array_elements(coalesce(old.variants, '[]'::jsonb)) loop
+    if variant ->> 'key' is not null then
+      insert into private.storage_deletions (bucket, object_key) values ('media', variant ->> 'key');
+    end if;
+  end loop;
+  return null;
+end;
+$$;
+
+create trigger images_objects_forgotten
+  after delete on public.images
+  for each row execute function private.image_objects_forgotten();
+$tw_20261013130000$;
+    insert into supabase_migrations.schema_migrations (version, name) values ('20261013130000', 'profile_images');
+    raise notice 'applied 20261013130000_profile_images.sql';
+  end if;
+end $run$;
+
 select version, name from supabase_migrations.schema_migrations order by version desc limit 5;

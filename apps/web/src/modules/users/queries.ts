@@ -1,12 +1,18 @@
 import "server-only";
 
+import { cache } from "react";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { getImageSources } from "@/modules/images";
 
 /** The signed-in user's profile and private settings (RLS: own rows only). */
 export async function getMyAccount(userId: string) {
   const supabase = await createSupabaseServerClient();
   const [profile, settings] = await Promise.all([
-    supabase.from("profiles").select("handle, display_name, bio").eq("id", userId).single(),
+    supabase
+      .from("profiles")
+      .select("handle, display_name, bio, image_id")
+      .eq("id", userId)
+      .single(),
     supabase
       .from("profile_settings")
       .select(
@@ -25,7 +31,7 @@ export async function getPublicProfile(handle: string) {
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase
     .from("profiles")
-    .select("id, handle, display_name, bio, created_at")
+    .select("id, handle, display_name, bio, created_at, image_id")
     .eq("handle", handle.toLowerCase())
     .maybeSingle();
   if (error) throw error;
@@ -39,3 +45,15 @@ export async function getDeletionBlockers() {
   if (error) throw error;
   return data ?? [];
 }
+
+/** Name and picture of the signed-in person for the top bar, once per request. */
+export const getMyBadge = cache(async (userId: string) => {
+  const supabase = await createSupabaseServerClient();
+  const { data } = await supabase
+    .from("profiles")
+    .select("handle, display_name, image_id")
+    .eq("id", userId)
+    .maybeSingle();
+  const name = data?.display_name || (data?.handle ? `@${data.handle}` : null);
+  return { name, image: await getImageSources(data?.image_id ?? null, 96) };
+});

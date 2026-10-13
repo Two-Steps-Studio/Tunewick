@@ -776,6 +776,7 @@ export type Database = {
           kind: Database["public"]["Enums"]["image_kind"];
           object_key: string;
           processed_at: string | null;
+          profile_id: string | null;
           rejection_code: string | null;
           release_id: string | null;
           size_bytes: number;
@@ -797,6 +798,7 @@ export type Database = {
           kind: Database["public"]["Enums"]["image_kind"];
           object_key: string;
           processed_at?: string | null;
+          profile_id?: string | null;
           rejection_code?: string | null;
           release_id?: string | null;
           size_bytes: number;
@@ -818,6 +820,7 @@ export type Database = {
           kind?: Database["public"]["Enums"]["image_kind"];
           object_key?: string;
           processed_at?: string | null;
+          profile_id?: string | null;
           rejection_code?: string | null;
           release_id?: string | null;
           size_bytes?: number;
@@ -834,6 +837,13 @@ export type Database = {
             columns: ["artist_id"];
             isOneToOne: false;
             referencedRelation: "artists";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "images_profile_id_fkey";
+            columns: ["profile_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
             referencedColumns: ["id"];
           },
           {
@@ -1307,6 +1317,7 @@ export type Database = {
           display_name: string | null;
           handle: string | null;
           id: string;
+          image_id: string | null;
           updated_at: string;
         };
         Insert: {
@@ -1316,6 +1327,7 @@ export type Database = {
           display_name?: string | null;
           handle?: string | null;
           id: string;
+          image_id?: string | null;
           updated_at?: string;
         };
         Update: {
@@ -1325,9 +1337,18 @@ export type Database = {
           display_name?: string | null;
           handle?: string | null;
           id?: string;
+          image_id?: string | null;
           updated_at?: string;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "profiles_image_id_fkey";
+            columns: ["image_id"];
+            isOneToOne: false;
+            referencedRelation: "images";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       promo_campaigns: {
         Row: {
@@ -2562,6 +2583,7 @@ export type Database = {
           kind: Database["public"]["Enums"]["image_kind"];
           object_key: string;
           processed_at: string | null;
+          profile_id: string | null;
           rejection_code: string | null;
           release_id: string | null;
           size_bytes: number;
@@ -2687,6 +2709,7 @@ export type Database = {
           kind: Database["public"]["Enums"]["image_kind"];
           object_key: string;
           processed_at: string | null;
+          profile_id: string | null;
           rejection_code: string | null;
           release_id: string | null;
           size_bytes: number;
@@ -3181,6 +3204,7 @@ export type Database = {
         }[];
       };
       remove_artist_member: { Args: { artist: string; member: string }; Returns: undefined };
+      remove_profile_image: { Args: Record<PropertyKey, never>; Returns: undefined };
       report_playback: {
         Args: {
           browser?: string;
@@ -3367,7 +3391,7 @@ export type Database = {
         | "other";
       entitlement_source: "promo" | "beta" | "admin" | "referral" | "subscription";
       event_status: "pending" | "published" | "rejected" | "cancelled";
-      image_kind: "release_artwork" | "artist_image";
+      image_kind: "release_artwork" | "artist_image" | "profile_image";
       playlist_visibility: "public" | "unlisted" | "private";
       promo_benefit:
         | "premium_days"
@@ -3533,7 +3557,7 @@ export const Constants = {
       ],
       entitlement_source: ["promo", "beta", "admin", "referral", "subscription"],
       event_status: ["pending", "published", "rejected", "cancelled"],
-      image_kind: ["release_artwork", "artist_image"],
+      image_kind: ["release_artwork", "artist_image", "profile_image"],
       playlist_visibility: ["public", "unlisted", "private"],
       promo_benefit: [
         "premium_days",

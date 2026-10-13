@@ -192,6 +192,38 @@ body {
   .locale-switcher {
     position: relative;
   }
+
+  /* A person's picture (or initial) - top bar, settings, public profile */
+  .avatar {
+    flex: none;
+    display: inline-grid;
+    place-items: center;
+    overflow: hidden;
+    border-radius: 50%;
+    background: var(--bg-sunken, var(--line));
+    color: var(--text);
+  }
+  .avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .avatar__initial {
+    font-family: var(--tk-font-display);
+    font-weight: 700;
+    line-height: 1;
+  }
+  .account-chip {
+    display: inline-flex;
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px var(--line);
+    transition: box-shadow var(--tk-dur-press) var(--tk-ease-out);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .account-chip:hover {
+      box-shadow: 0 0 0 2px var(--text);
+    }
+  }
   .locale-switcher > summary {
     list-style: none;
     cursor: pointer;
@@ -252,6 +284,18 @@ body {
   @media (min-width: 1024px) {
     .site-main {
       padding-bottom: calc(var(--shell-bar-h) + var(--tk-space-16));
+    }
+  }
+
+  /* Scrolling to a focused field or anchor keeps it clear of the fixed player/nav at the bottom. */
+  html {
+    scroll-padding-bottom: calc(
+      var(--shell-bar-h) * 2 + env(safe-area-inset-bottom) + var(--tk-space-4)
+    );
+  }
+  @media (min-width: 1024px) {
+    html {
+      scroll-padding-bottom: calc(var(--shell-bar-h) + var(--tk-space-4));
     }
   }
 

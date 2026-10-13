@@ -55,7 +55,8 @@ export function ImageUpload({
   );
   const busy = phase.kind === "uploading" || phase.kind === "finishing";
   const waiting = latest?.status === "uploaded" || latest?.status === "processing";
-  const label = kind === "release_artwork" ? "cover" : "photo";
+  const label =
+    kind === "release_artwork" ? "cover" : kind === "profile_image" ? "avatar" : "photo";
 
   useEffect(() => {
     if (!waiting) return;
