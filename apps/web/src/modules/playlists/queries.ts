@@ -15,13 +15,30 @@ export async function getMyPlaylists(userId: string) {
     .order("updated_at", { ascending: false })
     .limit(200);
   if (error) throw error;
+  const covers = await playlistCovers(data.map((p) => p.id));
   return data.map((p) => ({
     id: p.id,
     title: p.title,
     visibility: p.visibility,
     updatedAt: p.updated_at,
     count: p.items[0]?.count ?? 0,
+    covers: covers.get(p.id) ?? [],
   }));
+}
+
+/**
+ * Cover image ids per playlist: the first (up to) four different release covers, in playlist
+ * order (public.playlist_covers; RLS decides what the caller may see). Empty map on failure -
+ * covers are decoration, never a reason for a page to fail.
+ */
+export async function playlistCovers(ids: string[]): Promise<Map<string, string[]>> {
+  const result = new Map<string, string[]>();
+  if (!ids.length) return result;
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase.rpc("playlist_covers", { ids });
+  if (error) return result;
+  for (const row of data ?? []) result.set(row.playlist_id, row.artwork_ids ?? []);
+  return result;
 }
 
 /**
@@ -42,7 +59,7 @@ export const getPlaylist = cache(async (id: string) => {
     supabase
       .from("playlist_tracks")
       .select(
-        "id, position, added_at, track:tracks(id, title, duration_ms, release:releases(id, slug, title, status, publish_at, artist:artists!releases_artist_id_fkey(slug, name)))",
+        "id, position, added_at, track:tracks(id, title, duration_ms, release:releases(id, slug, title, status, publish_at, artwork_image_id, artist:artists!releases_artist_id_fkey(slug, name)))",
       )
       .eq("playlist_id", id)
       .order("position")
@@ -67,10 +84,19 @@ export const getPlaylist = cache(async (id: string) => {
       ? [{ id: item.id, track: { ...item.track, release: { ...release, artist: release.artist } } }]
       : [];
   });
+  // The mosaic: first four different covers, in playlist order.
+  const covers: string[] = [];
+  for (const item of visible) {
+    const cover = item.track.release.artwork_image_id;
+    if (cover && !covers.includes(cover)) covers.push(cover);
+    if (covers.length === 4) break;
+  }
   return {
     playlist,
     owner: owner.data ?? null,
     items: visible,
     hidden: items.data.length - visible.length,
+    covers,
+    durationMs: visible.reduce((sum, item) => sum + (item.track.duration_ms ?? 0), 0),
   };
 });

@@ -953,7 +953,7 @@
     "playAll": "Odtwórz playlistę {title}",
     "playTrack": "Odtwórz: {title}",
     "empty": "Ta playlista jest pusta.",
-    "emptyMine": "Playlista jest pusta. Dodaj utwory przyciskiem + przy utworze na stronie wydawnictwa.",
+    "emptyMine": "Playlista jest pusta. Dodaj utwory przyciskiem + przy utworze albo w odtwarzaczu.",
     "moveUp": "Przesuń wyżej: {title} (pozycja {position})",
     "moveDown": "Przesuń niżej: {title} (pozycja {position})",
     "remove": "Usuń z playlisty: {title} (pozycja {position})",
@@ -977,12 +977,24 @@
     "add": "Dodaj",
     "added": "Dodano do: {playlist}",
     "addFailed": "Nie udało się dodać. Spróbuj ponownie.",
-    "noPlaylists": "Nie masz jeszcze playlist - utwórz pierwszą w Bibliotece.",
     "errors": {
       "title": "Nazwa musi mieć od 1 do 100 znaków.",
       "limit": "Masz już 200 playlist - to maksimum.",
       "failed": "Nie udało się zapisać. Spróbuj ponownie."
-    }
+    },
+    "loading": "Wczytuję Twoje playlisty…",
+    "duplicate": "Ten utwór już jest na playliście {playlist}.",
+    "addAnyway": "Dodaj jeszcze raz",
+    "newInline": "Albo do nowej playlisty",
+    "firstInline": "Nowa playlista",
+    "newPlaceholder": "Nazwa playlisty",
+    "createAndAdd": "Utwórz i dodaj",
+    "shuffle": "Losowo",
+    "shuffleAll": "Odtwórz playlistę {title} w losowej kolejności",
+    "share": "Udostępnij",
+    "shareCopied": "Link skopiowany.",
+    "shareFailed": "Nie udało się skopiować linku.",
+    "sharePrivate": "Playlista jest prywatna. Aby ją udostępnić, zmień „Kto ją widzi” poniżej."
   },
   "Reports": {
     "link": "Zgłoś naruszenie",

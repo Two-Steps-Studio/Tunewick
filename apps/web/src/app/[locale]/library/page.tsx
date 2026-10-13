@@ -12,7 +12,7 @@ import {
   LibraryButton,
 } from "@/modules/library";
 import { EventList, getMyAttendedEvents } from "@/modules/events";
-import { getMyPlaylists, NewPlaylistForm } from "@/modules/playlists";
+import { getMyPlaylists, NewPlaylistForm, PlaylistCover } from "@/modules/playlists";
 import { PlayButton, type PlayerTrack } from "@/modules/player";
 
 export async function generateMetadata({
@@ -92,7 +92,11 @@ export default async function LibraryPage({ params }: PageProps<"/[locale]/libra
     )
   ).filter((track): track is PlayerTrack => track !== null);
   const images = await getImageSourcesMany(
-    [...library.releases.map((r) => r.artwork_image_id), ...library.artists.map((a) => a.image_id)],
+    [
+      ...library.releases.map((r) => r.artwork_image_id),
+      ...library.artists.map((a) => a.image_id),
+      ...playlists.flatMap((p) => p.covers),
+    ],
     320,
   );
   const empty =
@@ -116,19 +120,24 @@ export default async function LibraryPage({ params }: PageProps<"/[locale]/libra
           {t("playlists")}
         </h2>
         {playlists.length ? (
-          <ul className="artist-list">
+          <ul className="playlist-grid">
             {playlists.map((p) => (
-              <li key={p.id} className="artist-list__item">
+              <li key={p.id}>
                 <Link
-                  className="artist-list__name"
+                  className="playlist-card"
                   href={{ pathname: "/playlists/[id]", params: { id: p.id } }}
                 >
-                  {p.title}
+                  <PlaylistCover
+                    title={p.title}
+                    images={p.covers.flatMap((id) => images.get(id) ?? [])}
+                    sizes="10rem"
+                  />
+                  <span className="playlist-card__title">{p.title}</span>
+                  <span className="playlist-card__meta">
+                    {tPlaylists("trackCount", { count: p.count })} ·{" "}
+                    {tPlaylists(`visibility.${p.visibility}`)}
+                  </span>
                 </Link>
-                <span className="field__hint">
-                  {tPlaylists("trackCount", { count: p.count })} ·{" "}
-                  {tPlaylists(`visibility.${p.visibility}`)}
-                </span>
               </li>
             ))}
           </ul>

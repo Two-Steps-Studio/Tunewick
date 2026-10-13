@@ -953,7 +953,7 @@
     "playAll": "Lire la playlist {title}",
     "playTrack": "Lire : {title}",
     "empty": "Cette playlist est vide.",
-    "emptyMine": "La playlist est vide. Ajoute des titres avec le bouton + à côté d’un titre sur la page d’une sortie.",
+    "emptyMine": "La playlist est vide. Ajoute des titres avec le bouton + à côté d’un titre ou dans le lecteur.",
     "moveUp": "Monter : {title} (position {position})",
     "moveDown": "Descendre : {title} (position {position})",
     "remove": "Retirer de la playlist : {title} (position {position})",
@@ -977,12 +977,24 @@
     "add": "Ajouter",
     "added": "Ajouté à : {playlist}",
     "addFailed": "Impossible d’ajouter. Réessaie.",
-    "noPlaylists": "Tu n’as pas encore de playlist - crées-en une dans ta Bibliothèque.",
     "errors": {
       "title": "Le nom doit comporter de 1 à 100 caractères.",
       "limit": "Tu as déjà 200 playlists - c’est le maximum.",
       "failed": "Impossible d’enregistrer. Réessaie."
-    }
+    },
+    "loading": "Chargement de tes playlists…",
+    "duplicate": "Ce titre est déjà dans {playlist}.",
+    "addAnyway": "L’ajouter encore",
+    "newInline": "Ou dans une nouvelle playlist",
+    "firstInline": "Nouvelle playlist",
+    "newPlaceholder": "Nom de la playlist",
+    "createAndAdd": "Créer et ajouter",
+    "shuffle": "Aléatoire",
+    "shuffleAll": "Lire la playlist {title} dans un ordre aléatoire",
+    "share": "Partager",
+    "shareCopied": "Lien copié.",
+    "shareFailed": "Impossible de copier le lien.",
+    "sharePrivate": "La playlist est privée. Pour la partager, change « Qui peut la voir » plus bas."
   },
   "Reports": {
     "link": "Signaler un problème",

@@ -303,30 +303,48 @@ test.describe("review and publishing", () => {
     await listener.goto("/biblioteka");
     await expect(listener.getByRole("link", { name: "Zaloguj się" }).last()).toBeVisible();
 
-    // Playlists: create, add (twice - duplicates are allowed), reorder, remove, share, delete.
+    // Playlists: create, add (twice - a duplicate asks first), reorder, remove, share, delete.
     await page.goto("/biblioteka");
     await page.getByLabel("Nowa playlista").fill("Na nocną zmianę");
-    await page.getByRole("button", { name: "Utwórz" }).click();
+    await page.getByRole("button", { name: "Utwórz", exact: true }).click();
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("Na nocną zmianę");
     const playlistUrl = page.url();
     await expect(page.getByText(/^Playlista jest pusta/)).toBeVisible();
 
     await page.goto(`/artysci/${slug}/wydawnictwa/szychta`);
-    for (let i = 0; i < 2; i++) {
-      await page.getByLabel("Dodaj do playlisty: Nocna zmiana").click();
-      await page.getByRole("button", { name: "Dodaj", exact: true }).click();
-      await expect(page.getByText("Dodano do: Na nocną zmianę")).toBeVisible();
-      await page.reload();
-    }
+    await page.getByLabel("Dodaj do playlisty: Nocna zmiana").click();
+    await page.getByRole("button", { name: "Dodaj", exact: true }).click();
+    await expect(page.getByText("Dodano do: Na nocną zmianę")).toBeVisible();
+    await page.reload();
+    await page.getByLabel("Dodaj do playlisty: Nocna zmiana").click();
+    await page.getByRole("button", { name: "Dodaj", exact: true }).click();
+    await expect(page.getByText("Ten utwór już jest na playliście Na nocną zmianę.")).toBeVisible();
+    await page.getByRole("button", { name: "Dodaj jeszcze raz" }).click();
+    await expect(page.getByText("Dodano do: Na nocną zmianę")).toBeVisible();
+
+    // A new playlist straight from the menu: named, created and filled in one step.
+    await page.reload();
+    await page.getByLabel("Dodaj do playlisty: Nocna zmiana").click();
+    await page.getByLabel("Albo do nowej playlisty").fill("Na powrót");
+    await page.getByRole("button", { name: "Utwórz i dodaj" }).click();
+    await expect(page.getByText("Dodano do: Na powrót")).toBeVisible();
+    await page.goto("/biblioteka");
+    const quickList = page.getByRole("link", { name: /Na powrót/ });
+    await expect(quickList).toContainText("1 utwór");
+    // Its cover is the release's cover.
+    await expect(quickList.locator(".playlist-cover img")).toBeVisible();
 
     await page.goto(playlistUrl);
-    await expect(page.getByText("2 utwory")).toBeVisible();
+    await expect(page.getByText(/^2 utwory · 0:24/)).toBeVisible();
+    await expect(
+      page.getByRole("button", { name: "Odtwórz playlistę Na nocną zmianę w losowej kolejności" }),
+    ).toBeVisible();
     await expect(
       page.getByRole("button", { name: "Przesuń wyżej: Nocna zmiana (pozycja 1)" }),
     ).toBeDisabled();
     await page.getByRole("button", { name: "Przesuń wyżej: Nocna zmiana (pozycja 2)" }).click();
     await page.getByRole("button", { name: "Usuń z playlisty: Nocna zmiana (pozycja 2)" }).click();
-    await expect(page.getByText("1 utwór", { exact: true })).toBeVisible();
+    await expect(page.getByText(/^1 utwór · 0:12/)).toBeVisible();
     await page.getByRole("button", { name: "Odtwórz playlistę Na nocną zmianę" }).click();
     await expect(
       page.getByRole("region", { name: "Odtwarzacz" }).getByText("Nocna zmiana"),
@@ -360,6 +378,7 @@ test.describe("review and publishing", () => {
     await expect(page.getByText("Zapisano.")).toBeVisible();
     await listener.goto(playlistUrl);
     await expect(listener.getByRole("heading", { level: 1 })).toHaveText("Na nocną zmianę");
+    await expect(page.getByRole("button", { name: "Udostępnij" })).toBeVisible();
     await expect(listener.getByRole("button", { name: /^Usuń z playlisty/ })).toHaveCount(0);
 
     await page.getByRole("button", { name: "Usuń playlistę" }).click();

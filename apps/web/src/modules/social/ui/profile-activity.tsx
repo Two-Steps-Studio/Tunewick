@@ -1,5 +1,7 @@
 import { getFormatter, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
+import { getImageSourcesMany } from "@/modules/images";
+import { PlaylistCover, playlistCovers } from "@/modules/playlists";
 import { getProfileActivity } from "../queries";
 
 /**
@@ -28,6 +30,8 @@ export async function ProfileActivity({
     );
   }
   const { events, playlists } = await getProfileActivity(profileId);
+  const covers = await playlistCovers(playlists.map((p) => p.id));
+  const images = await getImageSourcesMany([...covers.values()].flat(), 320);
   return (
     <section className="profile-activity" aria-labelledby="activity">
       <h2 id="activity" className="section-title">
@@ -57,13 +61,23 @@ export async function ProfileActivity({
       )}
       <h3 className="profile-activity__title">{t("playlists")}</h3>
       {playlists.length ? (
-        <ul className="profile-activity__list">
+        <ul className="playlist-grid">
           {playlists.map((p) => (
             <li key={p.id}>
-              <Link href={{ pathname: "/playlists/[id]", params: { id: p.id } }}>{p.title}</Link>
-              <span className="profile-activity__meta">
-                {t("trackCount", { count: p.track_count })}
-              </span>
+              <Link
+                className="playlist-card"
+                href={{ pathname: "/playlists/[id]", params: { id: p.id } }}
+              >
+                <PlaylistCover
+                  title={p.title}
+                  images={(covers.get(p.id) ?? []).flatMap((id) => images.get(id) ?? [])}
+                  sizes="10rem"
+                />
+                <span className="playlist-card__title">{p.title}</span>
+                <span className="playlist-card__meta">
+                  {t("trackCount", { count: p.track_count })}
+                </span>
+              </Link>
             </li>
           ))}
         </ul>

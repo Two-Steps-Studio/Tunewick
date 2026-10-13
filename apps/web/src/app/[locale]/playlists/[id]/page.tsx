@@ -3,15 +3,19 @@ import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
+import { absoluteUrl } from "@/lib/site";
 import { getPlayableQueue, listenerEntitlement } from "@/modules/audio";
 import { getOptionalUser } from "@/modules/auth";
+import { getImageSourcesMany } from "@/modules/images";
 import {
   DeletePlaylistButton,
   deletePlaylist,
   getPlaylist,
   movePlaylistItem,
+  PlaylistCover,
   PlaylistEditForm,
   removePlaylistItem,
+  SharePlaylistButton,
 } from "@/modules/playlists";
 import { PlayButton, type PlayerTrack } from "@/modules/player";
 import { DecisionList } from "@/modules/reports";
@@ -37,7 +41,10 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 
 function formatDuration(ms: number) {
   const seconds = Math.round(ms / 1000);
-  return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const rest = String(seconds % 60).padStart(2, "0");
+  return hours ? `${hours}:${String(minutes).padStart(2, "0")}:${rest}` : `${minutes}:${rest}`;
 }
 
 function Icon({ d }: { d: string }) {
@@ -61,7 +68,7 @@ export default async function PlaylistPage({ params }: PageProps<"/[locale]/play
   const data = await load(params);
   if (!data) notFound();
 
-  const { playlist, owner, items, hidden } = data;
+  const { playlist, owner, items, hidden, covers, durationMs } = data;
   const t = await getTranslations("Playlists");
   const tReports = await getTranslations("Reports");
   const user = await getOptionalUser();
@@ -81,41 +88,78 @@ export default async function PlaylistPage({ params }: PageProps<"/[locale]/play
   let next = 0;
   const queueIndex = playable.map((track) => (track ? next++ : null));
   const ownerName = owner?.display_name ?? (owner?.handle ? `@${owner.handle}` : null);
+  const coverImages = await getImageSourcesMany(covers, 640);
+  const shareUrl = absoluteUrl(
+    { pathname: "/playlists/[id]", params: { id: playlist.id } },
+    locale as Locale,
+  );
 
   return (
     <article className="release-page">
-      <header className="playlist-head">
-        <p className="artist-badge">
-          {t("badge")} · {t(`visibility.${playlist.visibility}`)}
-        </p>
-        <h1 className="release-page__title">{playlist.title}</h1>
-        {ownerName ? (
-          <p className="release-page__artist">
-            {owner?.handle ? (
-              <Link href={{ pathname: "/profile/[handle]", params: { handle: owner.handle } }}>
-                {ownerName}
-              </Link>
-            ) : (
-              ownerName
-            )}
+      <header className="release-page__head playlist-head">
+        <PlaylistCover
+          title={playlist.title}
+          images={covers.flatMap((id) => coverImages.get(id) ?? [])}
+          sizes="(min-width: 768px) 20rem, 100vw"
+          className="release-page__cover"
+          priority
+        />
+        <div className="release-page__info">
+          <p className="artist-badge">
+            {t("badge")} · {t(`visibility.${playlist.visibility}`)}
           </p>
-        ) : null}
-        {playlist.description ? <p className="profile__bio">{playlist.description}</p> : null}
-        <p className="release-page__meta">
-          {t("trackCount", { count: items.length })}
-          {hidden ? ` · ${t("hidden", { count: hidden })}` : ""}
-        </p>
-        {queue.length ? (
-          <PlayButton
-            tracks={queue}
-            index={0}
-            entitlement={entitlement}
-            label={t("playAll", { title: playlist.title })}
-            className="button button--primary"
-          >
-            {t("play")}
-          </PlayButton>
-        ) : null}
+          <h1 className="release-page__title">{playlist.title}</h1>
+          {ownerName ? (
+            <p className="release-page__artist">
+              {owner?.handle ? (
+                <Link href={{ pathname: "/profile/[handle]", params: { handle: owner.handle } }}>
+                  {ownerName}
+                </Link>
+              ) : (
+                ownerName
+              )}
+            </p>
+          ) : null}
+          {playlist.description ? <p className="profile__bio">{playlist.description}</p> : null}
+          <p className="release-page__meta">
+            {t("trackCount", { count: items.length })}
+            {durationMs ? ` · ${formatDuration(durationMs)}` : ""}
+            {hidden ? ` · ${t("hidden", { count: hidden })}` : ""}
+          </p>
+          <div className="playlist-head__actions">
+            {queue.length ? (
+              <>
+                <PlayButton
+                  tracks={queue}
+                  index={0}
+                  entitlement={entitlement}
+                  label={t("playAll", { title: playlist.title })}
+                  className="button button--primary"
+                >
+                  {t("play")}
+                </PlayButton>
+                {queue.length > 1 ? (
+                  <PlayButton
+                    tracks={queue}
+                    index={0}
+                    shuffle
+                    entitlement={entitlement}
+                    label={t("shuffleAll", { title: playlist.title })}
+                    className="button"
+                  >
+                    {t("shuffle")}
+                  </PlayButton>
+                ) : null}
+              </>
+            ) : null}
+            {playlist.visibility !== "private" ? (
+              <SharePlaylistButton url={shareUrl} title={playlist.title} />
+            ) : null}
+          </div>
+          {mine && playlist.visibility === "private" && items.length ? (
+            <p className="field__hint">{t("sharePrivate")}</p>
+          ) : null}
+        </div>
       </header>
 
       {items.length === 0 ? (

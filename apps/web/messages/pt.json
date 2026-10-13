@@ -953,7 +953,7 @@
     "playAll": "Tocar a playlist {title}",
     "playTrack": "Tocar: {title}",
     "empty": "Esta playlist está vazia.",
-    "emptyMine": "A playlist está vazia. Adicione faixas com o botão + ao lado de uma faixa na página de um lançamento.",
+    "emptyMine": "A playlist está vazia. Adicione faixas com o botão + ao lado de uma faixa ou no player.",
     "moveUp": "Mover para cima: {title} (posição {position})",
     "moveDown": "Mover para baixo: {title} (posição {position})",
     "remove": "Remover da playlist: {title} (posição {position})",
@@ -977,12 +977,24 @@
     "add": "Adicionar",
     "added": "Adicionada a: {playlist}",
     "addFailed": "Não foi possível adicionar. Tente novamente.",
-    "noPlaylists": "Você ainda não tem playlists - crie uma na sua Biblioteca.",
     "errors": {
       "title": "O nome precisa ter de 1 a 100 caracteres.",
       "limit": "Você já tem 200 playlists - esse é o máximo.",
       "failed": "Não foi possível salvar. Tente novamente."
-    }
+    },
+    "loading": "Carregando suas playlists…",
+    "duplicate": "Esta faixa já está em {playlist}.",
+    "addAnyway": "Adicionar de novo",
+    "newInline": "Ou a uma playlist nova",
+    "firstInline": "Nova playlist",
+    "newPlaceholder": "Nome da playlist",
+    "createAndAdd": "Criar e adicionar",
+    "shuffle": "Aleatório",
+    "shuffleAll": "Tocar a playlist {title} em ordem aleatória",
+    "share": "Compartilhar",
+    "shareCopied": "Link copiado.",
+    "shareFailed": "Não foi possível copiar o link.",
+    "sharePrivate": "A playlist é privada. Para compartilhá-la, mude “Quem pode ver” abaixo."
   },
   "Reports": {
     "link": "Denunciar um problema",
