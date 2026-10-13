@@ -1125,6 +1125,22 @@
       "handleNotFound": "Nie ma konta z taką nazwą profilu. Sprawdź ją w Konto → Nazwa profilu (bez @).",
       "daysInvalid": "Wpisz liczbę dni od 1 do 3660 albo zostaw puste (na zawsze).",
       "noteShort": "Wpisz powód (co najmniej 3 znaki) - trafi do dziennika zmian."
+    },
+    "media": {
+      "title": "Przetwarzanie plików",
+      "lead": "Worker na serwerze sprawdza i przetwarza wgrane utwory i obrazy. Tu widać, co czeka i co ostatnio się nie udało.",
+      "audio": "Utwory: {waiting} czeka, {processing} w trakcie.",
+      "images": "Obrazy: {waiting} czeka, {processing} w trakcie.",
+      "oldest": "Najstarszy czeka od {when}.",
+      "stuck": "Pliki czekają dłużej niż 10 minut - worker chyba nie działa albo nie ma połączenia z bazą. Sprawdź go na serwerze (TrueNAS → Apps → tunewick-audio).",
+      "denied": "Worker nie ma dostępu do plików w R2 (AccessDenied). Token R2 workera musi mieć Object Read & Write na bucketach uploadów i tunewick-media, a nazwy bucketów w jego ustawieniach muszą się zgadzać.",
+      "errors24h": "{count, plural, =0 {Brak błędów przetwarzania w ostatniej dobie.} one {# błąd przetwarzania w ostatniej dobie.} few {# błędy przetwarzania w ostatniej dobie.} other {# błędów przetwarzania w ostatniej dobie.}}",
+      "kinds": {
+        "audio": "Utwór",
+        "image": "Obraz",
+        "clip": "Klip",
+        "reanalysis": "Analiza"
+      }
     }
   },
   "Events": {

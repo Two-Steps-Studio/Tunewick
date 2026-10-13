@@ -1125,6 +1125,22 @@
       "handleNotFound": "Aucun compte n’a ce nom de profil. Vérifie-le dans Compte → Nom de profil (sans @).",
       "daysInvalid": "Saisis un nombre de jours de 1 à 3660, ou laisse vide (à vie).",
       "noteShort": "Saisis une raison (au moins 3 caractères) - elle va dans le journal des modifications."
+    },
+    "media": {
+      "title": "Traitement des fichiers",
+      "lead": "Le worker du serveur vérifie et traite les titres et images envoyés. Ici, tu vois ce qui attend et ce qui a échoué récemment.",
+      "audio": "Titres : {waiting} en attente, {processing} en cours.",
+      "images": "Images : {waiting} en attente, {processing} en cours.",
+      "oldest": "Le plus ancien attend depuis {when}.",
+      "stuck": "Des fichiers attendent depuis plus de 10 minutes - le worker semble arrêté ou n’atteint pas la base de données. Vérifie-le sur le serveur (TrueNAS → Apps → tunewick-audio).",
+      "denied": "Le worker n’a pas accès aux fichiers dans R2 (AccessDenied). Son token R2 doit avoir Object Read & Write sur le bucket d’envoi et tunewick-media, et les noms des buckets dans ses réglages doivent correspondre.",
+      "errors24h": "{count, plural, =0 {Aucune erreur de traitement ces dernières 24 h.} one {# erreur de traitement ces dernières 24 h.} other {# erreurs de traitement ces dernières 24 h.}}",
+      "kinds": {
+        "audio": "Titre",
+        "image": "Image",
+        "clip": "Clip",
+        "reanalysis": "Analyse"
+      }
     }
   },
   "Events": {

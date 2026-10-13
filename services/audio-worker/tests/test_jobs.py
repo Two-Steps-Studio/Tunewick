@@ -13,6 +13,7 @@ class FakeQueue:
         self.jobs = jobs
         self.finished: list[tuple[str, dict, list[dict]]] = []
         self.failed: list[str] = []
+        self.errors: list[str | None] = []
 
     def claim(self):
         return self.jobs.pop(0) if self.jobs else None
@@ -21,8 +22,9 @@ class FakeQueue:
         self.finished.append((upload_id, report, variants))
         return report["status"]
 
-    def fail(self, upload_id):
+    def fail(self, upload_id, error=None):
         self.failed.append(upload_id)
+        self.errors.append(error)
         return "uploaded"
 
 
@@ -95,6 +97,16 @@ def test_crash_puts_the_job_back(tmp_path):
     run_once(queue, FakeStorage({}, str(tmp_path)))  # download raises KeyError
     assert queue.failed == ["up-3"]
     assert queue.finished == []
+    # Why it crashed reaches Admin → Processing, as one line naming the error.
+    assert queue.errors == ["KeyError: 'masters/missing.wav'"]
+
+
+def test_describe_error_is_one_short_line():
+    from tunewick_audio.jobs import describe_error
+
+    assert describe_error(RuntimeError("Access\n  Denied")) == "RuntimeError: Access Denied"
+    assert describe_error(ValueError()) == "ValueError"
+    assert len(describe_error(RuntimeError("x" * 900))) == 500
 
 
 def test_public_report_drops_infinities():
@@ -107,6 +119,7 @@ class FakeImageQueue:
         self.jobs = jobs
         self.finished: list[tuple[str, dict]] = []
         self.failed: list[str] = []
+        self.errors: list[str | None] = []
 
     def claim_image(self):
         return self.jobs.pop(0) if self.jobs else None
@@ -115,8 +128,9 @@ class FakeImageQueue:
         self.finished.append((image_id, result))
         return result["status"]
 
-    def fail_image(self, image_id):
+    def fail_image(self, image_id, error=None):
         self.failed.append(image_id)
+        self.errors.append(error)
         return "uploaded"
 
 

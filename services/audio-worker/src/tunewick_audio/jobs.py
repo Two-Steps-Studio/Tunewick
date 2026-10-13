@@ -32,10 +32,16 @@ class Job:
     attempts: int
 
 
+def describe_error(error: BaseException) -> str:
+    """One line for Admin → Processing, e.g. "ClientError: ... (AccessDenied) ...". No traceback."""
+    text = " ".join(str(error).split())
+    return f"{type(error).__name__}: {text}"[:500] if text else type(error).__name__
+
+
 class Queue(Protocol):
     def claim(self) -> Job | None: ...
     def finish(self, upload_id: str, report: dict, variants: list[dict]) -> str: ...
-    def fail(self, upload_id: str) -> str: ...
+    def fail(self, upload_id: str, error: str | None = None) -> str: ...
 
 
 class Storage(Protocol):
@@ -119,12 +125,12 @@ def run_once(queue: Queue, storage: Storage) -> bool:
                 }
             )
         )
-    except Exception:
+    except Exception as error:
         log.exception(
             json.dumps({"event": "job_crashed", "upload": job.id, "attempt": job.attempts})
         )
         try:
-            queue.fail(job.id)
+            queue.fail(job.id, describe_error(error))
         except Exception:
             log.exception(json.dumps({"event": "fail_report_failed", "upload": job.id}))
     finally:

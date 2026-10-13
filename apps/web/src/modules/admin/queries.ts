@@ -12,6 +12,24 @@ export const AUDIT_FILTERS = [
 ] as const;
 export type AuditFilter = (typeof AUDIT_FILTERS)[number];
 
+interface MediaQueue {
+  waiting: number;
+  processing: number;
+  oldest_waiting_at: string | null;
+}
+
+/** File processing (the audio worker): queues and the latest errors it reported. */
+export interface MediaHealth {
+  audio: MediaQueue;
+  images: MediaQueue;
+  errors_24h: number;
+  recent_errors: { kind: "audio" | "image" | "clip" | "reanalysis"; message: string; at: string }[];
+  /** Something has waited longer than STUCK_MS: the worker is down or cannot reach the database. */
+  stuck: boolean;
+}
+
+const STUCK_MS = 10 * 60 * 1000;
+
 /** Everything the admin page shows (admin + aal2 - the database checks again). */
 export async function getAdminOverview(filter: AuditFilter | null) {
   const supabase = await createSupabaseServerClient();
@@ -20,7 +38,7 @@ export async function getAdminOverview(filter: AuditFilter | null) {
   const lastMonth = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - 1, 1))
     .toISOString()
     .slice(0, 10);
-  const [staff, flags, audit, playback, shares] = await Promise.all([
+  const [staff, flags, audit, playback, shares, media] = await Promise.all([
     supabase.rpc("admin_list_staff"),
     supabase.rpc("admin_list_feature_flags"),
     supabase.rpc("admin_audit_log", {
@@ -29,17 +47,28 @@ export async function getAdminOverview(filter: AuditFilter | null) {
     }),
     supabase.rpc("admin_playback_summary", { days: 7 }),
     supabase.rpc("admin_listening_shares", { month: lastMonth }),
+    supabase.rpc("admin_media_health"),
   ]);
   if (staff.error) throw staff.error;
   if (flags.error) throw flags.error;
   if (audit.error) throw audit.error;
   if (playback.error) throw playback.error;
   if (shares.error) throw shares.error;
+  if (media.error) throw media.error;
   return {
+    media: withStuck(media.data as unknown as Omit<MediaHealth, "stuck">),
     staff: staff.data,
     flags: flags.data,
     audit: audit.data,
     playback: playback.data,
     shares: { month: lastMonth, rows: shares.data },
   };
+}
+
+function withStuck(health: Omit<MediaHealth, "stuck">): MediaHealth {
+  const now = Date.now();
+  const stuck = [health.audio, health.images].some(
+    (q) => q.oldest_waiting_at !== null && now - Date.parse(q.oldest_waiting_at) > STUCK_MS,
+  );
+  return { ...health, stuck };
 }

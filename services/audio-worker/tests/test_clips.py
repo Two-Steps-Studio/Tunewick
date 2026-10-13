@@ -35,6 +35,7 @@ class FakeQueue:
         self.jobs = jobs
         self.finished: list[tuple[str, str | None, int | None]] = []
         self.failed: list[str] = []
+        self.errors: list[str | None] = []
 
     def claim_clip(self):
         return self.jobs.pop(0) if self.jobs else None
@@ -43,8 +44,9 @@ class FakeQueue:
         self.finished.append((clip_id, object_key, size))
         return "ready" if object_key else "failed"
 
-    def fail_clip(self, clip_id):
+    def fail_clip(self, clip_id, error=None):
         self.failed.append(clip_id)
+        self.errors.append(error)
         return "queued"
 
 

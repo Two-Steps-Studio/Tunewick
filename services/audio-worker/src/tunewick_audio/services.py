@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import contextlib
 import os
 
 import boto3
@@ -53,7 +54,16 @@ class SupabaseQueue:
             "finish_audio_upload", {"upload": upload_id, "report": report, "variants": variants}
         )
 
-    def fail(self, upload_id: str) -> str:
+    def report_error(self, kind: str, subject: str | None, message: str) -> None:
+        """Why a job crashed, for Admin → Processing. Best effort: never hides the failure."""
+        with contextlib.suppress(Exception):
+            self._call(
+                "report_worker_error", {"kind": kind, "subject": subject, "message": message[:500]}
+            )
+
+    def fail(self, upload_id: str, error: str | None = None) -> str:
+        if error:
+            self.report_error("audio", upload_id, error)
         return self._call("fail_audio_upload", {"upload": upload_id})
 
     def claim_image(self) -> ImageJob | None:
@@ -66,7 +76,9 @@ class SupabaseQueue:
     def finish_image(self, image_id: str, result: dict) -> str:
         return self._call("finish_image_upload", {"image": image_id, "result": result})
 
-    def fail_image(self, image_id: str) -> str:
+    def fail_image(self, image_id: str, error: str | None = None) -> str:
+        if error:
+            self.report_error("image", image_id, error)
         return self._call("fail_image_upload", {"image": image_id})
 
     def claim_clip(self) -> ClipJob | None:
@@ -89,7 +101,9 @@ class SupabaseQueue:
             "finish_share_clip", {"clip": clip_id, "object_key": object_key, "bytes": size}
         )
 
-    def fail_clip(self, clip_id: str) -> str:
+    def fail_clip(self, clip_id: str, error: str | None = None) -> str:
+        if error:
+            self.report_error("clip", clip_id, error)
         return self._call("fail_share_clip", {"clip": clip_id})
 
     def claim_reanalysis(self) -> ReanalysisJob | None:
