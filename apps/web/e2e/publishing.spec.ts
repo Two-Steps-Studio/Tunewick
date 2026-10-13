@@ -1,5 +1,12 @@
 import { expect, type Page, test } from "@playwright/test";
-import { createConfirmedUser, enableMfa, grantPremium, grantRole, solidPng } from "./helpers";
+import {
+  createConfirmedUser,
+  enableMfa,
+  expectNoSidewaysScroll,
+  grantPremium,
+  grantRole,
+  solidPng,
+} from "./helpers";
 
 // The whole path to listeners: artist → moderator (role + MFA) → anonymous listener.
 // Needs local S3 and the audio worker (pnpm media:start, pnpm worker:start).
@@ -223,6 +230,7 @@ test.describe("review and publishing", () => {
     // worker renders from the story card and the preview.
     const songPath = new URL(listener.url()).pathname;
     await listener.getByRole("button", { name: "Udostępnij" }).click();
+    await expectNoSidewaysScroll(listener);
     await listener.getByRole("button", { name: "Wideo do relacji (MP4)" }).click();
     await expect(listener.getByText("Zaloguj się, żeby przygotować wideo.")).toBeVisible();
     await listener.keyboard.press("Escape");

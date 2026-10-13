@@ -103,6 +103,15 @@ export async function enableMfa(page: Page) {
   return secret;
 }
 
+/** Nothing on the page reaches past the screen edge (phones would scroll sideways and zoom out). */
+export async function expectNoSidewaysScroll(page: Page) {
+  const { scrollWidth, clientWidth } = await page.evaluate(() => ({
+    scrollWidth: document.documentElement.scrollWidth,
+    clientWidth: document.documentElement.clientWidth,
+  }));
+  expect(scrollWidth).toBeLessThanOrEqual(clientWidth);
+}
+
 /** Grants a staff role in the local database (the same script admins use to bootstrap). */
 export function grantRole(email: string, role: "moderator" | "admin") {
   execFileSync(
