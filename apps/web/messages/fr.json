@@ -71,7 +71,11 @@
     "playNext": "Lire ensuite",
     "addToQueue": "Ajouter à la file d’attente",
     "queuedNext": "Sera lu ensuite.",
-    "queuedLast": "Ajouté à la file d’attente."
+    "queuedLast": "Ajouté à la file d’attente.",
+    "autoplay": "Lecture automatique",
+    "autoplayHint": "Quand ta file d’attente se termine, des titres similaires prennent le relais.",
+    "autoplayLabel": "Lecture automatique : titres similaires",
+    "autoplayNext": "Des titres similaires suivront."
   },
   "Scene": {
     "title": "Scène",

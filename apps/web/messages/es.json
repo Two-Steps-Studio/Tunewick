@@ -71,7 +71,11 @@
     "playNext": "Reproducir a continuación",
     "addToQueue": "Añadir a la cola",
     "queuedNext": "Sonará a continuación.",
-    "queuedLast": "Añadida a la cola."
+    "queuedLast": "Añadida a la cola.",
+    "autoplay": "Reproducción automática",
+    "autoplayHint": "Cuando termine tu cola, seguirán canciones parecidas.",
+    "autoplayLabel": "Reproducción automática: canciones parecidas",
+    "autoplayNext": "Después sonarán canciones parecidas."
   },
   "Scene": {
     "title": "Escena",

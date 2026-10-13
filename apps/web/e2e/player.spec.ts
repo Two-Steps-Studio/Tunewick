@@ -158,3 +158,22 @@ test("queue, repeat, shuffle and keyboard work like a music app", async ({ page 
   // (The volume slider is hidden on phones, so it is read directly.)
   await expect(bar.locator(".player-bar__volume")).toHaveValue("0");
 });
+
+test("autoplay can be switched off and the choice is remembered", async ({ page }) => {
+  await playAlbum(page, "high", "high");
+  const bar = player(page);
+  const autoplay = bar.getByRole("switch", { name: "Autoodtwarzanie" });
+
+  // On by default: the queue says similar songs follow; off, the queue just ends.
+  await bar.getByLabel("Kolejka").click();
+  await expect(autoplay).toBeChecked();
+  await autoplay.click();
+  await expect(autoplay).not.toBeChecked();
+  await bar.getByLabel("Kolejka").click();
+
+  await page.reload();
+  await page.getByRole("button", { name: "Play album" }).click();
+  await bar.getByLabel("Kolejka").click();
+  await expect(bar.getByRole("switch", { name: "Autoodtwarzanie" })).not.toBeChecked();
+  await bar.getByRole("switch", { name: "Autoodtwarzanie" }).click();
+});

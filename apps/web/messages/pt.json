@@ -71,7 +71,11 @@
     "playNext": "Tocar a seguir",
     "addToQueue": "Adicionar à fila",
     "queuedNext": "Toca a seguir.",
-    "queuedLast": "Adicionada à fila."
+    "queuedLast": "Adicionada à fila.",
+    "autoplay": "Reprodução automática",
+    "autoplayHint": "Quando a fila acabar, tocam músicas parecidas.",
+    "autoplayLabel": "Reprodução automática: músicas parecidas",
+    "autoplayNext": "Depois tocam músicas parecidas."
   },
   "Scene": {
     "title": "Cena",

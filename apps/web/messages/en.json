@@ -71,7 +71,11 @@
     "playNext": "Play next",
     "addToQueue": "Add to queue",
     "queuedNext": "Plays next.",
-    "queuedLast": "Added to the queue."
+    "queuedLast": "Added to the queue.",
+    "autoplay": "Autoplay",
+    "autoplayHint": "When your queue ends, similar songs keep playing.",
+    "autoplayLabel": "Autoplay: similar songs",
+    "autoplayNext": "Similar songs will play next."
   },
   "Scene": {
     "title": "Scene",

@@ -5,6 +5,7 @@ import { LegalLinks } from "@/modules/legal";
 import { LocaleSwitcher } from "./locale-switcher";
 import { MainNav } from "./main-nav";
 import { TouchPress } from "./touch-press";
+import { getAutoplayTracks } from "@/modules/discover";
 import { ProgressNotices } from "@/modules/notices";
 import { PlayerBar } from "@/modules/player";
 import { PlayerAddToPlaylist } from "@/modules/playlists";
@@ -60,7 +61,11 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
       </main>
       <div className="site-bottom">
         <ProgressNotices />
-        <PlayerBar reportListens={user !== null} actions={user ? <PlayerAddToPlaylist /> : null} />
+        <PlayerBar
+          reportListens={user !== null}
+          actions={user ? <PlayerAddToPlaylist /> : null}
+          autoplay={getAutoplayTracks}
+        />
         <MainNav variant="bottom" />
       </div>
     </>

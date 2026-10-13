@@ -944,6 +944,23 @@ summary,
       text-decoration: underline;
     }
   }
+  .queue-menu__switch {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--tk-space-3);
+    min-height: 2.75rem;
+    padding-top: var(--tk-space-2);
+    border-top: 1px solid var(--line);
+    cursor: pointer;
+  }
+  .queue-menu__switch > span {
+    display: grid;
+    min-width: 0;
+  }
+  .queue-menu__switch .queue-menu__artist {
+    white-space: normal;
+  }
   .queue-actions {
     display: flex;
     flex-wrap: wrap;

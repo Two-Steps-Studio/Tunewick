@@ -2,7 +2,7 @@
 
 import { describeQuality, type QualityDescription } from "@tunewick/shared";
 import { useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { getPlayer, startListeningReports, usePlayerState } from "../store";
 import type { NowPlaying, PlayerState, PlayerTrack } from "../types";
 
@@ -67,7 +67,39 @@ function LineIcon({ name }: { name: "shuffle" | "repeat" | "repeatOne" | "queue"
   );
 }
 
-/** What plays next: tap an item to play it, remove the ones you don't want. */
+function QueueList({ items }: { items: { track: PlayerTrack; index: number }[] }) {
+  const t = useTranslations("Player");
+  const player = getPlayer();
+  return (
+    <ol className="queue-menu__list">
+      {items.map(({ track, index }) => (
+        <li key={`${index}:${track.id}`} className="queue-menu__item">
+          <button
+            type="button"
+            className="queue-menu__play"
+            onClick={() => void player.playAt(index)}
+          >
+            <span className="queue-menu__title">{track.title}</span>
+            <span className="queue-menu__artist">{track.artist}</span>
+          </button>
+          <button
+            type="button"
+            className="player-button"
+            onClick={() => player.removeFromQueue(index)}
+            aria-label={t("removeFromQueue", { title: track.title })}
+          >
+            <LineIcon name="close" />
+          </button>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
+/**
+ * What plays next: tap an item to play it, remove the ones you don't want. Songs autoplay added
+ * come in their own section, below the listener's own, with the autoplay switch.
+ */
 function QueueMenu({ state }: { state: PlayerState }) {
   const t = useTranslations("Player");
   const player = getPlayer();
@@ -75,9 +107,12 @@ function QueueMenu({ state }: { state: PlayerState }) {
     .map((track, index) => ({ track, index }))
     .slice(state.index + 1, state.index + 51);
   const more = state.queue.length - state.index - 1 - upcoming.length;
+  const mine = upcoming.filter(({ track }) => !track.autoplay);
+  const mixed = upcoming.filter(({ track }) => track.autoplay);
   const current = state.queue[state.index];
   // Rendered only while open: the bar re-renders every tick, a hidden list would too.
   const [open, setOpen] = useState(false);
+  const id = useId();
   return (
     <details className="queue-menu" onToggle={(event) => setOpen(event.currentTarget.open)}>
       <summary className="player-button" aria-label={t("queue")}>
@@ -92,36 +127,44 @@ function QueueMenu({ state }: { state: PlayerState }) {
               <span className="queue-menu__artist">{current.artist}</span>
             </p>
           ) : null}
-          <p className="queue-menu__label">{t("upNext")}</p>
-          {upcoming.length ? (
-            <ol className="queue-menu__list">
-              {upcoming.map(({ track, index }) => (
-                <li key={`${index}:${track.id}`} className="queue-menu__item">
-                  <button
-                    type="button"
-                    className="queue-menu__play"
-                    onClick={() => void player.playAt(index)}
-                  >
-                    <span className="queue-menu__title">{track.title}</span>
-                    <span className="queue-menu__artist">{track.artist}</span>
-                  </button>
-                  <button
-                    type="button"
-                    className="player-button"
-                    onClick={() => player.removeFromQueue(index)}
-                    aria-label={t("removeFromQueue", { title: track.title })}
-                  >
-                    <LineIcon name="close" />
-                  </button>
-                </li>
-              ))}
-            </ol>
-          ) : (
+          {mine.length || !mixed.length ? <p className="queue-menu__label">{t("upNext")}</p> : null}
+          {mine.length ? (
+            <QueueList items={mine} />
+          ) : mixed.length ? null : (
             <p className="field__hint">
-              {state.repeat === "all" ? t("queueRepeats") : t("queueEmpty")}
+              {state.repeat === "all"
+                ? t("queueRepeats")
+                : state.autoplay && state.repeat === "off"
+                  ? t("autoplayNext")
+                  : t("queueEmpty")}
             </p>
           )}
+          {mixed.length ? (
+            <>
+              <p className="queue-menu__label">{t("autoplayLabel")}</p>
+              <QueueList items={mixed} />
+            </>
+          ) : null}
           {more > 0 ? <p className="field__hint">{t("queueMore", { count: more })}</p> : null}
+          <label className="queue-menu__switch">
+            <span>
+              <span className="queue-menu__title" id={`${id}-autoplay`}>
+                {t("autoplay")}
+              </span>
+              <span className="queue-menu__artist" id={`${id}-autoplay-hint`}>
+                {t("autoplayHint")}
+              </span>
+            </span>
+            <input
+              type="checkbox"
+              role="switch"
+              aria-labelledby={`${id}-autoplay`}
+              aria-describedby={`${id}-autoplay-hint`}
+              className="field__checkbox"
+              checked={state.autoplay}
+              onChange={() => player.toggleAutoplay()}
+            />
+          </label>
         </div>
       ) : null}
     </details>
@@ -173,23 +216,32 @@ function QualityChip({ quality, now }: { quality: QualityDescription; now: NowPl
 /**
  * Persistent player in the shell. With an empty queue it shows the honest idle state - no fake
  * track, no dead controls.
- */
-/**
+ *
  * `reportListens`: keep a listening history for the signed-in listener. `actions`: extra controls
  * for the current track from other modules (e.g. add to playlist), shown while something plays.
  */
 export function PlayerBar({
   reportListens = false,
   actions = null,
+  autoplay,
 }: {
   reportListens?: boolean;
   actions?: React.ReactNode;
+  /** Songs like a seed, for when the queue runs out (a server action of another module). */
+  autoplay?: (seedId: string, exclude: string[]) => Promise<{ tracks: PlayerTrack[] }>;
 }) {
   const t = useTranslations("Player");
   const state = usePlayerState();
   useEffect(() => {
     if (reportListens) startListeningReports();
   }, [reportListens]);
+  useEffect(() => {
+    if (autoplay) {
+      getPlayer().setAutoplaySource(
+        async (seed, exclude) => (await autoplay(seed, exclude)).tracks,
+      );
+    }
+  }, [autoplay]);
 
   // Keyboard: Space play/pause, ←/→ previous/next track, M mute. Never while
   // typing or on a focused control (they keep their own keys); no animation on keyboard actions.
@@ -266,7 +318,11 @@ export function PlayerBar({
           type="button"
           className="player-button"
           onClick={() => void player.next()}
-          disabled={state.index >= state.queue.length - 1 && state.repeat !== "all"}
+          disabled={
+            state.index >= state.queue.length - 1 &&
+            state.repeat !== "all" &&
+            !(state.autoplay && state.repeat === "off" && !state.clip)
+          }
           aria-label={t("next")}
         >
           <Icon name="next" />

@@ -71,7 +71,11 @@
     "playNext": "Als Nächstes abspielen",
     "addToQueue": "Zur Warteschlange hinzufügen",
     "queuedNext": "Läuft als Nächstes.",
-    "queuedLast": "Zur Warteschlange hinzugefügt."
+    "queuedLast": "Zur Warteschlange hinzugefügt.",
+    "autoplay": "Autoplay",
+    "autoplayHint": "Wenn deine Warteschlange endet, laufen ähnliche Songs weiter.",
+    "autoplayLabel": "Autoplay: ähnliche Songs",
+    "autoplayNext": "Danach laufen ähnliche Songs."
   },
   "Scene": {
     "title": "Szene",
