@@ -16,7 +16,7 @@ from dataclasses import dataclass
 from typing import Protocol
 
 from .ffmpeg import run_ffmpeg
-from .jobs import Storage
+from .jobs import Storage, describe_error
 
 log = logging.getLogger("tunewick_audio.clips")
 
@@ -39,7 +39,7 @@ class ClipJob:
 class ClipQueue(Protocol):
     def claim_clip(self) -> ClipJob | None: ...
     def finish_clip(self, clip_id: str, object_key: str | None, size: int | None) -> str: ...
-    def fail_clip(self, clip_id: str) -> str: ...
+    def fail_clip(self, clip_id: str, error: str | None = None) -> str: ...
 
 
 class ClipStorage(Storage, Protocol):
@@ -105,12 +105,12 @@ def run_clip_once(queue: ClipQueue, storage: ClipStorage) -> bool:
         log.info(
             json.dumps({"event": "clip_done", "clip": job.id, "status": status, "bytes": size})
         )
-    except Exception:
+    except Exception as error:
         log.exception(
             json.dumps({"event": "clip_crashed", "clip": job.id, "attempt": job.attempts})
         )
         try:
-            queue.fail_clip(job.id)
+            queue.fail_clip(job.id, describe_error(error))
         except Exception:
             log.exception(json.dumps({"event": "fail_report_failed", "clip": job.id}))
     finally:

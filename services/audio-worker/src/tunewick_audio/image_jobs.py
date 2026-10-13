@@ -11,7 +11,7 @@ from dataclasses import dataclass
 from typing import Protocol
 
 from .images import process_image
-from .jobs import Storage
+from .jobs import Storage, describe_error
 
 log = logging.getLogger("tunewick_audio.image_jobs")
 
@@ -27,7 +27,7 @@ class ImageJob:
 class ImageQueue(Protocol):
     def claim_image(self) -> ImageJob | None: ...
     def finish_image(self, image_id: str, result: dict) -> str: ...
-    def fail_image(self, image_id: str) -> str: ...
+    def fail_image(self, image_id: str, error: str | None = None) -> str: ...
 
 
 def run_image_once(queue: ImageQueue, storage: Storage) -> bool:
@@ -66,10 +66,10 @@ def run_image_once(queue: ImageQueue, storage: Storage) -> bool:
                 }
             )
         )
-    except Exception:
+    except Exception as error:
         log.exception(json.dumps({"event": "image_crashed", "image": job.id}))
         try:
-            queue.fail_image(job.id)
+            queue.fail_image(job.id, describe_error(error))
         except Exception:
             log.exception(json.dumps({"event": "fail_report_failed", "image": job.id}))
     finally:

@@ -1125,6 +1125,22 @@
       "handleNotFound": "No account has this profile name. Check it under Account → Profile name (address), without @.",
       "daysInvalid": "Enter a number of days from 1 to 3660, or leave it empty (for life).",
       "noteShort": "Enter a reason (at least 3 characters) - it goes into the change log."
+    },
+    "media": {
+      "title": "File processing",
+      "lead": "The worker on the server checks and processes uploaded tracks and images. Here you see what is waiting and what failed recently.",
+      "audio": "Tracks: {waiting} waiting, {processing} in progress.",
+      "images": "Images: {waiting} waiting, {processing} in progress.",
+      "oldest": "The oldest has waited since {when}.",
+      "stuck": "Files have been waiting for more than 10 minutes - the worker seems down or cannot reach the database. Check it on the server (TrueNAS → Apps → tunewick-audio).",
+      "denied": "The worker cannot access files in R2 (AccessDenied). Its R2 token needs Object Read & Write on the uploads bucket and tunewick-media, and the bucket names in its settings must match.",
+      "errors24h": "{count, plural, =0 {No processing errors in the last day.} one {# processing error in the last day.} other {# processing errors in the last day.}}",
+      "kinds": {
+        "audio": "Track",
+        "image": "Image",
+        "clip": "Clip",
+        "reanalysis": "Analysis"
+      }
     }
   },
   "Events": {

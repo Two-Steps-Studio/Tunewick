@@ -2416,6 +2416,7 @@ export type Database = {
           qualified_plays: number;
         }[];
       };
+      admin_media_health: { Args: Record<PropertyKey, never>; Returns: Json };
       admin_playback_summary: {
         Args: { days?: number };
         Returns: {
@@ -3188,6 +3189,10 @@ export type Database = {
           strategy?: string;
           tier?: Database["public"]["Enums"]["quality_tier"];
         };
+        Returns: undefined;
+      };
+      report_worker_error: {
+        Args: { kind: string; message: string; subject: string };
         Returns: undefined;
       };
       request_artist_verification: {

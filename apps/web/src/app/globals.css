@@ -1828,6 +1828,10 @@ body {
     font-weight: 700;
   }
 
+  .media-error {
+    overflow-wrap: anywhere;
+  }
+
   /* Rarely needed fields, folded ("More options") */
   .form-more summary {
     cursor: pointer;
