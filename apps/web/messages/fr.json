@@ -457,6 +457,18 @@
       "x": "X",
       "facebook": "Facebook",
       "other": "Lien"
+    },
+    "songStats": {
+      "title": "Tes titres",
+      "lead": "Auditeurs et écoutes des 28 derniers jours (une écoute compte à partir de 30 secondes, les soundchecks non). Enregistrements, j’aime et playlists depuis le début. Des chiffres seulement, jamais qui.",
+      "empty": "Les chiffres apparaîtront ici dès ta première sortie publiée.",
+      "song": "Titre",
+      "listeners": "Auditeurs",
+      "plays": "Écoutes",
+      "completion": "Jusqu’au bout",
+      "saves": "Enregistrements",
+      "likes": "J’aime",
+      "playlists": "Dans des playlists"
     }
   },
   "Releases": {

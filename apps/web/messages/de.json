@@ -457,6 +457,18 @@
       "x": "X",
       "facebook": "Facebook",
       "other": "Link"
+    },
+    "songStats": {
+      "title": "Deine Songs",
+      "lead": "Hörer und Plays der letzten 28 Tage (ein Play zählt ab 30 Sekunden, Soundchecks nicht). Gespeichert, Likes und Playlists seit Beginn. Nur Zahlen - nie wer.",
+      "empty": "Zahlen erscheinen hier, sobald dein erstes Release veröffentlicht ist.",
+      "song": "Song",
+      "listeners": "Hörer",
+      "plays": "Plays",
+      "completion": "Bis zum Ende",
+      "saves": "Gespeichert",
+      "likes": "Likes",
+      "playlists": "In Playlists"
     }
   },
   "Releases": {

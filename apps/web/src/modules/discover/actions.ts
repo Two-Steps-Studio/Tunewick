@@ -6,11 +6,10 @@ import { cookies } from "next/headers";
 import { z } from "zod";
 import { routing } from "@/i18n/routing";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import { getPlayableQueue, getPlayableTracks, listenerEntitlement } from "@/modules/audio";
+import { getPlayableTracks, listenerEntitlement } from "@/modules/audio";
 import { getImageSourcesMany, type ImageSources } from "@/modules/images";
 import type { PlayerTrack } from "@/modules/player";
 import { clipState, startClip } from "./clips";
-import { rankRadio } from "./feed";
 import { VISITOR_COOKIE } from "./preferences";
 
 /**
@@ -162,27 +161,6 @@ export async function getFullPlayback(trackId: string): Promise<{
   );
   const index = tracks.findIndex((t) => t.id === trackId);
   return index === -1 ? null : { tracks, index, entitlement };
-}
-
-/**
- * Autoplay: a few playable songs like `trackId` for when the player's queue runs out. `exclude`:
- * the songs already in the queue. Empty when nothing fits (the player then just stops).
- */
-export async function getAutoplayTracks(
-  trackId: string,
-  exclude: string[],
-): Promise<{ tracks: PlayerTrack[] }> {
-  const input = z
-    .object({ trackId: z.uuid(), exclude: z.array(z.uuid()).max(500) })
-    .safeParse({ trackId, exclude: exclude.slice(-500) });
-  if (!input.success) return { tracks: [] };
-  try {
-    const items = await rankRadio(input.data.trackId, input.data.exclude, 8);
-    const playable = await getPlayableQueue(items, await listenerEntitlement());
-    return { tracks: playable.filter((t): t is PlayerTrack => t !== null).slice(0, 5) };
-  } catch {
-    return { tracks: [] };
-  }
 }
 
 export interface SuggestedArtist {

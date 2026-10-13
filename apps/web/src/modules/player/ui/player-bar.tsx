@@ -3,7 +3,7 @@
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { getPlayer, startListeningReports, usePlayerState } from "../store";
-import type { PlayerState, PlayerTrack } from "../types";
+import type { PlayerState } from "../types";
 import { NowPlaying } from "./now-playing";
 import {
   canGoNext,
@@ -62,25 +62,15 @@ function ownsKeys(target: EventTarget | null) {
 export function PlayerBar({
   reportListens = false,
   actions = null,
-  autoplay,
 }: {
   reportListens?: boolean;
   actions?: React.ReactNode;
-  /** Songs like a seed, for when the queue runs out (a server action of another module). */
-  autoplay?: (seedId: string, exclude: string[]) => Promise<{ tracks: PlayerTrack[] }>;
 }) {
   const t = useTranslations("Player");
   const state = usePlayerState();
   useEffect(() => {
     if (reportListens) startListeningReports();
   }, [reportListens]);
-  useEffect(() => {
-    if (autoplay) {
-      getPlayer().setAutoplaySource(
-        async (seed, exclude) => (await autoplay(seed, exclude)).tracks,
-      );
-    }
-  }, [autoplay]);
 
   // Keyboard: Space play/pause, ←/→ previous/next track, M mute. Never while
   // typing or on a focused control (they keep their own keys); no animation on keyboard actions.

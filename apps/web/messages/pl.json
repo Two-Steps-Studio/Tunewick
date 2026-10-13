@@ -457,6 +457,18 @@
       "x": "X",
       "facebook": "Facebook",
       "other": "Link"
+    },
+    "songStats": {
+      "title": "Twoje utwory",
+      "lead": "Słuchacze i odtworzenia z ostatnich 28 dni (odtworzenie liczy się od 30 sekund, soundchecki nie). Zapisy, polubienia i playlisty od początku. Same liczby - nigdy kto.",
+      "empty": "Liczby pojawią się tu po opublikowaniu pierwszego wydawnictwa.",
+      "song": "Utwór",
+      "listeners": "Słuchacze",
+      "plays": "Odtworzenia",
+      "completion": "Do końca",
+      "saves": "Zapisy",
+      "likes": "Polubienia",
+      "playlists": "Na playlistach"
     }
   },
   "Releases": {

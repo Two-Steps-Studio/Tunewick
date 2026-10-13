@@ -1720,6 +1720,10 @@ summary,
     display: grid;
     gap: var(--tk-space-12);
   }
+  /* Wide content (a table) never widens the columns past the screen. */
+  .auth-page > * {
+    min-width: 0;
+  }
   @media (min-width: 1024px) {
     .auth-page {
       grid-template-columns: 1.3fr 1fr;
@@ -2267,6 +2271,78 @@ summary,
   }
 
   /* Artists --------------------------------------------------------------- */
+  /* Per-song stats: a table where there is room; in a narrow column (the manage page, phones)
+     each song is a card of labelled numbers. */
+  .song-stats-box {
+    container: song-stats / inline-size;
+  }
+  .song-stats {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--tk-text-sm);
+    font-variant-numeric: tabular-nums;
+  }
+  .song-stats th,
+  .song-stats td {
+    padding: var(--tk-space-2);
+    border-bottom: 1px solid var(--line);
+    text-align: right;
+    font-weight: 400;
+  }
+  .song-stats thead th {
+    font-family: var(--tk-font-mono);
+    font-size: var(--tk-text-xs);
+    color: var(--text-muted);
+    vertical-align: bottom;
+  }
+  .song-stats th:first-child {
+    text-align: left;
+  }
+  .song-stats tbody th {
+    display: grid;
+    min-width: 0;
+  }
+  .song-stats__title {
+    font-weight: 600;
+    overflow-wrap: anywhere;
+  }
+  .song-stats__release {
+    color: var(--text-muted);
+    font-size: var(--tk-text-xs);
+    overflow-wrap: anywhere;
+  }
+  @container song-stats (max-width: 40rem) {
+    .song-stats thead {
+      display: none;
+    }
+    .song-stats tr {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--tk-space-2) var(--tk-space-3);
+      padding: var(--tk-space-3) 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .song-stats th,
+    .song-stats td {
+      padding: 0;
+      border: 0;
+      text-align: left;
+    }
+    .song-stats tbody th {
+      grid-column: 1 / -1;
+    }
+    .song-stats td {
+      display: grid;
+      font-weight: 600;
+    }
+    .song-stats td::before {
+      content: attr(data-label);
+      font-family: var(--tk-font-mono);
+      font-size: var(--tk-text-xs);
+      font-weight: 400;
+      color: var(--text-muted);
+    }
+  }
   .section-title {
     font-family: var(--tk-font-display);
     font-size: var(--tk-text-xl);

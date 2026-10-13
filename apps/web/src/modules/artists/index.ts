@@ -19,4 +19,5 @@ export {
 } from "./ui/forms";
 export { MyArtists } from "./ui/my-artists";
 export { ArtistListening } from "./ui/artist-listening";
+export { ArtistSongStats } from "./ui/artist-song-stats";
 export { ArtistDiscovery, ArtistDiscoveryTeam } from "./ui/artist-discovery";

@@ -2520,6 +2520,20 @@ export type Database = {
           track_id: string;
         }[];
       };
+      artist_track_stats: {
+        Args: { artist: string };
+        Returns: {
+          completion_rate: number;
+          likes: number;
+          listeners_28d: number;
+          playlist_adds: number;
+          plays_28d: number;
+          release_title: string;
+          saves: number;
+          title: string;
+          track_id: string;
+        }[];
+      };
       atlas_city: { Args: { city: string; code: string }; Returns: Json };
       atlas_countries: {
         Args: Record<PropertyKey, never>;
