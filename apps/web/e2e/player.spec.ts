@@ -150,9 +150,9 @@ test("queue, repeat, shuffle and keyboard work like a music app", async ({ page 
   await shuffle.click();
   await expect(shuffle).toHaveAttribute("aria-pressed", "false");
 
-  // Keyboard (focus on the page, not on a control): Shift+→ next track, M mutes.
+  // Keyboard (focus on the page, not on a control): → next track, M mutes.
   await page.evaluate(() => (document.activeElement as HTMLElement | null)?.blur());
-  await page.keyboard.press("Shift+ArrowRight");
+  await page.keyboard.press("ArrowRight");
   await expect(nowTitle).toHaveText("Sweep 2");
   await page.keyboard.press("m");
   // (The volume slider is hidden on phones, so it is read directly.)

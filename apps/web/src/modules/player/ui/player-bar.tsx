@@ -191,7 +191,7 @@ export function PlayerBar({
     if (reportListens) startListeningReports();
   }, [reportListens]);
 
-  // Keyboard: Space play/pause, ←/→ 10 s, Shift+←/→ previous/next track, M mute. Never while
+  // Keyboard: Space play/pause, ←/→ previous/next track, M mute. Never while
   // typing or on a focused control (they keep their own keys); no animation on keyboard actions.
   useEffect(() => {
     function onKey(event: KeyboardEvent) {
@@ -201,8 +201,8 @@ export function PlayerBar({
       if (!player.getState().queue.length) return;
       const actions: Record<string, () => void> = {
         " ": () => player.toggle(),
-        ArrowRight: () => void (event.shiftKey ? player.next() : player.skipBy(10)),
-        ArrowLeft: () => void (event.shiftKey ? player.previous() : player.skipBy(-10)),
+        ArrowRight: () => void player.next(),
+        ArrowLeft: () => void player.previous(),
         m: () => player.toggleMute(),
         M: () => player.toggleMute(),
       };
