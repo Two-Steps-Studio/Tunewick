@@ -57,25 +57,30 @@ export function NewReleaseForm({ artist }: { artist: { id: string; slug: string 
         required
         onChange={(e) => !touched && setSlug(slugify(e.target.value, 80))}
       />
-      <InputField
-        name="slug"
-        label={t("fields.slug")}
-        value={slug}
-        onChange={(e) => {
-          setTouched(true);
-          setSlug(e.target.value);
-        }}
-        autoCapitalize="none"
-        spellCheck={false}
-        error={err(state.fieldErrors?.slug)}
-        required
-      />
       <SelectField
         name="type"
         label={t("fields.type")}
         defaultValue={state.values?.type ?? "single"}
         options={RELEASE_TYPES.map((v) => ({ value: v, label: t(`types.${v}`) }))}
       />
+      {/* The address follows the title by itself; changing it is rarely needed. */}
+      <details className="form-more" open={Boolean(state.fieldErrors?.slug)}>
+        <summary>{t("editor.more")}</summary>
+        <InputField
+          name="slug"
+          label={t("fields.slug")}
+          hint={t("fields.slugHint")}
+          value={slug}
+          onChange={(e) => {
+            setTouched(true);
+            setSlug(e.target.value);
+          }}
+          autoCapitalize="none"
+          spellCheck={false}
+          error={err(state.fieldErrors?.slug)}
+          required
+        />
+      </details>
       <Submit>{t("create.submit")}</Submit>
     </form>
   );
