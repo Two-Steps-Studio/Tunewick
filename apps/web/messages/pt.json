@@ -1141,7 +1141,8 @@
         "clip": "Clipe",
         "reanalysis": "Análise"
       }
-    }
+    },
+    "databaseBehind": "O banco de dados é mais antigo que o app (faltam migrações até a versão {version}). Cole supabase/bundle/tunewick-migracje.sql em Supabase → SQL Editor e execute - algumas funções não funcionam até lá."
   },
   "Events": {
     "badge": "Show",

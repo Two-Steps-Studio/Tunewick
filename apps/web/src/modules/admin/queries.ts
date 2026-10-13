@@ -1,5 +1,6 @@
 import "server-only";
 
+import { SCHEMA_VERSION } from "@/lib/schema-version";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export const AUDIT_FILTERS = [
@@ -38,7 +39,7 @@ export async function getAdminOverview(filter: AuditFilter | null) {
   const lastMonth = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - 1, 1))
     .toISOString()
     .slice(0, 10);
-  const [staff, flags, audit, playback, shares, media] = await Promise.all([
+  const [staff, flags, audit, playback, shares, media, schema] = await Promise.all([
     supabase.rpc("admin_list_staff"),
     supabase.rpc("admin_list_feature_flags"),
     supabase.rpc("admin_audit_log", {
@@ -48,15 +49,18 @@ export async function getAdminOverview(filter: AuditFilter | null) {
     supabase.rpc("admin_playback_summary", { days: 7 }),
     supabase.rpc("admin_listening_shares", { month: lastMonth }),
     supabase.rpc("admin_media_health"),
+    supabase.rpc("admin_schema_version"),
   ]);
   if (staff.error) throw staff.error;
   if (flags.error) throw flags.error;
   if (audit.error) throw audit.error;
   if (playback.error) throw playback.error;
   if (shares.error) throw shares.error;
-  if (media.error) throw media.error;
   return {
-    media: withStuck(media.data as unknown as Omit<MediaHealth, "stuck">),
+    // These two depend on the newest migrations: without them the rest of the panel still works
+    // and says the database is behind.
+    media: media.error ? null : withStuck(media.data as unknown as Omit<MediaHealth, "stuck">),
+    databaseBehind: schema.error || !schema.data || schema.data < SCHEMA_VERSION,
     staff: staff.data,
     flags: flags.data,
     audit: audit.data,

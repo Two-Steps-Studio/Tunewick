@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
 import { getPathname, Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
+import { SCHEMA_VERSION } from "@/lib/schema-version";
 import {
   AUDIT_FILTERS,
   type AuditFilter,
@@ -31,8 +32,9 @@ export default async function AdminPage({ params, searchParams }: PageProps<"/[l
   const filter = AUDIT_FILTERS.includes(filterParam as AuditFilter)
     ? (filterParam as AuditFilter)
     : null;
-  const { media, staff, flags, audit, playback, shares } = await getAdminOverview(filter);
-  const storageDenied = media.recent_errors.some((e) =>
+  const { media, databaseBehind, staff, flags, audit, playback, shares } =
+    await getAdminOverview(filter);
+  const storageDenied = media?.recent_errors.some((e) =>
     /AccessDenied|NoSuchBucket|403/.test(e.message),
   );
   const t = await getTranslations("Admin");
@@ -49,46 +51,53 @@ export default async function AdminPage({ params, searchParams }: PageProps<"/[l
         </p>
       </div>
       <div className="auth-page__body">
-        <section className="settings-form__group" aria-labelledby="media">
-          <h2 id="media" className="section-title">
-            {t("media.title")}
-          </h2>
-          <p className="field__hint">{t("media.lead")}</p>
-          <ul className="readiness">
-            {(["audio", "images"] as const).map((kind) => (
-              <li
-                key={kind}
-                className={media[kind].waiting === 0 ? "readiness__done" : "readiness__todo"}
-              >
-                {t(`media.${kind}`, {
-                  waiting: media[kind].waiting,
-                  processing: media[kind].processing,
-                })}
-                {media[kind].oldest_waiting_at
-                  ? ` ${t("media.oldest", {
-                      when: format.relativeTime(new Date(media[kind].oldest_waiting_at!)),
-                    })}`
-                  : ""}
-              </li>
-            ))}
-          </ul>
-          {media.stuck ? <p className="form-error">{t("media.stuck")}</p> : null}
-          {storageDenied ? <p className="form-error">{t("media.denied")}</p> : null}
-          <p className="field__hint">{t("media.errors24h", { count: media.errors_24h })}</p>
-          {media.recent_errors.length ? (
-            <ul className="artist-list">
-              {media.recent_errors.map((e) => (
-                <li key={e.at} className="artist-list__item">
-                  <span className="artist-list__name">
-                    {t(`media.kinds.${e.kind}`)} ·{" "}
-                    {format.dateTime(new Date(e.at), { dateStyle: "short", timeStyle: "short" })}
-                  </span>
-                  <code className="field__hint media-error">{e.message}</code>
+        {databaseBehind ? (
+          <p className="form-error" role="alert">
+            {t("databaseBehind", { version: SCHEMA_VERSION })}
+          </p>
+        ) : null}
+        {media ? (
+          <section className="settings-form__group" aria-labelledby="media">
+            <h2 id="media" className="section-title">
+              {t("media.title")}
+            </h2>
+            <p className="field__hint">{t("media.lead")}</p>
+            <ul className="readiness">
+              {(["audio", "images"] as const).map((kind) => (
+                <li
+                  key={kind}
+                  className={media[kind].waiting === 0 ? "readiness__done" : "readiness__todo"}
+                >
+                  {t(`media.${kind}`, {
+                    waiting: media[kind].waiting,
+                    processing: media[kind].processing,
+                  })}
+                  {media[kind].oldest_waiting_at
+                    ? ` ${t("media.oldest", {
+                        when: format.relativeTime(new Date(media[kind].oldest_waiting_at!)),
+                      })}`
+                    : ""}
                 </li>
               ))}
             </ul>
-          ) : null}
-        </section>
+            {media.stuck ? <p className="form-error">{t("media.stuck")}</p> : null}
+            {storageDenied ? <p className="form-error">{t("media.denied")}</p> : null}
+            <p className="field__hint">{t("media.errors24h", { count: media.errors_24h })}</p>
+            {media.recent_errors.length ? (
+              <ul className="artist-list">
+                {media.recent_errors.map((e) => (
+                  <li key={e.at} className="artist-list__item">
+                    <span className="artist-list__name">
+                      {t(`media.kinds.${e.kind}`)} ·{" "}
+                      {format.dateTime(new Date(e.at), { dateStyle: "short", timeStyle: "short" })}
+                    </span>
+                    <code className="field__hint media-error">{e.message}</code>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+          </section>
+        ) : null}
 
         <section className="settings-form__group" aria-labelledby="staff">
           <h2 id="staff" className="section-title">

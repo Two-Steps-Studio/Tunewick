@@ -1141,7 +1141,8 @@
         "clip": "Clip",
         "reanalysis": "Analyse"
       }
-    }
+    },
+    "databaseBehind": "Die Datenbank ist älter als die App (Migrationen bis Version {version} fehlen). Füge supabase/bundle/tunewick-migracje.sql im Supabase → SQL Editor ein und führe es aus - bis dahin funktionieren manche Funktionen nicht."
   },
   "Events": {
     "badge": "Gig",

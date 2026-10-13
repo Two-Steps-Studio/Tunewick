@@ -3,7 +3,7 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set search_path = public, extensions;
 
-select plan(8);
+select plan(10);
 
 insert into auth.users (id, email, raw_app_meta_data, aud, role)
 values
@@ -29,6 +29,10 @@ select lives_ok($$select admin_revoke_role('00000000-0000-0000-0000-0000000004a2
 select is((select actor_handle || ' ' || action from admin_audit_log(5, 'role.') limit 1), 'ap-admin-test role.revoke',
   'the audit log shows who did what, newest first, filtered by prefix');
 select ok((select count(*) > 0 from admin_list_feature_flags() where key = 'closed_beta'), 'feature flags are listed');
+select ok(admin_schema_version() >= '20261013110000', 'admins see the newest applied migration');
+
+set local request.jwt.claims = '{"sub": "00000000-0000-0000-0000-0000000004a2", "role": "authenticated", "aal": "aal2"}';
+select throws_ok($$select admin_schema_version()$$, '42501', null, 'others do not');
 
 select * from finish();
 rollback;

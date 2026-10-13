@@ -2440,6 +2440,7 @@ export type Database = {
         Args: { role: Database["public"]["Enums"]["app_role"]; target_user: string };
         Returns: undefined;
       };
+      admin_schema_version: { Args: Record<PropertyKey, never>; Returns: string };
       admin_set_feature_flag: { Args: { enabled: boolean; flag: string }; Returns: undefined };
       admin_set_promo_campaign_active: {
         Args: { active: boolean; campaign: string };

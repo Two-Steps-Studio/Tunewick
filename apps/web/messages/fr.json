@@ -1141,7 +1141,8 @@
         "clip": "Clip",
         "reanalysis": "Analyse"
       }
-    }
+    },
+    "databaseBehind": "La base de données est plus ancienne que l’application (il manque les migrations jusqu’à la version {version}). Colle supabase/bundle/tunewick-migracje.sql dans Supabase → SQL Editor et exécute-le - certaines fonctions ne marchent pas d’ici là."
   },
   "Events": {
     "badge": "Concert",
