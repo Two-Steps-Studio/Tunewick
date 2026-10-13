@@ -71,7 +71,13 @@
     "playNext": "Odtwórz jako następny",
     "addToQueue": "Dodaj do kolejki",
     "queuedNext": "Zagra jako następny.",
-    "queuedLast": "Dodano do kolejki."
+    "queuedLast": "Dodano do kolejki.",
+    "autoplay": "Autoodtwarzanie",
+    "autoplayHint": "Gdy kolejka się skończy, zagrają podobne utwory.",
+    "autoplayLabel": "Autoodtwarzanie: podobne utwory",
+    "autoplayNext": "Potem zagrają podobne utwory.",
+    "openNowPlaying": "Pokaż odtwarzacz na pełnym ekranie",
+    "closeNowPlaying": "Zwiń odtwarzacz"
   },
   "Scene": {
     "title": "Scena",
@@ -451,6 +457,18 @@
       "x": "X",
       "facebook": "Facebook",
       "other": "Link"
+    },
+    "songStats": {
+      "title": "Twoje utwory",
+      "lead": "Słuchacze i odtworzenia z ostatnich 28 dni (odtworzenie liczy się od 30 sekund, soundchecki nie). Zapisy, polubienia i playlisty od początku. Same liczby - nigdy kto.",
+      "empty": "Liczby pojawią się tu po opublikowaniu pierwszego wydawnictwa.",
+      "song": "Utwór",
+      "listeners": "Słuchacze",
+      "plays": "Odtworzenia",
+      "completion": "Do końca",
+      "saves": "Zapisy",
+      "likes": "Polubienia",
+      "playlists": "Na playlistach"
     }
   },
   "Releases": {

@@ -22,6 +22,8 @@ export interface PlayerTrack {
   renditions: TrackRendition[];
   /** Cover of the track's release, smallest first: the player bar and the OS lock screen. */
   artwork?: { url: string; width: number }[];
+  /** Added by autoplay (similar songs after the queue ran out), not by the listener. */
+  autoplay?: true;
 }
 
 /** Why the delivered tier is below the best one (chooseTier reasons + engine-level ones). */
@@ -57,6 +59,8 @@ export interface PlayerState {
   repeat: RepeatMode;
   /** Shuffle mode (remembered on this device): new queues play in random order too. */
   shuffle: boolean;
+  /** When the queue runs out, similar songs follow (remembered on this device). */
+  autoplay: boolean;
   /**
    * Counts track starts (next track, a jump, a repeat, a new queue) - not reorders or seeks. The
    * listening history keys a listen by it, so shuffling the queue mid-song is still one listen.

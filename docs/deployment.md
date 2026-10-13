@@ -169,6 +169,12 @@ Until these variables exist the editor says "audio upload is coming soon" — no
    public (GitHub → Packages → tunewick-audio → Package settings → Change visibility; the image
    holds no secrets) or log the host in with a token that has `read:packages`
    (`docker login ghcr.io`). Elsewhere: `docker compose -f truenas.yaml up -d`.
+   **Automatic updates on TrueNAS:** System → Advanced Settings → Cron Jobs → Add. Command
+   `midclt call -job app.pull_images tunewick-audio '{"redeploy": true}'`, Run As User `root`,
+   schedule e.g. daily at 04:00 (`0 4 * * *`). It pulls the newest image and restarts the app
+   only when the image changed. Test it once with **Run Now**, then check
+   `sudo docker ps --filter name=tunewick` (fresh "Up" time) and
+   `sudo docker logs --tail 15 ix-tunewick-audio-worker-1`.
 4. Check: upload a master in the editor → within a minute the track shows "Gotowe" (ready) and
    the *Listen* button plays it. Worker logs: `fly logs` (one JSON line per job).
 

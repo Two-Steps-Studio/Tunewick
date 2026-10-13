@@ -11,6 +11,7 @@ import {
   ArtistReachForm,
   ArtistDiscoveryTeam,
   ArtistListening,
+  ArtistSongStats,
   getArtistForManagement,
   getArtistReach,
   InviteMemberForm,
@@ -75,6 +76,10 @@ export default async function ManageArtistPage({
       <div className="auth-page__body">
         {/* Music first: adding and finishing releases is why artists come here. */}
         <ArtistReleaseList artist={{ id: artist.id, slug: artist.slug }} />
+        {/* Then how it is doing: per song, then listeners over time. */}
+        <ArtistSongStats artistId={artist.id} />
+        <ArtistDiscoveryTeam artistId={artist.id} />
+        <ArtistListening artistId={artist.id} />
 
         {myRole !== "member" ? (
           <section className="settings-form__group" aria-labelledby="info">
@@ -220,8 +225,6 @@ export default async function ManageArtistPage({
             <EventForm artistId={artist.id} />
           </section>
         ) : null}
-        <ArtistDiscoveryTeam artistId={artist.id} />
-        <ArtistListening artistId={artist.id} />
         <DecisionList
           filter={{ artistId: artist.id }}
           canAppeal={data.myRole === "owner" || data.myRole === "manager"}

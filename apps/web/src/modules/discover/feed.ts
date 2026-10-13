@@ -420,3 +420,41 @@ function whyFor(
   // The pin says where it comes from; the original signal says why it was picked.
   return [lines[0]!, ...explain(origin, facts)];
 }
+
+/**
+ * Autoplay when the player's queue runs out: songs like `trackId` (its genres and the artist's
+ * graph neighbours lead, as in "Similar to this"), in the listener's own mode. Songs in `exclude`
+ * (the queue so far) are not repeated.
+ */
+export async function rankRadio(trackId: string, exclude: string[], size: number) {
+  const supabase = await createSupabaseServerClient();
+  const { preferences, signedIn } = await getDiscoveryPreferences();
+  const mode = preferences.mode;
+  const [rows, taste, weights] = await Promise.all([
+    loadCandidates(supabase, mode, preferences),
+    loadTaste(supabase, preferences, signedIn),
+    weightsFor(supabase, mode, signedIn),
+  ]);
+  const base = rows.find((row) => row.track_id === trackId);
+  const rankTaste = base
+    ? await towardsArtist(supabase, taste, base.artist_id, base.genre_ids ?? [])
+    : taste;
+  const byId = new Map(rows.map((row) => [row.track_id, row]));
+  const ranked = rankFeed(rows.map(toCandidate), rankTaste, {
+    size,
+    seed: Math.floor(Math.random() * 2 ** 31),
+    exclude: new Set([...exclude, trackId]),
+    mode,
+    weights,
+    explorationShare: 0.1,
+  });
+  return ranked.map((item) => {
+    const row = byId.get(item.trackId)!;
+    return {
+      id: row.track_id,
+      title: row.title,
+      releaseId: row.release_id,
+      artistName: row.artist_name,
+    };
+  });
+}

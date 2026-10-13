@@ -49,8 +49,12 @@ export const IDLE_STATE: PlayerState = {
   clip: null,
   repeat: "off",
   shuffle: false,
+  autoplay: true,
   occurrence: 0,
 };
+
+/** Songs like the seed for when the queue runs out (a server action, injected by the store). */
+export type AutoplaySource = (seedId: string, exclude: string[]) => Promise<PlayerTrack[]>;
 
 /** Fisher-Yates on a copy. */
 function shuffled<T>(items: readonly T[]): T[] {
@@ -101,6 +105,12 @@ export class PlayerEngine {
   private original: PlayerTrack[] | null = null;
   /** Volume before mute (the M key). */
   private unmutedVolume = 1;
+  private autoplaySource: AutoplaySource | null = null;
+  /** The autoplay request running, and the last track it is for. */
+  private autoplayPending: Promise<void> | null = null;
+  private autoplaySeed: PlayerTrack | null = null;
+  /** The last track ended before autoplay answered: start what it brings. */
+  private continueWithAutoplay = false;
 
   constructor() {
     this.audio = document.createElement("audio");
@@ -111,12 +121,18 @@ export class PlayerEngine {
       if (localStorage.getItem(VOLUME_KEY) !== null && stored >= 0 && stored <= 1) volume = stored;
     } catch {}
     this.audio.volume = volume;
-    let modes: { repeat?: RepeatMode; shuffle?: boolean } = {};
+    let modes: { repeat?: RepeatMode; shuffle?: boolean; autoplay?: boolean } = {};
     try {
       modes = JSON.parse(localStorage.getItem(MODES_KEY) ?? "{}") as typeof modes;
     } catch {}
     const repeat = (["off", "all", "one"] as const).includes(modes.repeat!) ? modes.repeat! : "off";
-    this.state = { ...IDLE_STATE, volume, repeat, shuffle: modes.shuffle === true };
+    this.state = {
+      ...IDLE_STATE,
+      volume,
+      repeat,
+      shuffle: modes.shuffle === true,
+      autoplay: modes.autoplay !== false,
+    };
 
     this.audio.addEventListener("timeupdate", () => this.syncPosition());
     this.audio.addEventListener("durationchange", () => this.syncPosition());
@@ -217,6 +233,7 @@ export class PlayerEngine {
 
   async next() {
     const target = this.state.index + 1;
+    if (target >= this.state.queue.length && this.autoplayPending) await this.autoplayPending;
     if (target < this.state.queue.length) await this.jump(target);
     else if (this.state.repeat === "all" && this.state.queue.length) await this.jump(0);
   }
@@ -258,6 +275,18 @@ export class PlayerEngine {
     const next: Record<RepeatMode, RepeatMode> = { off: "all", all: "one", one: "off" };
     this.update({ repeat: next[this.state.repeat] });
     this.saveModes();
+  }
+
+  /** Autoplay: similar songs follow when the queue runs out (remembered on this device). */
+  toggleAutoplay() {
+    this.update({ autoplay: !this.state.autoplay });
+    this.saveModes();
+    this.prepareAutoplay();
+  }
+
+  /** Where autoplay gets its songs; without one the player stops at the end of the queue. */
+  setAutoplaySource(source: AutoplaySource) {
+    this.autoplaySource = source;
   }
 
   /**
@@ -408,7 +437,11 @@ export class PlayerEngine {
     try {
       localStorage.setItem(
         MODES_KEY,
-        JSON.stringify({ repeat: this.state.repeat, shuffle: this.state.shuffle }),
+        JSON.stringify({
+          repeat: this.state.repeat,
+          shuffle: this.state.shuffle,
+          autoplay: this.state.autoplay,
+        }),
       );
     } catch {}
   }
@@ -424,6 +457,7 @@ export class PlayerEngine {
    */
   private async start(index: number, offset: number, autoplay = true, fresh = true) {
     const generation = ++this.generation;
+    this.continueWithAutoplay = false;
     this.clearStall();
     this.closeSession();
     this.update({
@@ -433,6 +467,8 @@ export class PlayerEngine {
       error: null,
       occurrence: fresh ? this.state.occurrence + 1 : this.state.occurrence,
     });
+    // Started now, the request for similar songs runs alongside loading this one.
+    this.prepareAutoplay();
 
     const now = await this.decide(index);
     if (generation !== this.generation) return;
@@ -510,7 +546,10 @@ export class PlayerEngine {
         position: Math.max(0, this.audio.currentTime - entry.plan.start),
         duration: entry.plan.end - entry.plan.start,
       });
-      if (trackChanged) this.updateMediaSession();
+      if (trackChanged) {
+        this.updateMediaSession();
+        this.prepareAutoplay();
+      }
     } else if (this.state.now) {
       const duration = Number.isFinite(this.audio.duration)
         ? this.audio.duration
@@ -536,9 +575,50 @@ export class PlayerEngine {
       void this.start(next, 0, true, true);
     } else if (this.state.repeat === "all" && !this.state.clip) {
       void this.start(0, 0, true, true);
+    } else if (this.autoplayPending) {
+      this.continueWithAutoplay = true;
+      this.update({ status: "loading" });
     } else {
       this.update({ status: "paused", position: this.state.duration });
     }
+  }
+
+  /**
+   * While the queue's last track plays (repeat off, not a soundcheck), asks for similar songs and
+   * appends them, marked as autoplay. One request per last track; a new queue drops a late answer.
+   */
+  private prepareAutoplay() {
+    const { queue, index, clip, repeat, autoplay } = this.state;
+    const seed = queue[index];
+    if (!autoplay || !this.autoplaySource || clip || repeat !== "off") return;
+    if (!seed || index !== queue.length - 1 || this.autoplaySeed === seed) return;
+    this.autoplaySeed = seed;
+    const exclude = [...new Set(queue.map((track) => track.id))];
+    const request = this.autoplaySource(seed.id, exclude)
+      .catch(() => [] as PlayerTrack[])
+      .then((tracks) => {
+        // A newer request (another queue) owns the pending state now.
+        if (this.autoplaySeed !== seed) return;
+        this.autoplayPending = null;
+        this.autoplaySeed = null;
+        const continuing = this.continueWithAutoplay;
+        this.continueWithAutoplay = false;
+        // The queue changed meanwhile (a removal, an added song): this answer no longer fits.
+        if (this.state.queue.at(-1) !== seed) {
+          if (continuing) this.update({ status: "paused", position: this.state.duration });
+          return;
+        }
+        const fresh = tracks.map((track) => ({ ...track, autoplay: true as const }));
+        if (!fresh.length) {
+          if (continuing) this.update({ status: "paused", position: this.state.duration });
+          return;
+        }
+        const next = this.state.queue.length;
+        this.original?.push(...fresh);
+        this.update({ queue: [...this.state.queue, ...fresh] });
+        if (continuing) void this.start(next, 0, true, true);
+      });
+    this.autoplayPending = request;
   }
 
   private onWaiting() {

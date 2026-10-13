@@ -71,7 +71,13 @@
     "playNext": "Play next",
     "addToQueue": "Add to queue",
     "queuedNext": "Plays next.",
-    "queuedLast": "Added to the queue."
+    "queuedLast": "Added to the queue.",
+    "autoplay": "Autoplay",
+    "autoplayHint": "When your queue ends, similar songs keep playing.",
+    "autoplayLabel": "Autoplay: similar songs",
+    "autoplayNext": "Similar songs will play next.",
+    "openNowPlaying": "Show the full-screen player",
+    "closeNowPlaying": "Collapse the player"
   },
   "Scene": {
     "title": "Scene",
@@ -451,6 +457,18 @@
       "x": "X",
       "facebook": "Facebook",
       "other": "Link"
+    },
+    "songStats": {
+      "title": "Your songs",
+      "lead": "Listeners and plays over the last 28 days (a play counts from 30 seconds, soundchecks don't). Saves, likes and playlists since the start. Numbers only - never who.",
+      "empty": "Numbers show up here once your first release is out.",
+      "song": "Song",
+      "listeners": "Listeners",
+      "plays": "Plays",
+      "completion": "Played to the end",
+      "saves": "Saves",
+      "likes": "Likes",
+      "playlists": "On playlists"
     }
   },
   "Releases": {

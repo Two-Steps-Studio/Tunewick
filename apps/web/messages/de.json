@@ -71,7 +71,13 @@
     "playNext": "Als Nächstes abspielen",
     "addToQueue": "Zur Warteschlange hinzufügen",
     "queuedNext": "Läuft als Nächstes.",
-    "queuedLast": "Zur Warteschlange hinzugefügt."
+    "queuedLast": "Zur Warteschlange hinzugefügt.",
+    "autoplay": "Autoplay",
+    "autoplayHint": "Wenn deine Warteschlange endet, laufen ähnliche Songs weiter.",
+    "autoplayLabel": "Autoplay: ähnliche Songs",
+    "autoplayNext": "Danach laufen ähnliche Songs.",
+    "openNowPlaying": "Player im Vollbild zeigen",
+    "closeNowPlaying": "Player einklappen"
   },
   "Scene": {
     "title": "Szene",
@@ -451,6 +457,18 @@
       "x": "X",
       "facebook": "Facebook",
       "other": "Link"
+    },
+    "songStats": {
+      "title": "Deine Songs",
+      "lead": "Hörer und Plays der letzten 28 Tage (ein Play zählt ab 30 Sekunden, Soundchecks nicht). Gespeichert, Likes und Playlists seit Beginn. Nur Zahlen - nie wer.",
+      "empty": "Zahlen erscheinen hier, sobald dein erstes Release veröffentlicht ist.",
+      "song": "Song",
+      "listeners": "Hörer",
+      "plays": "Plays",
+      "completion": "Bis zum Ende",
+      "saves": "Gespeichert",
+      "likes": "Likes",
+      "playlists": "In Playlists"
     }
   },
   "Releases": {

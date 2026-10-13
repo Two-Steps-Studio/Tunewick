@@ -1,80 +1,23 @@
 "use client";
 
-import { describeQuality, type QualityDescription } from "@tunewick/shared";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { getPlayer, startListeningReports, usePlayerState } from "../store";
-import type { NowPlaying, PlayerState, PlayerTrack } from "../types";
+import type { PlayerState } from "../types";
+import { NowPlaying } from "./now-playing";
+import {
+  canGoNext,
+  formatTime,
+  Icon,
+  LineIcon,
+  QualityChip,
+  qualityOf,
+  QueueContents,
+} from "./parts";
 
-function formatTime(seconds: number) {
-  if (!Number.isFinite(seconds) || seconds < 0) return "0:00";
-  const whole = Math.floor(seconds);
-  return `${Math.floor(whole / 60)}:${String(whole % 60).padStart(2, "0")}`;
-}
-
-function qualityOf(track: PlayerTrack, now: NowPlaying, outputSampleRateHz: number | null) {
-  const { rendition } = now;
-  return describeQuality(
-    track.source,
-    {
-      tier: now.tier,
-      codec: rendition.codec,
-      sampleRateHz: rendition.sampleRateHz,
-      bitDepth: rendition.bitDepth,
-      bitrateKbps: rendition.nominalKbps,
-    },
-    outputSampleRateHz ? { outputSampleRateHz } : {},
-  );
-}
-
-function Icon({ name }: { name: "play" | "pause" | "next" | "previous" }) {
-  const paths = {
-    play: "M7 4.5v15l12-7.5z",
-    pause: "M6.5 4.5h4v15h-4zM13.5 4.5h4v15h-4z",
-    next: "M5 5v14l9-7zM16 5h3v14h-3z",
-    previous: "M19 5v14l-9-7zM5 5h3v14H5z",
-  };
-  return (
-    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
-      <path d={paths[name]} fill="currentColor" />
-    </svg>
-  );
-}
-
-/** Line icons for the mode buttons (stroke, square caps - the icon style of the design system). */
-function LineIcon({ name }: { name: "shuffle" | "repeat" | "repeatOne" | "queue" | "close" }) {
-  const paths = {
-    shuffle:
-      "M4 7h3.5c4 0 5 10 9 10H20M4 17h3.5c1.6 0 2.7-1.6 3.6-3.4M13 10.4C13.9 8.6 15 7 16.5 7H20M17.5 4.5 20 7l-2.5 2.5M17.5 14.5 20 17l-2.5 2.5",
-    repeat:
-      "M5 11V9a2 2 0 0 1 2-2h11M15.5 4.5 18 7l-2.5 2.5M19 13v2a2 2 0 0 1-2 2H6M8.5 19.5 6 17l2.5-2.5",
-    repeatOne:
-      "M5 11V9a2 2 0 0 1 2-2h11M15.5 4.5 18 7l-2.5 2.5M19 13v2a2 2 0 0 1-2 2H6M8.5 19.5 6 17l2.5-2.5M11.5 10.5 12.5 10v4.5",
-    queue: "M4 6h12M4 11h12M4 16h7M15 15.5v4l4-2z",
-    close: "M6 6l12 12M18 6L6 18",
-  };
-  return (
-    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
-      <path
-        d={paths[name]}
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.7"
-        strokeLinecap="square"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-/** What plays next: tap an item to play it, remove the ones you don't want. */
+/** The queue as a panel above the bar. */
 function QueueMenu({ state }: { state: PlayerState }) {
   const t = useTranslations("Player");
-  const player = getPlayer();
-  const upcoming = state.queue
-    .map((track, index) => ({ track, index }))
-    .slice(state.index + 1, state.index + 51);
-  const more = state.queue.length - state.index - 1 - upcoming.length;
   const current = state.queue[state.index];
   // Rendered only while open: the bar re-renders every tick, a hidden list would too.
   const [open, setOpen] = useState(false);
@@ -92,36 +35,7 @@ function QueueMenu({ state }: { state: PlayerState }) {
               <span className="queue-menu__artist">{current.artist}</span>
             </p>
           ) : null}
-          <p className="queue-menu__label">{t("upNext")}</p>
-          {upcoming.length ? (
-            <ol className="queue-menu__list">
-              {upcoming.map(({ track, index }) => (
-                <li key={`${index}:${track.id}`} className="queue-menu__item">
-                  <button
-                    type="button"
-                    className="queue-menu__play"
-                    onClick={() => void player.playAt(index)}
-                  >
-                    <span className="queue-menu__title">{track.title}</span>
-                    <span className="queue-menu__artist">{track.artist}</span>
-                  </button>
-                  <button
-                    type="button"
-                    className="player-button"
-                    onClick={() => player.removeFromQueue(index)}
-                    aria-label={t("removeFromQueue", { title: track.title })}
-                  >
-                    <LineIcon name="close" />
-                  </button>
-                </li>
-              ))}
-            </ol>
-          ) : (
-            <p className="field__hint">
-              {state.repeat === "all" ? t("queueRepeats") : t("queueEmpty")}
-            </p>
-          )}
-          {more > 0 ? <p className="field__hint">{t("queueMore", { count: more })}</p> : null}
+          <QueueContents state={state} />
         </div>
       ) : null}
     </details>
@@ -138,43 +52,10 @@ function ownsKeys(target: EventTarget | null) {
   );
 }
 
-function QualityChip({ quality, now }: { quality: QualityDescription; now: NowPlaying }) {
-  const t = useTranslations("Player");
-  const label =
-    quality.kind === "hires"
-      ? t("quality.hires")
-      : quality.kind === "lossless"
-        ? t("quality.lossless")
-        : t(`quality.${now.tier === "data_saver" ? "dataSaver" : "high"}`);
-  const output = quality.outputText
-    ? ` · ${t("quality.output", { rate: quality.outputText })}`
-    : "";
-  const full = t("quality.full", {
-    source: quality.sourceText,
-    delivered: quality.deliveredText,
-    label,
-  });
-  const reason = now.reasons[0];
-  return (
-    <p className="player-bar__quality" title={full + output}>
-      <span className={`quality-chip quality-chip--${quality.kind}`}>
-        <span aria-hidden="true">{label}</span>
-        <span className="visually-hidden">{full + output}</span>
-      </span>
-      <span className="player-bar__spec" aria-hidden="true">
-        {quality.deliveredText}
-        {output}
-      </span>
-      {reason ? <span className="player-bar__reason">{t(`reason.${reason}`)}</span> : null}
-    </p>
-  );
-}
-
 /**
  * Persistent player in the shell. With an empty queue it shows the honest idle state - no fake
  * track, no dead controls.
- */
-/**
+ *
  * `reportListens`: keep a listening history for the signed-in listener. `actions`: extra controls
  * for the current track from other modules (e.g. add to playlist), shown while something plays.
  */
@@ -215,6 +96,7 @@ export function PlayerBar({
     return () => window.removeEventListener("keydown", onKey);
   }, []);
   const [scrub, setScrub] = useState<number | null>(null);
+  const [expanded, setExpanded] = useState(false);
   const track = state.queue[state.index];
 
   if (!track) {
@@ -266,25 +148,45 @@ export function PlayerBar({
           type="button"
           className="player-button"
           onClick={() => void player.next()}
-          disabled={state.index >= state.queue.length - 1 && state.repeat !== "all"}
+          disabled={!canGoNext(state)}
           aria-label={t("next")}
         >
           <Icon name="next" />
         </button>
       </div>
 
-      {cover ? (
-        // eslint-disable-next-line @next/next/no-img-element -- pre-sized WebP variant of the cover
-        <img className="player-bar__cover" src={cover.url} alt="" width={48} height={48} />
-      ) : (
-        <span className="player-bar__cover" aria-hidden="true" />
-      )}
+      {/* The cover and the title open the full-screen player (the title is the keyboard way). */}
+      <button
+        type="button"
+        className="player-bar__expand"
+        tabIndex={-1}
+        aria-hidden="true"
+        onClick={() => setExpanded(true)}
+      >
+        {cover ? (
+          // eslint-disable-next-line @next/next/no-img-element -- pre-sized WebP variant of the cover
+          <img className="player-bar__cover" src={cover.url} alt="" width={48} height={48} />
+        ) : (
+          <span className="player-bar__cover" />
+        )}
+      </button>
       <div className="player-bar__now">
-        <p className="player-bar__title" aria-live="polite">
-          {state.clip ? <span className="player-bar__soundcheck">{t("soundcheck")}</span> : null}
-          <span className="player-bar__track">{track.title}</span>
-          <span className="player-bar__artist">{track.artist}</span>
-        </p>
+        <button
+          type="button"
+          className="player-bar__title"
+          aria-haspopup="dialog"
+          aria-describedby="player-expand-hint"
+          onClick={() => setExpanded(true)}
+        >
+          <span aria-live="polite" className="player-bar__names">
+            {state.clip ? <span className="player-bar__soundcheck">{t("soundcheck")}</span> : null}
+            <span className="player-bar__track">{track.title}</span>
+            <span className="player-bar__artist">{track.artist}</span>
+          </span>
+        </button>
+        <span id="player-expand-hint" hidden>
+          {t("openNowPlaying")}
+        </span>
         <div className="player-bar__timeline">
           <span className="player-bar__time">{formatTime(position)}</span>
           <input
@@ -348,6 +250,9 @@ export function PlayerBar({
         <p className="player-bar__error" role="alert">
           {t(`error.${state.error}`)}
         </p>
+      ) : null}
+      {expanded ? (
+        <NowPlaying state={state} actions={actions} onClose={() => setExpanded(false)} />
       ) : null}
     </section>
   );

@@ -71,7 +71,13 @@
     "playNext": "Tocar a seguir",
     "addToQueue": "Adicionar à fila",
     "queuedNext": "Toca a seguir.",
-    "queuedLast": "Adicionada à fila."
+    "queuedLast": "Adicionada à fila.",
+    "autoplay": "Reprodução automática",
+    "autoplayHint": "Quando a fila acabar, tocam músicas parecidas.",
+    "autoplayLabel": "Reprodução automática: músicas parecidas",
+    "autoplayNext": "Depois tocam músicas parecidas.",
+    "openNowPlaying": "Mostrar o player em tela cheia",
+    "closeNowPlaying": "Recolher o player"
   },
   "Scene": {
     "title": "Cena",
@@ -451,6 +457,18 @@
       "x": "X",
       "facebook": "Facebook",
       "other": "Link"
+    },
+    "songStats": {
+      "title": "Suas músicas",
+      "lead": "Ouvintes e reproduções dos últimos 28 dias (uma reprodução conta a partir de 30 segundos; soundchecks não). Salvamentos, curtidas e playlists desde o início. Só números - nunca quem.",
+      "empty": "Os números aparecem aqui quando seu primeiro lançamento sair.",
+      "song": "Música",
+      "listeners": "Ouvintes",
+      "plays": "Reproduções",
+      "completion": "Até o fim",
+      "saves": "Salvamentos",
+      "likes": "Curtidas",
+      "playlists": "Em playlists"
     }
   },
   "Releases": {

@@ -71,7 +71,13 @@
     "playNext": "Reproducir a continuación",
     "addToQueue": "Añadir a la cola",
     "queuedNext": "Sonará a continuación.",
-    "queuedLast": "Añadida a la cola."
+    "queuedLast": "Añadida a la cola.",
+    "autoplay": "Reproducción automática",
+    "autoplayHint": "Cuando termine tu cola, seguirán canciones parecidas.",
+    "autoplayLabel": "Reproducción automática: canciones parecidas",
+    "autoplayNext": "Después sonarán canciones parecidas.",
+    "openNowPlaying": "Mostrar el reproductor a pantalla completa",
+    "closeNowPlaying": "Contraer el reproductor"
   },
   "Scene": {
     "title": "Escena",
@@ -451,6 +457,18 @@
       "x": "X",
       "facebook": "Facebook",
       "other": "Enlace"
+    },
+    "songStats": {
+      "title": "Tus canciones",
+      "lead": "Oyentes y reproducciones de los últimos 28 días (una reproducción cuenta desde 30 segundos; las pruebas de sonido no). Guardados, me gusta y playlists desde el principio. Solo cifras, nunca quién.",
+      "empty": "Las cifras aparecerán aquí cuando publiques tu primer lanzamiento.",
+      "song": "Canción",
+      "listeners": "Oyentes",
+      "plays": "Reproducciones",
+      "completion": "Hasta el final",
+      "saves": "Guardados",
+      "likes": "Me gusta",
+      "playlists": "En playlists"
     }
   },
   "Releases": {

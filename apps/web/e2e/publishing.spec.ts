@@ -177,6 +177,13 @@ test.describe("review and publishing", () => {
     // Published: the artist sees it, and anyone can listen (Free plan: High).
     await page.goto(editor);
     await expect(page.getByText(/^Opublikowane/)).toBeVisible();
+    // The team's per-song numbers list it (no plays yet).
+    await page.goto(`/artysci/${slug}/zarzadzaj`);
+    const songStats = page.locator("section", {
+      has: page.getByRole("heading", { name: "Twoje utwory" }),
+    });
+    await expect(songStats.getByText("Nocna zmiana")).toBeVisible();
+    await expectNoSidewaysScroll(page);
 
     await listener.goto(`/artysci/${slug}`);
     await listener.getByRole("link", { name: "Szychta" }).click();
