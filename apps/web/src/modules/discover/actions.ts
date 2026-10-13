@@ -13,7 +13,7 @@ import { clipState, startClip } from "./clips";
 import { VISITOR_COOKIE } from "./preferences";
 
 /**
- * Like a track / follow an artist from the feed — the Library's tables and RLS rules, without
+ * Like a track / follow an artist from the feed - the Library's tables and RLS rules, without
  * refreshing the page (the feed keeps its place). Returns the state the database now has.
  */
 export async function setFeedReaction(kind: "like" | "follow", id: string, on: boolean) {
@@ -33,7 +33,7 @@ export async function setFeedReaction(kind: "like" | "follow", id: string, on: b
 
 /**
  * Save to (or remove from) the listener's crate. Returns the state the database now has and the
- * points the save earned (0 when the song was saved before — saving pays once per song).
+ * points the save earned (0 when the song was saved before - saving pays once per song).
  */
 export async function setTrackSaved(trackId: string, on: boolean) {
   if (!z.uuid().safeParse(trackId).success) return { ok: false as const, on: !on, points: 0 };

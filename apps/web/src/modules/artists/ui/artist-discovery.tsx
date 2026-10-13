@@ -100,7 +100,7 @@ export async function ArtistDiscovery({ artistId, name }: { artistId: string; na
           </div>
           <div className="stat-tile">
             <dt>{t("score")}</dt>
-            <dd>{stats.score_30d == null ? "—" : format.number(stats.score_30d)}</dd>
+            <dd>{stats.score_30d == null ? "-" : format.number(stats.score_30d)}</dd>
           </div>
         </dl>
       )}

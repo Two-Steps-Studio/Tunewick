@@ -2,7 +2,7 @@
  * Tier selection at track start (docs/audio.md §4.1).
  *
  * Auto picks the highest tier allowed by every limit; a fixed setting asks for that tier
- * regardless of network heuristics. Mid-track the player only ever steps down, after a stall —
+ * regardless of network heuristics. Mid-track the player only ever steps down, after a stall -
  * never up. Every limit that kept the listener from a better available tier is returned as a
  * reason, so the quality indicator can say why (e.g. "Lossless with Premium") without guessing.
  */

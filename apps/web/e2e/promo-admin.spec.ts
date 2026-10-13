@@ -50,7 +50,7 @@ test("an admin creates a campaign and codes, a listener redeems one, the admin r
   await shared.getByLabel("Limit użyć").fill("");
   await shared.getByRole("button", { name: "Utwórz kod wspólny" }).click();
   await expect(shared.getByRole("alert")).toHaveText(
-    "Sprawdź pola — któreś ma niepoprawną wartość.",
+    "Sprawdź pola - któreś ma niepoprawną wartość.",
   );
   await shared.getByLabel("Limit użyć").fill("100");
   await shared.getByRole("button", { name: "Utwórz kod wspólny" }).click();
@@ -74,11 +74,11 @@ test("an admin creates a campaign and codes, a listener redeems one, the admin r
   await expect(page.getByText(/· cofnięte$/)).toBeVisible();
 
   await listener.reload();
-  await expect(listener.getByText(/^Free — /)).toBeVisible();
+  await expect(listener.getByText(/^Free - /)).toBeVisible();
 
   // Turning the campaign off stops its codes at once.
   await page.getByRole("button", { name: "Wyłącz", exact: true }).first().click();
-  await expect(page.getByText("Kampania jest wyłączona — żaden jej kod nie działa.")).toBeVisible();
+  await expect(page.getByText("Kampania jest wyłączona - żaden jej kod nie działa.")).toBeVisible();
   await listener.getByLabel("Masz kod promocyjny?").fill(codes[1]!);
   await listener.getByRole("button", { name: "Użyj kodu" }).click();
   await expect(listener.locator(".redeem-form").getByRole("alert")).toHaveText(

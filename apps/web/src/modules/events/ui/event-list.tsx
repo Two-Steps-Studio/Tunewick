@@ -10,7 +10,7 @@ export interface EventListItem {
   lineup?: { slug: string; name: string }[];
 }
 
-/** Events as a dated list — the date first, then what and where. Cancelled ones say so. */
+/** Events as a dated list - the date first, then what and where. Cancelled ones say so. */
 export async function EventList({ events }: { events: EventListItem[] }) {
   const t = await getTranslations("Events");
   const format = await getFormatter();

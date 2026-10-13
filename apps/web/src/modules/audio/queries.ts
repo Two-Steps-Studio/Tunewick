@@ -172,7 +172,7 @@ function sourceQuality(source: PlaybackSource): SourceQuality {
 
 /**
  * Playable tracks of a release the caller may see (public once released; members and staff
- * earlier), in release order. Only variants up to `maxTier` get a URL — a Free listener's page
+ * earlier), in release order. Only variants up to `maxTier` get a URL - a Free listener's page
  * never contains a link to a Lossless file. URLs are short-lived presigned GETs of the media
  * bucket until the media edge with playback tokens exists (docs/architecture.md §6.4).
  */
@@ -224,7 +224,7 @@ export async function getPlayableTracks(
 }
 
 /**
- * Playable versions of tracks from many releases (library, playlists), in the given order — one
+ * Playable versions of tracks from many releases (library, playlists), in the given order - one
  * `release_playback` call per release. Items without a playable variant come back as null, so
  * the caller can show them without a play button.
  */

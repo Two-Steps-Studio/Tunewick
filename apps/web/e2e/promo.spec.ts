@@ -8,7 +8,7 @@ test("a listener redeems a promo code in settings and gets Premium", async ({ pa
   const [code] = createPromoCodes(campaign, ["--days", "30"]);
   await createConfirmedUser(page, "promo");
   await page.goto("/ustawienia");
-  await expect(page.getByText(/^Free — /)).toBeVisible();
+  await expect(page.getByText(/^Free - /)).toBeVisible();
   const form = page.locator(".redeem-form");
 
   const input = page.getByLabel("Masz kod promocyjny?");

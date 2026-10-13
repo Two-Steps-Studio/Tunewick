@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const data = await load(params);
   if (!data) return {};
   const t = await getTranslations({ locale: locale as Locale, namespace: "Song" });
-  const title = `${data.track.title} — ${data.artist.name}`;
+  const title = `${data.track.title} - ${data.artist.name}`;
   const description = t("metaDescription", { title: data.track.title, artist: data.artist.name });
   return {
     title,
@@ -45,7 +45,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 }
 
 /**
- * A shared song: artwork, artist, the preview — no account needed — and a way into Discover.
+ * A shared song: artwork, artist, the preview - no account needed - and a way into Discover.
  * The title part of the URL is cosmetic; the code decides, and old titles redirect.
  */
 export default async function SongPage({ params }: PageProps<"/[locale]/song/[artist]/[song]">) {

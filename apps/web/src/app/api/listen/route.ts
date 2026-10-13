@@ -4,7 +4,7 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 // One listen from the player (ListeningTracker) or a Discover preview. The database decides
 // whether it is plausible (public track, time within the track, recent start, rate limit) and
-// what it earns — this only shapes the input and passes the awards back.
+// what it earns - this only shapes the input and passes the awards back.
 const listenSchema = z.object({
   trackId: z.uuid(),
   startedAt: z.iso.datetime(),

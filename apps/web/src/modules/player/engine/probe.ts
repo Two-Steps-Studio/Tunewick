@@ -1,6 +1,6 @@
 /**
  * What this browser really decodes (docs/audio.md §4). Each path is tested by decoding a tiny
- * file from /player-probe/ — `canPlayType`/`isTypeSupported` are only a first filter, because
+ * file from /player-probe/ - `canPlayType`/`isTypeSupported` are only a first filter, because
  * engines answer "probably" for formats they then fail to play (spike M3.0). Failures a decode
  * test cannot see (e.g. decoding to silence) are covered by KNOWN_BROKEN in @tunewick/shared.
  */

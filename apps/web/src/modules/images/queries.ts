@@ -15,7 +15,7 @@ export interface ImageSources {
   width: number;
 }
 
-/** Latest upload attempt for an owner (members only, via RLS) — drives the upload status. */
+/** Latest upload attempt for an owner (members only, via RLS) - drives the upload status. */
 export interface ImageUploadState {
   id: string;
   status: Database["public"]["Enums"]["audio_upload_status"];

@@ -39,7 +39,7 @@ test.describe("rights declaration", () => {
     await rights.getByLabel("Mam (lub mamy) prawa do nagrań").check();
     await rights.getByRole("checkbox", { name: "ZAiKS" }).check();
     await rights.getByRole("checkbox", { name: "Nie, nikt nie należy" }).check();
-    await rights.getByRole("radio", { name: "Są sample — mam zgodę na ich użycie" }).check();
+    await rights.getByRole("radio", { name: "Są sample - mam zgodę na ich użycie" }).check();
     await rights.getByLabel("Udział sztucznej inteligencji").selectOption("ai_assisted");
     await rights.getByLabel(/Akceptuję warunki dla artystów/).check();
     await rights.getByRole("button", { name: "Złóż oświadczenie" }).click();

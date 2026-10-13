@@ -10,7 +10,7 @@ export async function getRelationship(profileId: string) {
   return data?.[0] ?? null;
 }
 
-/** "Byłem przy tym" and public playlists — empty unless the owner's visibility allows it. */
+/** "Byłem przy tym" and public playlists - empty unless the owner's visibility allows it. */
 export async function getProfileActivity(profileId: string) {
   const supabase = await createSupabaseServerClient();
   const [events, playlists] = await Promise.all([
@@ -124,7 +124,7 @@ export interface ProfileOverview {
   } | null;
 }
 
-/** A profile's score, badges and last 30 days — each part only if its owner lets you see it. */
+/** A profile's score, badges and last 30 days - each part only if its owner lets you see it. */
 export async function getProfileOverview(handle: string): Promise<ProfileOverview | null> {
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase.rpc("profile_overview", { handle });

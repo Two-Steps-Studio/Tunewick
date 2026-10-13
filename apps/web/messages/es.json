@@ -297,9 +297,9 @@
       "note": "Mensaje para los moderadores (opcional)",
       "city": "Ciudad o localidad",
       "voivodeship": "Voivodato (región)",
-      "voivodeshipNone": "— sin indicar —",
+      "voivodeshipNone": "- sin indicar -",
       "country": "País",
-      "countryNone": "— sin indicar —",
+      "countryNone": "- sin indicar -",
       "region": "Región o estado",
       "languages": "Idiomas en los que cantas o hablas",
       "genres": "Géneros (hasta 5)",
@@ -663,7 +663,7 @@
       "ai_assisted": "Hecho con ayuda de IA.",
       "ai_generated": "Generado por IA."
     },
-    "coverAlt": "Portada: {title} — {artist}",
+    "coverAlt": "Portada: {title} - {artist}",
     "credits": "Créditos"
   },
   "Moderation": {
@@ -1129,7 +1129,7 @@
     "tickets": "Entradas (web del organizador)",
     "lineup": "Quién toca",
     "soundcheck": "Escuchar",
-    "soundcheckLabel": "Escucha un fragmento: {artist} — {title}",
+    "soundcheckLabel": "Escucha un fragmento: {artist} - {title}",
     "noMusic": "Aún sin música en Tunewick",
     "artistUpcoming": "Próximos conciertos",
     "manage": {
@@ -1267,7 +1267,7 @@
       "firstRelease": "Primer lanzamiento {when} · {count, plural, one {# lanzamiento} other {# lanzamientos}}"
     },
     "soundcheck": "Soundcheck de {seconds} s",
-    "soundcheckLabel": "Escucha un fragmento: {title} — {artist}",
+    "soundcheckLabel": "Escucha un fragmento: {title} - {artist}",
     "charts": "Ver las listas de esta semana →"
   },
   "Feed": {
@@ -1395,7 +1395,7 @@
   "Song": {
     "badge": "Canción",
     "metaDescription": "Escucha una vista previa de {title}, de {artist}, en Tunewick: música independiente antes de que se haga popular.",
-    "coverAlt": "Portada: {title} — {artist}",
+    "coverAlt": "Portada: {title} - {artist}",
     "discoverMore": "Descubre más en Tunewick",
     "fullRelease": "Lanzamiento completo: {title}",
     "pitch": "No necesitas cuenta para escuchar. Tunewick muestra música independiente antes de que se haga popular.",

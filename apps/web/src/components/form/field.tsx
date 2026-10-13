@@ -94,7 +94,7 @@ export function SelectField({
       </label>
       <select
         // React does not update a select's default option on re-render, and React 19 resets
-        // forms after an action — remount when the default changes so the reset restores it.
+        // forms after an action - remount when the default changes so the reset restores it.
         key={String(select.defaultValue)}
         id={id}
         {...select}

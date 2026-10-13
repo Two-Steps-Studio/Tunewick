@@ -74,7 +74,7 @@ function QualityChip({ quality, now }: { quality: QualityDescription; now: NowPl
 }
 
 /**
- * Persistent player in the shell. With an empty queue it shows the honest idle state — no fake
+ * Persistent player in the shell. With an empty queue it shows the honest idle state - no fake
  * track, no dead controls.
  */
 /** `reportListens`: keep a listening history for the signed-in listener. */

@@ -74,7 +74,7 @@ function Input({
   );
 }
 
-/** Benefit, length, expiry and "new accounts only" — shared by both code forms. */
+/** Benefit, length, expiry and "new accounts only" - shared by both code forms. */
 function BenefitFields({ state }: { state: PromoFormState }) {
   const t = useTranslations("PromoAdmin.fields");
   return (

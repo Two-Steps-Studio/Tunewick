@@ -133,13 +133,13 @@ export default async function AdminPage({ params, searchParams }: PageProps<"/[l
               <tbody>
                 {playback.map((row) => (
                   <tr key={row.tier ?? "none"}>
-                    <th scope="row">{row.tier ?? "—"}</th>
+                    <th scope="row">{row.tier ?? "-"}</th>
                     <td>{row.starts}</td>
                     <td className={row.first_audio_p50_ms > 1000 ? "admin-table__over" : undefined}>
-                      {row.first_audio_p50_ms === null ? "—" : `${row.first_audio_p50_ms} ms`}
+                      {row.first_audio_p50_ms === null ? "-" : `${row.first_audio_p50_ms} ms`}
                     </td>
                     <td>
-                      {row.first_audio_p90_ms === null ? "—" : `${row.first_audio_p90_ms} ms`}
+                      {row.first_audio_p90_ms === null ? "-" : `${row.first_audio_p90_ms} ms`}
                     </td>
                     <td>
                       {row.errors}

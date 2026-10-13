@@ -63,7 +63,7 @@ test("a report leads to a reasoned decision, an appeal and a reversal by another
     has: page.getByRole("heading", { name: "Decyzje moderacji" }),
   });
   await expect(decisions.getByText(statement)).toBeVisible();
-  await decisions.getByLabel("Odwołanie").fill("To nasz zespół — mamy umowę i nagrania z sesji.");
+  await decisions.getByLabel("Odwołanie").fill("To nasz zespół - mamy umowę i nagrania z sesji.");
   await decisions.getByRole("button", { name: "Wyślij odwołanie" }).click();
   await expect(decisions.getByText(/odwołanie w toku/)).toBeVisible();
 
@@ -97,7 +97,7 @@ test("a report leads to a reasoned decision, an appeal and a reversal by another
 
   expect((await reporter.goto(`/artysci/${slug}`))?.status()).toBe(200);
   await page.reload();
-  await expect(decisions.getByText(/odwołanie uwzględnione — przywrócono/)).toBeVisible();
+  await expect(decisions.getByText(/odwołanie uwzględnione - przywrócono/)).toBeVisible();
 
   await reporterContext.close();
   await mod1Context.close();
@@ -138,7 +138,7 @@ test("an impersonating profile is reported, reset, and its owner can appeal from
   await mod.goto("/moderacja");
   const item = mod.locator(".report-item", { has: mod.locator(`a[href="/profil/${handle}"]`) });
   await expect(item.getByLabel("Decyzja")).toHaveValue("reset_profile");
-  const statement = "Profil podawał się za zespół, którego nie reprezentuje — nazwa wyczyszczona.";
+  const statement = "Profil podawał się za zespół, którego nie reprezentuje - nazwa wyczyszczona.";
   await item.getByLabel("Uzasadnienie (zobaczy je właściciel treści)").fill(statement);
   await item.getByRole("button", { name: "Zapisz decyzję" }).click();
   await expect(item).toHaveCount(0);

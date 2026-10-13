@@ -20,7 +20,7 @@ function browserCountry(codes: Set<string>): string | null {
 
 /**
  * First run (and later "Discovery preferences"): language, country, a few genres, a few artists,
- * where to start. One screen, every part optional — a useful feed in under a minute.
+ * where to start. One screen, every part optional - a useful feed in under a minute.
  */
 export function Onboarding({
   genres,
@@ -53,7 +53,7 @@ export function Onboarding({
   useEffect(() => {
     if (initial.countryCode || initial.onboarded) return;
     const guess = browserCountry(new Set(countries.map((c) => c.code)));
-    // A suggestion from the browser, shown in the form — the listener decides.
+    // A suggestion from the browser, shown in the form - the listener decides.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     if (guess) setCountry(guess);
   }, [countries, initial.countryCode, initial.onboarded]);

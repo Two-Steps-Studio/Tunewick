@@ -2,7 +2,7 @@ import "server-only";
 
 /**
  * Who runs Tunewick, as the legal documents name it. Set in the hosting environment (Vercel) and
- * .env.local — never guessed: a missing value is shown in the document as "to be completed".
+ * .env.local - never guessed: a missing value is shown in the document as "to be completed".
  *   LEGAL_OPERATOR_NAME     person or company running the service (e.g. a parent or guardian)
  *   LEGAL_OPERATOR_ADDRESS  postal address for legal correspondence
  *   LEGAL_CONTACT_EMAIL     contact for complaints, data requests and the DSA point of contact

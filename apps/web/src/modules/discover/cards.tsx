@@ -22,7 +22,7 @@ const C = {
 
 export type CardFormat = "og" | "story" | "square";
 
-/** A QR code (SVG data URL, graphite on ivory) that opens `url` — for printed and filmed cards. */
+/** A QR code (SVG data URL, graphite on ivory) that opens `url` - for printed and filmed cards. */
 export async function qrDataUrl(url: string): Promise<string> {
   const svg = await QRCode.toString(url, {
     type: "svg",
@@ -238,7 +238,7 @@ export interface StatsCardData {
   qr?: string | null;
 }
 
-/** "MY TUNEWICK WEEK" — the listener's own numbers. Private to whoever downloads it. */
+/** "MY TUNEWICK WEEK" - the listener's own numbers. Private to whoever downloads it. */
 export function statsCard(data: StatsCardData, format: Exclude<CardFormat, "og">) {
   const { width, height } = CARD_SIZES[format];
   const vertical = format === "story";

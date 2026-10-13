@@ -130,7 +130,7 @@ export function ArtistInfoForm({
   );
 }
 
-/** Where the artist is from and what they make — what the Discover feed and filters use. */
+/** Where the artist is from and what they make - what the Discover feed and filters use. */
 export function ArtistReachForm({
   artistId,
   values,

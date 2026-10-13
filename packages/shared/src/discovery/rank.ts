@@ -1,6 +1,6 @@
 /**
  * Feed ranking (docs/discovery-expansion.md §4): a transparent weighted score per candidate, a
- * personalization/exploration mix and diversity rules. Pure and seeded — the same inputs give the
+ * personalization/exploration mix and diversity rules. Pure and seeded - the same inputs give the
  * same feed, so it is testable; swap this module for a learned model behind the same types.
  */
 

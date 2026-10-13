@@ -55,7 +55,7 @@ body {
 }
 
 /* ------------------------------------------------------------------ */
-/* Shell — docs/design-system.md §6–7                                  */
+/* Shell - docs/design-system.md §6–7                                  */
 /* ------------------------------------------------------------------ */
 @layer components {
   .skip-link {
@@ -1897,7 +1897,7 @@ body {
 }
 
 /* ------------------------------------------------------------------ */
-/* Discover feed — docs/discovery-expansion.md                         */
+/* Discover feed - docs/discovery-expansion.md                         */
 /* A dark stage in both themes: covers and their colour carry the card. */
 /* ------------------------------------------------------------------ */
 @layer components {

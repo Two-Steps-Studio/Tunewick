@@ -4,7 +4,7 @@ import { deflateSync } from "node:zlib";
 import { expect, type Page } from "@playwright/test";
 import { totp } from "./totp";
 
-// Requires local Supabase (pnpm db:start && pnpm db:env) — emails are read from Mailpit.
+// Requires local Supabase (pnpm db:start && pnpm db:env) - emails are read from Mailpit.
 const MAILPIT = process.env.MAILPIT_URL ?? "http://127.0.0.1:54324";
 export const PASSWORD = "scena-gzm-2026";
 
@@ -142,7 +142,7 @@ export function createPromoCodes(campaign: string, options: string[]) {
     .split(/\r?\n/);
 }
 
-/** A valid solid-colour PNG (RGB, 8-bit) built with zlib only — for image upload tests. */
+/** A valid solid-colour PNG (RGB, 8-bit) built with zlib only - for image upload tests. */
 export function solidPng(width: number, height: number, [r, g, b]: [number, number, number]) {
   const crcTable = Array.from({ length: 256 }, (_, n) => {
     let c = n;
@@ -200,7 +200,7 @@ function localEnv() {
   );
 }
 
-/** Calls the Supabase Data API directly with a user's token — bypassing the web app. */
+/** Calls the Supabase Data API directly with a user's token - bypassing the web app. */
 export async function dataApi(token: string, path: string, body?: unknown) {
   const env = localEnv();
   return fetch(`${env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/${path}`, {

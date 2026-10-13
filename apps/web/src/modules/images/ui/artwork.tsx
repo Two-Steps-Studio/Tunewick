@@ -2,7 +2,7 @@ import type { ImageSources } from "../queries";
 
 /**
  * A processed square image (cover or artist photo). The dominant colour fills the box while the
- * file loads; without an image the box stays a neutral tile — never a stock placeholder.
+ * file loads; without an image the box stays a neutral tile - never a stock placeholder.
  * Plain <img>: variants are already resized WebP files (next/image would re-process them).
  */
 export function Artwork({

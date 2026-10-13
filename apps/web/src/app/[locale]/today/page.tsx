@@ -19,7 +19,7 @@ export async function generateMetadata({
 }
 
 /**
- * Today: "what will I discover today?" — the listener's Daily Discovery (ten new songs, done at
+ * Today: "what will I discover today?" - the listener's Daily Discovery (ten new songs, done at
  * five discoveries), this week's Weekly Drop in five parts, and Surprise Me journeys.
  */
 export default async function TodayPage({ params }: PageProps<"/[locale]/today">) {

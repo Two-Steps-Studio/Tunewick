@@ -2,7 +2,7 @@ import { getFormatter, getTranslations } from "next-intl/server";
 import { getMyPlan } from "../queries";
 import { RedeemForm } from "./redeem-form";
 
-/** Settings section: the plan as the database knows it — never more than that. */
+/** Settings section: the plan as the database knows it - never more than that. */
 export async function PlanSummary() {
   const t = await getTranslations("Plan");
   const format = await getFormatter();

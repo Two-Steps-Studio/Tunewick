@@ -33,8 +33,8 @@ export async function refreshSession(request: NextRequest, response: NextRespons
   if (!data?.claims) return response;
 
   // Accounts with a verified second factor must finish it before using the app: a password-only
-  // (aal1) session is sent to the verification page. This redirect is a convenience — the database
-  // refuses every API request of such a session anyway (public.enforce_mfa) — so whether the
+  // (aal1) session is sent to the verification page. This redirect is a convenience - the database
+  // refuses every API request of such a session anyway (public.enforce_mfa) - so whether the
   // account has a factor (asked from the Auth server, never from the unsigned cookie user object)
   // may be remembered for a few minutes in MFA_HINT_COOKIE. A forged hint can only skip the
   // redirect, not unlock data.
@@ -68,7 +68,7 @@ export async function refreshSession(request: NextRequest, response: NextRespons
   return response;
 }
 
-/** Remembered answer to "does this account have a verified factor?" — see refreshSession. */
+/** Remembered answer to "does this account have a verified factor?" - see refreshSession. */
 export const MFA_HINT_COOKIE = "tw_mfa_hint";
 const MFA_HINT_SECONDS = 10 * 60;
 

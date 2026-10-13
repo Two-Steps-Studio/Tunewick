@@ -9,7 +9,7 @@ import { Icon } from "./icons";
 
 const IDLE: PreviewState = { trackId: null, status: "idle", position: 0, length: 0 };
 
-/** The preview on a shared song page — no account needed. */
+/** The preview on a shared song page - no account needed. */
 export function SongPreview({ item }: { item: FeedItem }) {
   const t = useTranslations("Feed");
   const [player] = useState(() => (typeof window === "undefined" ? null : new PreviewPlayer()));

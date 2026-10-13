@@ -64,7 +64,7 @@ for (const [setting, codec] of [
   test(`${setting}: three tracks play gapless from one continuous buffer`, async ({ page }) => {
     await playAlbum(page, setting);
     // Everything is appended into one MediaSource: a single range of exactly the music
-    // (AAC priming/padding trimmed — untrimmed it would be ~30.06 s with holes).
+    // (AAC priming/padding trimmed - untrimmed it would be ~30.06 s with holes).
     await expect
       .poll(async () => {
         const d = await debug(page);

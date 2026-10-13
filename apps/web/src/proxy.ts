@@ -11,7 +11,7 @@ const NOT_CONFIGURED = `<!doctype html><html lang="pl"><meta charset="utf-8"><me
 
 export default async function proxy(request: NextRequest) {
   if (!isSupabaseConfigured()) {
-    console.error("Supabase is not configured for this deployment — see docs/deployment.md");
+    console.error("Supabase is not configured for this deployment - see docs/deployment.md");
     return new Response(NOT_CONFIGURED, {
       status: 503,
       headers: { "content-type": "text/html; charset=utf-8", "retry-after": "3600" },

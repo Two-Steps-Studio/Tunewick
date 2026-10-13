@@ -8,7 +8,7 @@ import { type CardFormat, coverForCard, qrDataUrl, songCard } from "./cards";
 import { getSharedSong } from "./song";
 
 /**
- * A public song's share card (Open Graph, story or square) — the same image for the download link,
+ * A public song's share card (Open Graph, story or square) - the same image for the download link,
  * the Open Graph preview and the video clip. Null when the song is not public.
  */
 export async function renderSongCard(

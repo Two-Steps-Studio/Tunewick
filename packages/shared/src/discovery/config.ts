@@ -1,6 +1,6 @@
 /**
  * Discovery configuration (docs/discovery-expansion.md §4–§5). Every number that shapes the feed
- * or the progress system lives here, so tuning is one reviewed change — and a learned model can
+ * or the progress system lives here, so tuning is one reviewed change - and a learned model can
  * later replace `rankFeed` without touching callers.
  */
 
@@ -102,7 +102,7 @@ export const TUNING = {
 export const PREVIEW = {
   lengthMs: 30_000,
   minLengthMs: 15_000,
-  /** Fallback start: about a third in — past most intros, before most outros. */
+  /** Fallback start: about a third in - past most intros, before most outros. */
   startFraction: 0.33,
   /** Heard at least this much (or the whole preview) = a discovery (mirrors the database). */
   discoveryMs: 15_000,

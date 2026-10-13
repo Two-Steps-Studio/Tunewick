@@ -1,7 +1,7 @@
 import { expect, type Page, test } from "@playwright/test";
 import { createConfirmedUser } from "./helpers";
 
-// Requires local S3 (pnpm media:start, then pnpm db:env) — the browser uploads straight to it.
+// Requires local S3 (pnpm media:start, then pnpm db:env) - the browser uploads straight to it.
 
 function unique(prefix: string) {
   return `${prefix}-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 5)}`;
@@ -77,10 +77,10 @@ test.describe("master upload", () => {
       mimeType: "audio/wav",
       buffer: silentWav(),
     });
-    // The worker may already be on it (or done: 1 s is too short), so any honest state is fine —
+    // The worker may already be on it (or done: 1 s is too short), so any honest state is fine -
     // but never "ready" before anything checked the file.
     await expect(track.getByRole("status")).toHaveText(
-      /^(Przesłano Halda Master\.wav \(0,2 MB\) — czeka na sprawdzenie i przetworzenie\.|Sprawdzamy i przetwarzamy Halda Master\.wav…|Plik Halda Master\.wav został odrzucony\. .+)$/,
+      /^(Przesłano Halda Master\.wav \(0,2 MB\) - czeka na sprawdzenie i przetworzenie\.|Sprawdzamy i przetwarzamy Halda Master\.wav…|Plik Halda Master\.wav został odrzucony\. .+)$/,
     );
     await expect(page.locator(".readiness__done", { hasText: "Pliki master" })).toHaveCount(0);
 
@@ -114,7 +114,7 @@ test.describe("master upload", () => {
       track.getByText("Wersje do odtwarzania: Data Saver, High, Lossless."),
     ).toBeVisible();
     await expect(
-      page.locator(".readiness__done", { hasText: "Pliki master wszystkich utworów — sprawdzone" }),
+      page.locator(".readiness__done", { hasText: "Pliki master wszystkich utworów - sprawdzone" }),
     ).toBeVisible();
 
     await track.getByRole("button", { name: "Odsłuchaj: Hałda" }).click();

@@ -1,6 +1,6 @@
 /**
  * Preview playback for the Discover feed: one excerpt at a time, natively (AAC, no MSE), with the
- * next card preloaded and everything behind unloaded — at most two media elements hold data.
+ * next card preloaded and everything behind unloaded - at most two media elements hold data.
  * Kept apart from the main PlayerEngine (gapless, quality tiers) on purpose: previews must start
  * instantly and stay cheap on weak networks. Framework-free; React reads it via subscribe/getState.
  */
@@ -31,7 +31,7 @@ export interface PreviewListen {
 
 export interface PreviewCallbacks {
   /**
-   * A started preview stopped being current (scrolled away, ended, page hidden) — with how much
+   * A started preview stopped being current (scrolled away, ended, page hidden) - with how much
    * was really heard, so the feed can record a listen (≥ 1 s) or a skip.
    */
   onLeave: (listen: PreviewListen) => void;
@@ -153,7 +153,7 @@ export class PreviewPlayer {
   }
 
   /**
-   * Makes `item` current (and `next` the preloaded one). Plays when `autoplay` — browsers allow it
+   * Makes `item` current (and `next` the preloaded one). Plays when `autoplay` - browsers allow it
    * after the listener's first tap; otherwise the card shows a play button ("blocked").
    */
   async show(item: FeedItem, next: FeedItem | null, autoplay: boolean) {

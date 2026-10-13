@@ -4,7 +4,7 @@ import type { QualityTier, Rendition, SourceQuality, TierReason } from "@tunewic
 export interface TrackRendition extends Rendition {
   url: string;
   bitDepth: number | null;
-  /** Real average bitrate of this file (bytes × 8 / duration), kbit/s — for throughput decisions. */
+  /** Real average bitrate of this file (bytes × 8 / duration), kbit/s - for throughput decisions. */
   bitrateKbps: number;
   /** Encoder target for lossy variants (shown to listeners, e.g. "AAC 256 kbps"); null for FLAC. */
   nominalKbps: number | null;

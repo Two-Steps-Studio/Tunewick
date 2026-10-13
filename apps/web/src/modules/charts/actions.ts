@@ -8,7 +8,7 @@ import type { PlayerTrack } from "@/modules/player";
 const ids = z.array(z.uuid()).min(1).max(20);
 
 /**
- * A playable queue for chart rows (lazily, on the first tap — rendering a chart never presigns
+ * A playable queue for chart rows (lazily, on the first tap - rendering a chart never presigns
  * audio). Keeps the chart order; tracks without processed audio are left out.
  */
 export async function getChartPlayback(trackIds: string[]) {

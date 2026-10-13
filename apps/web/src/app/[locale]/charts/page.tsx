@@ -43,7 +43,7 @@ const pick = <T extends string>(value: unknown, allowed: readonly T[], fallback:
   allowed.includes(value as T) ? (value as T) : fallback;
 
 /**
- * Charts: what people listen to and discover this week — by listeners, never plays. Global, by
+ * Charts: what people listen to and discover this week - by listeners, never plays. Global, by
  * listeners' country/region ("Popular in …"), by the music's origin, city scene and genre; plus
  * rising and underground artists, fresh releases and "Discover the world".
  */
