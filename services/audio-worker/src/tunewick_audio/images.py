@@ -34,6 +34,8 @@ RULES = {
     # audio.md §2.1: ≥ 1400 × 1400 required, ≥ 3000 recommended; stores keep a 2400 px maximum.
     "release_artwork": ImageRules(1400, True, (160, 320, 640, 1280), 2400),
     "artist_image": ImageRules(400, False, (160, 320, 640), 1280),
+    # Profile pictures: shown small (top bar, lists, profile header); centre-cropped like photos.
+    "profile_image": ImageRules(200, False, (96, 160, 320), 640),
 }
 
 

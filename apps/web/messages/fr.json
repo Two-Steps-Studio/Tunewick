@@ -238,6 +238,11 @@
       "displayNameTooLong": "Le nom peut comporter au maximum 80 caractères.",
       "bioTooLong": "La description peut comporter au maximum 500 caractères.",
       "unexpected": "Impossible d’enregistrer. Réessaie."
+    },
+    "avatar": {
+      "title": "Photo de profil",
+      "remove": "Retirer la photo",
+      "alt": "Ta photo de profil"
     }
   },
   "Profile": {
@@ -247,7 +252,7 @@
   },
   "Security": {
     "title": "Sécurité",
-    "lead": "Un second facteur de connexion protège ton compte même si quelqu’un découvre ton mot de passe.",
+    "lead": "Un second facteur protège ton compte même si quelqu’un connaît ton mot de passe. Choisis une clé d’accès ou une appli d’authentification - ou les deux.",
     "link": "Sécurité et connexion à deux facteurs",
     "staffNote": "Les comptes de modérateur et d’administrateur doivent utiliser la connexion à deux facteurs.",
     "statusOn": "La connexion à deux facteurs est activée.",
@@ -262,7 +267,7 @@
     "disableNeedsVerify": "Pour désactiver le second facteur, confirme d’abord ta connexion avec un code de l’app.",
     "verify": {
       "title": "Confirmer la connexion",
-      "lead": "Saisis le code à 6 chiffres de ton app d’authentification.",
+      "lead": "Confirme que c’est bien toi : avec une clé d’accès (empreinte, visage, PIN) ou un code à 6 chiffres de ton appli d’authentification.",
       "submit": "Confirmer"
     },
     "errors": {
@@ -270,7 +275,25 @@
       "codeFormat": "Le code comporte 6 chiffres.",
       "rateLimited": "Trop de tentatives. Réessaie dans un instant.",
       "unexpected": "Une erreur s’est produite. Réessaie."
-    }
+    },
+    "passkey": {
+      "title": "Clé d’accès (recommandé)",
+      "lead": "Tu confirmes la connexion avec ton empreinte, ton visage ou le code PIN de ton téléphone ou ordinateur. Aucune appli en plus, et une clé d’accès ne peut pas être volée sur un faux site.",
+      "add": "Ajouter une clé d’accès",
+      "use": "Confirmer avec une clé d’accès",
+      "listTitle": "Tes clés d’accès",
+      "added": "Ajoutée le {date}",
+      "remove": "Supprimer la clé",
+      "another": "Ajouter une autre clé (par ex. sur un second appareil)",
+      "errors": {
+        "unsupported": "Ce navigateur ne prend pas en charge les clés d’accès. Utilise un navigateur à jour ou une appli d’authentification.",
+        "cancelled": "Annulé ou délai dépassé. Réessaie.",
+        "disabled": "Les clés d’accès ne sont pas encore activées sur le serveur. Utilise une appli d’authentification.",
+        "unexpected": "Ça n’a pas marché. Réessaie."
+      }
+    },
+    "totpTitle": "Appli d’authentification",
+    "or": "ou"
   },
   "Artists": {
     "my": {
@@ -770,6 +793,14 @@
       "incomplete": "Le fichier n’est pas arrivé en entier. Réessaie.",
       "transfer": "L’envoi a été interrompu. Vérifie ta connexion et réessaie.",
       "failed": "Une erreur s’est produite. Réessaie."
+    },
+    "avatar": {
+      "choose": "Ajouter une photo de profil",
+      "replace": "Changer de photo de profil",
+      "processing": "Préparation de ta photo…",
+      "rejected": "La photo a été refusée.",
+      "failed": "L’envoi de la photo a échoué - réessaie.",
+      "hint": "Au moins 200 × 200 px, JPEG, PNG ou WebP jusqu’à 25 Mo. Nous la recadrons en carré depuis le centre et supprimons les métadonnées."
     }
   },
   "Places": {
@@ -1574,9 +1605,10 @@
         "challenge": "Une mission terminée (son propre XP)",
         "underground": "Un artiste à moins de 10 000 auditeurs (une fois par artiste)",
         "daily_complete": "Terminer ta Découverte du jour (une fois par jour)",
-        "weekly_complete": "Terminer ton Drop de la semaine (une fois par semaine)"
+        "weekly_complete": "Terminer ton Drop de la semaine (une fois par semaine)",
+        "listening": "Toutes les 10 minutes d’écoute (jusqu’à 2 heures par jour)"
       },
-      "fair": "Les points récompensent la découverte, pas les heures d’écoute : réécoutes, boucles et passages rapides ne rapportent rien, et chaque type de point a un plafond quotidien."
+      "fair": "Les points récompensent surtout la découverte. Le temps d’écoute seul rapporte de l’XP toutes les 10 minutes, mais pour 2 heures par jour au maximum - boucler ou zapper vite n’apporte rien de plus, et chaque type de points a une limite quotidienne. Le Score de découverte ne compte que les découvertes."
     },
     "card": {
       "heading": "MA SEMAINE TUNEWICK",
@@ -1644,7 +1676,8 @@
       "save": "Enregistré",
       "full_listen": "Écoute complète",
       "share": "Partagé",
-      "underground": "petite scène"
+      "underground": "petite scène",
+      "listening": "Temps d’écoute"
     },
     "goal": {
       "daily_artists": "Objectif du jour atteint : {target} nouveaux artistes !",

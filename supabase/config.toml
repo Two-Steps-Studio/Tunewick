@@ -325,10 +325,17 @@ otp_length = 6
 template = "Your code is {{ .Code }}"
 max_frequency = "5s"
 
-# Configure MFA via WebAuthn
-# [auth.mfa.web_authn]
-# enroll_enabled = true
-# verify_enabled = true
+# Configure MFA via WebAuthn: passkeys (fingerprint, face, device PIN) - no authenticator app needed.
+[auth.mfa.web_authn]
+enroll_enabled = true
+verify_enabled = true
+
+# The site passkeys belong to (WebAuthn "relying party"). Production: the app's domain, e.g.
+# rp_id = "tunewick.vercel.app", rp_origins = ["https://tunewick.vercel.app"] (docs/security.md).
+[auth.webauthn]
+rp_display_name = "Tunewick"
+rp_id = "localhost"
+rp_origins = ["http://localhost:3000", "http://localhost:3100"]
 
 # Use an external OAuth provider. The full list of providers are: `apple`, `azure`, `bitbucket`,
 # `discord`, `facebook`, `github`, `gitlab`, `google`, `keycloak`, `linkedin_oidc`, `notion`, `twitch`,

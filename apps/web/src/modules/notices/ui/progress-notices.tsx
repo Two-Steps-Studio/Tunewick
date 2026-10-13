@@ -13,6 +13,7 @@ function useText(notice: Notice) {
     case "award": {
       const parts = notice.parts
         .filter((part) => part !== "new_country" || !notice.country)
+        .filter((part) => t.has(`parts.${part as "new_song"}`))
         .map((part) => t(`parts.${part as "new_song"}`));
       if (notice.country) {
         parts.push(

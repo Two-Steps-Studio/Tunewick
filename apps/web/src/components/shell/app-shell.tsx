@@ -6,13 +6,14 @@ import { LocaleSwitcher } from "./locale-switcher";
 import { MainNav } from "./main-nav";
 import { ProgressNotices } from "@/modules/notices";
 import { PlayerBar } from "@/modules/player";
+import { Avatar, getMyBadge } from "@/modules/users";
 import { Wordmark } from "./wordmark";
 
 export async function AppShell({ children }: { children: React.ReactNode }) {
   const t = await getTranslations("Shell");
   const tAccount = await getTranslations("Account");
   const user = await getOptionalUser();
-  const staff = user ? await isStaff() : false;
+  const [staff, badge] = user ? await Promise.all([isStaff(), getMyBadge(user.id)]) : [false, null];
 
   return (
     <>
@@ -32,8 +33,13 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
                   {t("moderation")}
                 </Link>
               ) : null}
-              <Link href="/settings" className="button button--quiet">
-                {tAccount("settings")}
+              <Link
+                href="/settings"
+                className="account-chip"
+                aria-label={tAccount("settings")}
+                title={badge?.name ?? tAccount("settings")}
+              >
+                <Avatar image={badge?.image ?? null} name={badge?.name ?? null} size="2rem" />
               </Link>
               <SignOutButton />
             </>

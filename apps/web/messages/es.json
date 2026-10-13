@@ -238,6 +238,11 @@
       "displayNameTooLong": "El nombre puede tener como máximo 80 caracteres.",
       "bioTooLong": "La descripción puede tener como máximo 500 caracteres.",
       "unexpected": "No se pudo guardar. Inténtalo de nuevo."
+    },
+    "avatar": {
+      "title": "Foto de perfil",
+      "remove": "Quitar foto",
+      "alt": "Tu foto de perfil"
     }
   },
   "Profile": {
@@ -247,7 +252,7 @@
   },
   "Security": {
     "title": "Seguridad",
-    "lead": "Un segundo factor de inicio de sesión protege tu cuenta aunque alguien conozca tu contraseña.",
+    "lead": "Un segundo factor protege tu cuenta aunque alguien sepa tu contraseña. Elige una llave de acceso o una app de autenticación, o ambas.",
     "link": "Seguridad e inicio de sesión en dos pasos",
     "staffNote": "Las cuentas de moderadores y administradores deben usar el inicio de sesión en dos pasos.",
     "statusOn": "El inicio de sesión en dos pasos está activado.",
@@ -262,7 +267,7 @@
     "disableNeedsVerify": "Para desactivar el segundo factor, primero confirma tu inicio de sesión con un código de la app.",
     "verify": {
       "title": "Confirmar inicio de sesión",
-      "lead": "Introduce el código de 6 dígitos de tu app de autenticación.",
+      "lead": "Confirma que eres tú: con una llave de acceso (huella, cara, PIN) o con un código de 6 dígitos de tu app de autenticación.",
       "submit": "Confirmar"
     },
     "errors": {
@@ -270,7 +275,25 @@
       "codeFormat": "El código tiene 6 dígitos.",
       "rateLimited": "Demasiados intentos. Vuelve a intentarlo en breve.",
       "unexpected": "Algo salió mal. Inténtalo de nuevo."
-    }
+    },
+    "passkey": {
+      "title": "Llave de acceso (recomendado)",
+      "lead": "Confirmas el inicio de sesión con tu huella, tu cara o el PIN de tu móvil u ordenador. No necesitas otra app, y una llave de acceso no se puede robar en una web falsa.",
+      "add": "Añadir llave de acceso",
+      "use": "Confirmar con llave de acceso",
+      "listTitle": "Tus llaves de acceso",
+      "added": "Añadida el {date}",
+      "remove": "Quitar llave",
+      "another": "Añadir otra llave (p. ej. en otro dispositivo)",
+      "errors": {
+        "unsupported": "Este navegador no admite llaves de acceso. Usa un navegador actualizado o una app de autenticación.",
+        "cancelled": "Cancelado o tiempo agotado. Inténtalo de nuevo.",
+        "disabled": "Las llaves de acceso aún no están activadas en el servidor. Usa una app de autenticación.",
+        "unexpected": "No funcionó. Inténtalo de nuevo."
+      }
+    },
+    "totpTitle": "App de autenticación",
+    "or": "o"
   },
   "Artists": {
     "my": {
@@ -770,6 +793,14 @@
       "incomplete": "El archivo no llegó completo. Inténtalo de nuevo.",
       "transfer": "Se interrumpió la subida. Revisa tu conexión e inténtalo de nuevo.",
       "failed": "Algo salió mal. Inténtalo de nuevo."
+    },
+    "avatar": {
+      "choose": "Añadir foto de perfil",
+      "replace": "Cambiar foto de perfil",
+      "processing": "Preparando tu foto…",
+      "rejected": "La foto fue rechazada.",
+      "failed": "No se pudo subir la foto. Inténtalo de nuevo.",
+      "hint": "Al menos 200 × 200 px, JPEG, PNG o WebP de hasta 25 MB. La recortamos en cuadrado desde el centro y eliminamos los metadatos."
     }
   },
   "Places": {
@@ -1574,9 +1605,10 @@
         "challenge": "Una misión completada (con su propio XP)",
         "underground": "Un artista con menos de 10.000 oyentes (una vez por artista)",
         "daily_complete": "Completar tu Descubrimiento del día (una vez al día)",
-        "weekly_complete": "Completar tu Selección semanal (una vez a la semana)"
+        "weekly_complete": "Completar tu Selección semanal (una vez a la semana)",
+        "listening": "Cada 10 minutos de escucha (hasta 2 horas al día)"
       },
-      "fair": "Los puntos premian descubrir, no las horas de reproducción: las repeticiones, los bucles y los saltos rápidos no suman nada, y cada tipo de punto tiene un límite diario."
+      "fair": "Los puntos premian sobre todo descubrir. Solo por escuchar ganas XP cada 10 minutos, pero como máximo por 2 horas al día: repetir en bucle o saltar rápido no da más, y cada tipo de puntos tiene un límite diario. La Puntuación de descubrimiento cuenta solo descubrimientos."
     },
     "card": {
       "heading": "MI SEMANA EN TUNEWICK",
@@ -1644,7 +1676,8 @@
       "save": "Guardada",
       "full_listen": "Escucha completa",
       "share": "Compartida",
-      "underground": "escena pequeña"
+      "underground": "escena pequeña",
+      "listening": "Tiempo de escucha"
     },
     "goal": {
       "daily_artists": "¡Objetivo diario cumplido: {target} artistas nuevos!",

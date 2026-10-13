@@ -1,6 +1,8 @@
 import { createServerClient } from "@supabase/ssr";
 import type { Database } from "@tunewick/shared";
 import { type NextRequest, NextResponse } from "next/server";
+import { hasLocale } from "next-intl";
+import { type Locale, routing } from "@/i18n/routing";
 import { supabaseConfig } from "./config";
 
 /**
@@ -57,8 +59,7 @@ export async function refreshSession(request: NextRequest, response: NextRespons
     }
     if (!hasFactor) return response;
     const target = request.nextUrl.clone();
-    target.pathname =
-      pathname === "/en" || pathname.startsWith("/en/") ? "/en/verify" : "/weryfikacja";
+    target.pathname = verifyPathFor(pathname);
     target.search = `?next=${encodeURIComponent(pathname)}`;
     const redirect = NextResponse.redirect(target);
     for (const cookie of response.cookies.getAll()) redirect.cookies.set(cookie);
@@ -77,7 +78,22 @@ async function hasVerifiedFactor(supabase: ReturnType<typeof createServerClient<
   return data.user?.factors?.some((factor) => factor.status === "verified") ?? false;
 }
 
-/** Localized paths of the second-factor page (see routing pathnames "/verify"). */
+/** The locale a path is in: its prefix, or the default locale (no prefix, "as-needed"). */
+function localeOf(pathname: string): Locale {
+  const prefix = pathname.split("/")[1];
+  return hasLocale(routing.locales, prefix) ? prefix : routing.defaultLocale;
+}
+
+/** The second-factor page in the language of `pathname` (routing pathnames "/verify"). */
+export function verifyPathFor(pathname: string) {
+  const locale = localeOf(pathname);
+  const path = routing.pathnames["/verify"][locale];
+  return locale === routing.defaultLocale ? path : `/${locale}${path}`;
+}
+
 function isVerifyPath(pathname: string) {
-  return pathname === "/weryfikacja" || pathname === "/en/verify" || pathname === "/pl/weryfikacja";
+  return (
+    pathname === verifyPathFor(pathname) ||
+    pathname === `/${routing.defaultLocale}${routing.pathnames["/verify"][routing.defaultLocale]}`
+  );
 }

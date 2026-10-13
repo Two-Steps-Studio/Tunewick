@@ -238,6 +238,11 @@
       "displayNameTooLong": "O nome pode ter no máximo 80 caracteres.",
       "bioTooLong": "A descrição pode ter no máximo 500 caracteres.",
       "unexpected": "Não foi possível salvar. Tente novamente."
+    },
+    "avatar": {
+      "title": "Foto de perfil",
+      "remove": "Remover foto",
+      "alt": "Sua foto de perfil"
     }
   },
   "Profile": {
@@ -247,7 +252,7 @@
   },
   "Security": {
     "title": "Segurança",
-    "lead": "Um segundo fator de login protege sua conta mesmo que alguém descubra sua senha.",
+    "lead": "Um segundo fator protege sua conta mesmo que alguém saiba sua senha. Escolha uma chave de acesso ou um app autenticador - ou os dois.",
     "link": "Segurança e login em duas etapas",
     "staffNote": "Contas de moderadores e administradores precisam usar login em duas etapas.",
     "statusOn": "O login em duas etapas está ativado.",
@@ -262,7 +267,7 @@
     "disableNeedsVerify": "Para desativar o segundo fator, primeiro confirme seu login com um código do app.",
     "verify": {
       "title": "Confirmar login",
-      "lead": "Digite o código de 6 dígitos do seu app autenticador.",
+      "lead": "Confirme que é você: com uma chave de acesso (digital, rosto, PIN) ou um código de 6 dígitos do seu app autenticador.",
       "submit": "Confirmar"
     },
     "errors": {
@@ -270,7 +275,25 @@
       "codeFormat": "O código tem 6 dígitos.",
       "rateLimited": "Tentativas demais. Tente novamente em instantes.",
       "unexpected": "Algo deu errado. Tente novamente."
-    }
+    },
+    "passkey": {
+      "title": "Chave de acesso (recomendado)",
+      "lead": "Você confirma o login com a digital, o rosto ou o PIN do celular ou computador. Sem app extra, e uma chave de acesso não pode ser roubada num site falso.",
+      "add": "Adicionar chave de acesso",
+      "use": "Confirmar com chave de acesso",
+      "listTitle": "Suas chaves de acesso",
+      "added": "Adicionada em {date}",
+      "remove": "Remover chave",
+      "another": "Adicionar outra chave (ex.: em outro aparelho)",
+      "errors": {
+        "unsupported": "Este navegador não suporta chaves de acesso. Use um navegador atualizado ou um app autenticador.",
+        "cancelled": "Cancelado ou tempo esgotado. Tente de novo.",
+        "disabled": "As chaves de acesso ainda não estão ativadas no servidor. Use um app autenticador.",
+        "unexpected": "Não deu certo. Tente de novo."
+      }
+    },
+    "totpTitle": "App autenticador",
+    "or": "ou"
   },
   "Artists": {
     "my": {
@@ -770,6 +793,14 @@
       "incomplete": "O arquivo não chegou completo. Tente novamente.",
       "transfer": "O envio foi interrompido. Verifique sua conexão e tente novamente.",
       "failed": "Algo deu errado. Tente novamente."
+    },
+    "avatar": {
+      "choose": "Adicionar foto de perfil",
+      "replace": "Trocar foto de perfil",
+      "processing": "Preparando sua foto…",
+      "rejected": "A foto foi recusada.",
+      "failed": "Não foi possível enviar a foto. Tente de novo.",
+      "hint": "Pelo menos 200 × 200 px, JPEG, PNG ou WebP até 25 MB. Cortamos em quadrado a partir do centro e removemos os metadados."
     }
   },
   "Places": {
@@ -1574,9 +1605,10 @@
         "challenge": "Uma missão concluída (XP próprio)",
         "underground": "Um artista com menos de 10.000 ouvintes (uma vez por artista)",
         "daily_complete": "Concluir sua Descoberta do Dia (uma vez por dia)",
-        "weekly_complete": "Concluir seu Drop da Semana (uma vez por semana)"
+        "weekly_complete": "Concluir seu Drop da Semana (uma vez por semana)",
+        "listening": "A cada 10 minutos ouvindo (até 2 horas por dia)"
       },
-      "fair": "Os pontos premiam a descoberta, não horas de reprodução: repetições, loops e pulos rápidos não rendem nada, e cada tipo de ponto tem um limite diário."
+      "fair": "Os pontos premiam principalmente descobrir. Só ouvir dá XP a cada 10 minutos, mas no máximo por 2 horas por dia - repetir em loop ou pular rápido não rende mais, e cada tipo de ponto tem um limite diário. A Pontuação de Descoberta conta só descobertas."
     },
     "card": {
       "heading": "MINHA SEMANA NO TUNEWICK",
@@ -1644,7 +1676,8 @@
       "save": "Salva",
       "full_listen": "Ouvida inteira",
       "share": "Compartilhada",
-      "underground": "cena pequena"
+      "underground": "cena pequena",
+      "listening": "Tempo ouvindo"
     },
     "goal": {
       "daily_artists": "Meta diária concluída: {target} artistas novos!",

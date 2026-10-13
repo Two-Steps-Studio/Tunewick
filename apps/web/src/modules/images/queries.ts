@@ -64,7 +64,14 @@ export async function getLatestImageUpload(
     .from("images")
     .select("id, status, rejection_code")
     .eq("kind", kind)
-    .eq(kind === "release_artwork" ? "release_id" : "artist_id", ownerId)
+    .eq(
+      kind === "release_artwork"
+        ? "release_id"
+        : kind === "profile_image"
+          ? "profile_id"
+          : "artist_id",
+      ownerId,
+    )
     .order("created_at", { ascending: false })
     .limit(1)
     .maybeSingle();

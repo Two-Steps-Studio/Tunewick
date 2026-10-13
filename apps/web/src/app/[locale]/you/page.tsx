@@ -460,7 +460,8 @@ async function PointRules() {
       </h2>
       <ul className="point-rules">
         {(data ?? [])
-          .filter((rule) => rule.enabled)
+          // A rule the interface has no text for yet (newer database) is left out, not shown raw.
+          .filter((rule) => rule.enabled && t.has(`kinds.${rule.kind as "new_song"}`))
           .map((rule) => (
             <li key={rule.kind}>
               <span>{t(`kinds.${rule.kind as "new_song"}`)}</span>

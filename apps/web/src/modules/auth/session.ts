@@ -24,10 +24,14 @@ export async function requireUser(signInPath: string): Promise<User> {
 }
 
 export interface MfaStatus {
-  /** A verified TOTP factor exists. */
+  /** At least one verified second factor exists (authenticator app or passkey). */
   enabled: boolean;
   /** This session passed the second factor (aal2). */
   verified: boolean;
+  /** A verified authenticator-app (TOTP) factor exists. */
+  totp: boolean;
+  /** Verified passkeys (WebAuthn): fingerprint, face or device PIN - no extra app. */
+  passkeys: { id: string; name: string | null; createdAt: string }[];
 }
 
 export async function getMfaStatus(): Promise<MfaStatus> {
@@ -38,9 +42,18 @@ export async function getMfaStatus(): Promise<MfaStatus> {
     supabase.auth.mfa.listFactors(),
     supabase.auth.getClaims(),
   ]);
+  const verified = (factors?.all ?? []).filter((factor) => factor.status === "verified");
   return {
-    enabled: (factors?.totp.length ?? 0) > 0,
+    enabled: verified.length > 0,
     verified: claims?.claims?.aal === "aal2",
+    totp: verified.some((factor) => factor.factor_type === "totp"),
+    passkeys: verified
+      .filter((factor) => factor.factor_type === "webauthn")
+      .map((factor) => ({
+        id: factor.id,
+        name: factor.friendly_name ?? null,
+        createdAt: factor.created_at,
+      })),
   };
 }
 
