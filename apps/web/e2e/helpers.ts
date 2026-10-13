@@ -12,14 +12,15 @@ export function uniqueEmail(prefix: string) {
   return `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}@test.tunewick.local`;
 }
 
-/** Waits for the newest email to `to` and returns the path of the link in it. */
+/** Waits for the newest email to `to` whose subject contains `subjectIncludes` (any case). */
 export async function emailLinkPath(to: string, subjectIncludes: string): Promise<string> {
   for (let attempt = 0; attempt < 40; attempt++) {
     const search = await fetch(
       `${MAILPIT}/api/v1/search?query=${encodeURIComponent(`to:"${to}"`)}`,
     );
     const { messages } = (await search.json()) as { messages: { ID: string; Subject: string }[] };
-    const message = messages.find((m) => m.Subject.includes(subjectIncludes));
+    const wanted = subjectIncludes.toLocaleLowerCase("pl");
+    const message = messages.find((m) => m.Subject.toLocaleLowerCase("pl").includes(wanted));
     if (message) {
       const detail = (await (await fetch(`${MAILPIT}/api/v1/message/${message.ID}`)).json()) as {
         HTML: string;
