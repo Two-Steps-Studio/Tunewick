@@ -88,7 +88,7 @@ body {
   .site-header {
     display: flex;
     align-items: center;
-    gap: var(--tk-space-8);
+    gap: var(--tk-space-3);
     max-width: 80rem;
     margin: 0 auto;
     padding: var(--tk-space-4);
@@ -97,12 +97,19 @@ body {
   .site-header__home {
     margin-right: auto;
   }
+  /* On narrow phones (staff have one link more) the actions wrap instead of widening the page. */
   .site-header__actions {
     display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
     align-items: center;
     gap: var(--tk-space-2);
+    min-width: 0;
   }
   @media (min-width: 1024px) {
+    .site-header {
+      gap: var(--tk-space-8);
+    }
     .site-header__home {
       margin-right: 0;
     }
@@ -2376,8 +2383,15 @@ body {
       0 1rem 2rem rgb(0 0 0 / 0.4);
     animation: menu-in var(--tk-dur-fast) var(--tk-ease-out);
   }
+  /* On the song page the menu opens under the whole row of actions, from its left edge: the
+     share button may wrap anywhere in the row, and a panel hung from the button itself ran off
+     the right edge of a phone screen (sideways scrolling, a zoomed-out page). */
+  .song-page .share-menu {
+    position: static;
+  }
   .song-page .share-menu__panel {
     left: 0;
+    max-width: 100%;
     right: auto;
     top: calc(100% + var(--tk-space-2));
     bottom: auto;
@@ -2643,6 +2657,7 @@ body {
     color: var(--text-muted);
   }
   .song-page__actions {
+    position: relative;
     display: flex;
     flex-wrap: wrap;
     gap: var(--tk-space-2);

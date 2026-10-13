@@ -1,5 +1,5 @@
 import { expect, type Page, test } from "@playwright/test";
-import { createConfirmedUser, enableMfa, grantRole } from "./helpers";
+import { createConfirmedUser, enableMfa, expectNoSidewaysScroll, grantRole } from "./helpers";
 
 async function setHandle(page: Page, handle: string) {
   await page.goto("/ustawienia");
@@ -27,6 +27,8 @@ test("an admin manages staff roles and grants Premium; everything is in the audi
   await setHandle(other, `osoba-${run}`);
 
   await page.goto("/moderacja");
+  // Staff have one link more in the top bar - it still fits a phone.
+  await expectNoSidewaysScroll(page);
   await page.getByRole("link", { name: "Administracja" }).click();
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Administracja");
   await expect(page.getByText("closed_beta")).toBeVisible();
