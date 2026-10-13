@@ -119,6 +119,24 @@
   }
 }
 
+/* Increased contrast (system setting): firmer hairlines and muted text. */
+@media (prefers-contrast: more) {
+  :root:not([data-theme="light"]) {
+    --line: var(--tk-n-500); /* 3.27 on graphite */
+    --text-muted: var(--tk-n-300); /* 10.19 */
+  }
+  [data-theme="light"] {
+    --line: var(--tk-n-500); /* 4.68 on ivory */
+    --text-muted: var(--tk-n-600); /* 7.97 */
+  }
+}
+@media (prefers-contrast: more) and (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --line: var(--tk-n-500);
+    --text-muted: var(--tk-n-600);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   :root {
     --tk-dur-press: 0ms;

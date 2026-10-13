@@ -46,6 +46,25 @@ body {
   outline-offset: 3px;
 }
 
+/* Headings break into even lines (no lone last word); paragraphs avoid one-word orphans. */
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+p {
+  text-wrap: pretty;
+}
+
+/* Pressables draw their own press state (:active), so the grey system tap flash would double it. */
+button,
+summary,
+.button,
+.account-chip,
+.journey {
+  -webkit-tap-highlight-color: transparent;
+}
+
 /* next/font provides hashed family names; route the design tokens through them. */
 :root {
   --tk-font-display: var(--font-bricolage), ui-sans-serif, sans-serif;
@@ -224,7 +243,12 @@ body {
     display: inline-flex;
     border-radius: 50%;
     box-shadow: 0 0 0 1px var(--line);
-    transition: box-shadow var(--tk-dur-press) var(--tk-ease-out);
+    transition:
+      box-shadow var(--tk-dur-press) var(--tk-ease-out),
+      transform var(--tk-dur-press) var(--tk-ease-out);
+  }
+  .account-chip:active {
+    transform: scale(0.94);
   }
   @media (hover: hover) and (pointer: fine) {
     .account-chip:hover {
@@ -265,6 +289,8 @@ body {
     box-shadow:
       inset 0 0 0 1px var(--line),
       0 0.5rem 1.5rem rgb(0 0 0 / 0.35);
+    transform-origin: top right;
+    animation: menu-in var(--tk-dur-fast) var(--tk-ease-out);
   }
   .locale-switcher__option {
     display: block;
@@ -1442,8 +1468,10 @@ body {
     font-size: var(--tk-text-sm);
     color: var(--text-muted);
   }
-  .site-footer__links a:hover {
-    color: var(--text);
+  @media (hover: hover) and (pointer: fine) {
+    .site-footer__links a:hover {
+      color: var(--text);
+    }
   }
 
   /* Profile activity and blocked people (M8.2) ------------------------------- */
@@ -2271,9 +2299,11 @@ body {
     color: inherit;
     text-decoration: none;
   }
-  .feed-card__artist a:hover,
-  .feed-card__release a:hover {
-    text-decoration: underline;
+  @media (hover: hover) and (pointer: fine) {
+    .feed-card__artist a:hover,
+    .feed-card__release a:hover {
+      text-decoration: underline;
+    }
   }
   .feed-card__verified {
     display: inline-grid;
@@ -2381,6 +2411,7 @@ body {
     box-shadow:
       inset 0 0 0 1px var(--tk-n-600),
       0 1rem 2rem rgb(0 0 0 / 0.4);
+    transform-origin: bottom right;
     animation: menu-in var(--tk-dur-fast) var(--tk-ease-out);
   }
   /* On the song page the menu opens under the whole row of actions, from its left edge: the
@@ -2395,11 +2426,26 @@ body {
     right: auto;
     top: calc(100% + var(--tk-space-2));
     bottom: auto;
+    transform-origin: top left;
   }
+  /* Menus grow out of the control that opened them (transform-origin per position). */
   @keyframes menu-in {
     from {
       opacity: 0;
-      transform: translateY(4px);
+      transform: scale(0.96);
+    }
+  }
+  @keyframes menu-fade-in {
+    from {
+      opacity: 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .share-menu__panel,
+    .feed-menu__panel,
+    .locale-switcher__menu,
+    .why-panel {
+      animation-name: menu-fade-in;
     }
   }
   .share-menu__item,
@@ -2417,9 +2463,16 @@ body {
     text-decoration: none;
     cursor: pointer;
   }
-  .share-menu__item:hover,
-  .feed-menu__item:hover {
+  /* Feedback on press (touch included), hover only where a pointer can hover. */
+  .share-menu__item:active:not(:disabled),
+  .feed-menu__item:active:not(:disabled) {
     background: var(--tk-n-700);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .share-menu__item:hover,
+    .feed-menu__item:hover {
+      background: var(--tk-n-700);
+    }
   }
   .share-menu__item:disabled {
     cursor: progress;
@@ -3163,8 +3216,10 @@ body {
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-  .chart-row__title:hover {
-    text-decoration: underline;
+  @media (hover: hover) and (pointer: fine) {
+    .chart-row__title:hover {
+      text-decoration: underline;
+    }
   }
   .chart-row__artist {
     font-size: var(--tk-text-sm);
@@ -3197,10 +3252,16 @@ body {
     background: var(--bg-raised);
     color: var(--text);
     cursor: pointer;
+    transition: transform var(--tk-dur-press) var(--tk-ease-out);
   }
-  .chart-row__play:hover {
-    background: var(--accent);
-    color: var(--on-accent);
+  .chart-row__play:active:not(:disabled) {
+    transform: scale(0.94);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .chart-row__play:hover {
+      background: var(--accent);
+      color: var(--on-accent);
+    }
   }
   .chart-row__play[aria-busy="true"] {
     opacity: 0.6;
@@ -3372,6 +3433,7 @@ body {
     border-left: 3px solid var(--tk-coral);
     color: var(--tk-ivory);
     font-size: var(--tk-text-sm);
+    transform-origin: top left;
     animation: menu-in var(--tk-dur-fast) var(--tk-ease-out);
   }
   .why-panel__title {
@@ -3465,8 +3527,14 @@ body {
     text-decoration: none;
     transition: transform var(--tk-dur-fast) var(--tk-ease-out);
   }
-  .journey:hover {
-    transform: translateY(-2px);
+  .journey:active {
+    transform: scale(0.98);
+    transition-duration: var(--tk-dur-press);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .journey:hover {
+      transform: translateY(-2px);
+    }
   }
   .journey[data-journey="surprise"] {
     background: linear-gradient(140deg, var(--tk-coral) 0%, var(--tk-purple) 100%);
@@ -3772,8 +3840,10 @@ body {
   .bar-chart__hit {
     fill: transparent;
   }
-  .bar-chart__bar:hover .bar-chart__hit {
-    fill: color-mix(in srgb, var(--chart-bar) 12%, transparent);
+  @media (hover: hover) and (pointer: fine) {
+    .bar-chart__bar:hover .bar-chart__hit {
+      fill: color-mix(in srgb, var(--chart-bar) 12%, transparent);
+    }
   }
   .bar-chart__axis {
     display: grid;
