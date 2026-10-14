@@ -234,3 +234,13 @@ then run `node scripts/create-invites.mjs ...` in the same window.
 - Point values and caps: edit `discovery_point_rules` (admin) — no deploy needed. Weekly
   challenges: `discovery_challenges` (enable/disable or change targets between weeks; the running
   week's three are picked from the enabled ones).
+
+## Error reports
+
+Server errors (`apps/web/src/instrumentation.ts`, Next's `onRequestError`) and uncaught browser
+errors (`ErrorReporter` in the shell, the segment error boundary) go to `private.app_errors`
+through `public.report_error`. Admin → **App errors** lists the last 7 days, most recent first.
+Grouped per error and day with a counter, at most 500 different errors a day (a flood cannot grow
+the table), no user id, no IP, paths without their query string; a pg_cron job deletes rows
+older than 30 days. Browser extension errors and known harmless noise are not sent; a page sends
+at most five reports.

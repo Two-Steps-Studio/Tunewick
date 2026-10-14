@@ -26,6 +26,15 @@ test("an admin manages staff roles and grants Premium; everything is in the audi
   await createConfirmedUser(other, "panel-other");
   await setHandle(other, `osoba-${run}`);
 
+  // A browser error report (as reportClientError sends it) shows up in the panel, grouped.
+  const boom = `Test error ${run}`;
+  for (let i = 0; i < 2; i++) {
+    const sent = await other.request.post("/api/errors", {
+      data: { message: boom, detail: "Error\n    at test (e2e.js:1:1)", path: "/szukaj?q=private" },
+    });
+    expect(sent.status()).toBe(204);
+  }
+
   await page.goto("/moderacja");
   // Staff have one link more in the top bar - it still fits a phone.
   await expectNoSidewaysScroll(page);
@@ -39,6 +48,13 @@ test("an admin manages staff roles and grants Premium; everything is in the audi
   await expect(page.getByRole("heading", { name: "Przetwarzanie plików" })).toBeVisible();
   await expect(page.getByText(/^Utwory: \d+ czeka, \d+ w trakcie\./)).toBeVisible();
   await expect(page.getByRole("heading", { name: /^Słuchanie: / })).toBeVisible();
+  const appErrors = page.locator("section", {
+    has: page.getByRole("heading", { name: "Błędy aplikacji" }),
+  });
+  const reported = appErrors.locator("li", { hasText: boom });
+  await expect(reported).toContainText("Przeglądarka · 2 razy");
+  await expect(reported).toContainText("/szukaj");
+  await expect(reported).not.toContainText("private");
 
   // Staff role by profile handle.
   const staff = page.locator("section.settings-form__group", {

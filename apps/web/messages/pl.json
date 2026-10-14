@@ -1221,7 +1221,16 @@
         "reanalysis": "Analiza"
       }
     },
-    "databaseBehind": "Baza danych jest starsza niż aplikacja (brakuje migracji do wersji {version}). Wklej plik supabase/bundle/tunewick-migracje.sql w Supabase → SQL Editor i uruchom - część funkcji nie działa, dopóki tego nie zrobisz."
+    "databaseBehind": "Baza danych jest starsza niż aplikacja (brakuje migracji do wersji {version}). Wklej plik supabase/bundle/tunewick-migracje.sql w Supabase → SQL Editor i uruchom - część funkcji nie działa, dopóki tego nie zrobisz.",
+    "appErrors": {
+      "title": "Błędy aplikacji",
+      "lead": "Ostatnie 7 dni: błędy serwera i przeglądarek, zgrupowane. Bez danych o tym, kogo dotyczyły.",
+      "empty": "Brak zgłoszonych błędów.",
+      "server": "Serwer",
+      "client": "Przeglądarka",
+      "times": "{count, plural, one {# raz} few {# razy} many {# razy} other {# razy}}",
+      "details": "Szczegóły"
+    }
   },
   "Events": {
     "badge": "Koncert",

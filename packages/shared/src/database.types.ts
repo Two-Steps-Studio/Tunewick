@@ -2317,6 +2317,17 @@ export type Database = {
       access_invite_is_valid: { Args: { code: string }; Returns: boolean };
       add_playlist_track: { Args: { playlist: string; track: string }; Returns: string };
       add_track: { Args: { release: string; title: string }; Returns: string };
+      admin_app_errors: {
+        Args: { days?: number };
+        Returns: {
+          detail: string;
+          last_seen: string;
+          message: string;
+          occurrences: number;
+          path: string;
+          source: string;
+        }[];
+      };
       admin_audit_log: {
         Args: { action_prefix?: string; max_results?: number };
         Returns: {
@@ -3237,6 +3248,10 @@ export type Database = {
       };
       remove_artist_member: { Args: { artist: string; member: string }; Returns: undefined };
       remove_profile_image: { Args: Record<PropertyKey, never>; Returns: undefined };
+      report_error: {
+        Args: { detail?: string; message: string; path?: string; source: string };
+        Returns: undefined;
+      };
       report_playback: {
         Args: {
           browser?: string;

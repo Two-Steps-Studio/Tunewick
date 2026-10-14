@@ -1221,7 +1221,16 @@
         "reanalysis": "Analyse"
       }
     },
-    "databaseBehind": "Die Datenbank ist älter als die App (Migrationen bis Version {version} fehlen). Füge supabase/bundle/tunewick-migracje.sql im Supabase → SQL Editor ein und führe es aus - bis dahin funktionieren manche Funktionen nicht."
+    "databaseBehind": "Die Datenbank ist älter als die App (Migrationen bis Version {version} fehlen). Füge supabase/bundle/tunewick-migracje.sql im Supabase → SQL Editor ein und führe es aus - bis dahin funktionieren manche Funktionen nicht.",
+    "appErrors": {
+      "title": "App-Fehler",
+      "lead": "Letzte 7 Tage: Server- und Browserfehler, gruppiert. Nichts darüber, wen es betraf.",
+      "empty": "Keine Fehler gemeldet.",
+      "server": "Server",
+      "client": "Browser",
+      "times": "{count, plural, one {# Mal} other {# Mal}}",
+      "details": "Details"
+    }
   },
   "Events": {
     "badge": "Gig",

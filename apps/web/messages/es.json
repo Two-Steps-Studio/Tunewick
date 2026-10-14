@@ -1221,7 +1221,16 @@
         "reanalysis": "Análisis"
       }
     },
-    "databaseBehind": "La base de datos es más antigua que la app (faltan migraciones hasta la versión {version}). Pega supabase/bundle/tunewick-migracje.sql en Supabase → SQL Editor y ejecútalo; hasta entonces algunas funciones no van."
+    "databaseBehind": "La base de datos es más antigua que la app (faltan migraciones hasta la versión {version}). Pega supabase/bundle/tunewick-migracje.sql en Supabase → SQL Editor y ejecútalo; hasta entonces algunas funciones no van.",
+    "appErrors": {
+      "title": "Errores de la app",
+      "lead": "Últimos 7 días: errores del servidor y del navegador, agrupados. Nada sobre a quién afectaron.",
+      "empty": "No hay errores.",
+      "server": "Servidor",
+      "client": "Navegador",
+      "times": "{count, plural, one {# vez} other {# veces}}",
+      "details": "Detalles"
+    }
   },
   "Events": {
     "badge": "Concierto",

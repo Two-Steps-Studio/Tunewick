@@ -32,7 +32,7 @@ export default async function AdminPage({ params, searchParams }: PageProps<"/[l
   const filter = AUDIT_FILTERS.includes(filterParam as AuditFilter)
     ? (filterParam as AuditFilter)
     : null;
-  const { media, databaseBehind, staff, flags, audit, playback, shares } =
+  const { media, errors, databaseBehind, staff, flags, audit, playback, shares } =
     await getAdminOverview(filter);
   const storageDenied = media?.recent_errors.some((e) =>
     /AccessDenied|NoSuchBucket|403/.test(e.message),
@@ -96,6 +96,38 @@ export default async function AdminPage({ params, searchParams }: PageProps<"/[l
                 ))}
               </ul>
             ) : null}
+          </section>
+        ) : null}
+
+        {errors ? (
+          <section className="settings-form__group" aria-labelledby="app-errors">
+            <h2 id="app-errors" className="section-title">
+              {t("appErrors.title")}
+            </h2>
+            <p className="field__hint">{t("appErrors.lead")}</p>
+            {errors.length === 0 ? (
+              <p className="field__hint">{t("appErrors.empty")}</p>
+            ) : (
+              <ul className="artist-list">
+                {errors.map((e) => (
+                  <li key={`${e.source}:${e.message}:${e.last_seen}`} className="artist-list__item">
+                    <span className="artist-list__name">{e.message}</span>
+                    <span className="field__hint">
+                      {t(`appErrors.${e.source === "server" ? "server" : "client"}`)} ·{" "}
+                      {t("appErrors.times", { count: Number(e.occurrences) })} ·{" "}
+                      {format.relativeTime(new Date(e.last_seen))}
+                      {e.path ? ` · ${e.path}` : ""}
+                    </span>
+                    {e.detail ? (
+                      <details>
+                        <summary className="field__hint">{t("appErrors.details")}</summary>
+                        <pre className="field__hint media-error">{e.detail}</pre>
+                      </details>
+                    ) : null}
+                  </li>
+                ))}
+              </ul>
+            )}
           </section>
         ) : null}
 

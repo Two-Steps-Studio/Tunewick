@@ -39,7 +39,7 @@ export async function getAdminOverview(filter: AuditFilter | null) {
   const lastMonth = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - 1, 1))
     .toISOString()
     .slice(0, 10);
-  const [staff, flags, audit, playback, shares, media, schema] = await Promise.all([
+  const [staff, flags, audit, playback, shares, media, schema, errors] = await Promise.all([
     supabase.rpc("admin_list_staff"),
     supabase.rpc("admin_list_feature_flags"),
     supabase.rpc("admin_audit_log", {
@@ -50,6 +50,7 @@ export async function getAdminOverview(filter: AuditFilter | null) {
     supabase.rpc("admin_listening_shares", { month: lastMonth }),
     supabase.rpc("admin_media_health"),
     supabase.rpc("admin_schema_version"),
+    supabase.rpc("admin_app_errors", { days: 7 }),
   ]);
   if (staff.error) throw staff.error;
   if (flags.error) throw flags.error;
@@ -60,6 +61,7 @@ export async function getAdminOverview(filter: AuditFilter | null) {
     // These two depend on the newest migrations: without them the rest of the panel still works
     // and says the database is behind.
     media: media.error ? null : withStuck(media.data as unknown as Omit<MediaHealth, "stuck">),
+    errors: errors.error ? null : errors.data,
     databaseBehind: schema.error || !schema.data || schema.data < SCHEMA_VERSION,
     staff: staff.data,
     flags: flags.data,

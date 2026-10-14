@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { useEffect } from "react";
+import { reportClientError } from "@/lib/report-error";
 
 /** Error state for a page segment (error.tsx): what happened, in plain words, and a retry. */
 export function SegmentError({
@@ -14,6 +15,8 @@ export function SegmentError({
   const t = useTranslations("Segment");
   useEffect(() => {
     console.error(error);
+    // Server errors arrive with a digest and are already reported by the server.
+    if (!error.digest) reportClientError(error, "segment error boundary");
   }, [error]);
   return (
     <section className="segment-state" role="alert">

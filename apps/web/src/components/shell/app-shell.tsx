@@ -4,6 +4,7 @@ import { getOptionalUser, isStaff, SignOutButton } from "@/modules/auth";
 import { LegalLinks } from "@/modules/legal";
 import { LocaleSwitcher } from "./locale-switcher";
 import { MainNav } from "./main-nav";
+import { ErrorReporter } from "./error-reporter";
 import { TouchPress } from "./touch-press";
 import { ProgressNotices } from "@/modules/notices";
 import { PlayerBar } from "@/modules/player";
@@ -20,6 +21,7 @@ export async function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <>
       <TouchPress />
+      <ErrorReporter />
       <a href="#main" className="skip-link">
         {t("skipToContent")}
       </a>
