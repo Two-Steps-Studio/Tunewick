@@ -283,7 +283,7 @@ export default async function AdminPage({ params, searchParams }: PageProps<"/[l
           <h2 id="audit" className="section-title">
             {t("audit")}
           </h2>
-          <nav aria-label={t("auditFilter")} className="region-filter">
+          <nav aria-label={t("auditFilter")} className="region-filter region-filter--wrap">
             <Link
               href="/admin"
               className="region-filter__chip"
