@@ -12,6 +12,7 @@ const PATHS = {
   down: "M6 9l6 6 6-6",
   spark: "M12 3l1.8 6.2L20 11l-6.2 1.8L12 19l-1.8-6.2L4 11l6.2-1.8z",
   full: "M4 6h10M4 12h10M4 18h7M17 13v7l5-3.5z",
+  settings: "M4 7h10M18 7h2M4 17h4M12 17h8M16 5v4M10 15v4",
 } as const;
 
 export type IconName = keyof typeof PATHS;

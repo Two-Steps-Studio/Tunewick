@@ -56,10 +56,12 @@
   --tk-space-16: 4rem;
   --tk-space-24: 6rem;
 
-  /* ---------- Shape: mostly square; radius is the exception ---------- */
+  /* ---------- Shape: soft corners (owner, 2026-10-13) ---------- */
   --tk-radius-0: 0;
-  --tk-radius-1: 2px; /* inputs, chips */
-  --tk-radius-pill: 999px; /* only the play control and toggles */
+  --tk-radius-1: 6px; /* small marks: quality chip, badges */
+  --tk-radius-2: 12px; /* inputs, artwork, list rows, small buttons */
+  --tk-radius-3: 18px; /* cards, menus, dialogs, panels */
+  --tk-radius-pill: 999px; /* buttons, chips, tags, toggles */
 
   /* ---------- Motion ---------- */
   --tk-ease-out: cubic-bezier(0.23, 1, 0.32, 1);

@@ -9,6 +9,7 @@ import { getPlayer } from "@/modules/player";
 import { PreviewPlayer, type PreviewState } from "../preview-player";
 import type { FeedItem, FeedPage } from "../types";
 import { FeedCard } from "./feed-card";
+import { Icon } from "./icons";
 
 const IDLE: PreviewState = { trackId: null, status: "idle", position: 0, length: 0 };
 /** Load the next page when this many cards are left. */
@@ -348,14 +349,14 @@ export function DiscoverFeed({ initial }: { initial: FeedPage }) {
             {t(`modes.${m}`)}
           </button>
         ))}
-        <Link href="/charts" className="feed-modes__chip feed-modes__chip--link">
-          {t("charts")}
-        </Link>
-        <Link href="/browse" className="feed-modes__chip feed-modes__chip--link">
-          {t("browse")}
-        </Link>
-        <Link href="/welcome" className="feed-modes__chip feed-modes__chip--settings">
-          {t("preferences")}
+        {/* Charts and Browse live under Scene; here only the modes and the settings. */}
+        <Link
+          href="/welcome"
+          className="feed-modes__chip feed-modes__chip--settings"
+          aria-label={t("preferences")}
+          title={t("preferences")}
+        >
+          <Icon name="settings" size={20} />
         </Link>
       </nav>
 

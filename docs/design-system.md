@@ -7,7 +7,7 @@
 ## 1. Identity in one line
 
 **Editorial poster for a local scene, not a dashboard.** Big condensed type, flat color fields,
-square edges, a single acid-lime spark of action. It should feel closer to a gig poster or a
+soft corners, a single acid-lime spark of action. It should feel closer to a gig poster or a
 record sleeve than to a SaaS product or a streaming clone.
 
 | Tunewick is | Tunewick is not |
@@ -29,6 +29,19 @@ Applied mainly from `emil-design-eng` (motion decisions, press feedback, easing,
 reduced motion), with `animate`, `review-animations`, `mobile-native` and `break-ui` available
 for implementation and review. Where the skill conflicts with Tunewick branding, accessibility or
 performance, Tunewick wins. Examples in the skill are not copied as visual style.
+
+## 2a. Shape and type (owner decision, 2026-10-13)
+
+The first square, typewriter-labelled look read as too elaborate. Now:
+
+- **Corners:** every button, chip and tag is a pill (`--tk-radius-pill`); inputs, artwork and list
+  rows use `--tk-radius-2` (12px); cards, menus, panels and dialogs `--tk-radius-3` (18px); small
+  marks (quality chip, badges) `--tk-radius-1` (6px). Avatars stay round.
+- **Type:** labels, captions and numbers use the text face (`--tk-font-text`, tabular figures for
+  numbers), in sentence case. The mono face is kept only for codes people copy (MFA secrets,
+  promo and invite codes) and developer output.
+- **Fewer controls at once:** in Discover, actions are icons without captions (the accessible
+  name stays), Follow sits by the artist's name, and settings are one icon.
 
 ## 3. Color
 
@@ -184,7 +197,7 @@ in the UI chrome — the music is the moving part.
 | Play control | The only filled round element, lime, 56px (44px min hit area everywhere). |
 | Buttons | Square, primary = lime fill, secondary = 1px inset line. Press scale 0.97. |
 | Event item | Purple 3px top rule, oversized condensed date, title, venue · city. No card box. |
-| Artist / release tile | Square artwork, no radius, title below in display type; hover reveals nothing essential. |
+| Artist / release tile | Square artwork with `--tk-radius-2` corners, title below in display type; hover reveals nothing essential. |
 | Soundcheck | Artwork + 30s progress as a straight line under it (not a waveform), artist name, "full track" and "next gig" links. |
 | "Byłem przy tym" | A stamp-like mark (square, date in mono) in the user's history — a memory, not a counter. |
 | Recommendation reason | One line of muted text under the item: "Played at … · Same producer as …". |

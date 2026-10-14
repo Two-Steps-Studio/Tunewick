@@ -21,6 +21,7 @@ export default async function ScenePage({ params, searchParams }: PageProps<"/[l
   setRequestLocale(locale as Locale);
   const t = await getTranslations("Scene");
   const tPlaces = await getTranslations("Places");
+  const tFeed = await getTranslations("Feed");
   const region = parseRegion((await searchParams).woj);
   const events = await getUpcomingEvents(region, 60);
 
@@ -29,6 +30,10 @@ export default async function ScenePage({ params, searchParams }: PageProps<"/[l
       <header className="discover__head">
         <h1 className="discover__title">{t("title")}</h1>
         <p className="discover__lead">{t("leadEvents")}</p>
+        <p className="scene__links">
+          <Link href="/charts">{tFeed("charts")}</Link>
+          <Link href="/browse">{tFeed("browse")}</Link>
+        </p>
       </header>
       <nav aria-label={t("regionLabel")} className="region-filter">
         <Link
