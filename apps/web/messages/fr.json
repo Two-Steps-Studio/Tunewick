@@ -144,7 +144,9 @@
       "title": "Enregistrés depuis Découvrir",
       "lead": "Les morceaux enregistrés pendant tes découvertes - reviens-y quand tu veux.",
       "play": "Lire les enregistrés"
-    }
+    },
+    "newFromFollowed": "Nouveautés des artistes que tu suis",
+    "newBadge": "Nouveau"
   },
   "NotFound": {
     "title": "Cette page n’existe pas",

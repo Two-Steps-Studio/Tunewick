@@ -5396,4 +5396,15 @@ summary,
   .player-bar__spark {
     border-radius: var(--tk-radius-pill);
   }
+
+  .release-card__new {
+    display: inline-block;
+    margin-right: var(--tk-space-2);
+    padding: 0 var(--tk-space-2);
+    border-radius: var(--tk-radius-pill);
+    background: var(--accent);
+    color: var(--on-accent);
+    font-weight: 700;
+    font-size: var(--tk-text-xs);
+  }
 }

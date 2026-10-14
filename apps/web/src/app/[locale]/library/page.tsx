@@ -7,6 +7,7 @@ import { getOptionalUser } from "@/modules/auth";
 import { Artwork, getImageSourcesMany } from "@/modules/images";
 import {
   ClearHistoryButton,
+  getFollowedNewReleases,
   getLibrary,
   getRecentlyPlayed,
   LibraryButton,
@@ -60,45 +61,40 @@ export default async function LibraryPage({ params }: PageProps<"/[locale]/libra
   const tReleases = await getTranslations("Releases");
   const tPlaylists = await getTranslations("Playlists");
   const format = await getFormatter();
-  const [library, entitlement, playlists, recent] = await Promise.all([
+  // Independent lookups side by side: each sequential step is a round trip to the database.
+  const [library, entitlement, playlists, recent, gigs, fresh] = await Promise.all([
     getLibrary(),
     listenerEntitlement(),
     getMyPlaylists(user.id),
     getRecentlyPlayed(),
+    getMyAttendedEvents(),
+    getFollowedNewReleases(),
   ]);
-  const gigs = await getMyAttendedEvents();
 
-  // Liked tracks play as one queue, in the order they were liked.
-  const queue = (
-    await getPlayableQueue(
-      library.tracks.map((track) => ({
+  const playable = (tracks: typeof library.tracks) =>
+    getPlayableQueue(
+      tracks.map((track) => ({
         id: track.id,
         title: track.title,
         releaseId: track.release.id,
         artistName: track.release.artist.name,
       })),
       entitlement,
-    )
-  ).filter((track): track is PlayerTrack => track !== null);
-  const savedQueue = (
-    await getPlayableQueue(
-      library.saved.map((track) => ({
-        id: track.id,
-        title: track.title,
-        releaseId: track.release.id,
-        artistName: track.release.artist.name,
-      })),
-      entitlement,
-    )
-  ).filter((track): track is PlayerTrack => track !== null);
-  const images = await getImageSourcesMany(
-    [
-      ...library.releases.map((r) => r.artwork_image_id),
-      ...library.artists.map((a) => a.image_id),
-      ...playlists.flatMap((p) => p.covers),
-    ],
-    320,
-  );
+    ).then((list) => list.filter((track): track is PlayerTrack => track !== null));
+  const [queue, savedQueue, images] = await Promise.all([
+    // Liked tracks play as one queue, in the order they were liked.
+    playable(library.tracks),
+    playable(library.saved),
+    getImageSourcesMany(
+      [
+        ...fresh.map((r) => r.artwork_image_id),
+        ...library.releases.map((r) => r.artwork_image_id),
+        ...library.artists.map((a) => a.image_id),
+        ...playlists.flatMap((p) => p.covers),
+      ],
+      320,
+    ),
+  ]);
   const empty =
     !library.tracks.length &&
     !library.saved.length &&
@@ -114,6 +110,43 @@ export default async function LibraryPage({ params }: PageProps<"/[locale]/libra
         <h1 className="discover__title">{t("title")}</h1>
         <p className="discover__lead">{empty ? t("empty") : t("lead")}</p>
       </header>
+
+      {fresh.length ? (
+        <section aria-labelledby="new-from-followed" className="discover__section">
+          <h2 id="new-from-followed" className="section-title">
+            {t("newFromFollowed")}
+          </h2>
+          <ul className="release-grid">
+            {fresh.map((r) => (
+              <li key={r.id} className="release-card">
+                <Link
+                  href={{
+                    pathname: "/artists/[slug]/releases/[release]",
+                    params: { slug: r.artist.slug, release: r.slug },
+                  }}
+                  className="release-card__link"
+                >
+                  <Artwork
+                    image={r.artwork_image_id ? (images.get(r.artwork_image_id) ?? null) : null}
+                    alt=""
+                    sizes="(min-width: 1024px) 14rem, 45vw"
+                  />
+                  <span className="release-card__title">{r.title}</span>
+                </Link>
+                <span className="release-card__artist">
+                  {r.artist.name} · {tReleases(`types.${r.type}`)}
+                </span>
+                {r.publish_at ? (
+                  <span className="release-card__place">
+                    {r.isNew ? <span className="release-card__new">{t("newBadge")}</span> : null}
+                    {format.relativeTime(new Date(r.publish_at))}
+                  </span>
+                ) : null}
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
 
       <section aria-labelledby="playlists" className="discover__section">
         <h2 id="playlists" className="section-title">

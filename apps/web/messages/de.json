@@ -144,7 +144,9 @@
       "title": "Gespeichert aus Entdecken",
       "lead": "Songs, die du beim Entdecken gespeichert hast – komm jederzeit zu ihnen zurück.",
       "play": "Gespeicherte abspielen"
-    }
+    },
+    "newFromFollowed": "Neu von Künstler*innen, denen du folgst",
+    "newBadge": "Neu"
   },
   "NotFound": {
     "title": "Diese Seite gibt es nicht",

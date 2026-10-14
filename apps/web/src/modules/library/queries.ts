@@ -150,3 +150,34 @@ export async function getRecentlyPlayed() {
       : [];
   });
 }
+
+/** How far back "New from artists you follow" looks. */
+export const NEW_RELEASE_DAYS = 60;
+
+/**
+ * Releases out in the last NEW_RELEASE_DAYS days by artists the listener follows, newest first
+ * (one request: RLS limits artist_follows to the listener's own rows).
+ */
+export async function getFollowedNewReleases() {
+  const supabase = await createSupabaseServerClient();
+  const now = new Date();
+  const since = new Date(now.getTime() - NEW_RELEASE_DAYS * 86_400_000);
+  const { data, error } = await supabase
+    .from("releases")
+    .select(
+      "id, slug, title, type, publish_at, artwork_image_id, artist:artists!releases_artist_id_fkey!inner (slug, name, artist_follows!inner (artist_id))",
+    )
+    .eq("status", "published")
+    .lte("publish_at", now.toISOString())
+    .gte("publish_at", since.toISOString())
+    .order("publish_at", { ascending: false })
+    .limit(12);
+  if (error) throw error;
+  const week = now.getTime() - 7 * 86_400_000;
+  return data.map(({ artist, ...release }) => ({
+    ...release,
+    artist: { slug: artist.slug, name: artist.name },
+    /** Out this week: marked "New". */
+    isNew: release.publish_at !== null && Date.parse(release.publish_at) > week,
+  }));
+}

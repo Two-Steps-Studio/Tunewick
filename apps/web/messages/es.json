@@ -144,7 +144,9 @@
       "title": "Guardado desde Descubrir",
       "lead": "Canciones que guardaste mientras descubrías: vuelve a ellas cuando quieras.",
       "play": "Reproducir guardadas"
-    }
+    },
+    "newFromFollowed": "Novedades de quienes sigues",
+    "newBadge": "Nuevo"
   },
   "NotFound": {
     "title": "Esta página no existe",

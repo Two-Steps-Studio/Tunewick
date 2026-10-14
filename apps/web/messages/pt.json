@@ -144,7 +144,9 @@
       "title": "Salvas do Descobrir",
       "lead": "Músicas que você salvou enquanto descobria - volte a elas quando quiser.",
       "play": "Tocar salvas"
-    }
+    },
+    "newFromFollowed": "Novidades de quem você segue",
+    "newBadge": "Novo"
   },
   "NotFound": {
     "title": "Esta página não existe",

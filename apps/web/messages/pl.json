@@ -144,7 +144,9 @@
       "title": "Zapisane z Odkrywaj",
       "lead": "Utwory zapisane podczas odkrywania - wróć do nich, kiedy chcesz.",
       "play": "Odtwórz zapisane"
-    }
+    },
+    "newFromFollowed": "Nowości od obserwowanych",
+    "newBadge": "Nowe"
   },
   "NotFound": {
     "title": "Nie ma takiej strony",

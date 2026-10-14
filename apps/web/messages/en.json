@@ -144,7 +144,9 @@
       "title": "Saved from Discover",
       "lead": "Songs you saved while discovering - come back to them any time.",
       "play": "Play saved"
-    }
+    },
+    "newFromFollowed": "New from artists you follow",
+    "newBadge": "New"
   },
   "NotFound": {
     "title": "This page does not exist",

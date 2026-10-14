@@ -295,8 +295,21 @@ test.describe("review and publishing", () => {
     );
 
     await page.goto("/biblioteka");
+    // The followed artist's release is out this week: on top, marked new.
+    const fresh = page.locator(".discover__section", {
+      has: page.getByRole("heading", { name: "Nowości od obserwowanych" }),
+    });
+    await expect(fresh.locator(".release-card", { hasText: `Familok ${slug} ·` })).toContainText(
+      "Nowe",
+    );
     await expect(page.getByRole("heading", { name: "Polubione utwory (1)" })).toBeVisible();
-    await expect(page.locator(".release-card", { hasText: "Szychta" })).toBeVisible();
+    await expect(
+      page
+        .locator(".discover__section", {
+          has: page.getByRole("heading", { name: "Polubione wydawnictwa" }),
+        })
+        .locator(".release-card", { hasText: "Szychta" }),
+    ).toBeVisible();
     await expect(page.locator(".artist-card", { hasText: `Familok ${slug}` })).toBeVisible();
     await page.getByRole("button", { name: "Odtwórz polubione utwory" }).click();
     await expect(
