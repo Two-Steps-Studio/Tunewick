@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { JsonLd } from "@/components/seo/json-ld";
 import { absoluteUrl } from "@/lib/site";
 import { alternates } from "@/lib/site";
@@ -51,24 +52,28 @@ export async function generateMetadata({
 export default async function ArtistPage({ params }: PageProps<"/[locale]/artists/[slug]">) {
   const { locale, slug } = await params;
   setRequestLocale(locale as Locale);
-  const artist = await getArtistBySlug(decodeURIComponent(slug));
+  // Independent lookups side by side: each sequential step is a round trip to the database.
+  const [artist, user] = await Promise.all([
+    getArtistBySlug(decodeURIComponent(slug)),
+    getOptionalUser(),
+  ]);
   if (!artist) notFound();
 
   const t = await getTranslations("Artists");
   const tReleases = await getTranslations("Releases");
   const tReports = await getTranslations("Reports");
   const tPlaces = await getTranslations("Places");
-  const user = await getOptionalUser();
-  const [published, photo, follow, related, reach, discovery] = await Promise.all([
+  const [published, photo, follow, related, reach, discovery, gigs, member] = await Promise.all([
     getPublishedReleases(artist.id),
     getImageSources(artist.image_id),
     getArtistFollow(artist.id),
     getRelatedArtists(artist.id),
     getArtistReach(artist.id),
     getArtistDiscovery(artist.id),
+    getArtistEvents(artist.id),
+    user ? isArtistMember(artist.id) : false,
   ]);
   const tLinks = await getTranslations("Artists.links");
-  const gigs = await getArtistEvents(artist.id);
   const tEvents = await getTranslations("Events");
   const covers = await getImageSourcesMany(
     [...published.map((r) => r.artwork_image_id), ...related.map((a) => a.imageId)],
@@ -201,7 +206,10 @@ export default async function ArtistPage({ params }: PageProps<"/[locale]/artist
         <p className="profile__meta">{t("profile.since", { year: artist.formed_year })}</p>
       ) : null}
       <p className="profile__bio">{artist.bio ?? t("profile.noBio")}</p>
-      <ArtistDiscovery artistId={artist.id} name={artist.name} />
+      {/* Streams in after the rest of the page (its own lookups). */}
+      <Suspense fallback={null}>
+        <ArtistDiscovery artistId={artist.id} name={artist.name} />
+      </Suspense>
       {discovery.topTracks.length ? (
         <section aria-labelledby="popular" className="discover__section">
           <h2 id="popular" className="section-title">
@@ -322,7 +330,7 @@ export default async function ArtistPage({ params }: PageProps<"/[locale]/artist
           {tReports("link")}
         </Link>
       </p>
-      {user && (await isArtistMember(artist.id)) ? (
+      {member ? (
         <Link
           href={{ pathname: "/artists/[slug]/manage", params: { slug: artist.slug } }}
           className="button button--quiet"

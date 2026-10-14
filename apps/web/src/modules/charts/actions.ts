@@ -2,7 +2,7 @@
 
 import { z } from "zod";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import { getPlayableTracks, listenerEntitlement } from "@/modules/audio";
+import { getPlayableQueue, listenerEntitlement } from "@/modules/audio";
 import type { PlayerTrack } from "@/modules/player";
 
 const ids = z.array(z.uuid()).min(1).max(20);
@@ -20,28 +20,23 @@ export async function getChartPlayback(trackIds: string[]) {
     .in("id", trackIds);
   if (error || !data?.length) return null;
   const entitlement = await listenerEntitlement();
-  const byRelease = new Map<string, { artist: string; tracks: { id: string; title: string }[] }>();
-  for (const row of data) {
-    const group = byRelease.get(row.release_id) ?? {
-      artist: row.release?.artist?.name ?? "",
-      tracks: [],
-    };
-    group.tracks.push({ id: row.id, title: row.title });
-    byRelease.set(row.release_id, group);
-  }
-  const playable = new Map<string, PlayerTrack>();
-  await Promise.all(
-    [...byRelease].map(async ([releaseId, group]) => {
-      for (const track of await getPlayableTracks(
-        releaseId,
-        group.tracks,
-        group.artist,
-        entitlement,
-      )) {
-        playable.set(track.id, track);
-      }
+  const byId = new Map(data.map((row) => [row.id, row]));
+  const playable = await getPlayableQueue(
+    trackIds.flatMap((id) => {
+      const row = byId.get(id);
+      return row
+        ? [
+            {
+              id: row.id,
+              title: row.title,
+              releaseId: row.release_id,
+              artistName: row.release?.artist?.name ?? "",
+            },
+          ]
+        : [];
     }),
+    entitlement,
   );
-  const tracks = trackIds.map((id) => playable.get(id)).filter((t): t is PlayerTrack => !!t);
+  const tracks = playable.filter((t): t is PlayerTrack => t !== null);
   return tracks.length ? { tracks, entitlement } : null;
 }

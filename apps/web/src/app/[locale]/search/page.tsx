@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
-import { getPlayableTracks, listenerEntitlement } from "@/modules/audio";
+import { getPlayableQueue, listenerEntitlement } from "@/modules/audio";
 import { Artwork, getImageSourcesMany } from "@/modules/images";
 import { PlayButton, type PlayerTrack } from "@/modules/player";
 import {
@@ -22,23 +22,21 @@ export async function generateMetadata({
   return { title: q ? t("titleFor", { query: q }) : t("title"), robots: { index: !q } };
 }
 
-/** Tracks among the hits that can be played, in hit order (one playback lookup per release). */
+/** Tracks among the hits that can be played, in hit order (one playback lookup for all). */
 async function playableHits(tracks: SearchHit[]): Promise<PlayerTrack[]> {
   const entitlement = await listenerEntitlement();
-  const releases = [...new Set(tracks.map((t) => t.release_id).filter(Boolean))] as string[];
-  const byRelease = await Promise.all(
-    releases.map((releaseId) => {
-      const first = tracks.find((t) => t.release_id === releaseId)!;
-      return getPlayableTracks(
-        releaseId,
-        tracks.filter((t) => t.release_id === releaseId).map((t) => ({ id: t.id, title: t.title })),
-        first.artist_name,
-        entitlement,
-      );
-    }),
+  const playable = await getPlayableQueue(
+    tracks
+      .filter((t) => t.release_id)
+      .map((t) => ({
+        id: t.id,
+        title: t.title,
+        releaseId: t.release_id!,
+        artistName: t.artist_name,
+      })),
+    entitlement,
   );
-  const playable = byRelease.flat();
-  return tracks.flatMap((hit) => playable.filter((p) => p.id === hit.id));
+  return playable.filter((t): t is PlayerTrack => t !== null);
 }
 
 /** Search across the public catalog. The query lives in the URL, so results can be shared. */

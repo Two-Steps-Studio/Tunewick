@@ -3224,6 +3224,17 @@ export type Database = {
           track_id: string;
         }[];
       };
+      releases_playback: {
+        Args: { releases: string[] };
+        Returns: {
+          artwork: Json;
+          release_id: string;
+          source: Json;
+          track_id: string;
+          upload_id: string;
+          variants: Json;
+        }[];
+      };
       remove_artist_member: { Args: { artist: string; member: string }; Returns: undefined };
       remove_profile_image: { Args: Record<PropertyKey, never>; Returns: undefined };
       report_playback: {

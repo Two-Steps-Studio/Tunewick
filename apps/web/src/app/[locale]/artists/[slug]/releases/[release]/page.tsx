@@ -60,24 +60,27 @@ export default async function ReleasePage({
 }: PageProps<"/[locale]/artists/[slug]/releases/[release]">) {
   const { locale } = await params;
   setRequestLocale(locale as Locale);
-  const data = await load(params);
+  // Independent lookups side by side: each sequential step is a round trip to the database.
+  const [data, entitlement, user] = await Promise.all([
+    load(params),
+    listenerEntitlement(),
+    getOptionalUser(),
+  ]);
   if (!data) notFound();
 
   const { artist, release, tracks } = data;
   const t = await getTranslations("Release");
   const tReleases = await getTranslations("Releases");
   const tReports = await getTranslations("Reports");
-  const entitlement = await listenerEntitlement();
-  const [playable, cover, likes] = await Promise.all([
+  const [playable, cover, likes, playlists] = await Promise.all([
     getPlayableTracks(release.id, tracks, artist.name, entitlement),
     getImageSources(release.artwork_image_id, 1280),
     getReleaseLikes(
       release.id,
       tracks.map((track) => track.id),
     ),
+    user ? getMyPlaylists(user.id) : null,
   ]);
-  const user = likes ? await getOptionalUser() : null;
-  const playlists = user ? await getMyPlaylists(user.id) : null;
   const indexOf = (trackId: string) => playable.findIndex((p) => p.id === trackId);
   const total = tracks.reduce((sum, track) => sum + (track.duration_ms ?? 0), 0);
   const year = (release.release_date ?? release.publish_at ?? "").slice(0, 4);

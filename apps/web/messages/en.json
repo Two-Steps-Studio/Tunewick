@@ -9,7 +9,8 @@
     "mainNav": "Main navigation",
     "home": "Tunewick home",
     "language": "Language",
-    "moderation": "Moderation"
+    "moderation": "Moderation",
+    "loading": "Loading…"
   },
   "Nav": {
     "discover": "Discover",

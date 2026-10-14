@@ -35,17 +35,22 @@ export default async function BrowsePage({ params, searchParams }: PageProps<"/[
   const query = await searchParams;
   const country = parseCountry(query.country) ?? (parseRegion(query.woj) ? "PL" : null);
   const region = country === "PL" ? parseRegion(query.woj) : null;
-  const { releases, artists, countries } = await getDiscover(region, country);
-  const entitlement = await listenerEntitlement();
-  // The artist's soundcheck of each release (M7.4): a few seconds before deciding to listen.
-  const soundchecks = await getSoundchecks(
-    releases.map((r) => ({ id: r.release_id, artistName: r.artist_name })),
-    entitlement,
-  );
-  const images = await getImageSourcesMany(
-    [...releases.map((r) => r.artwork_image_id), ...artists.map((a) => a.image_id)],
-    320,
-  );
+  // Independent lookups side by side: every sequential step is a round trip to the database.
+  const [{ releases, artists, countries }, entitlement] = await Promise.all([
+    getDiscover(region, country),
+    listenerEntitlement(),
+  ]);
+  const [soundchecks, images] = await Promise.all([
+    // The artist's soundcheck of each release (M7.4): a few seconds before deciding to listen.
+    getSoundchecks(
+      releases.map((r) => ({ id: r.release_id, artistName: r.artist_name })),
+      entitlement,
+    ),
+    getImageSourcesMany(
+      [...releases.map((r) => r.artwork_image_id), ...artists.map((a) => a.image_id)],
+      320,
+    ),
+  ]);
   const now = new Date();
 
   const place = (city: string | null, voivodeship: string | null, countryCode: string | null) =>
