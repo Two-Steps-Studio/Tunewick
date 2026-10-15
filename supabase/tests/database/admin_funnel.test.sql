@@ -5,10 +5,11 @@ set search_path = public, extensions;
 
 select plan(5);
 
-insert into auth.users (id, email, raw_app_meta_data, aud, role, email_confirmed_at)
+-- created_at has no default in auth.users: set it, or the accounts fall outside the 30 days.
+insert into auth.users (id, email, raw_app_meta_data, aud, role, email_confirmed_at, created_at)
 values
-  ('00000000-0000-0000-0000-0000000011a1', 'fn-admin@test.local', '{"beta_bypass": "true"}', 'authenticated', 'authenticated', now()),
-  ('00000000-0000-0000-0000-0000000011a2', 'fn-new@test.local', '{"beta_bypass": "true"}', 'authenticated', 'authenticated', null);
+  ('00000000-0000-0000-0000-0000000011a1', 'fn-admin@test.local', '{"beta_bypass": "true"}', 'authenticated', 'authenticated', now(), now()),
+  ('00000000-0000-0000-0000-0000000011a2', 'fn-new@test.local', '{"beta_bypass": "true"}', 'authenticated', 'authenticated', null, now());
 select system_grant_role('fn-admin@test.local', 'admin');
 
 set local role authenticated;
