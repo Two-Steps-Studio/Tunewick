@@ -13,6 +13,8 @@ import { getOptionalUser } from "@/modules/auth";
 import { getReleaseLikes, LibraryButton } from "@/modules/library";
 import { AddToPlaylist, getMyPlaylists } from "@/modules/playlists";
 import { PlayButton, QueueActions } from "@/modules/player";
+import { getUpcomingRelease, PremierePage } from "@/modules/premieres";
+import { getPathname } from "@/i18n/navigation";
 
 type Params = PageProps<"/[locale]/artists/[slug]/releases/[release]">["params"];
 
@@ -24,7 +26,15 @@ async function load(params: Params) {
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { locale } = await params;
   const data = await load(params);
-  if (!data) return {};
+  if (!data) {
+    // Before the date: the premiere page.
+    const { slug, release } = await params;
+    const upcoming = await getUpcomingRelease(
+      decodeURIComponent(slug),
+      decodeURIComponent(release),
+    );
+    return upcoming ? { title: `${upcoming.title} - ${upcoming.artist.name}` } : {};
+  }
   const title = `${data.release.title} - ${data.artist.name}`;
   const cover = await getImageSources(data.release.artwork_image_id, 1200);
   return {
@@ -66,7 +76,23 @@ export default async function ReleasePage({
     listenerEntitlement(),
     getOptionalUser(),
   ]);
-  if (!data) notFound();
+  if (!data) {
+    // Approved but not out yet: the premiere page (countdown, "Remind me"), never the music.
+    const { slug, release } = await params;
+    const upcoming = await getUpcomingRelease(
+      decodeURIComponent(slug),
+      decodeURIComponent(release),
+    );
+    if (!upcoming) notFound();
+    const here = getPathname({
+      href: {
+        pathname: "/artists/[slug]/releases/[release]",
+        params: { slug: upcoming.artist.slug, release: upcoming.slug },
+      },
+      locale: locale as Locale,
+    });
+    return <PremierePage release={upcoming} next={here} />;
+  }
 
   const { artist, release, tracks } = data;
   const t = await getTranslations("Release");

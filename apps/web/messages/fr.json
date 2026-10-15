@@ -2498,5 +2498,26 @@
         "a": "Partout. Les auditeurs découvrent la musique par pays, ville et genre - ta sortie peut toucher des gens loin de là où elle a été créée."
       }
     }
+  },
+  "Premiere": {
+    "kicker": "Première",
+    "cover": "Pochette : {title}",
+    "outOn": "Sortie le {date}",
+    "timeLeft": "Avant la sortie : {days} j, {hours} h, {minutes} min",
+    "units": {
+      "days": "jours",
+      "hours": "h",
+      "minutes": "min",
+      "seconds": "s"
+    },
+    "remind": "Me le rappeler",
+    "reminded": "On te le rappellera",
+    "remindHint": "Le jour de la sortie, il arrive tout seul dans ta Bibliothèque.",
+    "remindedHint": "Le jour de la sortie, tu le trouveras dans ta Bibliothèque. Touche pour annuler.",
+    "signInToRemind": "Connecte-toi pour recevoir un rappel",
+    "failed": "Impossible d’enregistrer - réessaie.",
+    "waiting": "{count, plural, one {# personne attend} other {# personnes attendent}} la sortie",
+    "upcoming": "Prochaines sorties",
+    "upcomingItem": "{type} · {date}"
   }
 }

@@ -2498,5 +2498,26 @@
         "a": "En cualquier parte. Los oyentes descubren música por país, ciudad y género: tu lanzamiento puede llegar a personas lejos de donde se creó."
       }
     }
+  },
+  "Premiere": {
+    "kicker": "Estreno",
+    "cover": "Portada: {title}",
+    "outOn": "Sale el {date}",
+    "timeLeft": "Para el estreno: {days} d, {hours} h, {minutes} min",
+    "units": {
+      "days": "días",
+      "hours": "h",
+      "minutes": "min",
+      "seconds": "s"
+    },
+    "remind": "Recuérdamelo",
+    "reminded": "Te lo recordaremos",
+    "remindHint": "El día del estreno llegará solo a tu Biblioteca.",
+    "remindedHint": "El día del estreno lo tendrás en tu Biblioteca. Toca para cancelar.",
+    "signInToRemind": "Inicia sesión para recibir el recordatorio",
+    "failed": "No se pudo guardar - inténtalo de nuevo.",
+    "waiting": "{count, plural, one {# persona espera} other {# personas esperan}} el estreno",
+    "upcoming": "Próximos estrenos",
+    "upcomingItem": "{type} · {date}"
   }
 }

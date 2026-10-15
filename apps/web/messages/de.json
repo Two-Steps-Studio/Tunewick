@@ -2498,5 +2498,26 @@
         "a": "Überall. Hörer*innen entdecken Musik nach Land, Stadt und Genre – dein Release kann Menschen erreichen, die weit entfernt vom Ort seiner Entstehung sind."
       }
     }
+  },
+  "Premiere": {
+    "kicker": "Premiere",
+    "cover": "Cover: {title}",
+    "outOn": "Erscheint {date}",
+    "timeLeft": "Bis zur Premiere: {days} T, {hours} Std, {minutes} Min",
+    "units": {
+      "days": "Tage",
+      "hours": "Std",
+      "minutes": "Min",
+      "seconds": "Sek"
+    },
+    "remind": "Erinnere mich",
+    "reminded": "Du wirst erinnert",
+    "remindHint": "Am Erscheinungstag landet es von selbst in deiner Bibliothek.",
+    "remindedHint": "Am Erscheinungstag findest du es in deiner Bibliothek. Tippe zum Abbrechen.",
+    "signInToRemind": "Melde dich an, um erinnert zu werden",
+    "failed": "Konnte nicht gespeichert werden - versuch es noch einmal.",
+    "waiting": "{count, plural, one {# Person wartet} other {# Personen warten}} auf die Premiere",
+    "upcoming": "Kommende Premieren",
+    "upcomingItem": "{type} · {date}"
   }
 }

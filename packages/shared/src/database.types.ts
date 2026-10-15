@@ -1532,6 +1532,32 @@ export type Database = {
           },
         ];
       };
+      release_reminders: {
+        Row: {
+          created_at: string;
+          release_id: string;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          release_id: string;
+          user_id?: string;
+        };
+        Update: {
+          created_at?: string;
+          release_id?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "release_reminders_release_id_fkey";
+            columns: ["release_id"];
+            isOneToOne: false;
+            referencedRelation: "releases";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       release_review_events: {
         Row: {
           created_at: string;
@@ -3215,6 +3241,7 @@ export type Database = {
         }[];
       };
       release_is_public: { Args: { release: string }; Returns: boolean };
+      release_is_upcoming: { Args: { release: string }; Returns: boolean };
       release_playback: {
         Args: { release: string };
         Returns: {
@@ -3401,6 +3428,22 @@ export type Database = {
           venue_name: string;
           venue_slug: string;
           voivodeship: Database["public"]["Enums"]["voivodeship"];
+        }[];
+      };
+      upcoming_releases: {
+        Args: { artist?: string; artist_slug?: string; release_slug?: string };
+        Returns: {
+          artist_id: string;
+          artist_name: string;
+          artist_slug: string;
+          artwork_image_id: string;
+          id: string;
+          publish_at: string;
+          reminders: number;
+          slug: string;
+          title: string;
+          type: Database["public"]["Enums"]["release_type"];
+          verified: boolean;
         }[];
       };
       why_artist_for_me: { Args: { artist: string }; Returns: Json };

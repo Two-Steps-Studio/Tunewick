@@ -2,6 +2,7 @@ import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { deflateSync } from "node:zlib";
 import { expect, type Page } from "@playwright/test";
+import { createClient } from "@supabase/supabase-js";
 import { totp } from "./totp";
 
 // Requires local Supabase (pnpm db:start && pnpm db:env) - emails are read from Mailpit.
@@ -221,5 +222,17 @@ export async function dataApi(token: string, path: string, body?: unknown) {
       Authorization: `Bearer ${token}`,
       ...(body === undefined ? {} : { "Content-Type": "application/json" }),
     },
+  });
+}
+
+/** The local database with the secret key (bypasses RLS) - for setting up states the UI cannot. */
+export function localAdmin() {
+  const status = execFileSync("pnpm", ["exec", "supabase", "status", "-o", "env"], {
+    encoding: "utf8",
+    cwd: "../..",
+  });
+  const read = (key: string) => status.match(new RegExp(`^${key}="?(.*?)"?$`, "m"))?.[1];
+  return createClient(read("API_URL")!, read("SECRET_KEY")!, {
+    auth: { persistSession: false },
   });
 }

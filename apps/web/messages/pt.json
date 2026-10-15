@@ -2498,5 +2498,26 @@
         "a": "Em qualquer lugar. Os ouvintes descobrem música por país, cidade e gênero - seu lançamento pode alcançar pessoas longe de onde foi feito."
       }
     }
+  },
+  "Premiere": {
+    "kicker": "Estreia",
+    "cover": "Capa: {title}",
+    "outOn": "Sai em {date}",
+    "timeLeft": "Até a estreia: {days} d, {hours} h, {minutes} min",
+    "units": {
+      "days": "dias",
+      "hours": "h",
+      "minutes": "min",
+      "seconds": "s"
+    },
+    "remind": "Me lembre",
+    "reminded": "Vamos te lembrar",
+    "remindHint": "No dia da estreia, entra sozinho na sua Biblioteca.",
+    "remindedHint": "No dia da estreia você encontra na Biblioteca. Toque para cancelar.",
+    "signInToRemind": "Entre para receber o lembrete",
+    "failed": "Não deu para salvar - tente de novo.",
+    "waiting": "{count, plural, one {# pessoa espera} other {# pessoas esperam}} a estreia",
+    "upcoming": "Próximas estreias",
+    "upcomingItem": "{type} · {date}"
   }
 }

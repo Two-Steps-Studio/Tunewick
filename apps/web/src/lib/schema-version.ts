@@ -3,4 +3,4 @@
  * panel compares it with the database to say when the migration bundle still has to be applied.
  * schema-version.test.ts keeps it in step with the migrations folder.
  */
-export const SCHEMA_VERSION = "20261016100000";
+export const SCHEMA_VERSION = "20261017090000";

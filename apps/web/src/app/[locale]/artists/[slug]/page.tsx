@@ -4,7 +4,7 @@ import { JsonLd } from "@/components/seo/json-ld";
 import { absoluteUrl } from "@/lib/site";
 import { alternates } from "@/lib/site";
 import { notFound } from "next/navigation";
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { countryName, flagEmoji, languageName, songSegment } from "@/lib/intl";
@@ -21,6 +21,7 @@ import { getOptionalUser } from "@/modules/auth";
 import { getPublishedReleases } from "@/modules/catalog";
 import { Artwork, getImageSources, getImageSourcesMany } from "@/modules/images";
 import { EventList, getArtistEvents } from "@/modules/events";
+import { getArtistUpcoming } from "@/modules/premieres";
 import { getArtistFollow, LibraryButton } from "@/modules/library";
 
 export async function generateMetadata({
@@ -63,16 +64,20 @@ export default async function ArtistPage({ params }: PageProps<"/[locale]/artist
   const tReleases = await getTranslations("Releases");
   const tReports = await getTranslations("Reports");
   const tPlaces = await getTranslations("Places");
-  const [published, photo, follow, related, reach, discovery, gigs, member] = await Promise.all([
-    getPublishedReleases(artist.id),
-    getImageSources(artist.image_id),
-    getArtistFollow(artist.id),
-    getRelatedArtists(artist.id),
-    getArtistReach(artist.id),
-    getArtistDiscovery(artist.id),
-    getArtistEvents(artist.id),
-    user ? isArtistMember(artist.id) : false,
-  ]);
+  const [published, photo, follow, related, reach, discovery, gigs, member, upcoming] =
+    await Promise.all([
+      getPublishedReleases(artist.id),
+      getImageSources(artist.image_id),
+      getArtistFollow(artist.id),
+      getRelatedArtists(artist.id),
+      getArtistReach(artist.id),
+      getArtistDiscovery(artist.id),
+      getArtistEvents(artist.id),
+      user ? isArtistMember(artist.id) : false,
+      getArtistUpcoming(artist.id),
+    ]);
+  const tPremiere = await getTranslations("Premiere");
+  const format = await getFormatter();
   const tLinks = await getTranslations("Artists.links");
   const tEvents = await getTranslations("Events");
   const covers = await getImageSourcesMany(
@@ -238,6 +243,36 @@ export default async function ArtistPage({ params }: PageProps<"/[locale]/artist
               </li>
             ))}
           </ol>
+        </section>
+      ) : null}
+      {upcoming.length ? (
+        <section aria-labelledby="upcoming" className="discover__section">
+          <h2 id="upcoming" className="section-title">
+            {tPremiere("upcoming")}
+          </h2>
+          <ul className="upcoming-list">
+            {upcoming.map((r) => (
+              <li key={r.id}>
+                <Link
+                  href={{
+                    pathname: "/artists/[slug]/releases/[release]",
+                    params: { slug: artist.slug, release: r.slug },
+                  }}
+                >
+                  <strong>{r.title}</strong>
+                  <span>
+                    {tPremiere("upcomingItem", {
+                      type: tReleases(`types.${r.type}`),
+                      date: format.dateTime(new Date(r.publishAt), {
+                        dateStyle: "long",
+                        timeZone: "Europe/Warsaw",
+                      }),
+                    })}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
         </section>
       ) : null}
       {gigs.length ? (

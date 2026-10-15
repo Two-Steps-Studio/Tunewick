@@ -55,6 +55,7 @@ export async function GET() {
     redemptions,
     trackLikes,
     releaseLikes,
+    releaseReminders,
     follows,
     playlists,
     attendance,
@@ -86,6 +87,7 @@ export async function GET() {
       .eq("user_id", user.id),
     supabase.from("track_likes").select("track_id, created_at"),
     supabase.from("release_likes").select("release_id, created_at"),
+    supabase.from("release_reminders").select("release_id, created_at"),
     supabase.from("artist_follows").select("artist_id, created_at"),
     supabase
       .from("playlists")
@@ -142,6 +144,7 @@ export async function GET() {
     plans: own(entitlements),
     promo_redemptions: own(redemptions),
     likes: { tracks: own(trackLikes), releases: own(releaseLikes) },
+    releaseReminders: own(releaseReminders),
     artist_follows: own(follows),
     playlists: own(playlists),
     listening_history: listening,

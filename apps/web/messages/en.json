@@ -2498,5 +2498,26 @@
         "a": "Anywhere. Listeners discover music by country, city and genre - your release can reach people far from where it was made."
       }
     }
+  },
+  "Premiere": {
+    "kicker": "Premiere",
+    "cover": "Cover: {title}",
+    "outOn": "Out {date}",
+    "timeLeft": "Until the premiere: {days} d, {hours} h, {minutes} min",
+    "units": {
+      "days": "days",
+      "hours": "hrs",
+      "minutes": "min",
+      "seconds": "sec"
+    },
+    "remind": "Remind me",
+    "reminded": "You'll be reminded",
+    "remindHint": "On release day it lands in your Library by itself.",
+    "remindedHint": "On release day you'll find it in your Library. Tap to cancel.",
+    "signInToRemind": "Sign in to get a reminder",
+    "failed": "Couldn't save that - try again.",
+    "waiting": "{count, plural, one {# person is} other {# people are}} waiting for the premiere",
+    "upcoming": "Upcoming premieres",
+    "upcomingItem": "{type} · {date}"
   }
 }

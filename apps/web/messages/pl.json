@@ -2498,5 +2498,26 @@
         "a": "Wszędzie. Słuchacze odkrywają muzykę według kraju, miasta i gatunku - Twoje wydanie może trafić do ludzi daleko od miejsca, w którym powstało."
       }
     }
+  },
+  "Premiere": {
+    "kicker": "Premiera",
+    "cover": "Okładka: {title}",
+    "outOn": "Wychodzi {date}",
+    "timeLeft": "Do premiery: {days} d, {hours} godz., {minutes} min",
+    "units": {
+      "days": "dni",
+      "hours": "godz.",
+      "minutes": "min",
+      "seconds": "sek."
+    },
+    "remind": "Przypomnij mi",
+    "reminded": "Przypomnę Ci",
+    "remindHint": "W dniu premiery wydawnictwo samo trafi do Twojej Biblioteki.",
+    "remindedHint": "W dniu premiery znajdziesz je w Bibliotece. Stuknij, żeby zrezygnować.",
+    "signInToRemind": "Zaloguj się, żeby dostać przypomnienie",
+    "failed": "Nie udało się zapisać - spróbuj jeszcze raz.",
+    "waiting": "{count, plural, one {# osoba czeka} few {# osoby czekają} many {# osób czeka} other {# osoby czeka}} na premierę",
+    "upcoming": "Nadchodzące premiery",
+    "upcomingItem": "{type} · {date}"
   }
 }
