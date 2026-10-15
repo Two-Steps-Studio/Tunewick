@@ -236,6 +236,24 @@ test.describe("review and publishing", () => {
     // A video for stories: visitors are asked to sign in; a signed-in person gets the MP4 the
     // worker renders from the story card and the preview.
     const songPath = new URL(listener.url()).pathname;
+
+    // The embed player for other sites: its own frameable page with the preview and a link back;
+    // every other page refuses to be framed elsewhere.
+    const code = songPath.split("-").at(-1)!;
+    const embedPage = await anonymous.newPage();
+    const embed = await embedPage.goto(`/embed/${code}`);
+    expect(embed?.headers()["content-security-policy"]).toBe("frame-ancestors *");
+    await expect(embedPage.getByRole("link", { name: "Nocna zmiana" })).toHaveAttribute(
+      "href",
+      new RegExp(`${songPath}$`),
+    );
+    await expect(
+      embedPage.getByRole("button", { name: "Odtwórz fragment: Nocna zmiana" }),
+    ).toBeVisible();
+    await expect(embedPage.getByRole("link", { name: "Słuchaj na Tunewick" })).toBeVisible();
+    await embedPage.close();
+    const framed = await listener.request.get(songPath);
+    expect(framed.headers()["content-security-policy"]).toBe("frame-ancestors 'self'");
     await listener.getByRole("button", { name: "Udostępnij" }).click();
     await expectNoSidewaysScroll(listener);
     await listener.getByRole("button", { name: "Wideo do relacji (MP4)" }).click();

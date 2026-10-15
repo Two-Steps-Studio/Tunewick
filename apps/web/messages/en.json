@@ -1484,7 +1484,9 @@
       "underground": "Underground",
       "global": "Global",
       "similar_to_me": "Similar to me"
-    }
+    },
+    "embed": "Embed code for your site",
+    "embedCopied": "Code copied - paste it into your site"
   },
   "Onboarding": {
     "title": "Discovery preferences",
@@ -2519,5 +2521,8 @@
     "waiting": "{count, plural, one {# person is} other {# people are}} waiting for the premiere",
     "upcoming": "Upcoming premieres",
     "upcomingItem": "{type} · {date}"
+  },
+  "Embed": {
+    "listenOn": "Listen on Tunewick"
   }
 }

@@ -142,6 +142,18 @@ export function ShareButton({
   const locale = useLocale();
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [embedCopied, setEmbedCopied] = useState(false);
+  // The embed player for other sites (an iframe of /embed/<code>).
+  const copyEmbed = async () => {
+    const src = `${window.location.origin}/embed/${song.code}?lang=${locale}`;
+    const snippet = `<iframe src="${src}" title="${song.title.replace(/"/g, "&quot;")} - ${song.artistName.replace(/"/g, "&quot;")}" width="100%" height="152" style="border:0;border-radius:12px" loading="lazy" allow="autoplay; encrypted-media"></iframe>`;
+    try {
+      await navigator.clipboard.writeText(snippet);
+      setEmbedCopied(true);
+    } catch {
+      window.prompt(t("copyPrompt"), snippet);
+    }
+  };
   const menu = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -229,6 +241,9 @@ export function ShareButton({
             {t("cardSquare")}
           </a>
           <ClipItem song={song} />
+          <button type="button" className="share-menu__item" onClick={() => void copyEmbed()}>
+            {embedCopied ? t("embedCopied") : t("embed")}
+          </button>
         </div>
       ) : null}
       <span className="visually-hidden" role="status">

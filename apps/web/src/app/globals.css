@@ -5502,4 +5502,80 @@ summary,
     color: var(--text-muted);
     font-size: var(--tk-text-sm);
   }
+
+  /* Embed player (an iframe on other sites): one compact card, the full frame. */
+  .embed-body {
+    margin: 0;
+    background: var(--tk-graphite);
+    color: var(--tk-ivory);
+  }
+  .embed {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--tk-space-3);
+    align-items: center;
+    position: relative;
+    height: 100vh;
+    max-height: 152px;
+    padding: var(--tk-space-3);
+    overflow: hidden;
+  }
+  .embed__art img,
+  .embed__art span {
+    display: block;
+    width: 120px;
+    height: 120px;
+    border-radius: var(--tk-radius-2);
+    object-fit: cover;
+    background: var(--tk-n-700);
+  }
+  .embed__body {
+    display: grid;
+    gap: var(--tk-space-1);
+    min-width: 0;
+  }
+  .embed__title,
+  .embed__artist {
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .embed__title {
+    padding-right: 9rem;
+    font-family: var(--tk-font-display);
+    font-weight: 800;
+    font-size: var(--tk-text-lg);
+  }
+  .embed__title a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .embed__artist {
+    font-size: var(--tk-text-sm);
+    color: var(--tk-n-300);
+  }
+  .embed__brand {
+    position: absolute;
+    top: var(--tk-space-3);
+    right: var(--tk-space-3);
+    font-size: var(--tk-text-xs);
+    font-weight: 600;
+    color: var(--tk-lime);
+    text-decoration: none;
+  }
+  /* Narrow frames (sidebars, phones): a smaller cover; the cover and title still link back. */
+  @media (max-width: 420px) {
+    .embed__art img,
+    .embed__art span {
+      width: 72px;
+      height: 72px;
+    }
+    .embed__title {
+      padding-right: 0;
+    }
+    .embed__brand {
+      display: none;
+    }
+  }
 }

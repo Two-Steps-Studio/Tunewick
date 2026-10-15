@@ -1484,7 +1484,9 @@
       "underground": "Underground",
       "global": "Global",
       "similar_to_me": "Parecido a mí"
-    }
+    },
+    "embed": "Código para insertar en tu web",
+    "embedCopied": "Código copiado: pégalo en tu web"
   },
   "Onboarding": {
     "title": "Preferencias de descubrimiento",
@@ -2519,5 +2521,8 @@
     "waiting": "{count, plural, one {# persona espera} other {# personas esperan}} el estreno",
     "upcoming": "Próximos estrenos",
     "upcomingItem": "{type} · {date}"
+  },
+  "Embed": {
+    "listenOn": "Escucha en Tunewick"
   }
 }
