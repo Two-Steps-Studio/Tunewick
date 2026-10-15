@@ -41,36 +41,55 @@ export async function playlistCovers(ids: string[]): Promise<Map<string, string[
   return result;
 }
 
+type OpenedPlaylist = {
+  id: string;
+  owner_id: string;
+  title: string;
+  description: string | null;
+  visibility: PlaylistVisibility;
+  updated_at: string;
+  items: { id: string; position: number; added_at: string; track_id: string }[];
+};
+
+/** A playlist by id through public.open_playlist (own, public, or unlisted with the link). */
+export const openPlaylist = cache(async (id: string): Promise<OpenedPlaylist | null> => {
+  const supabase = await createSupabaseServerClient();
+  const { data, error } = await supabase.rpc("open_playlist", { playlist: id });
+  if (error) throw error;
+  return (data as OpenedPlaylist | null) ?? null;
+});
+
 /**
  * A playlist the caller may see (owner, or public/unlisted), with its items in order. Items
  * whose music is no longer public are hidden by RLS and reported as `hidden` (a count only).
  */
 export const getPlaylist = cache(async (id: string) => {
-  const supabase = await createSupabaseServerClient();
-  const { data: playlist, error } = await supabase
-    .from("playlists")
-    .select("id, owner_id, title, description, visibility, updated_at")
-    .eq("id", id)
-    .maybeSingle();
-  if (error) throw error;
-  if (!playlist) return null;
+  const opened = await openPlaylist(id);
+  if (!opened) return null;
+  const { items: rows, ...playlist } = opened;
 
-  const [items, owner] = await Promise.all([
-    supabase
-      .from("playlist_tracks")
-      .select(
-        "id, position, added_at, track:tracks(id, title, duration_ms, release:releases(id, slug, title, status, publish_at, artwork_image_id, artist:artists!releases_artist_id_fkey(slug, name)))",
-      )
-      .eq("playlist_id", id)
-      .order("position")
-      .order("added_at"),
+  const supabase = await createSupabaseServerClient();
+  const trackIds = [...new Set(rows.map((row) => row.track_id))];
+  const [tracks, owner] = await Promise.all([
+    trackIds.length
+      ? supabase
+          .from("tracks")
+          .select(
+            "id, title, duration_ms, release:releases(id, slug, title, status, publish_at, artwork_image_id, artist:artists!releases_artist_id_fkey(slug, name))",
+          )
+          .in("id", trackIds)
+      : Promise.resolve({ data: [], error: null }),
     supabase
       .from("profiles")
       .select("handle, display_name")
       .eq("id", playlist.owner_id)
       .maybeSingle(),
   ]);
-  if (items.error) throw items.error;
+  if (tracks.error) throw tracks.error;
+  const byId = new Map((tracks.data ?? []).map((track) => [track.id, track]));
+  const items = {
+    data: rows.map((row) => ({ id: row.id, track: byId.get(row.track_id) ?? null })),
+  };
 
   const now = Date.now();
   const visible = items.data.flatMap((item) => {

@@ -98,35 +98,23 @@ export async function getLatestDeclaration(releaseId: string) {
 /** A released release for its public page; null when it does not exist or is not out yet. */
 export const getPublicRelease = cache(async (artistSlug: string, releaseSlug: string) => {
   const supabase = await createSupabaseServerClient();
-  const { data: artist } = await supabase
-    .from("artists")
-    .select("id, slug, name, verification_status")
-    .eq("slug", artistSlug.toLowerCase())
-    .eq("status", "active")
-    .maybeSingle();
-  if (!artist) return null;
-
+  // One request for artist, release and tracks (each separate lookup is a round trip).
   // Members can read their drafts through RLS; the public page shows released ones only.
-  const { data: release } = await supabase
+  const { data, error } = await supabase
     .from("releases")
     .select(
-      "id, slug, title, type, release_date, publish_at, explicit, ai_content, p_line, c_line, artwork_image_id",
+      "id, slug, title, type, release_date, publish_at, explicit, ai_content, p_line, c_line, artwork_image_id, artist:artists!releases_artist_id_fkey!inner (id, slug, name, verification_status), tracks (id, disc_number, track_number, title, duration_ms, explicit, ai_content, credits (id, name, role, detail, artist:artists (slug, name)))",
     )
-    .eq("artist_id", artist.id)
+    .eq("artist.slug", artistSlug.toLowerCase())
+    .eq("artist.status", "active")
     .eq("slug", releaseSlug.toLowerCase())
     .eq("status", "published")
     .lte("publish_at", new Date().toISOString())
+    .order("disc_number", { referencedTable: "tracks" })
+    .order("track_number", { referencedTable: "tracks" })
     .maybeSingle();
-  if (!release) return null;
-
-  const { data: tracks, error } = await supabase
-    .from("tracks")
-    .select(
-      "id, disc_number, track_number, title, duration_ms, explicit, ai_content, credits (id, name, role, detail, artist:artists (slug, name))",
-    )
-    .eq("release_id", release.id)
-    .order("disc_number")
-    .order("track_number");
   if (error) throw error;
+  if (!data) return null;
+  const { artist, tracks, ...release } = data;
   return { artist, release, tracks };
 });

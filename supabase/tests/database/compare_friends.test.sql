@@ -3,7 +3,7 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set search_path = public, extensions;
 
-select plan(6);
+select plan(7);
 
 insert into auth.users (id, email, raw_app_meta_data, aud, role)
 values
@@ -16,7 +16,11 @@ update profiles set handle = 'bartek-cf' where id = '00000000-0000-0000-0000-000
 set local role authenticated;
 set local request.jwt.claims = '{"sub": "00000000-0000-0000-0000-0000000000b1", "role": "authenticated"}';
 insert into user_follows (followee_id) values ('00000000-0000-0000-0000-0000000000b2');
-select ok(compare_with('bartek-cf') ? 'them', 'a follower compares when activity is visible to followers (the default)');
+select is(compare_with('bartek-cf'), null, 'a one-sided follow does not open comparisons');
+set local role postgres;
+insert into user_follows (follower_id, followee_id) values ('00000000-0000-0000-0000-0000000000b2', '00000000-0000-0000-0000-0000000000b1');
+set local role authenticated;
+select ok(compare_with('bartek-cf') ? 'them', 'friends compare when stats are visible to followers (the default)');
 select is((compare_with('bartek-cf', 30) -> 'them' ->> 'songs')::int, 0, 'with real (empty) numbers');
 select is(compare_with('ala-cf'), null, 'not with yourself');
 

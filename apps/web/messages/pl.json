@@ -9,7 +9,8 @@
     "mainNav": "Nawigacja główna",
     "home": "Strona główna Tunewick",
     "language": "Język",
-    "moderation": "Moderacja"
+    "moderation": "Moderacja",
+    "loading": "Wczytuję…"
   },
   "Nav": {
     "discover": "Odkrywaj",
@@ -143,7 +144,9 @@
       "title": "Zapisane z Odkrywaj",
       "lead": "Utwory zapisane podczas odkrywania - wróć do nich, kiedy chcesz.",
       "play": "Odtwórz zapisane"
-    }
+    },
+    "newFromFollowed": "Nowości od obserwowanych",
+    "newBadge": "Nowe"
   },
   "NotFound": {
     "title": "Nie ma takiej strony",
@@ -247,7 +250,7 @@
     },
     "visibility": {
       "public": "Wszyscy",
-      "followers": "Obserwujący",
+      "followers": "Znajomi (obserwujemy się nawzajem)",
       "private": "Tylko ja"
     },
     "submit": "Zapisz zmiany",
@@ -1220,7 +1223,33 @@
         "reanalysis": "Analiza"
       }
     },
-    "databaseBehind": "Baza danych jest starsza niż aplikacja (brakuje migracji do wersji {version}). Wklej plik supabase/bundle/tunewick-migracje.sql w Supabase → SQL Editor i uruchom - część funkcji nie działa, dopóki tego nie zrobisz."
+    "databaseBehind": "Baza danych jest starsza niż aplikacja (brakuje migracji do wersji {version}). Wklej plik supabase/bundle/tunewick-migracje.sql w Supabase → SQL Editor i uruchom - część funkcji nie działa, dopóki tego nie zrobisz.",
+    "appErrors": {
+      "title": "Błędy aplikacji",
+      "lead": "Ostatnie 7 dni: błędy serwera i przeglądarek, zgrupowane. Bez danych o tym, kogo dotyczyły.",
+      "empty": "Brak zgłoszonych błędów.",
+      "server": "Serwer",
+      "client": "Przeglądarka",
+      "times": "{count, plural, one {# raz} few {# razy} many {# razy} other {# razy}}",
+      "details": "Szczegóły"
+    },
+    "growth": {
+      "title": "Wzrost",
+      "active": {
+        "today": "Słuchający dziś",
+        "week": "Słuchający w 7 dni",
+        "month": "Słuchający w 30 dni"
+      },
+      "funnelLead": "Konta założone w ostatnich 30 dniach i ile z nich doszło do każdego kroku. Liczą się odsłuchy od 30 sekund.",
+      "steps": {
+        "signed_up": "Założone konto",
+        "confirmed": "Potwierdzony e-mail",
+        "onboarded": "Wybrane preferencje",
+        "listened": "Pierwszy odsłuch",
+        "engaged": "Polubienie, zapis lub obserwacja",
+        "returned": "Powrót innego dnia"
+      }
+    }
   },
   "Events": {
     "badge": "Koncert",
@@ -1472,7 +1501,9 @@
       "underground": "Underground",
       "global": "Świat",
       "similar_to_me": "Podobni do mnie"
-    }
+    },
+    "embed": "Kod do osadzenia na stronie",
+    "embedCopied": "Skopiowano kod - wklej go na swojej stronie"
   },
   "Onboarding": {
     "title": "Preferencje odkrywania",
@@ -1739,7 +1770,7 @@
   },
   "Compare": {
     "title": "Ty vs {name}",
-    "private": "{name} nie udostępnia Ci aktywności słuchania. Każdy wybiera to w ustawieniach: wszyscy, tylko osoby, które obserwuje, albo nikt.",
+    "private": "{name} nie udostępnia Ci aktywności słuchania. Każdy wybiera to w ustawieniach: wszyscy, tylko znajomi (osoby, które obserwują się nawzajem), albo nikt.",
     "back": "Wróć do: {name}",
     "period": "Okres",
     "periods": {
@@ -2336,7 +2367,7 @@
     },
     "levels": {
       "public": "Wszyscy",
-      "followers": "Osoby, które mnie obserwują",
+      "followers": "Znajomi (obserwujemy się nawzajem)",
       "private": "Tylko ja"
     },
     "save": "Zapisz prywatność",
@@ -2486,5 +2517,29 @@
         "a": "Wszędzie. Słuchacze odkrywają muzykę według kraju, miasta i gatunku - Twoje wydanie może trafić do ludzi daleko od miejsca, w którym powstało."
       }
     }
+  },
+  "Premiere": {
+    "kicker": "Premiera",
+    "cover": "Okładka: {title}",
+    "outOn": "Wychodzi {date}",
+    "timeLeft": "Do premiery: {days} d, {hours} godz., {minutes} min",
+    "units": {
+      "days": "dni",
+      "hours": "godz.",
+      "minutes": "min",
+      "seconds": "sek."
+    },
+    "remind": "Przypomnij mi",
+    "reminded": "Przypomnę Ci",
+    "remindHint": "W dniu premiery wydawnictwo samo trafi do Twojej Biblioteki.",
+    "remindedHint": "W dniu premiery znajdziesz je w Bibliotece. Stuknij, żeby zrezygnować.",
+    "signInToRemind": "Zaloguj się, żeby dostać przypomnienie",
+    "failed": "Nie udało się zapisać - spróbuj jeszcze raz.",
+    "waiting": "{count, plural, one {# osoba czeka} few {# osoby czekają} many {# osób czeka} other {# osoby czeka}} na premierę",
+    "upcoming": "Nadchodzące premiery",
+    "upcomingItem": "{type} · {date}"
+  },
+  "Embed": {
+    "listenOn": "Słuchaj na Tunewick"
   }
 }

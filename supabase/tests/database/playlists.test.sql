@@ -3,7 +3,7 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set search_path = public, extensions;
 
-select plan(19);
+select plan(20);
 
 insert into auth.users (id, email, raw_app_meta_data, aud, role)
 values
@@ -73,7 +73,10 @@ update playlists set visibility = 'unlisted' where id = (select id from ids wher
 
 set local role anon;
 set local request.jwt.claims = '{"role": "anon"}';
-select is((select titles from ordered), 'BAAC', 'an unlisted playlist plays for anyone with the link');
+select is((select string_agg(t.title, '' order by (i ->> 'position')::integer, i ->> 'added_at')
+  from jsonb_array_elements(open_playlist((select id from ids where name = 'list')) -> 'items') i
+  join tracks t on t.id = (i ->> 'track_id')::uuid), 'BAAC', 'an unlisted playlist plays for anyone with the link');
+select is((select titles from ordered), null, 'but its items are not listable through the table');
 
 set local role authenticated;
 set local request.jwt.claims = '{"sub": "00000000-0000-0000-0000-0000000000d2", "role": "authenticated"}';

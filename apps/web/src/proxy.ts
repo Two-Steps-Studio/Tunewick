@@ -22,6 +22,6 @@ export default async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  // Skip API routes, Next internals and files with an extension.
-  matcher: "/((?!api|_next|_vercel|.*\\..*).*)",
+  // Skip API routes, the embed player (its own minimal page, no session), Next internals and files.
+  matcher: "/((?!api|embed|_next|_vercel|.*\\..*).*)",
 };

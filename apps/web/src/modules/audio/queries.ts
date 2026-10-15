@@ -1,6 +1,5 @@
 import "server-only";
 
-import { cache } from "react";
 import {
   type Authenticity,
   type Database,
@@ -9,9 +8,8 @@ import {
   TIER_ORDER,
   tierRank,
 } from "@tunewick/shared";
-import { isMediaStorageConfigured, presignVariantGet } from "@/lib/media/storage";
+import { isMediaStorageConfigured, presignImageGet, presignVariantGet } from "@/lib/media/storage";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
-import { getImageVariants } from "@/modules/images";
 import type { PlayerTrack, TrackRendition, WorkerReport } from "@/modules/player";
 
 export type AudioUploadStatus = Database["public"]["Enums"]["audio_upload_status"];
@@ -172,22 +170,111 @@ function sourceQuality(source: PlaybackSource): SourceQuality {
   };
 }
 
-/** A release's cover in every size, once per request however many tracks ask for it. */
-const releaseArtwork = cache(async (releaseId: string) => {
+interface ReleaseRequest {
+  releaseId: string;
+  tracks: { id: string; title: string }[];
+  artistName: string;
+}
+
+/** Signed cover sizes (smallest first) from an image's variant list. */
+async function signArtwork(variants: unknown): Promise<{ url: string; width: number }[]> {
+  const list = (variants ?? []) as { width: number; key: string }[];
+  const signed = await Promise.all(
+    list.map(async (v) => ({ width: v.width, url: await presignImageGet(v.key) })),
+  );
+  return signed
+    .filter((v): v is { width: number; url: string } => Boolean(v.url))
+    .sort((a, b) => a.width - b.width);
+}
+
+/**
+ * Playable tracks of many releases with one database call (`releases_playback`: playback and
+ * cover per release), by release id, each in release order. Only the asked-for tracks; only
+ * variants up to `maxTier` get a URL - a Free listener's page never contains a link to a Lossless
+ * file. URLs are short-lived presigned GETs of the media bucket (signing is local, no request).
+ */
+async function playableReleases(
+  requests: ReleaseRequest[],
+  maxTier: QualityTier,
+): Promise<Map<string, PlayerTrack[]>> {
+  const result = new Map<string, PlayerTrack[]>();
+  const ids = [...new Set(requests.map((r) => r.releaseId))];
+  if (!ids.length) return result;
   const supabase = await createSupabaseServerClient();
-  const { data } = await supabase
-    .from("releases")
-    .select("artwork_image_id")
-    .eq("id", releaseId)
-    .maybeSingle();
-  return getImageVariants(data?.artwork_image_id ?? null);
-});
+  const chunks: string[][] = [];
+  for (let i = 0; i < ids.length; i += 100) chunks.push(ids.slice(i, i + 100));
+  const rows = (
+    await Promise.all(
+      chunks.map(async (chunk) => {
+        const { data, error } = await supabase.rpc("releases_playback", { releases: chunk });
+        if (error) throw error;
+        return data ?? [];
+      }),
+    )
+  ).flat();
+
+  const covers = new Map<string, Promise<{ url: string; width: number }[]>>();
+  const byRelease = new Map(requests.map((r) => [r.releaseId, r]));
+  // A release asked for twice (different tracks) is answered for all of its asked tracks.
+  const asked = new Map<string, Map<string, string>>();
+  for (const r of requests) {
+    const titles = asked.get(r.releaseId) ?? new Map<string, string>();
+    for (const t of r.tracks) titles.set(t.id, t.title);
+    asked.set(r.releaseId, titles);
+  }
+
+  const tracks = await Promise.all(
+    rows.map(async (row): Promise<PlayerTrack | null> => {
+      const title = asked.get(row.release_id)?.get(row.track_id);
+      if (title === undefined) return null;
+      if (!covers.has(row.release_id)) covers.set(row.release_id, signArtwork(row.artwork));
+      const variants = (row.variants as unknown as PlaybackVariant[]).filter(
+        (variant) => tierRank(variant.tier) <= tierRank(maxTier),
+      );
+      const renditions: TrackRendition[] = [];
+      for (const variant of variants) {
+        const url = await presignVariantGet(variant.object_key);
+        if (!url) continue;
+        renditions.push({
+          tier: variant.tier,
+          codec: variant.codec,
+          container: variant.container,
+          sampleRateHz: variant.sample_rate,
+          url,
+          bitDepth: variant.bit_depth,
+          bitrateKbps: variant.bitrate_kbps,
+          nominalKbps: variant.nominal_kbps,
+          samples: variant.samples,
+          encoderDelaySamples: variant.encoder_delay_samples,
+          paddingSamples: variant.padding_samples,
+        });
+      }
+      if (!renditions.length) return null;
+      const artwork = await covers.get(row.release_id)!;
+      return {
+        id: row.track_id,
+        title,
+        artist: byRelease.get(row.release_id)?.artistName ?? "",
+        source: sourceQuality(row.source as unknown as PlaybackSource),
+        renditions,
+        ...(artwork.length ? { artwork } : {}),
+      };
+    }),
+  );
+  // Rows are in release order; keep it.
+  rows.forEach((row, i) => {
+    const track = tracks[i];
+    if (!track) return;
+    const list = result.get(row.release_id) ?? [];
+    list.push(track);
+    result.set(row.release_id, list);
+  });
+  return result;
+}
 
 /**
  * Playable tracks of a release the caller may see (public once released; members and staff
- * earlier), in release order. Only variants up to `maxTier` get a URL - a Free listener's page
- * never contains a link to a Lossless file. URLs are short-lived presigned GETs of the media
- * bucket until the media edge with playback tokens exists (docs/architecture.md §6.4).
+ * earlier), in release order (see playableReleases).
  */
 export async function getPlayableTracks(
   releaseId: string,
@@ -195,73 +282,32 @@ export async function getPlayableTracks(
   artistName: string,
   maxTier: QualityTier,
 ): Promise<PlayerTrack[]> {
-  const supabase = await createSupabaseServerClient();
-  const [{ data, error }, artwork] = await Promise.all([
-    supabase.rpc("release_playback", { release: releaseId }),
-    releaseArtwork(releaseId),
-  ]);
-  if (error) throw error;
-
-  const result: PlayerTrack[] = [];
-  for (const row of data ?? []) {
-    const track = tracks.find((t) => t.id === row.track_id);
-    if (!track) continue;
-    const variants = (row.variants as unknown as PlaybackVariant[]).filter(
-      (variant) => tierRank(variant.tier) <= tierRank(maxTier),
-    );
-    const renditions: TrackRendition[] = [];
-    for (const variant of variants) {
-      const url = await presignVariantGet(variant.object_key);
-      if (!url) continue;
-      renditions.push({
-        tier: variant.tier,
-        codec: variant.codec,
-        container: variant.container,
-        sampleRateHz: variant.sample_rate,
-        url,
-        bitDepth: variant.bit_depth,
-        bitrateKbps: variant.bitrate_kbps,
-        nominalKbps: variant.nominal_kbps,
-        samples: variant.samples,
-        encoderDelaySamples: variant.encoder_delay_samples,
-        paddingSamples: variant.padding_samples,
-      });
-    }
-    if (!renditions.length) continue;
-    result.push({
-      id: track.id,
-      title: track.title,
-      artist: artistName,
-      source: sourceQuality(row.source as unknown as PlaybackSource),
-      renditions,
-      ...(artwork.length ? { artwork } : {}),
-    });
-  }
-  return result;
+  const result = await playableReleases([{ releaseId, tracks, artistName }], maxTier);
+  return result.get(releaseId) ?? [];
 }
 
 /**
- * Playable versions of tracks from many releases (library, playlists), in the given order - one
- * `release_playback` call per release. Items without a playable variant come back as null, so
+ * Playable versions of tracks from many releases (library, playlists, search, charts), in the
+ * given order, with one database call. Items without a playable variant come back as null, so
  * the caller can show them without a play button.
  */
 export async function getPlayableQueue(
   items: { id: string; title: string; releaseId: string; artistName: string }[],
   maxTier: QualityTier,
 ): Promise<(PlayerTrack | null)[]> {
-  const byRelease = new Map<string, { artist: string; tracks: { id: string; title: string }[] }>();
+  const byRelease = new Map<string, ReleaseRequest>();
   for (const item of items) {
-    const entry = byRelease.get(item.releaseId) ?? { artist: item.artistName, tracks: [] };
+    const entry = byRelease.get(item.releaseId) ?? {
+      releaseId: item.releaseId,
+      artistName: item.artistName,
+      tracks: [],
+    };
     if (!entry.tracks.some((t) => t.id === item.id)) entry.tracks.push(item);
     byRelease.set(item.releaseId, entry);
   }
+  const result = await playableReleases([...byRelease.values()], maxTier);
   const playable = new Map<string, PlayerTrack>();
-  const results = await Promise.all(
-    [...byRelease].map(([releaseId, entry]) =>
-      getPlayableTracks(releaseId, entry.tracks, entry.artist, maxTier),
-    ),
-  );
-  for (const list of results) for (const track of list) playable.set(track.id, track);
+  for (const list of result.values()) for (const track of list) playable.set(track.id, track);
   return items.map((item) => playable.get(item.id) ?? null);
 }
 
@@ -284,23 +330,24 @@ export async function getSoundchecks(
     releases: releases.map((r) => r.id),
   });
   if (error) throw error;
-  await Promise.all(
-    (data ?? []).map(async (row) => {
-      const artistName = releases.find((r) => r.id === row.release_id)?.artistName ?? "";
-      const [track] = await getPlayableTracks(
-        row.release_id,
-        [{ id: row.track_id, title: row.title }],
-        artistName,
-        maxTier,
-      );
-      if (track) {
-        result.set(row.release_id, {
-          track,
-          start: row.start_ms / 1000,
-          length: row.duration_ms / 1000,
-        });
-      }
-    }),
+  const rows = data ?? [];
+  const playable = await playableReleases(
+    rows.map((row) => ({
+      releaseId: row.release_id,
+      tracks: [{ id: row.track_id, title: row.title }],
+      artistName: releases.find((r) => r.id === row.release_id)?.artistName ?? "",
+    })),
+    maxTier,
   );
+  for (const row of rows) {
+    const track = playable.get(row.release_id)?.find((t) => t.id === row.track_id);
+    if (track) {
+      result.set(row.release_id, {
+        track,
+        start: row.start_ms / 1000,
+        length: row.duration_ms / 1000,
+      });
+    }
+  }
   return result;
 }

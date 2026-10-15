@@ -1532,6 +1532,32 @@ export type Database = {
           },
         ];
       };
+      release_reminders: {
+        Row: {
+          created_at: string;
+          release_id: string;
+          user_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          release_id: string;
+          user_id?: string;
+        };
+        Update: {
+          created_at?: string;
+          release_id?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "release_reminders_release_id_fkey";
+            columns: ["release_id"];
+            isOneToOne: false;
+            referencedRelation: "releases";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       release_review_events: {
         Row: {
           created_at: string;
@@ -2317,6 +2343,25 @@ export type Database = {
       access_invite_is_valid: { Args: { code: string }; Returns: boolean };
       add_playlist_track: { Args: { playlist: string; track: string }; Returns: string };
       add_track: { Args: { release: string; title: string }; Returns: string };
+      admin_active_listeners: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          last_30_days: number;
+          last_7_days: number;
+          today: number;
+        }[];
+      };
+      admin_app_errors: {
+        Args: { days?: number };
+        Returns: {
+          detail: string;
+          last_seen: string;
+          message: string;
+          occurrences: number;
+          path: string;
+          source: string;
+        }[];
+      };
       admin_audit_log: {
         Args: { action_prefix?: string; max_results?: number };
         Returns: {
@@ -2356,6 +2401,13 @@ export type Database = {
         Returns: string;
       };
       admin_find_user: { Args: { handle: string }; Returns: string };
+      admin_funnel: {
+        Args: { days?: number };
+        Returns: {
+          accounts: number;
+          step: string;
+        }[];
+      };
       admin_generate_promo_codes: {
         Args: {
           benefit_type: Database["public"]["Enums"]["promo_benefit"];
@@ -3132,6 +3184,7 @@ export type Database = {
           name: string;
         }[];
       };
+      open_playlist: { Args: { playlist: string }; Returns: Json };
       playlist_covers: {
         Args: { ids: string[] };
         Returns: {
@@ -3204,6 +3257,7 @@ export type Database = {
         }[];
       };
       release_is_public: { Args: { release: string }; Returns: boolean };
+      release_is_upcoming: { Args: { release: string }; Returns: boolean };
       release_playback: {
         Args: { release: string };
         Returns: {
@@ -3224,8 +3278,23 @@ export type Database = {
           track_id: string;
         }[];
       };
+      releases_playback: {
+        Args: { releases: string[] };
+        Returns: {
+          artwork: Json;
+          release_id: string;
+          source: Json;
+          track_id: string;
+          upload_id: string;
+          variants: Json;
+        }[];
+      };
       remove_artist_member: { Args: { artist: string; member: string }; Returns: undefined };
       remove_profile_image: { Args: Record<PropertyKey, never>; Returns: undefined };
+      report_error: {
+        Args: { detail?: string; message: string; path?: string; source: string };
+        Returns: undefined;
+      };
       report_playback: {
         Args: {
           browser?: string;
@@ -3375,6 +3444,22 @@ export type Database = {
           venue_name: string;
           venue_slug: string;
           voivodeship: Database["public"]["Enums"]["voivodeship"];
+        }[];
+      };
+      upcoming_releases: {
+        Args: { artist?: string; artist_slug?: string; release_slug?: string };
+        Returns: {
+          artist_id: string;
+          artist_name: string;
+          artist_slug: string;
+          artwork_image_id: string;
+          id: string;
+          publish_at: string;
+          reminders: number;
+          slug: string;
+          title: string;
+          type: Database["public"]["Enums"]["release_type"];
+          verified: boolean;
         }[];
       };
       why_artist_for_me: { Args: { artist: string }; Returns: Json };

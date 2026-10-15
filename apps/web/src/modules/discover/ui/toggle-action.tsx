@@ -18,6 +18,7 @@ export function ToggleAction({
   failedText,
   onToggle,
   onChanged,
+  variant = "icon",
 }: {
   initial: boolean;
   icon: IconName;
@@ -30,6 +31,8 @@ export function ToggleAction({
   failedText: string;
   onToggle: (on: boolean) => Promise<{ ok: boolean; on: boolean }>;
   onChanged?: (on: boolean) => void;
+  /** "icon": an icon in the action row; "pill": a small labelled button (Follow by the name). */
+  variant?: "icon" | "pill";
 }) {
   const [saved, setSaved] = useState(initial);
   const [on, setOptimistic] = useOptimistic(saved);
@@ -39,7 +42,7 @@ export function ToggleAction({
   return (
     <button
       type="button"
-      className="feed-action"
+      className={variant === "pill" ? "feed-pill" : "feed-action"}
       aria-pressed={on}
       aria-label={on ? activeLabel : label}
       title={failed ? failedText : undefined}
@@ -56,7 +59,11 @@ export function ToggleAction({
         });
       }}
     >
-      <Icon name={on ? activeIcon : icon} filled={on && activeIcon === icon} />
+      <Icon
+        name={on ? activeIcon : icon}
+        filled={on && activeIcon === icon}
+        size={variant === "pill" ? 16 : 22}
+      />
       <span className="feed-action__label" aria-hidden="true">
         {on ? activeText : text}
       </span>

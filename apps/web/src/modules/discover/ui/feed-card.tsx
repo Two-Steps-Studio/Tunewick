@@ -223,6 +223,21 @@ export function FeedCard({
                 <span className="visually-hidden">{t("verified")}</span>
               </span>
             ) : null}
+            {signedIn && item.following !== null ? (
+              <ToggleAction
+                initial={item.following}
+                icon="plus"
+                activeIcon="check"
+                label={tLibrary("follow", { name: item.artist.name })}
+                activeLabel={tLibrary("unfollow", { name: item.artist.name })}
+                text={tLibrary("followShort")}
+                activeText={tLibrary("following")}
+                failedText={tLibrary("failed")}
+                onToggle={(on) => setFeedReaction("follow", item.artist.id, on)}
+                onChanged={(on) => on && onEvent("artist_followed")}
+                variant="pill"
+              />
+            ) : null}
           </p>
           <p className="feed-card__meta">
             {item.countryCode ? (
@@ -283,22 +298,8 @@ export function FeedCard({
               onChanged={(on) => on && onEvent("song_saved")}
             />
           ) : null}
-          {signedIn && item.following !== null ? (
-            <ToggleAction
-              initial={item.following}
-              icon="plus"
-              activeIcon="check"
-              label={tLibrary("follow", { name: item.artist.name })}
-              activeLabel={tLibrary("unfollow", { name: item.artist.name })}
-              text={tLibrary("followShort")}
-              activeText={tLibrary("following")}
-              failedText={tLibrary("failed")}
-              onToggle={(on) => setFeedReaction("follow", item.artist.id, on)}
-              onChanged={(on) => on && onEvent("artist_followed")}
-            />
-          ) : null}
           {!signedIn ? (
-            <Link href="/login" className="feed-action">
+            <Link href="/login" className="feed-action" aria-label={t("signInToSave")}>
               <Icon name="heart" />
               <span className="feed-action__label">{t("signInToSave")}</span>
             </Link>

@@ -9,7 +9,8 @@
     "mainNav": "Main navigation",
     "home": "Tunewick home",
     "language": "Language",
-    "moderation": "Moderation"
+    "moderation": "Moderation",
+    "loading": "Loading…"
   },
   "Nav": {
     "discover": "Discover",
@@ -143,7 +144,9 @@
       "title": "Saved from Discover",
       "lead": "Songs you saved while discovering - come back to them any time.",
       "play": "Play saved"
-    }
+    },
+    "newFromFollowed": "New from artists you follow",
+    "newBadge": "New"
   },
   "NotFound": {
     "title": "This page does not exist",
@@ -247,7 +250,7 @@
     },
     "visibility": {
       "public": "Everyone",
-      "followers": "Followers",
+      "followers": "Friends (we follow each other)",
       "private": "Only me"
     },
     "submit": "Save changes",
@@ -1220,7 +1223,33 @@
         "reanalysis": "Analysis"
       }
     },
-    "databaseBehind": "The database is older than the app (migrations up to version {version} are missing). Paste supabase/bundle/tunewick-migracje.sql into Supabase → SQL Editor and run it - some features don't work until you do."
+    "databaseBehind": "The database is older than the app (migrations up to version {version} are missing). Paste supabase/bundle/tunewick-migracje.sql into Supabase → SQL Editor and run it - some features don't work until you do.",
+    "appErrors": {
+      "title": "App errors",
+      "lead": "Last 7 days: server and browser errors, grouped. Nothing about who was affected.",
+      "empty": "No errors reported.",
+      "server": "Server",
+      "client": "Browser",
+      "times": "{count, plural, one {# time} other {# times}}",
+      "details": "Details"
+    },
+    "growth": {
+      "title": "Growth",
+      "active": {
+        "today": "Listening today",
+        "week": "Listening in 7 days",
+        "month": "Listening in 30 days"
+      },
+      "funnelLead": "Accounts created in the last 30 days and how many reached each step. Listens count from 30 seconds.",
+      "steps": {
+        "signed_up": "Signed up",
+        "confirmed": "Confirmed e-mail",
+        "onboarded": "Picked preferences",
+        "listened": "First listen",
+        "engaged": "Like, save or follow",
+        "returned": "Came back another day"
+      }
+    }
   },
   "Events": {
     "badge": "Gig",
@@ -1472,7 +1501,9 @@
       "underground": "Underground",
       "global": "Global",
       "similar_to_me": "Similar to me"
-    }
+    },
+    "embed": "Embed code for your site",
+    "embedCopied": "Code copied - paste it into your site"
   },
   "Onboarding": {
     "title": "Discovery preferences",
@@ -1739,7 +1770,7 @@
   },
   "Compare": {
     "title": "You vs {name}",
-    "private": "{name} does not share listening activity with you. People choose this in their settings: everyone, only people they follow, or nobody.",
+    "private": "{name} does not share listening activity with you. People choose this in their settings: everyone, only friends (people who follow each other), or nobody.",
     "back": "Back to {name}",
     "period": "Period",
     "periods": {
@@ -2336,7 +2367,7 @@
     },
     "levels": {
       "public": "Everyone",
-      "followers": "People who follow me",
+      "followers": "Friends (we follow each other)",
       "private": "Only me"
     },
     "save": "Save privacy",
@@ -2486,5 +2517,29 @@
         "a": "Anywhere. Listeners discover music by country, city and genre - your release can reach people far from where it was made."
       }
     }
+  },
+  "Premiere": {
+    "kicker": "Premiere",
+    "cover": "Cover: {title}",
+    "outOn": "Out {date}",
+    "timeLeft": "Until the premiere: {days} d, {hours} h, {minutes} min",
+    "units": {
+      "days": "days",
+      "hours": "hrs",
+      "minutes": "min",
+      "seconds": "sec"
+    },
+    "remind": "Remind me",
+    "reminded": "You'll be reminded",
+    "remindHint": "On release day it lands in your Library by itself.",
+    "remindedHint": "On release day you'll find it in your Library. Tap to cancel.",
+    "signInToRemind": "Sign in to get a reminder",
+    "failed": "Couldn't save that - try again.",
+    "waiting": "{count, plural, one {# person is} other {# people are}} waiting for the premiere",
+    "upcoming": "Upcoming premieres",
+    "upcomingItem": "{type} · {date}"
+  },
+  "Embed": {
+    "listenOn": "Listen on Tunewick"
   }
 }

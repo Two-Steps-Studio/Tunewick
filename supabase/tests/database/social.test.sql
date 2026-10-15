@@ -3,7 +3,7 @@ begin;
 create extension if not exists pgtap with schema extensions;
 set search_path = public, extensions;
 
-select plan(16);
+select plan(17);
 
 insert into auth.users (id, email, raw_app_meta_data, aud, role)
 values
@@ -40,6 +40,11 @@ select is((select count(*)::int from profile_attended_events('00000000-0000-0000
   'not before following');
 select lives_ok($$insert into user_follows (followee_id) values ('00000000-0000-0000-0000-0000000009a1')$$,
   'a listener follows another listener');
+select is((select count(*)::int from profile_attended_events('00000000-0000-0000-0000-0000000009a1')), 0,
+  'following alone is not enough: "followers" means people who follow each other');
+set local role postgres;
+insert into user_follows (follower_id, followee_id) values ('00000000-0000-0000-0000-0000000009a1', '00000000-0000-0000-0000-0000000009a2');
+set local role authenticated;
 select is((select title from profile_attended_events('00000000-0000-0000-0000-0000000009a1')), 'Koncert Social',
   'followers see "Byłem przy tym"');
 select is((select array_agg(title) from profile_playlists('00000000-0000-0000-0000-0000000009a1')), array['Publiczna'],

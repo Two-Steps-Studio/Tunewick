@@ -11933,4 +11933,500 @@ $tw_20261015090000$;
   end if;
 end $run$;
 
+-- 20261016090000_releases_playback.sql
+do $run$ begin
+  if not exists (select 1 from supabase_migrations.schema_migrations where version = '20261016090000') then
+    execute $tw_20261016090000$-- Playback for many releases in one call: what release_playback returns per release, plus the
+-- release's accepted cover variants. Pages that list music (browse, search, playlists, library,
+-- charts) made three requests per release before (playback, cover id, cover variants); across
+-- regions every request costs a round trip. Same visibility rule: release_playback checks
+-- can_view_release, and a cover is only returned with rows the caller may see.
+create function public.releases_playback(releases uuid[])
+returns table (
+  release_id uuid,
+  track_id uuid,
+  upload_id uuid,
+  source jsonb,
+  variants jsonb,
+  artwork jsonb
+)
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select r.id, p.track_id, p.upload_id, p.source, p.variants,
+    case when i.status = 'accepted' then i.variants end
+  from unnest(releases[1:100]) with ordinality as x(id, ord)
+  join public.releases r on r.id = x.id
+  left join public.images i on i.id = r.artwork_image_id
+  cross join lateral public.release_playback(r.id) with ordinality as p(track_id, upload_id, source, variants, n)
+  order by x.ord, p.n;
+$$;
+
+revoke execute on function public.releases_playback(uuid[]) from public;
+grant execute on function public.releases_playback(uuid[]) to anon, authenticated;
+$tw_20261016090000$;
+    insert into supabase_migrations.schema_migrations (version, name) values ('20261016090000', 'releases_playback');
+    raise notice 'applied 20261016090000_releases_playback.sql';
+  end if;
+end $run$;
+
+-- 20261016100000_app_errors.sql
+do $run$ begin
+  if not exists (select 1 from supabase_migrations.schema_migrations where version = '20261016100000') then
+    execute $tw_20261016100000$-- Error reports from the app (server render errors, browser errors), so problems are seen before
+-- listeners give up. Grouped, not logged: one row per error fingerprint and day with a counter,
+-- and at most 500 different errors a day, so a flood (or someone posting junk) cannot grow the
+-- table. Nothing about the person is stored: no user id, no IP, the path without its query.
+-- Kept 30 days.
+create table private.app_errors (
+  fingerprint text not null,
+  day date not null default current_date,
+  source text not null constraint app_errors_source check (source in ('server', 'client')),
+  message text not null,
+  detail text,
+  path text,
+  count integer not null default 1,
+  first_seen timestamptz not null default now(),
+  last_seen timestamptz not null default now(),
+  primary key (fingerprint, day)
+);
+
+create function public.report_error(
+  source text,
+  message text,
+  detail text default null,
+  path text default null
+)
+returns void
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare
+  msg text := left(coalesce(nullif(trim(report_error.message), ''), '(no message)'), 300);
+  info text := left(report_error.detail, 2000);
+  place text := left(split_part(coalesce(report_error.path, ''), '?', 1), 200);
+  -- Same error = same source, message and first stack line (line numbers change per deploy, so
+  -- digits are dropped).
+  fp text := md5(report_error.source || '|' || regexp_replace(msg || '|' ||
+    coalesce(split_part(info, E'\n', 2), ''), '[0-9]+', '', 'g'));
+begin
+  if report_error.source not in ('server', 'client') then
+    raise exception 'invalid error report' using errcode = '22023';
+  end if;
+  update private.app_errors e set count = least(e.count + 1, 1000000), last_seen = now()
+  where e.fingerprint = fp and e.day = current_date;
+  if found then return; end if;
+  if (select count(*) from private.app_errors e where e.day = current_date) >= 500 then
+    return; -- quietly drop: reporting must never get in the way
+  end if;
+  insert into private.app_errors (fingerprint, source, message, detail, path)
+  values (fp, report_error.source, msg, info, nullif(place, ''))
+  on conflict (fingerprint, day) do update set count = least(private.app_errors.count + 1, 1000000),
+    last_seen = now();
+end;
+$$;
+
+/** The most frequent errors of the last `days` days (admin + aal2). */
+create function public.admin_app_errors(days integer default 7)
+returns table (
+  source text,
+  message text,
+  detail text,
+  path text,
+  occurrences bigint,
+  last_seen timestamptz
+)
+language plpgsql
+stable
+security definer
+set search_path = ''
+as $$
+begin
+  perform public.require_staff('admin');
+  return query
+  select (array_agg(e.source order by e.last_seen desc))[1],
+    (array_agg(e.message order by e.last_seen desc))[1],
+    (array_agg(e.detail order by e.last_seen desc))[1],
+    (array_agg(e.path order by e.last_seen desc))[1],
+    sum(e.count)::bigint, max(e.last_seen)
+  from private.app_errors e
+  where e.day >= current_date - greatest(1, least(admin_app_errors.days, 30))
+  group by e.fingerprint
+  order by max(e.last_seen) desc
+  limit 50;
+end;
+$$;
+
+revoke execute on function public.report_error(text, text, text, text) from public;
+revoke execute on function public.admin_app_errors(integer) from public, anon;
+grant execute on function public.report_error(text, text, text, text) to anon, authenticated;
+grant execute on function public.admin_app_errors(integer) to authenticated;
+
+-- 03:40 daily: drop reports older than 30 days.
+select cron.schedule('app-errors-retention', '40 3 * * *',
+  $$delete from private.app_errors where day < current_date - 30$$);
+$tw_20261016100000$;
+    insert into supabase_migrations.schema_migrations (version, name) values ('20261016100000', 'app_errors');
+    raise notice 'applied 20261016100000_app_errors.sql';
+  end if;
+end $run$;
+
+-- 20261017090000_premieres.sql
+do $run$ begin
+  if not exists (select 1 from supabase_migrations.schema_migrations where version = '20261017090000') then
+    execute $tw_20261017090000$-- Premieres: an approved release with a future date (scheduled by review_release) gets a public
+-- page before it is out - cover, title, the date and a countdown, no audio - and listeners can
+-- ask to be reminded. A reminder works like a pre-save: when the release goes live it lands in
+-- the listener's library (release_likes) and the reminder is removed.
+
+create table public.release_reminders (
+  user_id uuid not null default auth.uid() references auth.users (id) on delete cascade,
+  release_id uuid not null references public.releases (id) on delete cascade,
+  created_at timestamptz not null default now(),
+  primary key (user_id, release_id)
+);
+create index release_reminders_release_idx on public.release_reminders (release_id);
+
+/** True for an approved release whose date is still ahead. */
+create function public.release_is_upcoming(release uuid)
+returns boolean
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select exists (
+    select 1 from public.releases r
+    join public.artists a on a.id = r.artist_id
+    where r.id = release and r.status = 'published' and r.publish_at > now() and a.status = 'active'
+  );
+$$;
+
+alter table public.release_reminders enable row level security;
+create policy release_reminders_own_read on public.release_reminders for select to authenticated
+  using (user_id = (select auth.uid()));
+create policy release_reminders_own_insert on public.release_reminders for insert to authenticated
+  with check (user_id = (select auth.uid()) and public.release_is_upcoming(release_id));
+create policy release_reminders_own_delete on public.release_reminders for delete to authenticated
+  using (user_id = (select auth.uid()));
+revoke all on public.release_reminders from anon, authenticated;
+grant select, delete on public.release_reminders to authenticated;
+grant insert (release_id) on public.release_reminders to authenticated;
+
+/**
+ * Upcoming (scheduled, not yet out) releases - of one artist, or the one with these slugs. Only
+ * what the premiere page shows; tracks and audio stay hidden until the date.
+ */
+create function public.upcoming_releases(artist_slug text default null, release_slug text default null, artist uuid default null)
+returns table (
+  id uuid,
+  slug text,
+  title text,
+  type public.release_type,
+  publish_at timestamptz,
+  artwork_image_id uuid,
+  artist_id uuid,
+  artist_slug text,
+  artist_name text,
+  verified boolean,
+  reminders integer
+)
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select r.id, r.slug::text, r.title, r.type, r.publish_at, r.artwork_image_id,
+    a.id, a.slug::text, a.name, a.verification_status = 'verified',
+    (select count(*) from public.release_reminders m where m.release_id = r.id)::integer
+  from public.releases r
+  join public.artists a on a.id = r.artist_id
+  where r.status = 'published' and r.publish_at > now() and a.status = 'active'
+    and (upcoming_releases.artist is null or a.id = upcoming_releases.artist)
+    and (upcoming_releases.artist_slug is null or a.slug = lower(upcoming_releases.artist_slug))
+    and (upcoming_releases.release_slug is null or r.slug = lower(upcoming_releases.release_slug))
+  order by r.publish_at
+  limit 20;
+$$;
+
+revoke execute on function public.release_is_upcoming(uuid) from public;
+revoke execute on function public.upcoming_releases(text, text, uuid) from public;
+grant execute on function public.release_is_upcoming(uuid) to anon, authenticated;
+grant execute on function public.upcoming_releases(text, text, uuid) to anon, authenticated;
+
+/** Releases that went live: their reminders become library entries. */
+create function private.deliver_release_reminders()
+returns integer
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare
+  delivered integer;
+begin
+  with due as (
+    delete from public.release_reminders m
+    using public.releases r
+    where r.id = m.release_id and r.status = 'published' and r.publish_at <= now()
+    returning m.user_id, m.release_id
+  )
+  insert into public.release_likes (user_id, release_id)
+  select user_id, release_id from due
+  on conflict do nothing;
+  get diagnostics delivered = row_count;
+  return delivered;
+end;
+$$;
+
+revoke execute on function private.deliver_release_reminders() from public, anon, authenticated;
+
+-- Every 10 minutes; releases go live at midnight in Poland, so reminders land within minutes.
+select cron.schedule('release-reminders', '*/10 * * * *',
+  $$select private.deliver_release_reminders()$$);
+$tw_20261017090000$;
+    insert into supabase_migrations.schema_migrations (version, name) values ('20261017090000', 'premieres');
+    raise notice 'applied 20261017090000_premieres.sql';
+  end if;
+end $run$;
+
+-- 20261018090000_admin_funnel.sql
+do $run$ begin
+  if not exists (select 1 from supabase_migrations.schema_migrations where version = '20261018090000') then
+    execute $tw_20261018090000$-- Admin: how new accounts get on (the funnel) and how many people listen (active listeners).
+-- Counts only, never who; admin + aal2 (require_staff).
+
+/**
+ * Accounts created in the last `days` days and how many of them reached each step: confirmed
+ * e-mail, finished onboarding, a real listen (30 s+, not a soundcheck), a like/save/follow, and
+ * a listen on a later day than the sign-up (came back).
+ */
+create function public.admin_funnel(days integer default 30)
+returns table (step text, accounts integer)
+language plpgsql
+stable
+security definer
+set search_path = ''
+as $$
+begin
+  perform public.require_staff('admin');
+  return query
+  with cohort as (
+    select u.id, u.created_at, u.email_confirmed_at
+    from auth.users u
+    where u.created_at >= now() - make_interval(days => greatest(1, least(admin_funnel.days, 365)))
+  ),
+  steps as (
+    select
+      c.id,
+      c.email_confirmed_at is not null as confirmed,
+      exists (select 1 from public.listener_preferences p
+              where p.user_id = c.id and p.onboarded_at is not null) as onboarded,
+      exists (select 1 from public.listening_events e
+              where e.user_id = c.id and e.ms_played >= 30000 and not e.soundcheck) as listened,
+      (exists (select 1 from public.track_likes x where x.user_id = c.id)
+        or exists (select 1 from public.track_saves x where x.user_id = c.id)
+        or exists (select 1 from public.artist_follows x where x.user_id = c.id)) as engaged,
+      exists (select 1 from public.listening_events e
+              where e.user_id = c.id and e.ms_played >= 30000 and not e.soundcheck
+                and e.started_at::date > c.created_at::date) as returned
+    from cohort c
+  )
+  select s.step, s.accounts from (values
+    (1, 'signed_up', (select count(*) from steps)::integer),
+    (2, 'confirmed', (select count(*) filter (where confirmed) from steps)::integer),
+    (3, 'onboarded', (select count(*) filter (where onboarded) from steps)::integer),
+    (4, 'listened', (select count(*) filter (where listened) from steps)::integer),
+    (5, 'engaged', (select count(*) filter (where engaged) from steps)::integer),
+    (6, 'returned', (select count(*) filter (where returned) from steps)::integer)
+  ) as s(ord, step, accounts)
+  order by s.ord;
+end;
+$$;
+
+/** Signed-in people with a real listen today, in the last 7 and the last 30 days. */
+create function public.admin_active_listeners()
+returns table (today integer, last_7_days integer, last_30_days integer)
+language plpgsql
+stable
+security definer
+set search_path = ''
+as $$
+begin
+  perform public.require_staff('admin');
+  return query
+  select
+    count(distinct e.user_id) filter (where e.started_at >= date_trunc('day', now()))::integer,
+    count(distinct e.user_id) filter (where e.started_at >= now() - interval '7 days')::integer,
+    count(distinct e.user_id)::integer
+  from public.listening_events e
+  where e.started_at >= now() - interval '30 days' and e.ms_played >= 30000 and not e.soundcheck;
+end;
+$$;
+
+revoke execute on function public.admin_funnel(integer) from public, anon;
+revoke execute on function public.admin_active_listeners() from public, anon;
+grant execute on function public.admin_funnel(integer) to authenticated;
+grant execute on function public.admin_active_listeners() to authenticated;
+$tw_20261018090000$;
+    insert into supabase_migrations.schema_migrations (version, name) values ('20261018090000', 'admin_funnel');
+    raise notice 'applied 20261018090000_admin_funnel.sql';
+  end if;
+end $run$;
+
+-- 20261019090000_privacy_hardening.sql
+do $run$ begin
+  if not exists (select 1 from supabase_migrations.schema_migrations where version = '20261019090000') then
+    execute $tw_20261019090000$-- Privacy hardening after the pre-launch security review.
+--
+-- 1. "Followers" visibility now means people the owner follows back (mutual follows). Following
+--    needs no approval, so "anyone who follows me" let any account opt itself in.
+-- 2. Activity visibility also honours a private profile, like every other visibility level.
+-- 3. Unlisted playlists are no longer listable through the table: they open only by id, through
+--    public.open_playlist. Public playlists are listed only when the owner shares activity.
+-- 4. The discovery leaderboard leaves out people whose profile or score is not public to the caller.
+
+/** Whether `a` and `b` follow each other. */
+create function private.follow_each_other(a uuid, b uuid)
+returns boolean
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select a is not null and b is not null
+    and exists (select 1 from public.user_follows f where f.follower_id = a and f.followee_id = b)
+    and exists (select 1 from public.user_follows f where f.follower_id = b and f.followee_id = a);
+$$;
+
+revoke execute on function private.follow_each_other(uuid, uuid) from public, anon, authenticated;
+
+/**
+ * Whether the caller may see `owner`'s data behind `level`: themselves always; nobody across a
+ * block; nobody when the profile is private; else public / followers (people the owner follows
+ * back) / private.
+ */
+create or replace function private.can_view(owner uuid, level public.visibility_level)
+returns boolean
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select case
+    when (select auth.uid()) = owner then true
+    when (select auth.uid()) is not null and private.is_blocked_between((select auth.uid()), owner) then false
+    when not coalesce((select s.profile_public from public.profile_settings s where s.user_id = owner), true) then false
+    when level = 'public' then true
+    when level = 'followers' then private.follow_each_other((select auth.uid()), owner)
+    else false
+  end;
+$$;
+
+/** Whether the signed-in person (or an anonymous visitor) may see `owner`'s activity. */
+create or replace function private.can_view_activity(owner uuid)
+returns boolean
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select private.can_view(owner, coalesce(
+    (select s.activity_visibility from public.profile_settings s where s.user_id = owner), 'private'));
+$$;
+
+-- Playlists: the table lists only your own and shared public ones.
+
+create or replace function public.can_view_playlist(playlist uuid)
+returns boolean
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select exists (
+    select 1 from public.playlists p
+    where p.id = playlist
+      and (p.owner_id = (select auth.uid())
+        or (p.visibility = 'public' and private.can_view_activity(p.owner_id)))
+  );
+$$;
+
+-- The read policy below runs as the caller; private is not exposed through the API.
+grant execute on function private.can_view_activity(uuid) to anon, authenticated;
+
+drop policy playlists_read on public.playlists;
+create policy playlists_read on public.playlists for select to anon, authenticated
+  using (
+    owner_id = (select auth.uid())
+    or (visibility = 'public' and private.can_view_activity(owner_id))
+  );
+
+/**
+ * One playlist by id - the owner's, or a public or unlisted one (a link is enough), never across a
+ * block - with its items in order. Null when the caller may not open it. Tracks are read by the
+ * caller afterwards, so music that is no longer public stays hidden by RLS.
+ */
+create function public.open_playlist(playlist uuid)
+returns jsonb
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select jsonb_build_object(
+    'id', p.id,
+    'owner_id', p.owner_id,
+    'title', p.title,
+    'description', p.description,
+    'visibility', p.visibility,
+    'updated_at', p.updated_at,
+    'items', coalesce((
+      select jsonb_agg(jsonb_build_object(
+        'id', t.id, 'position', t.position, 'added_at', t.added_at, 'track_id', t.track_id)
+        order by t.position, t.added_at)
+      from public.playlist_tracks t where t.playlist_id = p.id), '[]'::jsonb))
+  from public.playlists p
+  where p.id = open_playlist.playlist
+    and (p.owner_id = (select auth.uid())
+      or (p.visibility in ('public', 'unlisted')
+        and not ((select auth.uid()) is not null and private.is_blocked_between((select auth.uid()), p.owner_id))));
+$$;
+
+revoke execute on function public.open_playlist(uuid) from public;
+grant execute on function public.open_playlist(uuid) to anon, authenticated;
+
+-- Leaderboard: only people whose score the caller may see (and the caller themselves).
+
+create or replace function public.discovery_leaderboard(
+  period text default 'week',
+  country text default null,
+  macro_region text default null,
+  max_results integer default 50
+)
+returns table (rank integer, handle text, display_name text, points integer, discoveries integer, is_me boolean)
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select s.rank, pr.handle::text, pr.display_name, s.points, s.discoveries, s.user_id = (select auth.uid())
+  from private.period_scores(period, country, macro_region) s
+  join public.profiles pr on pr.id = s.user_id and pr.deleted_at is null and pr.handle is not null
+  left join public.listener_preferences lp on lp.user_id = s.user_id
+  left join public.profile_settings ps on ps.user_id = s.user_id
+  where coalesce(lp.show_in_rankings, true)
+    and private.can_view(s.user_id, coalesce(ps.score_visibility, 'public'))
+    and period in ('week', 'last_week', 'month', 'season', 'last_season', 'all')
+  order by s.rank, pr.handle
+  limit least(greatest(max_results, 1), 100);
+$$;
+$tw_20261019090000$;
+    insert into supabase_migrations.schema_migrations (version, name) values ('20261019090000', 'privacy_hardening');
+    raise notice 'applied 20261019090000_privacy_hardening.sql';
+  end if;
+end $run$;
+
 select version, name from supabase_migrations.schema_migrations order by version desc limit 5;

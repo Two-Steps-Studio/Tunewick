@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { JsonLd } from "@/components/seo/json-ld";
 import { absoluteUrl } from "@/lib/site";
 import { alternates } from "@/lib/site";
 import { notFound } from "next/navigation";
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { countryName, flagEmoji, languageName, songSegment } from "@/lib/intl";
@@ -20,6 +21,7 @@ import { getOptionalUser } from "@/modules/auth";
 import { getPublishedReleases } from "@/modules/catalog";
 import { Artwork, getImageSources, getImageSourcesMany } from "@/modules/images";
 import { EventList, getArtistEvents } from "@/modules/events";
+import { getArtistUpcoming } from "@/modules/premieres";
 import { getArtistFollow, LibraryButton } from "@/modules/library";
 
 export async function generateMetadata({
@@ -51,24 +53,32 @@ export async function generateMetadata({
 export default async function ArtistPage({ params }: PageProps<"/[locale]/artists/[slug]">) {
   const { locale, slug } = await params;
   setRequestLocale(locale as Locale);
-  const artist = await getArtistBySlug(decodeURIComponent(slug));
+  // Independent lookups side by side: each sequential step is a round trip to the database.
+  const [artist, user] = await Promise.all([
+    getArtistBySlug(decodeURIComponent(slug)),
+    getOptionalUser(),
+  ]);
   if (!artist) notFound();
 
   const t = await getTranslations("Artists");
   const tReleases = await getTranslations("Releases");
   const tReports = await getTranslations("Reports");
   const tPlaces = await getTranslations("Places");
-  const user = await getOptionalUser();
-  const [published, photo, follow, related, reach, discovery] = await Promise.all([
-    getPublishedReleases(artist.id),
-    getImageSources(artist.image_id),
-    getArtistFollow(artist.id),
-    getRelatedArtists(artist.id),
-    getArtistReach(artist.id),
-    getArtistDiscovery(artist.id),
-  ]);
+  const [published, photo, follow, related, reach, discovery, gigs, member, upcoming] =
+    await Promise.all([
+      getPublishedReleases(artist.id),
+      getImageSources(artist.image_id),
+      getArtistFollow(artist.id),
+      getRelatedArtists(artist.id),
+      getArtistReach(artist.id),
+      getArtistDiscovery(artist.id),
+      getArtistEvents(artist.id),
+      user ? isArtistMember(artist.id) : false,
+      getArtistUpcoming(artist.id),
+    ]);
+  const tPremiere = await getTranslations("Premiere");
+  const format = await getFormatter();
   const tLinks = await getTranslations("Artists.links");
-  const gigs = await getArtistEvents(artist.id);
   const tEvents = await getTranslations("Events");
   const covers = await getImageSourcesMany(
     [...published.map((r) => r.artwork_image_id), ...related.map((a) => a.imageId)],
@@ -201,7 +211,10 @@ export default async function ArtistPage({ params }: PageProps<"/[locale]/artist
         <p className="profile__meta">{t("profile.since", { year: artist.formed_year })}</p>
       ) : null}
       <p className="profile__bio">{artist.bio ?? t("profile.noBio")}</p>
-      <ArtistDiscovery artistId={artist.id} name={artist.name} />
+      {/* Streams in after the rest of the page (its own lookups). */}
+      <Suspense fallback={null}>
+        <ArtistDiscovery artistId={artist.id} name={artist.name} />
+      </Suspense>
       {discovery.topTracks.length ? (
         <section aria-labelledby="popular" className="discover__section">
           <h2 id="popular" className="section-title">
@@ -230,6 +243,36 @@ export default async function ArtistPage({ params }: PageProps<"/[locale]/artist
               </li>
             ))}
           </ol>
+        </section>
+      ) : null}
+      {upcoming.length ? (
+        <section aria-labelledby="upcoming" className="discover__section">
+          <h2 id="upcoming" className="section-title">
+            {tPremiere("upcoming")}
+          </h2>
+          <ul className="upcoming-list">
+            {upcoming.map((r) => (
+              <li key={r.id}>
+                <Link
+                  href={{
+                    pathname: "/artists/[slug]/releases/[release]",
+                    params: { slug: artist.slug, release: r.slug },
+                  }}
+                >
+                  <strong>{r.title}</strong>
+                  <span>
+                    {tPremiere("upcomingItem", {
+                      type: tReleases(`types.${r.type}`),
+                      date: format.dateTime(new Date(r.publishAt), {
+                        dateStyle: "long",
+                        timeZone: "Europe/Warsaw",
+                      }),
+                    })}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
         </section>
       ) : null}
       {gigs.length ? (
@@ -322,7 +365,7 @@ export default async function ArtistPage({ params }: PageProps<"/[locale]/artist
           {tReports("link")}
         </Link>
       </p>
-      {user && (await isArtistMember(artist.id)) ? (
+      {member ? (
         <Link
           href={{ pathname: "/artists/[slug]/manage", params: { slug: artist.slug } }}
           className="button button--quiet"

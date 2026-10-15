@@ -1,6 +1,7 @@
 import "server-only";
 
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { openPlaylist } from "@/modules/playlists";
 
 import { type ModerationAction, REPORT_SUBJECTS, type ReportSubject } from "./constants";
 
@@ -39,13 +40,10 @@ export async function getReportSubject(type: string, id: string) {
       : null;
   }
   if (type === "playlist") {
-    const { data } = await supabase
-      .from("playlists")
-      .select("id, title, visibility")
-      .eq("id", id)
-      .in("visibility", ["public", "unlisted"])
-      .maybeSingle();
-    return data ? { type: "playlist" as const, id, title: data.title } : null;
+    const data = await openPlaylist(id);
+    return data && data.visibility !== "private"
+      ? { type: "playlist" as const, id, title: data.title }
+      : null;
   }
   if (type === "event") {
     // RLS shows published and cancelled events to everyone; pending ones only to their artist.
@@ -157,7 +155,7 @@ async function describeForStaff(type: ReportSubject, id: string): Promise<StaffS
         : null;
     }
     case "playlist": {
-      const { data } = await supabase.from("playlists").select("title").eq("id", id).maybeSingle();
+      const data = await openPlaylist(id);
       return data
         ? {
             title: data.title,

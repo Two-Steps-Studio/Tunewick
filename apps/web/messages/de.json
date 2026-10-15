@@ -9,7 +9,8 @@
     "mainNav": "Hauptnavigation",
     "home": "Tunewick-Startseite",
     "language": "Sprache",
-    "moderation": "Moderation"
+    "moderation": "Moderation",
+    "loading": "Wird geladen…"
   },
   "Nav": {
     "discover": "Entdecken",
@@ -143,7 +144,9 @@
       "title": "Gespeichert aus Entdecken",
       "lead": "Songs, die du beim Entdecken gespeichert hast – komm jederzeit zu ihnen zurück.",
       "play": "Gespeicherte abspielen"
-    }
+    },
+    "newFromFollowed": "Neu von Künstler*innen, denen du folgst",
+    "newBadge": "Neu"
   },
   "NotFound": {
     "title": "Diese Seite gibt es nicht",
@@ -247,7 +250,7 @@
     },
     "visibility": {
       "public": "Alle",
-      "followers": "Follower",
+      "followers": "Freunde (wir folgen uns gegenseitig)",
       "private": "Nur ich"
     },
     "submit": "Änderungen speichern",
@@ -1220,7 +1223,33 @@
         "reanalysis": "Analyse"
       }
     },
-    "databaseBehind": "Die Datenbank ist älter als die App (Migrationen bis Version {version} fehlen). Füge supabase/bundle/tunewick-migracje.sql im Supabase → SQL Editor ein und führe es aus - bis dahin funktionieren manche Funktionen nicht."
+    "databaseBehind": "Die Datenbank ist älter als die App (Migrationen bis Version {version} fehlen). Füge supabase/bundle/tunewick-migracje.sql im Supabase → SQL Editor ein und führe es aus - bis dahin funktionieren manche Funktionen nicht.",
+    "appErrors": {
+      "title": "App-Fehler",
+      "lead": "Letzte 7 Tage: Server- und Browserfehler, gruppiert. Nichts darüber, wen es betraf.",
+      "empty": "Keine Fehler gemeldet.",
+      "server": "Server",
+      "client": "Browser",
+      "times": "{count, plural, one {# Mal} other {# Mal}}",
+      "details": "Details"
+    },
+    "growth": {
+      "title": "Wachstum",
+      "active": {
+        "today": "Hören heute",
+        "week": "Hören in 7 Tagen",
+        "month": "Hören in 30 Tagen"
+      },
+      "funnelLead": "Konten der letzten 30 Tage und wie viele jeden Schritt erreicht haben. Plays zählen ab 30 Sekunden.",
+      "steps": {
+        "signed_up": "Registriert",
+        "confirmed": "E-Mail bestätigt",
+        "onboarded": "Vorlieben gewählt",
+        "listened": "Erstes Hören",
+        "engaged": "Like, Speichern oder Folgen",
+        "returned": "An einem anderen Tag zurück"
+      }
+    }
   },
   "Events": {
     "badge": "Gig",
@@ -1472,7 +1501,9 @@
       "underground": "Underground",
       "global": "Global",
       "similar_to_me": "Wie ich"
-    }
+    },
+    "embed": "Einbettungscode für deine Seite",
+    "embedCopied": "Code kopiert - füge ihn auf deiner Seite ein"
   },
   "Onboarding": {
     "title": "Entdeckungs-Vorlieben",
@@ -1739,7 +1770,7 @@
   },
   "Compare": {
     "title": "Du vs. {name}",
-    "private": "{name} teilt die Höraktivität nicht mit dir. Das legt jede*r in den Einstellungen fest: alle, nur Leute, denen man folgt, oder niemand.",
+    "private": "{name} teilt die Höraktivität nicht mit dir. Das legt jede*r in den Einstellungen fest: alle, nur Freunde (Leute, die sich gegenseitig folgen), oder niemand.",
     "back": "Zurück zu {name}",
     "period": "Zeitraum",
     "periods": {
@@ -2336,7 +2367,7 @@
     },
     "levels": {
       "public": "Alle",
-      "followers": "Leute, die mir folgen",
+      "followers": "Freunde (wir folgen uns gegenseitig)",
       "private": "Nur ich"
     },
     "save": "Privatsphäre speichern",
@@ -2486,5 +2517,29 @@
         "a": "Überall. Hörer*innen entdecken Musik nach Land, Stadt und Genre – dein Release kann Menschen erreichen, die weit entfernt vom Ort seiner Entstehung sind."
       }
     }
+  },
+  "Premiere": {
+    "kicker": "Premiere",
+    "cover": "Cover: {title}",
+    "outOn": "Erscheint {date}",
+    "timeLeft": "Bis zur Premiere: {days} T, {hours} Std, {minutes} Min",
+    "units": {
+      "days": "Tage",
+      "hours": "Std",
+      "minutes": "Min",
+      "seconds": "Sek"
+    },
+    "remind": "Erinnere mich",
+    "reminded": "Du wirst erinnert",
+    "remindHint": "Am Erscheinungstag landet es von selbst in deiner Bibliothek.",
+    "remindedHint": "Am Erscheinungstag findest du es in deiner Bibliothek. Tippe zum Abbrechen.",
+    "signInToRemind": "Melde dich an, um erinnert zu werden",
+    "failed": "Konnte nicht gespeichert werden - versuch es noch einmal.",
+    "waiting": "{count, plural, one {# Person wartet} other {# Personen warten}} auf die Premiere",
+    "upcoming": "Kommende Premieren",
+    "upcomingItem": "{type} · {date}"
+  },
+  "Embed": {
+    "listenOn": "Auf Tunewick hören"
   }
 }

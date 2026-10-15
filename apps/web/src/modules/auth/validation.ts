@@ -91,10 +91,18 @@ export function fieldErrorsFrom(error: z.ZodError): AuthFormState["fieldErrors"]
   return result;
 }
 
-/** Only same-site, absolute paths are allowed as post-login destinations. */
+/**
+ * Only same-site, absolute paths are allowed as post-login destinations. Control characters are
+ * refused outright: browsers drop tabs and newlines from URLs, so "/\t/evil.example" would turn
+ * into "//evil.example" - another site.
+ */
 export function safeNextPath(next: string | undefined | null): string | null {
   if (!next || !next.startsWith("/") || next.startsWith("//") || next.includes("\\")) return null;
-  return next;
+  if (/[\u0000-\u001f\u007f]/.test(next)) return null;
+  const base = "https://tunewick.invalid";
+  const url = new URL(next, base);
+  if (url.origin !== base) return null;
+  return url.pathname + url.search + url.hash;
 }
 
 /** Maps Supabase Auth errors to user-facing codes without leaking account existence. */

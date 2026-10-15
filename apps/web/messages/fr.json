@@ -9,7 +9,8 @@
     "mainNav": "Navigation principale",
     "home": "Accueil Tunewick",
     "language": "Langue",
-    "moderation": "Modération"
+    "moderation": "Modération",
+    "loading": "Chargement…"
   },
   "Nav": {
     "discover": "Découvrir",
@@ -143,7 +144,9 @@
       "title": "Enregistrés depuis Découvrir",
       "lead": "Les morceaux enregistrés pendant tes découvertes - reviens-y quand tu veux.",
       "play": "Lire les enregistrés"
-    }
+    },
+    "newFromFollowed": "Nouveautés des artistes que tu suis",
+    "newBadge": "Nouveau"
   },
   "NotFound": {
     "title": "Cette page n’existe pas",
@@ -247,7 +250,7 @@
     },
     "visibility": {
       "public": "Tout le monde",
-      "followers": "Abonnés",
+      "followers": "Amis (abonnement mutuel)",
       "private": "Moi uniquement"
     },
     "submit": "Enregistrer",
@@ -1220,7 +1223,33 @@
         "reanalysis": "Analyse"
       }
     },
-    "databaseBehind": "La base de données est plus ancienne que l’application (il manque les migrations jusqu’à la version {version}). Colle supabase/bundle/tunewick-migracje.sql dans Supabase → SQL Editor et exécute-le - certaines fonctions ne marchent pas d’ici là."
+    "databaseBehind": "La base de données est plus ancienne que l’application (il manque les migrations jusqu’à la version {version}). Colle supabase/bundle/tunewick-migracje.sql dans Supabase → SQL Editor et exécute-le - certaines fonctions ne marchent pas d’ici là.",
+    "appErrors": {
+      "title": "Erreurs de l’app",
+      "lead": "7 derniers jours : erreurs serveur et navigateur, regroupées. Rien sur les personnes concernées.",
+      "empty": "Aucune erreur signalée.",
+      "server": "Serveur",
+      "client": "Navigateur",
+      "times": "{count, plural, one {# fois} other {# fois}}",
+      "details": "Détails"
+    },
+    "growth": {
+      "title": "Croissance",
+      "active": {
+        "today": "À l’écoute aujourd’hui",
+        "week": "À l’écoute sur 7 jours",
+        "month": "À l’écoute sur 30 jours"
+      },
+      "funnelLead": "Comptes créés ces 30 derniers jours et combien ont atteint chaque étape. Les écoutes comptent à partir de 30 secondes.",
+      "steps": {
+        "signed_up": "Inscription",
+        "confirmed": "E-mail confirmé",
+        "onboarded": "Préférences choisies",
+        "listened": "Première écoute",
+        "engaged": "J’aime, enregistrement ou abonnement",
+        "returned": "Revenu un autre jour"
+      }
+    }
   },
   "Events": {
     "badge": "Concert",
@@ -1472,7 +1501,9 @@
       "underground": "Underground",
       "global": "Monde",
       "similar_to_me": "Proche de moi"
-    }
+    },
+    "embed": "Code d’intégration pour ton site",
+    "embedCopied": "Code copié - colle-le sur ton site"
   },
   "Onboarding": {
     "title": "Préférences de découverte",
@@ -1739,7 +1770,7 @@
   },
   "Compare": {
     "title": "Toi vs {name}",
-    "private": "{name} ne partage pas son activité d’écoute avec toi. Chacun choisit dans ses paramètres : tout le monde, seulement les personnes suivies, ou personne.",
+    "private": "{name} ne partage pas son activité d’écoute avec toi. Chacun choisit dans ses paramètres : tout le monde, seulement les amis (abonnement mutuel), ou personne.",
     "back": "Retour à {name}",
     "period": "Période",
     "periods": {
@@ -2336,7 +2367,7 @@
     },
     "levels": {
       "public": "Tout le monde",
-      "followers": "Les personnes qui me suivent",
+      "followers": "Amis (abonnement mutuel)",
       "private": "Moi uniquement"
     },
     "save": "Enregistrer la confidentialité",
@@ -2486,5 +2517,29 @@
         "a": "Partout. Les auditeurs découvrent la musique par pays, ville et genre - ta sortie peut toucher des gens loin de là où elle a été créée."
       }
     }
+  },
+  "Premiere": {
+    "kicker": "Première",
+    "cover": "Pochette : {title}",
+    "outOn": "Sortie le {date}",
+    "timeLeft": "Avant la sortie : {days} j, {hours} h, {minutes} min",
+    "units": {
+      "days": "jours",
+      "hours": "h",
+      "minutes": "min",
+      "seconds": "s"
+    },
+    "remind": "Me le rappeler",
+    "reminded": "On te le rappellera",
+    "remindHint": "Le jour de la sortie, il arrive tout seul dans ta Bibliothèque.",
+    "remindedHint": "Le jour de la sortie, tu le trouveras dans ta Bibliothèque. Touche pour annuler.",
+    "signInToRemind": "Connecte-toi pour recevoir un rappel",
+    "failed": "Impossible d’enregistrer - réessaie.",
+    "waiting": "{count, plural, one {# personne attend} other {# personnes attendent}} la sortie",
+    "upcoming": "Prochaines sorties",
+    "upcomingItem": "{type} · {date}"
+  },
+  "Embed": {
+    "listenOn": "Écouter sur Tunewick"
   }
 }

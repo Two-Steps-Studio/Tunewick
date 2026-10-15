@@ -13,6 +13,8 @@ import { getOptionalUser } from "@/modules/auth";
 import { getReleaseLikes, LibraryButton } from "@/modules/library";
 import { AddToPlaylist, getMyPlaylists } from "@/modules/playlists";
 import { PlayButton, QueueActions } from "@/modules/player";
+import { getUpcomingRelease, PremierePage } from "@/modules/premieres";
+import { getPathname } from "@/i18n/navigation";
 
 type Params = PageProps<"/[locale]/artists/[slug]/releases/[release]">["params"];
 
@@ -24,7 +26,15 @@ async function load(params: Params) {
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { locale } = await params;
   const data = await load(params);
-  if (!data) return {};
+  if (!data) {
+    // Before the date: the premiere page.
+    const { slug, release } = await params;
+    const upcoming = await getUpcomingRelease(
+      decodeURIComponent(slug),
+      decodeURIComponent(release),
+    );
+    return upcoming ? { title: `${upcoming.title} - ${upcoming.artist.name}` } : {};
+  }
   const title = `${data.release.title} - ${data.artist.name}`;
   const cover = await getImageSources(data.release.artwork_image_id, 1200);
   return {
@@ -60,24 +70,43 @@ export default async function ReleasePage({
 }: PageProps<"/[locale]/artists/[slug]/releases/[release]">) {
   const { locale } = await params;
   setRequestLocale(locale as Locale);
-  const data = await load(params);
-  if (!data) notFound();
+  // Independent lookups side by side: each sequential step is a round trip to the database.
+  const [data, entitlement, user] = await Promise.all([
+    load(params),
+    listenerEntitlement(),
+    getOptionalUser(),
+  ]);
+  if (!data) {
+    // Approved but not out yet: the premiere page (countdown, "Remind me"), never the music.
+    const { slug, release } = await params;
+    const upcoming = await getUpcomingRelease(
+      decodeURIComponent(slug),
+      decodeURIComponent(release),
+    );
+    if (!upcoming) notFound();
+    const here = getPathname({
+      href: {
+        pathname: "/artists/[slug]/releases/[release]",
+        params: { slug: upcoming.artist.slug, release: upcoming.slug },
+      },
+      locale: locale as Locale,
+    });
+    return <PremierePage release={upcoming} next={here} />;
+  }
 
   const { artist, release, tracks } = data;
   const t = await getTranslations("Release");
   const tReleases = await getTranslations("Releases");
   const tReports = await getTranslations("Reports");
-  const entitlement = await listenerEntitlement();
-  const [playable, cover, likes] = await Promise.all([
+  const [playable, cover, likes, playlists] = await Promise.all([
     getPlayableTracks(release.id, tracks, artist.name, entitlement),
     getImageSources(release.artwork_image_id, 1280),
     getReleaseLikes(
       release.id,
       tracks.map((track) => track.id),
     ),
+    user ? getMyPlaylists(user.id) : null,
   ]);
-  const user = likes ? await getOptionalUser() : null;
-  const playlists = user ? await getMyPlaylists(user.id) : null;
   const indexOf = (trackId: string) => playable.findIndex((p) => p.id === trackId);
   const total = tracks.reduce((sum, track) => sum + (track.duration_ms ?? 0), 0);
   const year = (release.release_date ?? release.publish_at ?? "").slice(0, 4);

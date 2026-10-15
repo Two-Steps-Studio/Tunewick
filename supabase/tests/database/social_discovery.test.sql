@@ -31,7 +31,9 @@ from unnest(array['00000000-0000-0000-0000-0000000008a2', '00000000-0000-0000-00
 insert into discovery_points (user_id, kind, award_key, points, artist_id)
 values ('00000000-0000-0000-0000-0000000008a3', 'new_artist', 'x', 30, (select id from ids where name = 'artist'));
 insert into user_achievements (user_id, code) select '00000000-0000-0000-0000-0000000008a3', code from achievements limit 1;
-insert into user_follows (follower_id, followee_id) values ('00000000-0000-0000-0000-0000000008a2', '00000000-0000-0000-0000-0000000008a3');
+insert into user_follows (follower_id, followee_id) values
+  ('00000000-0000-0000-0000-0000000008a2', '00000000-0000-0000-0000-0000000008a3'),
+  ('00000000-0000-0000-0000-0000000008a3', '00000000-0000-0000-0000-0000000008a2');
 
 set local role authenticated;
 set local request.jwt.claims = '{"sub": "00000000-0000-0000-0000-0000000008a2", "role": "authenticated"}';

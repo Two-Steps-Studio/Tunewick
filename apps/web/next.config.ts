@@ -2,6 +2,23 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  // Only the embed player may be shown inside other sites' frames; every other page refuses
+  // (clickjacking).
+  async headers() {
+    return [
+      {
+        source: "/((?!embed/).*)",
+        headers: [
+          { key: "Content-Security-Policy", value: "frame-ancestors 'self'" },
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+        ],
+      },
+      {
+        source: "/embed/:path*",
+        headers: [{ key: "Content-Security-Policy", value: "frame-ancestors *" }],
+      },
+    ];
+  },
   turbopack: {
     resolveAlias: {
       // Equivalent of next-intl's `createNextIntlPlugin("./src/i18n/request.ts")`.
