@@ -250,7 +250,7 @@
     },
     "visibility": {
       "public": "Todos",
-      "followers": "Seguidores",
+      "followers": "Amigos (nos seguimos mutuamente)",
       "private": "Só eu"
     },
     "submit": "Salvar alterações",
@@ -1770,7 +1770,7 @@
   },
   "Compare": {
     "title": "Você vs {name}",
-    "private": "{name} não compartilha a atividade de audição com você. Cada pessoa escolhe isso nas configurações: todos, só quem ela segue ou ninguém.",
+    "private": "{name} não compartilha a atividade de audição com você. Cada pessoa escolhe isso nas configurações: todos, só amigos (pessoas que se seguem mutuamente) ou ninguém.",
     "back": "Voltar para {name}",
     "period": "Período",
     "periods": {
@@ -2367,7 +2367,7 @@
     },
     "levels": {
       "public": "Todos",
-      "followers": "Quem me segue",
+      "followers": "Amigos (nos seguimos mutuamente)",
       "private": "Só eu"
     },
     "save": "Salvar privacidade",

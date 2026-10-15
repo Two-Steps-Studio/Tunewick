@@ -19,7 +19,7 @@ async function setProfile(
   await expect(page.getByRole("status")).toHaveText("Zapisano.");
 }
 
-test("follow a person to see their activity; a block ends it both ways", async ({
+test("friends who follow each other see activity; a block ends it both ways", async ({
   page,
   browser,
 }) => {
@@ -52,10 +52,21 @@ test("follow a person to see their activity; a block ends it both ways", async (
     bobPage.getByRole("button", { name: "Przestań obserwować: Ala z Bytomia" }),
   ).toHaveAttribute("aria-pressed", "true");
   await expect(bobPage.getByText("1 osoba obserwuje")).toBeVisible();
+  // "Followers" means people who follow each other: a one-sided follow is not enough.
+  await expect(activity).toContainText(
+    "Aktywność tej osoby jest widoczna tylko dla wybranych osób.",
+  );
+
+  // Ala follows Bob back; now Bob sees her activity.
+  await page.goto(`/profil/${bob}`);
+  await page.getByRole("button", { name: "Obserwuj: Bob z Zabrza" }).click();
+  await expect(
+    page.getByRole("button", { name: "Przestań obserwować: Bob z Zabrza" }),
+  ).toHaveAttribute("aria-pressed", "true");
+  await bobPage.reload();
   await expect(activity.getByRole("link", { name: "Na drogę" })).toBeVisible();
 
   // Ala blocks Bob from his profile; the follow ends.
-  await page.goto(`/profil/${bob}`);
   await page.getByRole("button", { name: "Zablokuj" }).click();
   await page.getByRole("button", { name: "Tak, zablokuj" }).click();
   await expect(page.getByRole("button", { name: "Odblokuj: Bob z Zabrza" })).toBeVisible();

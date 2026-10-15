@@ -3184,6 +3184,7 @@ export type Database = {
           name: string;
         }[];
       };
+      open_playlist: { Args: { playlist: string }; Returns: Json };
       playlist_covers: {
         Args: { ids: string[] };
         Returns: {

@@ -250,7 +250,7 @@
     },
     "visibility": {
       "public": "Everyone",
-      "followers": "Followers",
+      "followers": "Friends (we follow each other)",
       "private": "Only me"
     },
     "submit": "Save changes",
@@ -1770,7 +1770,7 @@
   },
   "Compare": {
     "title": "You vs {name}",
-    "private": "{name} does not share listening activity with you. People choose this in their settings: everyone, only people they follow, or nobody.",
+    "private": "{name} does not share listening activity with you. People choose this in their settings: everyone, only friends (people who follow each other), or nobody.",
     "back": "Back to {name}",
     "period": "Period",
     "periods": {
@@ -2367,7 +2367,7 @@
     },
     "levels": {
       "public": "Everyone",
-      "followers": "People who follow me",
+      "followers": "Friends (we follow each other)",
       "private": "Only me"
     },
     "save": "Save privacy",

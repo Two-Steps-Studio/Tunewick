@@ -250,7 +250,7 @@
     },
     "visibility": {
       "public": "Tout le monde",
-      "followers": "Abonnés",
+      "followers": "Amis (abonnement mutuel)",
       "private": "Moi uniquement"
     },
     "submit": "Enregistrer",
@@ -1770,7 +1770,7 @@
   },
   "Compare": {
     "title": "Toi vs {name}",
-    "private": "{name} ne partage pas son activité d’écoute avec toi. Chacun choisit dans ses paramètres : tout le monde, seulement les personnes suivies, ou personne.",
+    "private": "{name} ne partage pas son activité d’écoute avec toi. Chacun choisit dans ses paramètres : tout le monde, seulement les amis (abonnement mutuel), ou personne.",
     "back": "Retour à {name}",
     "period": "Période",
     "periods": {
@@ -2367,7 +2367,7 @@
     },
     "levels": {
       "public": "Tout le monde",
-      "followers": "Les personnes qui me suivent",
+      "followers": "Amis (abonnement mutuel)",
       "private": "Moi uniquement"
     },
     "save": "Enregistrer la confidentialité",

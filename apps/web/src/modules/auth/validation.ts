@@ -98,7 +98,6 @@ export function fieldErrorsFrom(error: z.ZodError): AuthFormState["fieldErrors"]
  */
 export function safeNextPath(next: string | undefined | null): string | null {
   if (!next || !next.startsWith("/") || next.startsWith("//") || next.includes("\\")) return null;
-  // eslint-disable-next-line no-control-regex -- refusing control characters is the point
   if (/[\u0000-\u001f\u007f]/.test(next)) return null;
   const base = "https://tunewick.invalid";
   const url = new URL(next, base);

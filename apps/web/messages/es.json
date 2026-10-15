@@ -250,7 +250,7 @@
     },
     "visibility": {
       "public": "Todos",
-      "followers": "Seguidores",
+      "followers": "Amigos (nos seguimos mutuamente)",
       "private": "Solo yo"
     },
     "submit": "Guardar cambios",
@@ -1770,7 +1770,7 @@
   },
   "Compare": {
     "title": "Tú vs. {name}",
-    "private": "{name} no comparte su actividad de escucha contigo. Cada persona lo elige en sus ajustes: todos, solo las personas que sigue o nadie.",
+    "private": "{name} no comparte su actividad de escucha contigo. Cada persona lo elige en sus ajustes: todos, solo amigos (personas que se siguen mutuamente) o nadie.",
     "back": "Volver a {name}",
     "period": "Periodo",
     "periods": {
@@ -2367,7 +2367,7 @@
     },
     "levels": {
       "public": "Todos",
-      "followers": "Personas que me siguen",
+      "followers": "Amigos (nos seguimos mutuamente)",
       "private": "Solo yo"
     },
     "save": "Guardar privacidad",

@@ -250,7 +250,7 @@
     },
     "visibility": {
       "public": "Wszyscy",
-      "followers": "Obserwujący",
+      "followers": "Znajomi (obserwujemy się nawzajem)",
       "private": "Tylko ja"
     },
     "submit": "Zapisz zmiany",
@@ -1770,7 +1770,7 @@
   },
   "Compare": {
     "title": "Ty vs {name}",
-    "private": "{name} nie udostępnia Ci aktywności słuchania. Każdy wybiera to w ustawieniach: wszyscy, tylko osoby, które obserwuje, albo nikt.",
+    "private": "{name} nie udostępnia Ci aktywności słuchania. Każdy wybiera to w ustawieniach: wszyscy, tylko znajomi (osoby, które obserwują się nawzajem), albo nikt.",
     "back": "Wróć do: {name}",
     "period": "Okres",
     "periods": {
@@ -2367,7 +2367,7 @@
     },
     "levels": {
       "public": "Wszyscy",
-      "followers": "Osoby, które mnie obserwują",
+      "followers": "Znajomi (obserwujemy się nawzajem)",
       "private": "Tylko ja"
     },
     "save": "Zapisz prywatność",

@@ -250,7 +250,7 @@
     },
     "visibility": {
       "public": "Alle",
-      "followers": "Follower",
+      "followers": "Freunde (wir folgen uns gegenseitig)",
       "private": "Nur ich"
     },
     "submit": "Änderungen speichern",
@@ -1770,7 +1770,7 @@
   },
   "Compare": {
     "title": "Du vs. {name}",
-    "private": "{name} teilt die Höraktivität nicht mit dir. Das legt jede*r in den Einstellungen fest: alle, nur Leute, denen man folgt, oder niemand.",
+    "private": "{name} teilt die Höraktivität nicht mit dir. Das legt jede*r in den Einstellungen fest: alle, nur Freunde (Leute, die sich gegenseitig folgen), oder niemand.",
     "back": "Zurück zu {name}",
     "period": "Zeitraum",
     "periods": {
@@ -2367,7 +2367,7 @@
     },
     "levels": {
       "public": "Alle",
-      "followers": "Leute, die mir folgen",
+      "followers": "Freunde (wir folgen uns gegenseitig)",
       "private": "Nur ich"
     },
     "save": "Privatsphäre speichern",
