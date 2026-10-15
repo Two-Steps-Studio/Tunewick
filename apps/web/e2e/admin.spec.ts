@@ -48,6 +48,13 @@ test("an admin manages staff roles and grants Premium; everything is in the audi
   await expect(page.getByRole("heading", { name: "Przetwarzanie plików" })).toBeVisible();
   await expect(page.getByText(/^Utwory: \d+ czeka, \d+ w trakcie\./)).toBeVisible();
   await expect(page.getByRole("heading", { name: /^Słuchanie: / })).toBeVisible();
+  // Growth: active listeners and the new-account funnel (counts only).
+  const growth = page.locator(".settings-form__group", {
+    has: page.getByRole("heading", { name: "Wzrost" }),
+  });
+  await expect(growth.getByText("Słuchający w 7 dni")).toBeVisible();
+  await expect(growth.locator(".funnel__step").first()).toContainText("Założone konto");
+  await expect(growth.locator(".funnel__step")).toHaveCount(6);
   const appErrors = page.locator("section", {
     has: page.getByRole("heading", { name: "Błędy aplikacji" }),
   });

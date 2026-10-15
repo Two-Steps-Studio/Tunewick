@@ -5578,4 +5578,64 @@ summary,
       display: none;
     }
   }
+
+  /* Admin growth: three numbers, then the funnel as plain horizontal bars (one hue). */
+  .stat-tiles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+    gap: var(--tk-space-3);
+    margin: 0;
+  }
+  .stat-tile {
+    display: grid;
+    gap: var(--tk-space-1);
+    padding: var(--tk-space-3) var(--tk-space-4);
+    border-radius: var(--tk-radius-2);
+    background: var(--bg-sunken);
+  }
+  .stat-tile dt {
+    font-size: var(--tk-text-xs);
+    color: var(--text-muted);
+  }
+  .stat-tile dd {
+    margin: 0;
+    font-family: var(--tk-font-display);
+    font-size: var(--tk-text-2xl);
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+  }
+  .funnel {
+    display: grid;
+    gap: var(--tk-space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .funnel__step {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--tk-space-1) var(--tk-space-3);
+    align-items: center;
+    font-size: var(--tk-text-sm);
+  }
+  .funnel__bar {
+    grid-column: 1 / -1;
+    height: 0.5rem;
+    border-radius: var(--tk-radius-pill);
+    background: var(--bg-sunken);
+    overflow: hidden;
+  }
+  .funnel__bar > span {
+    display: block;
+    height: 100%;
+    min-width: 2px;
+    border-radius: var(--tk-radius-pill);
+    background: var(--accent);
+  }
+  .funnel__value {
+    grid-column: 2;
+    grid-row: 1;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-muted);
+  }
 }

@@ -39,19 +39,22 @@ export async function getAdminOverview(filter: AuditFilter | null) {
   const lastMonth = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - 1, 1))
     .toISOString()
     .slice(0, 10);
-  const [staff, flags, audit, playback, shares, media, schema, errors] = await Promise.all([
-    supabase.rpc("admin_list_staff"),
-    supabase.rpc("admin_list_feature_flags"),
-    supabase.rpc("admin_audit_log", {
-      max_results: 100,
-      action_prefix: filter ?? undefined,
-    }),
-    supabase.rpc("admin_playback_summary", { days: 7 }),
-    supabase.rpc("admin_listening_shares", { month: lastMonth }),
-    supabase.rpc("admin_media_health"),
-    supabase.rpc("admin_schema_version"),
-    supabase.rpc("admin_app_errors", { days: 7 }),
-  ]);
+  const [staff, flags, audit, playback, shares, media, schema, errors, funnel, active] =
+    await Promise.all([
+      supabase.rpc("admin_list_staff"),
+      supabase.rpc("admin_list_feature_flags"),
+      supabase.rpc("admin_audit_log", {
+        max_results: 100,
+        action_prefix: filter ?? undefined,
+      }),
+      supabase.rpc("admin_playback_summary", { days: 7 }),
+      supabase.rpc("admin_listening_shares", { month: lastMonth }),
+      supabase.rpc("admin_media_health"),
+      supabase.rpc("admin_schema_version"),
+      supabase.rpc("admin_app_errors", { days: 7 }),
+      supabase.rpc("admin_funnel", { days: 30 }),
+      supabase.rpc("admin_active_listeners"),
+    ]);
   if (staff.error) throw staff.error;
   if (flags.error) throw flags.error;
   if (audit.error) throw audit.error;
@@ -62,6 +65,8 @@ export async function getAdminOverview(filter: AuditFilter | null) {
     // and says the database is behind.
     media: media.error ? null : withStuck(media.data as unknown as Omit<MediaHealth, "stuck">),
     errors: errors.error ? null : errors.data,
+    funnel: funnel.error ? null : funnel.data,
+    active: active.error ? null : (active.data?.[0] ?? null),
     databaseBehind: schema.error || !schema.data || schema.data < SCHEMA_VERSION,
     staff: staff.data,
     flags: flags.data,

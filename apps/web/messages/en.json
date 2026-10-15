@@ -1232,6 +1232,23 @@
       "client": "Browser",
       "times": "{count, plural, one {# time} other {# times}}",
       "details": "Details"
+    },
+    "growth": {
+      "title": "Growth",
+      "active": {
+        "today": "Listening today",
+        "week": "Listening in 7 days",
+        "month": "Listening in 30 days"
+      },
+      "funnelLead": "Accounts created in the last 30 days and how many reached each step. Listens count from 30 seconds.",
+      "steps": {
+        "signed_up": "Signed up",
+        "confirmed": "Confirmed e-mail",
+        "onboarded": "Picked preferences",
+        "listened": "First listen",
+        "engaged": "Like, save or follow",
+        "returned": "Came back another day"
+      }
     }
   },
   "Events": {

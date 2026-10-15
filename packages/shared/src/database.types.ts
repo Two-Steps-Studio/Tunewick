@@ -2343,6 +2343,14 @@ export type Database = {
       access_invite_is_valid: { Args: { code: string }; Returns: boolean };
       add_playlist_track: { Args: { playlist: string; track: string }; Returns: string };
       add_track: { Args: { release: string; title: string }; Returns: string };
+      admin_active_listeners: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          last_30_days: number;
+          last_7_days: number;
+          today: number;
+        }[];
+      };
       admin_app_errors: {
         Args: { days?: number };
         Returns: {
@@ -2393,6 +2401,13 @@ export type Database = {
         Returns: string;
       };
       admin_find_user: { Args: { handle: string }; Returns: string };
+      admin_funnel: {
+        Args: { days?: number };
+        Returns: {
+          accounts: number;
+          step: string;
+        }[];
+      };
       admin_generate_promo_codes: {
         Args: {
           benefit_type: Database["public"]["Enums"]["promo_benefit"];

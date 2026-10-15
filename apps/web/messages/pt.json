@@ -1232,6 +1232,23 @@
       "client": "Navegador",
       "times": "{count, plural, one {# vez} other {# vezes}}",
       "details": "Detalhes"
+    },
+    "growth": {
+      "title": "Crescimento",
+      "active": {
+        "today": "Ouvindo hoje",
+        "week": "Ouvindo em 7 dias",
+        "month": "Ouvindo em 30 dias"
+      },
+      "funnelLead": "Contas criadas nos últimos 30 dias e quantas chegaram a cada etapa. Reproduções contam a partir de 30 segundos.",
+      "steps": {
+        "signed_up": "Cadastro",
+        "confirmed": "E-mail confirmado",
+        "onboarded": "Preferências escolhidas",
+        "listened": "Primeira escuta",
+        "engaged": "Curtida, salvamento ou seguir",
+        "returned": "Voltou outro dia"
+      }
     }
   },
   "Events": {

@@ -1232,6 +1232,23 @@
       "client": "Przeglądarka",
       "times": "{count, plural, one {# raz} few {# razy} many {# razy} other {# razy}}",
       "details": "Szczegóły"
+    },
+    "growth": {
+      "title": "Wzrost",
+      "active": {
+        "today": "Słuchający dziś",
+        "week": "Słuchający w 7 dni",
+        "month": "Słuchający w 30 dni"
+      },
+      "funnelLead": "Konta założone w ostatnich 30 dniach i ile z nich doszło do każdego kroku. Liczą się odsłuchy od 30 sekund.",
+      "steps": {
+        "signed_up": "Założone konto",
+        "confirmed": "Potwierdzony e-mail",
+        "onboarded": "Wybrane preferencje",
+        "listened": "Pierwszy odsłuch",
+        "engaged": "Polubienie, zapis lub obserwacja",
+        "returned": "Powrót innego dnia"
+      }
     }
   },
   "Events": {

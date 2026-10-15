@@ -1232,6 +1232,23 @@
       "client": "Navigateur",
       "times": "{count, plural, one {# fois} other {# fois}}",
       "details": "Détails"
+    },
+    "growth": {
+      "title": "Croissance",
+      "active": {
+        "today": "À l’écoute aujourd’hui",
+        "week": "À l’écoute sur 7 jours",
+        "month": "À l’écoute sur 30 jours"
+      },
+      "funnelLead": "Comptes créés ces 30 derniers jours et combien ont atteint chaque étape. Les écoutes comptent à partir de 30 secondes.",
+      "steps": {
+        "signed_up": "Inscription",
+        "confirmed": "E-mail confirmé",
+        "onboarded": "Préférences choisies",
+        "listened": "Première écoute",
+        "engaged": "J’aime, enregistrement ou abonnement",
+        "returned": "Revenu un autre jour"
+      }
     }
   },
   "Events": {

@@ -1232,6 +1232,23 @@
       "client": "Browser",
       "times": "{count, plural, one {# Mal} other {# Mal}}",
       "details": "Details"
+    },
+    "growth": {
+      "title": "Wachstum",
+      "active": {
+        "today": "Hören heute",
+        "week": "Hören in 7 Tagen",
+        "month": "Hören in 30 Tagen"
+      },
+      "funnelLead": "Konten der letzten 30 Tage und wie viele jeden Schritt erreicht haben. Plays zählen ab 30 Sekunden.",
+      "steps": {
+        "signed_up": "Registriert",
+        "confirmed": "E-Mail bestätigt",
+        "onboarded": "Vorlieben gewählt",
+        "listened": "Erstes Hören",
+        "engaged": "Like, Speichern oder Folgen",
+        "returned": "An einem anderen Tag zurück"
+      }
     }
   },
   "Events": {
