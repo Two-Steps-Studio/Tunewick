@@ -67,6 +67,11 @@ describe("safeNextPath", () => {
     expect(safeNextPath("//evil.example")).toBeNull();
     expect(safeNextPath("https://evil.example")).toBeNull();
     expect(safeNextPath("/\\evil.example")).toBeNull();
+    // Browsers strip tabs and newlines: "/\t/evil.example" would become "//evil.example".
+    expect(safeNextPath("/\t/evil.example")).toBeNull();
+    expect(safeNextPath("/\n/evil.example")).toBeNull();
+    expect(safeNextPath("/%09/evil.example")).toBe("/%09/evil.example");
+    expect(safeNextPath("/ustawienia?tab=1#a")).toBe("/ustawienia?tab=1#a");
     expect(safeNextPath(undefined)).toBeNull();
   });
 });
