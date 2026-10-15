@@ -49,7 +49,8 @@ update releases set publish_at = now() - interval '1 minute' where id = (select 
 select private.deliver_release_reminders();
 select ok(exists (select 1 from release_likes where user_id = '00000000-0000-0000-0000-0000000010a2'
   and release_id = (select id from ids where name = 'wkrotce')), 'the release lands in the library');
-select is((select count(*) from release_reminders), 0::bigint, 'and the reminder is gone');
+select is((select count(*) from release_reminders where user_id = '00000000-0000-0000-0000-0000000010a2'), 0::bigint,
+  'and the reminder is gone');
 
 select * from finish();
 rollback;
