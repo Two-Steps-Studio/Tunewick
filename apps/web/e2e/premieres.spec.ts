@@ -57,6 +57,8 @@ test("a scheduled release has a premiere page with a countdown and reminders", a
     "aria-pressed",
     "true",
   );
+  // Saved on the server (the hint confirms it), then still there after a reload.
+  await expect(page.getByText(/^W dniu premiery znajdziesz je w Bibliotece/)).toBeVisible();
   await page.reload();
   await expect(page.getByRole("button", { name: "Przypomnę Ci" })).toBeVisible();
   await expect(page.getByText("1 osoba czeka na premierę")).toBeVisible();

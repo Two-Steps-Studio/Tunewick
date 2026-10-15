@@ -250,7 +250,11 @@ test.describe("review and publishing", () => {
     await expect(
       embedPage.getByRole("button", { name: "Odtwórz fragment: Nocna zmiana" }),
     ).toBeVisible();
-    await expect(embedPage.getByRole("link", { name: "Słuchaj na Tunewick" })).toBeVisible();
+    // (Hidden in narrow frames - the cover and title link back there.)
+    await expect(embedPage.locator(".embed__brand")).toHaveAttribute(
+      "href",
+      new RegExp(`${songPath}$`),
+    );
     await embedPage.close();
     const framed = await listener.request.get(songPath);
     expect(framed.headers()["content-security-policy"]).toBe("frame-ancestors 'self'");

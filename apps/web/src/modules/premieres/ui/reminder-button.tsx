@@ -31,7 +31,8 @@ export function ReminderButton({ releaseId, initial }: { releaseId: string; init
         {on ? t("reminded") : t("remind")}
       </button>
       <p className="field__hint" role="status">
-        {failed ? t("failed") : on ? t("remindedHint") : t("remindHint")}
+        {/* Confirmed by the server (saved), not the optimistic state. */}
+        {failed ? t("failed") : saved ? t("remindedHint") : t("remindHint")}
       </p>
     </div>
   );
