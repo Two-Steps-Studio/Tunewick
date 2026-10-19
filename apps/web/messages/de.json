@@ -868,7 +868,7 @@
     "free": "Kostenlos - du hörst in hoher Qualität.",
     "until": "{plan} bis {date}",
     "lifetime": "{plan} auf Lebenszeit",
-    "freeQuality": "Der ganze Katalog, ohne Werbung und ohne Skip-Limits. Lossless und Hi-Res gibt’s mit Premium - während der Beta über Promo-Codes.",
+    "freeQuality": "Der ganze Katalog ohne Skip-Limits; ab und zu eine dezente Sponsorenkarte (nie beim Hören). Lossless, Hi-Res und keine Werbung gibt’s mit Premium - während der Beta über Promo-Codes.",
     "premiumQuality": "Der Player wählt Lossless oder Hi-Res, wenn ein Track das bietet und dein Gerät es abspielen kann.",
     "source": {
       "promo": "Per Code: {ref}",
@@ -1249,7 +1249,8 @@
         "engaged": "Like, Speichern oder Folgen",
         "returned": "An einem anderen Tag zurück"
       }
-    }
+    },
+    "toAds": "Werbung"
   },
   "Events": {
     "badge": "Gig",
@@ -2541,5 +2542,61 @@
   },
   "Embed": {
     "listenOn": "Auf Tunewick hören"
+  },
+  "Ads": {
+    "sponsored": "Gesponsert",
+    "label": "Anzeige: {advertiser}"
+  },
+  "AdsAdmin": {
+    "title": "Werbung",
+    "lead": "Sponsorenkarten für Hörer*innen im Free-Plan. Keine Werbenetzwerke und kein Tracking: Eine Karte wird nach Platzierung und Sprache gewählt, die Statistik sind anonyme Tageszahlen. Premium sieht keine Werbung.",
+    "link": "Werbung",
+    "campaigns": "Kampagnen",
+    "empty": "Noch keine Kampagnen.",
+    "new": "Neue Kampagne",
+    "edit": "Bearbeiten",
+    "stats": "{impressions} Einblendungen · {clicks} Klicks (30 Tage)",
+    "active": "läuft",
+    "paused": "pausiert",
+    "start": "Starten",
+    "pause": "Pausieren",
+    "save": "Speichern",
+    "create": "Anlegen (pausiert)",
+    "saved": "Gespeichert.",
+    "placements": {
+      "library": "Bibliothek",
+      "charts": "Charts",
+      "browse": "Stöbern",
+      "scene": "Szene"
+    },
+    "fields": {
+      "advertiser": "Werbetreibende*r",
+      "headline": "Überschrift",
+      "body": "Text (optional)",
+      "cta": "Schaltfläche",
+      "url": "Website (https)",
+      "release": "Oder eine Veröffentlichung auf Tunewick",
+      "placements": "Wo sie erscheint",
+      "locales": "Sprachen",
+      "weight": "Gewicht",
+      "startsOn": "Ab",
+      "endsOn": "Bis"
+    },
+    "hints": {
+      "cta": "Kurz, z. B. „Ansehen“ oder „Anhören“.",
+      "url": "Öffnet in einem neuen Tab. Entweder das oder eine Veröffentlichung.",
+      "release": "Als künstler/veröffentlichung - die Karte zeigt das Cover und öffnet die Seite.",
+      "releaseCurrent": "Jetzt: {title}. Als künstler/veröffentlichung.",
+      "placements": "Nie im Player, in Entdecken oder auf Künstler-, Veröffentlichungs- und Playlist-Seiten.",
+      "locales": "Nichts gewählt = alle Sprachen.",
+      "weight": "1-10: wie oft diese Kampagne im Vergleich zu anderen gezogen wird."
+    },
+    "errors": {
+      "invalid": "Prüfe die Felder: genau ein Ziel (https oder Veröffentlichung) und mindestens eine Platzierung.",
+      "release_not_found": "Diese Veröffentlichung (oder Kampagne) gibt es nicht.",
+      "mfa_required": "Bestätige die Anmeldung mit einem zweiten Faktor.",
+      "not_allowed": "Nur für Admins.",
+      "failed": "Speichern fehlgeschlagen. Versuche es erneut."
+    }
   }
 }

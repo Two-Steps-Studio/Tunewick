@@ -246,7 +246,7 @@ export const en: LegalContent = {
 
     privacy: {
       title: "Privacy Policy",
-      lead: "What data Tunewick collects, why, how long we keep it and what rights you have. No ads, no selling data, no tracking outside the service.",
+      lead: "What data Tunewick collects, why, how long we keep it and what rights you have. No ads based on your data, no selling data, no tracking outside the service.",
       sections: [
         {
           id: "controller",
@@ -291,6 +291,7 @@ export const en: LegalContent = {
               ],
             },
             "We do not use your data for advertising, do not sell it and do not profile you for marketing. Recommendations make no decisions with legal effects on you.",
+            "On the Free plan we sometimes show a labelled sponsor card. It is chosen only by its place on the page and the interface language - never by who you are or what you listen to. We only count, anonymously, how often a card was shown and clicked. Premium has no ads.",
           ],
         },
         {

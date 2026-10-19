@@ -868,7 +868,7 @@
     "free": "Free - you listen in High quality.",
     "until": "{plan} until {date}",
     "lifetime": "{plan} for life",
-    "freeQuality": "The whole catalog, no ads and no skip limits. Lossless and Hi-Res are in Premium - during the beta through promo codes.",
+    "freeQuality": "The whole catalog with no skip limits; now and then a quiet sponsor card (never while you listen). Lossless, Hi-Res and no ads are in Premium - during the beta through promo codes.",
     "premiumQuality": "The player picks Lossless or Hi-Res when a track has it and your device can play it.",
     "source": {
       "promo": "From code: {ref}",
@@ -1249,7 +1249,8 @@
         "engaged": "Like, save or follow",
         "returned": "Came back another day"
       }
-    }
+    },
+    "toAds": "Ads"
   },
   "Events": {
     "badge": "Gig",
@@ -2541,5 +2542,61 @@
   },
   "Embed": {
     "listenOn": "Listen on Tunewick"
+  },
+  "Ads": {
+    "sponsored": "Sponsored",
+    "label": "Ad: {advertiser}"
+  },
+  "AdsAdmin": {
+    "title": "Ads",
+    "lead": "Sponsor cards for listeners on the Free plan. No ad networks and no tracking: a card is picked by placement and language, and the statistics are anonymous daily counts. Premium never sees ads.",
+    "link": "Ads",
+    "campaigns": "Campaigns",
+    "empty": "No campaigns yet.",
+    "new": "New campaign",
+    "edit": "Edit",
+    "stats": "{impressions} impressions · {clicks} clicks (30 days)",
+    "active": "running",
+    "paused": "paused",
+    "start": "Start",
+    "pause": "Pause",
+    "save": "Save",
+    "create": "Create (paused)",
+    "saved": "Saved.",
+    "placements": {
+      "library": "Library",
+      "charts": "Charts",
+      "browse": "Browse",
+      "scene": "Scene"
+    },
+    "fields": {
+      "advertiser": "Advertiser",
+      "headline": "Headline",
+      "body": "Text (optional)",
+      "cta": "Button",
+      "url": "Website (https)",
+      "release": "Or a release on Tunewick",
+      "placements": "Where it appears",
+      "locales": "Languages",
+      "weight": "Weight",
+      "startsOn": "From",
+      "endsOn": "Until"
+    },
+    "hints": {
+      "cta": "Short, e.g. \"See more\" or \"Listen\".",
+      "url": "Opens in a new tab. Fill this or a release, not both.",
+      "release": "As artist/release - the card shows the cover and opens the release page.",
+      "releaseCurrent": "Now: {title}. As artist/release.",
+      "placements": "Never in the player, Discover, or artist, release or playlist pages.",
+      "locales": "None selected = every language.",
+      "weight": "1-10: how often this campaign is drawn compared with others."
+    },
+    "errors": {
+      "invalid": "Check the fields: exactly one destination (https or a release) and at least one placement.",
+      "release_not_found": "No such release (or campaign).",
+      "mfa_required": "Confirm your sign-in with a second factor.",
+      "not_allowed": "Admins only.",
+      "failed": "Could not save. Try again."
+    }
   }
 }

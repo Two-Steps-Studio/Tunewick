@@ -868,7 +868,7 @@
     "free": "Gratis: escuchas en calidad Alta.",
     "until": "{plan} hasta el {date}",
     "lifetime": "{plan} de por vida",
-    "freeQuality": "Todo el catálogo, sin anuncios y sin límite de saltos. Sin pérdida y Hi-Res están en Premium; durante la beta, mediante códigos promocionales.",
+    "freeQuality": "Todo el catálogo sin límite de saltos; de vez en cuando, una tarjeta discreta de un patrocinador (nunca mientras escuchas). Sin pérdida, Hi-Res y sin anuncios están en Premium; durante la beta, mediante códigos promocionales.",
     "premiumQuality": "El reproductor elige Sin pérdida o Hi-Res cuando la canción lo tiene y tu dispositivo puede reproducirlo.",
     "source": {
       "promo": "Con el código: {ref}",
@@ -1249,7 +1249,8 @@
         "engaged": "Me gusta, guardado o seguir",
         "returned": "Volvió otro día"
       }
-    }
+    },
+    "toAds": "Anuncios"
   },
   "Events": {
     "badge": "Concierto",
@@ -2541,5 +2542,61 @@
   },
   "Embed": {
     "listenOn": "Escucha en Tunewick"
+  },
+  "Ads": {
+    "sponsored": "Patrocinado",
+    "label": "Anuncio: {advertiser}"
+  },
+  "AdsAdmin": {
+    "title": "Anuncios",
+    "lead": "Tarjetas de patrocinadores para oyentes del plan Free. Sin redes publicitarias ni rastreo: la tarjeta se elige por ubicación e idioma, y las estadísticas son recuentos diarios anónimos. Premium nunca ve anuncios.",
+    "link": "Anuncios",
+    "campaigns": "Campañas",
+    "empty": "Aún no hay campañas.",
+    "new": "Nueva campaña",
+    "edit": "Editar",
+    "stats": "{impressions} impresiones · {clicks} clics (30 días)",
+    "active": "activa",
+    "paused": "en pausa",
+    "start": "Iniciar",
+    "pause": "Pausar",
+    "save": "Guardar",
+    "create": "Crear (en pausa)",
+    "saved": "Guardado.",
+    "placements": {
+      "library": "Biblioteca",
+      "charts": "Listas",
+      "browse": "Explorar",
+      "scene": "Escena"
+    },
+    "fields": {
+      "advertiser": "Anunciante",
+      "headline": "Titular",
+      "body": "Texto (opcional)",
+      "cta": "Botón",
+      "url": "Sitio web (https)",
+      "release": "O un lanzamiento en Tunewick",
+      "placements": "Dónde aparece",
+      "locales": "Idiomas",
+      "weight": "Peso",
+      "startsOn": "Desde",
+      "endsOn": "Hasta"
+    },
+    "hints": {
+      "cta": "Corto, p. ej. «Ver» o «Escuchar».",
+      "url": "Se abre en una pestaña nueva. Rellena esto o un lanzamiento, no ambos.",
+      "release": "Como artista/lanzamiento: la tarjeta muestra la portada y abre la página.",
+      "releaseCurrent": "Ahora: {title}. Como artista/lanzamiento.",
+      "placements": "Nunca en el reproductor, en Descubrir ni en páginas de artistas, lanzamientos o listas.",
+      "locales": "Nada marcado = todos los idiomas.",
+      "weight": "1-10: con qué frecuencia sale esta campaña frente a otras."
+    },
+    "errors": {
+      "invalid": "Revisa los campos: exactamente un destino (https o lanzamiento) y al menos una ubicación.",
+      "release_not_found": "No existe ese lanzamiento (o campaña).",
+      "mfa_required": "Confirma el inicio de sesión con un segundo factor.",
+      "not_allowed": "Solo administradores.",
+      "failed": "No se pudo guardar. Inténtalo de nuevo."
+    }
   }
 }

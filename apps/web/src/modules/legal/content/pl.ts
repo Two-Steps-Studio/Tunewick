@@ -251,7 +251,7 @@ export const pl: LegalContent = {
 
     privacy: {
       title: "Polityka prywatności",
-      lead: "Jakie dane zbiera Tunewick, po co, jak długo je trzymamy i jakie masz prawa. Bez reklam, bez sprzedawania danych, bez śledzenia poza serwisem.",
+      lead: "Jakie dane zbiera Tunewick, po co, jak długo je trzymamy i jakie masz prawa. Bez reklam opartych na Twoich danych, bez sprzedawania danych, bez śledzenia poza serwisem.",
       sections: [
         {
           id: "administrator",
@@ -296,6 +296,7 @@ export const pl: LegalContent = {
               ],
             },
             "Nie używamy Twoich danych do reklam, nie sprzedajemy ich i nie profilujemy Cię w celach marketingowych. Rekomendacje nie podejmują wobec Ciebie decyzji o skutkach prawnych.",
+            "W planie Free pokazujemy czasem oznaczoną kartę sponsora. Wybieramy ją wyłącznie według miejsca na stronie i języka interfejsu - nie według tego, kim jesteś ani czego słuchasz. Liczymy tylko anonimowo, ile razy karta się wyświetliła i ile razy ktoś ją kliknął. W planie Premium reklam nie ma.",
           ],
         },
         {

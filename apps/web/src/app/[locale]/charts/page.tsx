@@ -27,6 +27,7 @@ import {
   parseCountry,
 } from "@/modules/discover";
 import { Artwork, getImageSourcesMany } from "@/modules/images";
+import { AdCard, getAd } from "@/modules/ads";
 
 export async function generateMetadata({
   params,
@@ -53,6 +54,7 @@ export default async function ChartsPage({ params, searchParams }: PageProps<"/[
   const t = await getTranslations("Charts");
   const format = await getFormatter();
   const query = await searchParams;
+  const adPromise = getAd("charts", locale);
 
   const tab = pick(query.c, TABS, "top");
   const scope = pick(
@@ -148,6 +150,8 @@ export default async function ChartsPage({ params, searchParams }: PageProps<"/[
     params: { artist: artistSlug, song: songSegment(title, code, slugify) },
   });
   const n = (value: number) => format.number(value);
+
+  const ad = await adPromise;
 
   return (
     <section className="charts">
@@ -406,6 +410,8 @@ export default async function ChartsPage({ params, searchParams }: PageProps<"/[
           )}
         </section>
       ) : null}
+
+      {ad ? <AdCard ad={ad} /> : null}
 
       {tab === "artists" ? (
         <section aria-labelledby="artist-chart-heading" className="charts__section">

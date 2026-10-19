@@ -868,7 +868,7 @@
     "free": "Free - słuchasz w jakości High.",
     "until": "{plan} do {date}",
     "lifetime": "{plan} na zawsze",
-    "freeQuality": "Cały katalog, bez reklam i bez limitów pomijania. Lossless i Hi-Res są w Premium - w becie dostępne z kodów promocyjnych.",
+    "freeQuality": "Cały katalog, bez limitów pomijania; czasem dyskretna karta sponsora (nigdy w trakcie słuchania). Lossless, Hi-Res i brak reklam są w Premium - w becie dostępne z kodów promocyjnych.",
     "premiumQuality": "Odtwarzacz wybiera Lossless lub Hi-Res, jeśli utwór ma taką wersję i Twoje urządzenie ją obsłuży.",
     "source": {
       "promo": "Z kodu: {ref}",
@@ -1249,7 +1249,8 @@
         "engaged": "Polubienie, zapis lub obserwacja",
         "returned": "Powrót innego dnia"
       }
-    }
+    },
+    "toAds": "Reklamy"
   },
   "Events": {
     "badge": "Koncert",
@@ -2541,5 +2542,61 @@
   },
   "Embed": {
     "listenOn": "Słuchaj na Tunewick"
+  },
+  "Ads": {
+    "sponsored": "Sponsorowane",
+    "label": "Reklama: {advertiser}"
+  },
+  "AdsAdmin": {
+    "title": "Reklamy",
+    "lead": "Karty sponsorów dla słuchaczy w planie Free. Bez sieci reklamowych i bez śledzenia: kartę wybiera się po miejscu i języku, a statystyki to anonimowe liczby dzienne. Premium nie widzi reklam.",
+    "link": "Reklamy",
+    "campaigns": "Kampanie",
+    "empty": "Nie ma jeszcze kampanii.",
+    "new": "Nowa kampania",
+    "edit": "Edytuj",
+    "stats": "{impressions} wyświetleń · {clicks} kliknięć (30 dni)",
+    "active": "działa",
+    "paused": "wstrzymana",
+    "start": "Uruchom",
+    "pause": "Wstrzymaj",
+    "save": "Zapisz",
+    "create": "Utwórz (wstrzymaną)",
+    "saved": "Zapisano.",
+    "placements": {
+      "library": "Biblioteka",
+      "charts": "Listy",
+      "browse": "Przeglądaj",
+      "scene": "Scena"
+    },
+    "fields": {
+      "advertiser": "Reklamodawca",
+      "headline": "Nagłówek",
+      "body": "Opis (opcjonalnie)",
+      "cta": "Przycisk",
+      "url": "Adres strony (https)",
+      "release": "Albo wydawnictwo na Tunewick",
+      "placements": "Gdzie się pokazuje",
+      "locales": "Języki",
+      "weight": "Waga",
+      "startsOn": "Od dnia",
+      "endsOn": "Do dnia"
+    },
+    "hints": {
+      "cta": "Krótko, np. „Zobacz” albo „Posłuchaj”.",
+      "url": "Otwiera się w nowej karcie. Wypełnij to albo wydawnictwo, nie oba.",
+      "release": "Adres w formie artysta/wydawnictwo - karta pokaże okładkę i otworzy stronę wydawnictwa.",
+      "releaseCurrent": "Teraz: {title}. Adres w formie artysta/wydawnictwo.",
+      "placements": "Nigdy w odtwarzaczu, w Odkrywaj, na stronach artystów, wydawnictw ani playlist.",
+      "locales": "Nic nie zaznaczone = wszystkie języki.",
+      "weight": "1-10: jak często ta kampania wypada w losowaniu względem innych."
+    },
+    "errors": {
+      "invalid": "Sprawdź pola: potrzebny jest dokładnie jeden cel (https albo wydawnictwo) i co najmniej jedno miejsce.",
+      "release_not_found": "Nie ma takiego wydawnictwa (albo kampanii).",
+      "mfa_required": "Potwierdź logowanie drugim składnikiem.",
+      "not_allowed": "Tylko administratorzy.",
+      "failed": "Nie udało się zapisać. Spróbuj ponownie."
+    }
   }
 }

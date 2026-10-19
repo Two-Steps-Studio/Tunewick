@@ -6,6 +6,7 @@ import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { parseRegion } from "@/modules/discover";
 import { EventList, getUpcomingEvents } from "@/modules/events";
+import { AdCard, getAd } from "@/modules/ads";
 
 export async function generateMetadata({
   params,
@@ -23,7 +24,7 @@ export default async function ScenePage({ params, searchParams }: PageProps<"/[l
   const tPlaces = await getTranslations("Places");
   const tFeed = await getTranslations("Feed");
   const region = parseRegion((await searchParams).woj);
-  const events = await getUpcomingEvents(region, 60);
+  const [events, ad] = await Promise.all([getUpcomingEvents(region, 60), getAd("scene", locale)]);
 
   return (
     <section className="discover">
@@ -75,6 +76,7 @@ export default async function ScenePage({ params, searchParams }: PageProps<"/[l
           />
         </section>
       )}
+      {ad ? <AdCard ad={ad} /> : null}
     </section>
   );
 }

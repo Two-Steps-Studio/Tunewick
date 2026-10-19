@@ -74,6 +74,7 @@ export const routing = defineRouting({
     "/moderation/[release]": paths("/moderacja/[release]", "/moderation/[release]"),
     "/admin": "/admin",
     "/admin/promo": paths("/admin/promocje", "/admin/promotions"),
+    "/admin/ads": paths("/admin/reklamy", "/admin/ads"),
     "/admin/promo/[campaign]": paths("/admin/promocje/[campaign]", "/admin/promotions/[campaign]"),
     // Developer-only (404 in production unless TUNEWICK_DEV_PAGES=1).
     "/dev/player": "/dev/player",

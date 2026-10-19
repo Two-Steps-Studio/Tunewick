@@ -5639,3 +5639,61 @@ summary,
     color: var(--text-muted);
   }
 }
+
+/* -------------------------------------------------------------------------- */
+/* Sponsor card (docs/ads.md): quiet, labelled, the shape of the content around it */
+/* -------------------------------------------------------------------------- */
+@layer components {
+  .ad-card {
+    margin-block: var(--tk-space-6);
+  }
+
+  .ad-card__link {
+    display: flex;
+    align-items: center;
+    gap: var(--tk-space-3);
+    padding: var(--tk-space-3) var(--tk-space-4);
+    border: 1px solid var(--line);
+    border-radius: var(--tk-radius-3);
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .ad-card__link:hover {
+    border-color: var(--text-muted);
+  }
+
+  .ad-card__art {
+    flex: none;
+    width: 64px;
+    border-radius: var(--tk-radius-2);
+    overflow: hidden;
+  }
+
+  .ad-card__text {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .ad-card__label {
+    color: var(--text-muted);
+    font-size: var(--tk-text-xs);
+  }
+
+  .ad-card__headline {
+    font-weight: 600;
+  }
+
+  .ad-card__body {
+    color: var(--text-muted);
+    font-size: var(--tk-text-sm);
+  }
+
+  .ad-card__cta {
+    flex: none;
+    padding: var(--tk-space-1) var(--tk-space-3);
+    border: 1px solid var(--line);
+    border-radius: var(--tk-radius-pill);
+    font-size: var(--tk-text-sm);
+  }
+}

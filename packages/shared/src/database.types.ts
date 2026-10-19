@@ -24,6 +24,71 @@ export type Database = {
         };
         Relationships: [];
       };
+      ad_campaigns: {
+        Row: {
+          active: boolean;
+          advertiser: string;
+          body: string | null;
+          created_at: string;
+          created_by: string | null;
+          cta: string;
+          ends_at: string | null;
+          headline: string;
+          id: string;
+          locales: string[];
+          placements: Database["public"]["Enums"]["ad_placement"][];
+          release_id: string | null;
+          starts_at: string | null;
+          updated_at: string;
+          url: string | null;
+          weight: number;
+        };
+        Insert: {
+          active?: boolean;
+          advertiser: string;
+          body?: string | null;
+          created_at?: string;
+          created_by?: string | null;
+          cta: string;
+          ends_at?: string | null;
+          headline: string;
+          id?: string;
+          locales?: string[];
+          placements: Database["public"]["Enums"]["ad_placement"][];
+          release_id?: string | null;
+          starts_at?: string | null;
+          updated_at?: string;
+          url?: string | null;
+          weight?: number;
+        };
+        Update: {
+          active?: boolean;
+          advertiser?: string;
+          body?: string | null;
+          created_at?: string;
+          created_by?: string | null;
+          cta?: string;
+          ends_at?: string | null;
+          headline?: string;
+          id?: string;
+          locales?: string[];
+          placements?: Database["public"]["Enums"]["ad_placement"][];
+          release_id?: string | null;
+          starts_at?: string | null;
+          updated_at?: string;
+          url?: string | null;
+          weight?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "ad_campaigns_release_id_fkey";
+            columns: ["release_id"];
+            isOneToOne: false;
+            referencedRelation: "releases";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       artist_follows: {
         Row: {
           artist_id: string;
@@ -2341,6 +2406,21 @@ export type Database = {
       abandon_image_upload: { Args: { image: string }; Returns: undefined };
       accept_artist_membership: { Args: { artist: string }; Returns: undefined };
       access_invite_is_valid: { Args: { code: string }; Returns: boolean };
+      ad_for: {
+        Args: { locale: string; placement: Database["public"]["Enums"]["ad_placement"] };
+        Returns: {
+          advertiser: string;
+          artist_slug: string;
+          artwork_image_id: string;
+          body: string;
+          cta: string;
+          headline: string;
+          id: string;
+          release_id: string;
+          release_slug: string;
+          url: string;
+        }[];
+      };
       add_playlist_track: { Args: { playlist: string; track: string }; Returns: string };
       add_track: { Args: { release: string; title: string }; Returns: string };
       admin_active_listeners: {
@@ -2349,6 +2429,28 @@ export type Database = {
           last_30_days: number;
           last_7_days: number;
           today: number;
+        }[];
+      };
+      admin_ad_campaigns: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          active: boolean;
+          advertiser: string;
+          body: string;
+          clicks: number;
+          cta: string;
+          ends_at: string;
+          headline: string;
+          id: string;
+          impressions: number;
+          locales: string[];
+          placements: Database["public"]["Enums"]["ad_placement"][];
+          release_id: string;
+          release_ref: string;
+          release_title: string;
+          starts_at: string;
+          url: string;
+          weight: number;
         }[];
       };
       admin_app_errors: {
@@ -2513,7 +2615,28 @@ export type Database = {
         Args: { role: Database["public"]["Enums"]["app_role"]; target_user: string };
         Returns: undefined;
       };
+      admin_save_ad_campaign: {
+        Args: {
+          advertiser: string;
+          body: string;
+          campaign: string;
+          cta: string;
+          ends_at: string;
+          headline: string;
+          locales: string[];
+          placements: Database["public"]["Enums"]["ad_placement"][];
+          release_ref: string;
+          starts_at: string;
+          url: string;
+          weight: number;
+        };
+        Returns: string;
+      };
       admin_schema_version: { Args: Record<PropertyKey, never>; Returns: string };
+      admin_set_ad_campaign_active: {
+        Args: { active: boolean; campaign: string };
+        Returns: undefined;
+      };
       admin_set_feature_flag: { Args: { enabled: boolean; flag: string }; Returns: undefined };
       admin_set_promo_campaign_active: {
         Args: { active: boolean; campaign: string };
@@ -3227,6 +3350,14 @@ export type Database = {
         Args: { clip: string };
         Returns: Database["public"]["Enums"]["share_clip_status"];
       };
+      record_ad_event: {
+        Args: {
+          campaign: string;
+          kind: string;
+          placement: Database["public"]["Enums"]["ad_placement"];
+        };
+        Returns: undefined;
+      };
       record_events: { Args: { events: Json }; Returns: number };
       record_listen: {
         Args: {
@@ -3479,6 +3610,7 @@ export type Database = {
       };
     };
     Enums: {
+      ad_placement: "library" | "charts" | "browse" | "scene";
       ai_content: "human" | "ai_assisted" | "ai_generated" | "unknown";
       app_role: "moderator" | "admin";
       artist_member_role: "owner" | "manager" | "member";
@@ -3645,6 +3777,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      ad_placement: ["library", "charts", "browse", "scene"],
       ai_content: ["human", "ai_assisted", "ai_generated", "unknown"],
       app_role: ["moderator", "admin"],
       artist_member_role: ["owner", "manager", "member"],

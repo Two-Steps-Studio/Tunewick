@@ -48,6 +48,8 @@ export default async function AdminPage({ params, searchParams }: PageProps<"/[l
         <p className="settings-profile-link">
           <Link href="/moderation">{t("toModeration")}</Link> ·{" "}
           <Link href="/admin/promo">{t("toPromo")}</Link>
+          {" · "}
+          <Link href="/admin/ads">{t("toAds")}</Link>
         </p>
       </div>
       <div className="auth-page__body">
