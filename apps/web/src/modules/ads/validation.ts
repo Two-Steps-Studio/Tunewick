@@ -1,7 +1,5 @@
 import { z } from "zod";
-
-export const AD_PLACEMENTS = ["library", "charts", "browse", "scene"] as const;
-export const AD_LOCALES = ["pl", "en", "de", "es", "fr", "pt"] as const;
+import { AD_LOCALES, AD_PLACEMENTS } from "./constants";
 
 const optionalDate = z
   .string()

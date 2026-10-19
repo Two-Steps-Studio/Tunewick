@@ -5,7 +5,7 @@ import { useActionState, useId, useTransition } from "react";
 import { useFormStatus } from "react-dom";
 import { type AdFormState, saveAdCampaign, setAdCampaignActive } from "../actions";
 import type { AdminAdCampaign } from "../queries";
-import { AD_LOCALES, AD_PLACEMENTS } from "../validation";
+import { AD_LOCALES, AD_PLACEMENTS } from "../constants";
 
 const initial: AdFormState = {};
 
