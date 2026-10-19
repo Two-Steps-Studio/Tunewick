@@ -1,6 +1,13 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Artwork, getImageSources, getLatestImageUpload, ImageUpload } from "@/modules/images";
+import {
+  Artwork,
+  Banner,
+  getImageSources,
+  getLatestImageUpload,
+  ImageUpload,
+  RemoveImageButton,
+} from "@/modules/images";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { getPathname, Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
@@ -48,9 +55,11 @@ export default async function ManageArtistPage({
   const t = await getTranslations("Artists");
   const { artist, myRole, members } = data;
   const isOwner = myRole === "owner";
-  const [photo, photoUpload, reach, genres, countries] = await Promise.all([
+  const [photo, photoUpload, banner, bannerUpload, reach, genres, countries] = await Promise.all([
     getImageSources(artist.image_id),
     myRole !== "member" ? getLatestImageUpload("artist_image", artist.id) : null,
+    getImageSources(artist.banner_image_id, 1280),
+    myRole !== "member" ? getLatestImageUpload("banner", artist.id) : null,
     getArtistReach(artist.id),
     getGenres(locale),
     getCountryCodes(),
@@ -135,6 +144,22 @@ export default async function ManageArtistPage({
                 latest={photoUpload}
               />
             </div>
+          </section>
+        ) : null}
+
+        {myRole !== "member" ? (
+          <section className="settings-form__group" aria-labelledby="banner">
+            <h2 id="banner" className="section-title">
+              {t("manage.banner")}
+            </h2>
+            <Banner image={banner} alt="" />
+            <ImageUpload
+              kind="banner"
+              ownerId={artist.id}
+              hasImage={Boolean(banner)}
+              latest={bannerUpload}
+            />
+            {banner ? <RemoveImageButton kind="banner" ownerId={artist.id} /> : null}
           </section>
         ) : null}
 

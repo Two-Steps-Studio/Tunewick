@@ -77,7 +77,7 @@ set local role authenticated;
 set local request.jwt.claims = '{"sub": "00000000-0000-0000-0000-0000000003a1", "role": "authenticated"}';
 select is((select statement from moderation_decisions where id = (select id from ids where name = 'decision')),
   'Wnioskodawca wykazał prawa do nagrania; wydawnictwo zdjęte do czasu wyjaśnienia.', 'the artist sees the statement of reasons');
-select lives_ok($$select appeal_moderation_decision((select id from ids where name = 'decision'), 'Mamy umowę licencyjną z wytwórnią — w załączeniu numer.')$$,
+select lives_ok($$select appeal_moderation_decision((select id from ids where name = 'decision'), 'Mamy umowę licencyjną z wytwórnią - w załączeniu numer.')$$,
   'the artist appeals');
 select throws_ok($$select appeal_moderation_decision((select id from ids where name = 'decision'), 'Drugie odwołanie w tej samej sprawie.')$$,
   '55000', null, 'once');

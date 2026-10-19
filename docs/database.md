@@ -11,8 +11,8 @@
 - Handles/slugs: `citext`, unique, `^[a-z0-9-]{2,40}$`.
 - Stable value sets are Postgres enums; sets expected to evolve are `text` + `check`.
 - **Schemas:**
-  - `public` — domain tables, RLS **enabled on every table** (deny by default).
-  - `private` — internal tables never exposed through the Supabase Data API (audit log, ingest internals, promo code secrets, rate-limit counters). Accessed only by `security definer` functions or server-side service role.
+  - `public` - domain tables, RLS **enabled on every table** (deny by default).
+  - `private` - internal tables never exposed through the Supabase Data API (audit log, ingest internals, promo code secrets, rate-limit counters). Accessed only by `security definer` functions or server-side service role.
 - Every foreign key has an index. Every list query in the app has a supporting index declared in the same migration.
 - Soft delete only where legally or product-wise required (`deleted_at`); otherwise hard delete with cascade.
 - Polymorphic references are avoided where integrity matters; separate join tables are used instead.
@@ -69,7 +69,7 @@ graph_edges (derived)      feature_flags, access_invites, waitlist      private.
 | --- | --- | --- |
 | `releases` | `slug`, `title`, `type (single, ep, album, compilation, live)`, `label_id`, `release_date`, `publish_at`, `status`, `explicit`, `artwork_image_id`, `upc`, `p_line`, `c_line`, `territories text[]`, `ai_content (human, ai_assisted, ai_generated, unknown)` | Status flow: `draft → processing → in_review → approved → published`; also `rejected`, `taken_down`. Only `published` and `publish_at <= now()` are publicly readable. |
 | `release_artists` | `release_id`, `artist_id`, `role (primary, featured)`, `position` | |
-| `tracks` | `release_id`, `disc_number`, `track_number`, `title`, `isrc`, `duration_ms`, `explicit`, `ai_content`, `soundcheck_start_ms`, `soundcheck_duration_ms (≤ 30000)`, `segue_into_next bool` | `segue_into_next` marks intentional gapless transitions (live albums, mixes) — crossfade must not apply there. |
+| `tracks` | `release_id`, `disc_number`, `track_number`, `title`, `isrc`, `duration_ms`, `explicit`, `ai_content`, `soundcheck_start_ms`, `soundcheck_duration_ms (≤ 30000)`, `segue_into_next bool` | `segue_into_next` marks intentional gapless transitions (live albums, mixes) - crossfade must not apply there. |
 | `track_artists` | `track_id`, `artist_id`, `role (main, featured, remixer)` | |
 | `credits` | `track_id`, `name`, `artist_id null`, `role (producer, songwriter, composer, lyricist, performer, mixing_engineer, mastering_engineer, other)`, `detail` | Feeds the Music Graph. |
 | `genres` | `slug`, `name_pl`, `name_en`, `parent_id` | Curated list. |
@@ -174,19 +174,19 @@ Legend: R = read, W = insert/update, D = delete; "own" = rows where `user_id = a
 | profiles | R public fields | R public; W own | same | R all | R all; W (audited) |
 | artists | R active | R active | R; W own artist (not verification fields) | R all; W verification | all |
 | releases / tracks / credits | R published | R published | R own drafts; W own while `draft` | R all; W status | all |
-| rights_declarations | — | — | R/W(insert) own | R | R |
-| audio_masters | — | — | R own (analysis summary) | R | R |
-| audio_variants | — (tokens only) | R metadata of published | R own | R | R |
-| likes / follows | — | R own + public profiles' when visible; W/D own | same | R | R |
+| rights_declarations | - | - | R/W(insert) own | R | R |
+| audio_masters | - | - | R own (analysis summary) | R | R |
+| audio_variants | - (tokens only) | R metadata of published | R own | R | R |
+| likes / follows | - | R own + public profiles' when visible; W/D own | same | R | R |
 | playlists / playlist_tracks | R public | R public/unlisted by id; W/D own | same | R | R |
-| listening_events | — | R/W(insert) own | R aggregated for own artist (no user ids) | — | aggregated only |
+| listening_events | - | R/W(insert) own | R aggregated for own artist (no user ids) | - | aggregated only |
 | events / venues / cities | R published | R published | W events for own artist (→ review) | W | all |
-| event_attendance | — | R own + visible; W own via `mark_attended` | aggregated counts | R | R |
-| entitlements | — | R own | R own | R | W via functions only |
-| promo_* | — | — (function only) | — | — | via admin functions |
-| moderation / reports / takedowns | — | W(insert) reports | W(insert) reports | R/W | all |
-| feature_flags | — | R evaluated result only (via function) | same | R | W |
-| private.* | — | — | — | — | via functions |
+| event_attendance | - | R own + visible; W own via `mark_attended` | aggregated counts | R | R |
+| entitlements | - | R own | R own | R | W via functions only |
+| promo_* | - | - (function only) | - | - | via admin functions |
+| moderation / reports / takedowns | - | W(insert) reports | W(insert) reports | R/W | all |
+| feature_flags | - | R evaluated result only (via function) | same | R | W |
+| private.* | - | - | - | - | via functions |
 
 Every policy is covered by pgTAP tests in `supabase/tests/` (a policy without a test fails review).
 
@@ -232,11 +232,11 @@ Every policy is covered by pgTAP tests in `supabase/tests/` (a policy without a 
 
 ## Master audio uploads (implemented, M3.2a)
 
-`public.track_audio_uploads` — one row per upload attempt of a track's master; the newest row is
+`public.track_audio_uploads` - one row per upload attempt of a track's master; the newest row is
 the track's current audio. Status `pending → uploaded → processing → accepted | rejected | failed`.
 Members of the release's artist (and staff) can read rows; clients have **no** write grants:
 `begin_audio_upload(track, file_name, size_bytes)` (editable release, lossless extensions,
-1 KiB–4 GiB, ≤ 10 attempts per track per hour) returns the object key
+1 KiB-4 GiB, ≤ 10 attempts per track per hour) returns the object key
 `masters/<artist>/<track>/<upload>.<ext>` that the server presigns; `complete_audio_upload(upload)`
 after the server has checked the object's size in storage; `abandon_audio_upload(upload, reason)`.
 `processing`/`accepted`/`rejected` and the worker `report` are written only by the audio worker
@@ -262,22 +262,22 @@ the third attempt).
 approval). `public.release_review_events` (submitted / withdrawn / approved / returned + note) is
 the history members and staff see; the moderator's identity is only in the private audit log.
 Functions: `release_readiness(release)` (tracks, AI declared, rights declared, every track's newest
-master accepted — the same rules as the editor checklist), `submit_release` and
+master accepted - the same rules as the editor checklist), `submit_release` and
 `withdraw_release_submission` (members), `review_release(release, 'approve' | 'return', note)`
 (moderator or admin **and** aal2; approve → `published` with `publish_at` = release date at
 midnight Europe/Warsaw if in the future, else now; return → `rejected` with a ≥ 10-character note;
 both audit-logged). `release_playback(release)` returns, for releases the caller may see, each
-track's newest accepted master (source description) and its variants — the only way anonymous
+track's newest accepted master (source description) and its variants - the only way anonymous
 listeners reach playback data. The web app signs URLs only for tiers within the listener's plan
 (everyone is on Free = High until Premium codes exist).
 
 ## Images (implemented, M2.5)
 
-`public.images` — one row per uploaded cover (`release_artwork`, owner `release_id`) or artist photo
+`public.images` - one row per uploaded cover (`release_artwork`, owner `release_id`) or artist photo
 (`artist_image`, owner `artist_id`); no file names are stored. Status reuses
 `audio_upload_status`. The worker writes `width`/`height`, `dominant_color` and `variants`
 (`[{width, key, bytes}]`, WebP, smallest first) and attaches the image: `releases.artwork_image_id`
-(only while the release is editable — a cover finishing during review never changes what
+(only while the release is editable - a cover finishing during review never changes what
 moderators see) or `artists.image_id`. Readable by members/staff; by everyone only when attached
 and public (`can_view_image`). Member functions: `begin_image_upload(kind, owner, extension,
 size)` (JPEG/PNG/WebP, ≤ 25 MB, 10 per owner per hour), `complete_image_upload`,
@@ -343,9 +343,9 @@ Credits may link a Tunewick artist (`credits.artist_id`, set from the profile ad
 editor; only active profiles). `graph_edges` (public, derived) holds artist ↔ artist edges, both
 directions, rebuilt by `private.refresh_artist_graph()` from `private.public_tracks` whenever release
 or artist status changes: `collaborated` (a credit or featured link on a public track),
-`shared_credit` (the same person — normalized name — in the same role: producer, mixing,
+`shared_credit` (the same person - normalized name - in the same role: producer, mixing,
 mastering, songwriting), `same_label`. Evidence (`derived_from`) always comes from one source row.
-`related_artists(artist)` adds live `shared_audience` (≥ 3 accounts follow both — a count only) and
+`related_artists(artist)` adds live `shared_audience` (≥ 3 accounts follow both - a count only) and
 `same_city`, ranks collaboration > shared people > label > audience > city, and lists only artists
 with public music. The artist page shows the discography and related artists with these reasons;
 release pages show credits.
@@ -353,7 +353,7 @@ release pages show credits.
 ## Soundchecks (implemented, M7.4)
 
 `tracks.soundcheck_start_ms` is chosen by the artist in the editor (m:ss; must start ≥ 5 s before the
-end — a shorter new master resets it instead of failing processing). `release_soundchecks(ids)`
+end - a shorter new master resets it instead of failing processing). `release_soundchecks(ids)`
 returns, per public release, its first track with a chosen excerpt (else track 1) and a length of
 ≤ 30 s. The player's `playClip` plays only that excerpt and stops; Discover shows a soundcheck button
 on each release. Soundcheck listens are recorded with `listening_events.soundcheck = true` (≤ 35 s)
@@ -370,8 +370,8 @@ stops being public drops out through RLS.
 
 ## Playlists (implemented, M5.2)
 
-`playlists` (`owner_id` from the session, `title` 1–100, `description` ≤ 500, `visibility`
-public/unlisted/private — private by default, `kind` manual, `updated_at` touched by item changes;
+`playlists` (`owner_id` from the session, `title` 1-100, `description` ≤ 500, `visibility`
+public/unlisted/private - private by default, `kind` manual, `updated_at` touched by item changes;
 ≤ 200 per owner via `private.playlist_count`) and `playlist_tracks` (fractional `position`,
 duplicates allowed). Read: owner, or anyone for public/unlisted (`can_view_playlist`); owners update
 title/description/visibility and delete. Items are added and moved only through
@@ -385,7 +385,7 @@ are hidden by the catalog RLS (the page says how many are unavailable).
 `listening_events` is range-partitioned by `started_at` (monthly partitions and a default one live in
 the `private` schema; `private.create_listening_partition(day)` adds a month and should run monthly,
 ahead of time). Rows: `user_id`, `track_id`, `release_id`, `artist_id`, `started_at`,
-`ms_played` (time actually heard — seeks and pauses excluded by the player's `ListeningTracker`),
+`ms_played` (time actually heard - seeks and pauses excluded by the player's `ListeningTracker`),
 `completed`, `tier`. Written only by `record_listen(...)` (signed-in, public track, ≤ duration + 30 s,
 start within the last day, ≤ 120 a minute) via `POST /api/listen` (sent on track change, stop and
 page hide with `keepalive`). Private to the listener (`my_recent_tracks`), who can clear it in the
@@ -395,13 +395,13 @@ library. A play qualifies for payouts at ≥ 30 s (D2) when aggregation arrives.
 
 `public.promo_campaigns` (dates, `active`, `max_redemptions_total`, `per_user_limit` per
 campaign; admins with aal2 read), `private.promo_codes` (HMAC-SHA256 `code_hash` with the
-`promo_code_pepper` Vault secret — generated inside each database by the migration, never in the
-repo — `code_hint` = last 4 characters, `shared`, `benefit_type` enum, `benefit_value`,
+`promo_code_pepper` Vault secret - generated inside each database by the migration, never in the
+repo - `code_hint` = last 4 characters, `shared`, `benefit_type` enum, `benefit_value`,
 `target_plan`, dates, `max_uses`/`uses_count`, `per_user_limit`, `eligibility`
 `{"new_accounts_days": n, "min_account_age_days": n}`), `public.promo_redemptions` (own rows;
 admins) and `private.promo_attempts`. Generated codes: 16 characters from
 `ABCDEFGHJKMNPQRSTUVWXYZ23456789` (rejection-sampled, ~79 bits), `XXXX-XXXX-XXXX-XXXX`.
-`redeem_promo_code(code)` implements promotions.md §4 and returns `{status, plan, ends_at}` —
+`redeem_promo_code(code)` implements promotions.md §4 and returns `{status, plan, ends_at}` -
 failures are results (recorded attempts), not exceptions; 10 failed attempts per 15 minutes →
 `rate_limited`; a refused code is never consumed; the code row lock serializes concurrent
 redemptions (E2E: six accounts, one single-use code, exactly one grant). Admin (M9.3, admin + aal2,
@@ -417,16 +417,16 @@ admins. Server-side bootstrap: `system_create_promo_codes(...)` via `scripts/cre
 `public.search_normalize(text)` = lower(unaccent(text)) (immutable wrapper; "Łódź" → "lodz") with
 trigram GIN indexes on artist names, release titles and track titles.
 `public.search_catalog(query, max_results)` (security invoker + explicit public filters: active
-artists, released releases and their tracks — members never see their drafts in search) ranks:
+artists, released releases and their tracks - members never see their drafts in search) ranks:
 exact name 1.0, prefix 0.9, word prefix 0.8, substring 0.6, trigram similarity (> 0.3) × 0.7;
 up to `max_results` (≤ 20) per kind; LIKE wildcards in the query are literal; < 2 characters
 returns nothing. Playlists, events and venues join when they exist.
 
-## Discovery expansion (implemented, M13 — docs/discovery-expansion.md)
+## Discovery expansion (implemented, M13 - docs/discovery-expansion.md)
 
 Migrations `20261008100000_global_model`, `20261008110000_discovery_ledger`,
 `20261008120000_discovery_progress_feed`, `20261008130000_compare_friends` (after `work`'s
-M7–M11 migrations; reports, people follows/blocks, soundchecks, partitions and retention come
+M7-M11 migrations; reports, people follows/blocks, soundchecks, partitions and retention come
 from those).
 
 | Table / column | Purpose |

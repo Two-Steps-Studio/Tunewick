@@ -58,7 +58,7 @@ test.describe("covers and artist photos", () => {
       buffer: solidPng(800, 800, [200, 40, 60]),
     });
     await expect(page.locator(".image-upload").getByRole("status")).toHaveText(
-      "Okładka została odrzucona. Obraz jest za mały (okładka: min. 1400 × 1400 px, zdjęcie: min. 400 px).",
+      "Okładka została odrzucona. Obraz jest za mały (okładka: min. 1400 × 1400 px, zdjęcie: min. 400 px, okładka playlisty: 600 px, baner: 1200 × 400 px).",
       { timeout: 60_000 },
     );
 
@@ -79,5 +79,54 @@ test.describe("covers and artist photos", () => {
     );
     await expect(page.locator(".readiness__done", { hasText: "Okładka" })).toBeVisible();
     await expect(page.getByLabel("Zmień okładkę")).toBeAttached();
+  });
+});
+
+test.describe("art by listeners", () => {
+  test.setTimeout(150_000);
+
+  test("a listener adds a profile banner and their own playlist cover", async ({
+    page,
+    browser,
+  }) => {
+    await createConfirmedUser(page, "art");
+    const handle = `art-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 5)}`;
+    await page.goto("/ustawienia");
+    await page.getByLabel("Nazwa profilu (adres)").fill(handle);
+    await page.getByRole("button", { name: "Zapisz zmiany" }).click();
+    await expect(page.getByRole("status").filter({ hasText: "Zapisano." })).toBeVisible();
+
+    // Banner: wide, centre-cropped to 3:1, shown across the top of the public profile.
+    await expect(page.getByLabel("Dodaj baner")).toBeEnabled();
+    await page.getByLabel("Dodaj baner").setInputFiles({
+      name: "baner.png",
+      mimeType: "image/png",
+      buffer: solidPng(1500, 600, [40, 120, 90]),
+    });
+    await expect(page.locator(".banner img")).toBeVisible({ timeout: 60_000 });
+    const visitor = await (await browser.newContext({ locale: "pl-PL" })).newPage();
+    await visitor.goto(`/profil/${handle}`);
+    const banner = visitor.locator(".banner img");
+    await expect(banner).toBeVisible();
+    const size = await banner.evaluate((img: HTMLImageElement) => [
+      img.naturalWidth,
+      img.naturalHeight,
+    ]);
+    // 3:1, give or take the pixel a resize rounds.
+    expect(Math.abs(size[0]! - size[1]! * 3)).toBeLessThanOrEqual(3);
+
+    // Playlist cover: the listener's own art instead of the release mosaic.
+    await page.goto("/biblioteka");
+    await page.getByLabel("Nowa playlista").fill("Moje okładki");
+    await page.getByRole("button", { name: "Utwórz", exact: true }).click();
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Moje okładki");
+    await expect(page.getByLabel("Dodaj własną okładkę")).toBeEnabled();
+    await page.getByLabel("Dodaj własną okładkę").setInputFiles({
+      name: "okladka.png",
+      mimeType: "image/png",
+      buffer: solidPng(700, 700, [180, 60, 140]),
+    });
+    await expect(page.locator(".release-page__cover img")).toBeVisible({ timeout: 60_000 });
+    await expect(page.getByRole("button", { name: "Wróć do mozaiki okładek" })).toBeVisible();
   });
 });

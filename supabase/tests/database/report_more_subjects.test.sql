@@ -48,7 +48,7 @@ insert into ids select 'r_venue', id from reports where subject_id = (select id 
 insert into ids select 'r_profile', id from reports where subject_id = '00000000-0000-0000-0000-000000000aa5';
 select throws_ok($$select moderate_report((select id from ids where name = 'r_event'), 'reset_profile', 'To nie pasuje do zgłoszonej treści.')$$,
   '22023', null, 'the action must fit the subject');
-select lives_ok($$select moderate_report((select id from ids where name = 'r_event'), 'remove_event', 'Wydarzenie nie istnieje — potwierdzone z klubem.')$$,
+select lives_ok($$select moderate_report((select id from ids where name = 'r_event'), 'remove_event', 'Wydarzenie nie istnieje - potwierdzone z klubem.')$$,
   'a fake event is removed');
 select is((select status::text from events where id = (select id from ids where name = 'event')), 'rejected',
   'and leaves the Scene');
@@ -56,14 +56,14 @@ select lives_ok($$select moderate_report((select id from ids where name = 'r_ven
   'venue details are cleared');
 select is((select coalesce(website, '-') || coalesce(address, '-') from venues where id = (select id from ids where name = 'venue')), '--',
   'address and website are gone, the venue stays');
-select lives_ok($$select moderate_report((select id from ids where name = 'r_profile'), 'reset_profile', 'Profil podszywał się pod zespół — nazwa i opis wyczyszczone.')$$,
+select lives_ok($$select moderate_report((select id from ids where name = 'r_profile'), 'reset_profile', 'Profil podszywał się pod zespół - nazwa i opis wyczyszczone.')$$,
   'an impersonating profile is reset');
 
 -- The person reads the statement of reasons and appeals; another moderator reverses it.
 set local request.jwt.claims = '{"sub": "00000000-0000-0000-0000-000000000aa5", "role": "authenticated"}';
 select is((select handle::text from profiles where id = '00000000-0000-0000-0000-000000000aa5'), null, 'the handle is cleared');
 select is((select statement from moderation_decisions where subject_id = '00000000-0000-0000-0000-000000000aa5'),
-  'Profil podszywał się pod zespół — nazwa i opis wyczyszczone.', 'the person sees why');
+  'Profil podszywał się pod zespół - nazwa i opis wyczyszczone.', 'the person sees why');
 select lives_ok($$select appeal_moderation_decision((select id from moderation_decisions where subject_id = '00000000-0000-0000-0000-000000000aa5'), 'Jestem w tym zespole, mogę to udowodnić.')$$,
   'and appeals');
 

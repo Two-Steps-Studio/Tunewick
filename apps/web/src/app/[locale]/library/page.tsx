@@ -15,6 +15,7 @@ import {
 import { EventList, getMyAttendedEvents } from "@/modules/events";
 import { getMyPlaylists, NewPlaylistForm, PlaylistCover } from "@/modules/playlists";
 import { PlayButton, type PlayerTrack } from "@/modules/player";
+import { AdCard, getAd } from "@/modules/ads";
 
 export async function generateMetadata({
   params,
@@ -62,13 +63,14 @@ export default async function LibraryPage({ params }: PageProps<"/[locale]/libra
   const tPlaylists = await getTranslations("Playlists");
   const format = await getFormatter();
   // Independent lookups side by side: each sequential step is a round trip to the database.
-  const [library, entitlement, playlists, recent, gigs, fresh] = await Promise.all([
+  const [library, entitlement, playlists, recent, gigs, fresh, ad] = await Promise.all([
     getLibrary(),
     listenerEntitlement(),
     getMyPlaylists(user.id),
     getRecentlyPlayed(),
     getMyAttendedEvents(),
     getFollowedNewReleases(),
+    getAd("library", locale),
   ]);
 
   const playable = (tracks: typeof library.tracks) =>
@@ -418,6 +420,7 @@ export default async function LibraryPage({ params }: PageProps<"/[locale]/libra
           </ul>
         </section>
       ) : null}
+      {ad ? <AdCard ad={ad} /> : null}
     </section>
   );
 }

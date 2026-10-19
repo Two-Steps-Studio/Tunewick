@@ -124,7 +124,7 @@ function table(title, rows, columns) {
             .map((c) => {
               const v = r[c];
               const cls = v === true ? "ok" : v === false ? "fail" : "";
-              return `<td class="${cls}">${v === undefined || v === null ? "—" : String(v)}</td>`;
+              return `<td class="${cls}">${v === undefined || v === null ? "-" : String(v)}</td>`;
             })
             .join("")}</tr>`,
       )

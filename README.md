@@ -5,7 +5,7 @@
 Tunewick is a music streaming, discovery and community platform built around independent
 artists, local music scenes, events and high-fidelity audio. Domain: tunewick.com.
 
-> Status: **Phase 1 — Product audit & definition.** No application code yet.
+> Status: **Phase 1 - Product audit & definition.** No application code yet.
 
 ## Branches
 
@@ -66,4 +66,4 @@ pnpm staff:grant --local --email you@example.com --role admin   # bootstrap firs
 ```
 
 Repository layout: `apps/web` (Next.js app), `packages/shared` (shared types and domain logic),
-`services/*` (audio worker, media edge — planned), `design/` (tokens, brand board), `docs/`.
+`services/*` (audio worker, media edge - planned), `design/` (tokens, brand board), `docs/`.

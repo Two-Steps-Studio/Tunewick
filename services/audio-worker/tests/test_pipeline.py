@@ -59,7 +59,7 @@ def test_true_hires_flac(media, processed):
     hires = tiers["hires"]
     assert (hires["bits"], hires["sample_rate"]) == (24, 96000)
     assert hires["exact"]
-    # Above 48 kHz only plain FLAC (Firefox cannot play FLAC-in-fMP4 there — spike §9.2).
+    # Above 48 kHz only plain FLAC (Firefox cannot play FLAC-in-fMP4 there - spike §9.2).
     assert [f["container"] for f in hires["files"]] == ["flac"]
 
     lossless = tiers["lossless"]

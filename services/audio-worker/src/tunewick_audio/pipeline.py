@@ -66,7 +66,7 @@ def process(path: str, out_dir: str) -> dict:
         stored_md5 = read_flac_md5(path) if source.container == "flac" else None
         if stored_md5 and stored_md5 != stats.flac_md5:
             raise Rejected(
-                "integrity", "The FLAC checksum does not match its audio — the file is corrupted."
+                "integrity", "The FLAC checksum does not match its audio - the file is corrupted."
             )
 
         cliff = find_cliff(stats.spectrum, stats.freqs, source.sample_rate)

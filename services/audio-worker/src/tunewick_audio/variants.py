@@ -1,4 +1,4 @@
-"""Delivery variants, packaging and verification (docs/audio.md §3–§4, spike results §9.2).
+"""Delivery variants, packaging and verification (docs/audio.md §3-§4, spike results §9.2).
 
 Every variant is made directly from the master. FLAC tiers ship as plain `.flac` (progressive /
 native playback, the only format that plays > 48 kHz in Firefox) and, at ≤ 48 kHz, also as

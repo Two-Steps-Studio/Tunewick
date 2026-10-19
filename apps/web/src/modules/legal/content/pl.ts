@@ -192,7 +192,7 @@ export const pl: LegalContent = {
                 "masz prawa do nagrań (masterów) albo zgodę ich właścicieli;",
                 "masz prawa do utworów (muzyki i tekstów) albo zgodę autorów - i podajesz, czy któryś z autorów należy do organizacji zbiorowego zarządzania (np. ZAiKS);",
                 "sample i interpolacje są oczyszczone z praw (z opisem) albo ich nie ma;",
-                "zgodnie z prawdą oznaczasz udział AI: utwór ludzki, wspomagany AI lub wygenerowany przez AI;",
+                "Tunewick przyjmuje muzykę tworzoną przez ludzi: zgodnie z prawdą oznaczasz udział AI (utwór ludzki albo tworzony z pomocą AI jako narzędzia); muzyki wygenerowanej przez AI nie publikujemy;",
                 "okładki i zdjęcia możesz wykorzystać.",
               ],
             },
@@ -251,7 +251,7 @@ export const pl: LegalContent = {
 
     privacy: {
       title: "Polityka prywatności",
-      lead: "Jakie dane zbiera Tunewick, po co, jak długo je trzymamy i jakie masz prawa. Bez reklam, bez sprzedawania danych, bez śledzenia poza serwisem.",
+      lead: "Jakie dane zbiera Tunewick, po co, jak długo je trzymamy i jakie masz prawa. Bez reklam opartych na Twoich danych, bez sprzedawania danych, bez śledzenia poza serwisem.",
       sections: [
         {
           id: "administrator",
@@ -296,6 +296,7 @@ export const pl: LegalContent = {
               ],
             },
             "Nie używamy Twoich danych do reklam, nie sprzedajemy ich i nie profilujemy Cię w celach marketingowych. Rekomendacje nie podejmują wobec Ciebie decyzji o skutkach prawnych.",
+            "W planie Free pokazujemy czasem oznaczoną kartę sponsora. Wybieramy ją wyłącznie według miejsca na stronie i języka interfejsu - nie według tego, kim jesteś ani czego słuchasz. Liczymy tylko anonimowo, ile razy karta się wyświetliła i ile razy ktoś ją kliknął. W planie Premium reklam nie ma.",
           ],
         },
         {
@@ -440,7 +441,7 @@ export const pl: LegalContent = {
           id: "kontakt",
           title: "6. Punkt kontaktowy",
           blocks: [
-            "Punkt kontaktowy dla użytkowników oraz organów państw członkowskich UE i Komisji Europejskiej (art. 11–12 DSA): {email}. Piszemy po polsku i angielsku.",
+            "Punkt kontaktowy dla użytkowników oraz organów państw członkowskich UE i Komisji Europejskiej (art. 11-12 DSA): {email}. Piszemy po polsku i angielsku.",
           ],
         },
       ],

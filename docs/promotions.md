@@ -29,9 +29,9 @@
 | --- | --- | --- | --- |
 | `premium_days` | days | Premium entitlement for N days | ✅ |
 | `premium_months` | months | Premium entitlement for N calendar months | ✅ |
-| `premium_lifetime` | — | Premium with `ends_at = null` | ✅ |
+| `premium_lifetime` | - | Premium with `ends_at = null` | ✅ |
 | `feature_access` | feature key | Specific feature (e.g. `hires_access`) for a period | ✅ (once a feature needs it) |
-| `percent_discount` | 1–100 | Discount on a paid plan | ⏳ Phase 14 (100% = free period handled as `premium_*`) |
+| `percent_discount` | 1-100 | Discount on a paid plan | ⏳ Phase 14 (100% = free period handled as `premium_*`) |
 | `fixed_discount` | minor units + currency | Discount on a paid plan | ⏳ Phase 14 |
 
 Code formats:

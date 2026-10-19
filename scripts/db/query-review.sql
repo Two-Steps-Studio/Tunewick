@@ -8,7 +8,7 @@ begin;
 -- Synthetic rows skip triggers (publishing checks, graph refresh); the graph refresh is timed below.
 set local session_replication_role = replica;
 
--- Volume: ~10x the closed beta — 3 000 artists, 12 000 releases, 60 000 tracks, 400 venues,
+-- Volume: ~10x the closed beta - 3 000 artists, 12 000 releases, 60 000 tracks, 400 venues,
 -- 4 000 events, 20 000 listeners with 1 000 000 listens.
 insert into public.artists (slug, name, status, voivodeship, city)
 select 'qr-artist-' || g, 'Artysta ' || g || ' ' || md5(g::text), 'active',

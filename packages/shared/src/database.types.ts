@@ -24,6 +24,71 @@ export type Database = {
         };
         Relationships: [];
       };
+      ad_campaigns: {
+        Row: {
+          active: boolean;
+          advertiser: string;
+          body: string | null;
+          created_at: string;
+          created_by: string | null;
+          cta: string;
+          ends_at: string | null;
+          headline: string;
+          id: string;
+          locales: string[];
+          placements: Database["public"]["Enums"]["ad_placement"][];
+          release_id: string | null;
+          starts_at: string | null;
+          updated_at: string;
+          url: string | null;
+          weight: number;
+        };
+        Insert: {
+          active?: boolean;
+          advertiser: string;
+          body?: string | null;
+          created_at?: string;
+          created_by?: string | null;
+          cta: string;
+          ends_at?: string | null;
+          headline: string;
+          id?: string;
+          locales?: string[];
+          placements: Database["public"]["Enums"]["ad_placement"][];
+          release_id?: string | null;
+          starts_at?: string | null;
+          updated_at?: string;
+          url?: string | null;
+          weight?: number;
+        };
+        Update: {
+          active?: boolean;
+          advertiser?: string;
+          body?: string | null;
+          created_at?: string;
+          created_by?: string | null;
+          cta?: string;
+          ends_at?: string | null;
+          headline?: string;
+          id?: string;
+          locales?: string[];
+          placements?: Database["public"]["Enums"]["ad_placement"][];
+          release_id?: string | null;
+          starts_at?: string | null;
+          updated_at?: string;
+          url?: string | null;
+          weight?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "ad_campaigns_release_id_fkey";
+            columns: ["release_id"];
+            isOneToOne: false;
+            referencedRelation: "releases";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       artist_follows: {
         Row: {
           artist_id: string;
@@ -199,6 +264,7 @@ export type Database = {
       };
       artists: {
         Row: {
+          banner_image_id: string | null;
           bio: string | null;
           city: string | null;
           country_code: string | null;
@@ -218,6 +284,7 @@ export type Database = {
           voivodeship: Database["public"]["Enums"]["voivodeship"] | null;
         };
         Insert: {
+          banner_image_id?: string | null;
           bio?: string | null;
           city?: string | null;
           country_code?: string | null;
@@ -237,6 +304,7 @@ export type Database = {
           voivodeship?: Database["public"]["Enums"]["voivodeship"] | null;
         };
         Update: {
+          banner_image_id?: string | null;
           bio?: string | null;
           city?: string | null;
           country_code?: string | null;
@@ -256,6 +324,13 @@ export type Database = {
           voivodeship?: Database["public"]["Enums"]["voivodeship"] | null;
         };
         Relationships: [
+          {
+            foreignKeyName: "artists_banner_image_id_fkey";
+            columns: ["banner_image_id"];
+            isOneToOne: false;
+            referencedRelation: "images";
+            referencedColumns: ["id"];
+          },
           {
             foreignKeyName: "artists_country_code_fkey";
             columns: ["country_code"];
@@ -775,6 +850,7 @@ export type Database = {
           id: string;
           kind: Database["public"]["Enums"]["image_kind"];
           object_key: string;
+          playlist_id: string | null;
           processed_at: string | null;
           profile_id: string | null;
           rejection_code: string | null;
@@ -797,6 +873,7 @@ export type Database = {
           id?: string;
           kind: Database["public"]["Enums"]["image_kind"];
           object_key: string;
+          playlist_id?: string | null;
           processed_at?: string | null;
           profile_id?: string | null;
           rejection_code?: string | null;
@@ -819,6 +896,7 @@ export type Database = {
           id?: string;
           kind?: Database["public"]["Enums"]["image_kind"];
           object_key?: string;
+          playlist_id?: string | null;
           processed_at?: string | null;
           profile_id?: string | null;
           rejection_code?: string | null;
@@ -837,6 +915,13 @@ export type Database = {
             columns: ["artist_id"];
             isOneToOne: false;
             referencedRelation: "artists";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "images_playlist_id_fkey";
+            columns: ["playlist_id"];
+            isOneToOne: false;
+            referencedRelation: "playlists";
             referencedColumns: ["id"];
           },
           {
@@ -1231,6 +1316,7 @@ export type Database = {
       };
       playlists: {
         Row: {
+          cover_image_id: string | null;
           created_at: string;
           description: string | null;
           id: string;
@@ -1241,6 +1327,7 @@ export type Database = {
           visibility: Database["public"]["Enums"]["playlist_visibility"];
         };
         Insert: {
+          cover_image_id?: string | null;
           created_at?: string;
           description?: string | null;
           id?: string;
@@ -1251,6 +1338,7 @@ export type Database = {
           visibility?: Database["public"]["Enums"]["playlist_visibility"];
         };
         Update: {
+          cover_image_id?: string | null;
           created_at?: string;
           description?: string | null;
           id?: string;
@@ -1260,7 +1348,15 @@ export type Database = {
           updated_at?: string;
           visibility?: Database["public"]["Enums"]["playlist_visibility"];
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "playlists_cover_image_id_fkey";
+            columns: ["cover_image_id"];
+            isOneToOne: false;
+            referencedRelation: "images";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       profile_settings: {
         Row: {
@@ -1311,6 +1407,7 @@ export type Database = {
       };
       profiles: {
         Row: {
+          banner_image_id: string | null;
           bio: string | null;
           created_at: string;
           deleted_at: string | null;
@@ -1321,6 +1418,7 @@ export type Database = {
           updated_at: string;
         };
         Insert: {
+          banner_image_id?: string | null;
           bio?: string | null;
           created_at?: string;
           deleted_at?: string | null;
@@ -1331,6 +1429,7 @@ export type Database = {
           updated_at?: string;
         };
         Update: {
+          banner_image_id?: string | null;
           bio?: string | null;
           created_at?: string;
           deleted_at?: string | null;
@@ -1341,6 +1440,13 @@ export type Database = {
           updated_at?: string;
         };
         Relationships: [
+          {
+            foreignKeyName: "profiles_banner_image_id_fkey";
+            columns: ["banner_image_id"];
+            isOneToOne: false;
+            referencedRelation: "images";
+            referencedColumns: ["id"];
+          },
           {
             foreignKeyName: "profiles_image_id_fkey";
             columns: ["image_id"];
@@ -2341,6 +2447,21 @@ export type Database = {
       abandon_image_upload: { Args: { image: string }; Returns: undefined };
       accept_artist_membership: { Args: { artist: string }; Returns: undefined };
       access_invite_is_valid: { Args: { code: string }; Returns: boolean };
+      ad_for: {
+        Args: { locale: string; placement: Database["public"]["Enums"]["ad_placement"] };
+        Returns: {
+          advertiser: string;
+          artist_slug: string;
+          artwork_image_id: string;
+          body: string;
+          cta: string;
+          headline: string;
+          id: string;
+          release_id: string;
+          release_slug: string;
+          url: string;
+        }[];
+      };
       add_playlist_track: { Args: { playlist: string; track: string }; Returns: string };
       add_track: { Args: { release: string; title: string }; Returns: string };
       admin_active_listeners: {
@@ -2349,6 +2470,28 @@ export type Database = {
           last_30_days: number;
           last_7_days: number;
           today: number;
+        }[];
+      };
+      admin_ad_campaigns: {
+        Args: Record<PropertyKey, never>;
+        Returns: {
+          active: boolean;
+          advertiser: string;
+          body: string;
+          clicks: number;
+          cta: string;
+          ends_at: string;
+          headline: string;
+          id: string;
+          impressions: number;
+          locales: string[];
+          placements: Database["public"]["Enums"]["ad_placement"][];
+          release_id: string;
+          release_ref: string;
+          release_title: string;
+          starts_at: string;
+          url: string;
+          weight: number;
         }[];
       };
       admin_app_errors: {
@@ -2513,7 +2656,28 @@ export type Database = {
         Args: { role: Database["public"]["Enums"]["app_role"]; target_user: string };
         Returns: undefined;
       };
+      admin_save_ad_campaign: {
+        Args: {
+          advertiser: string;
+          body: string;
+          campaign: string;
+          cta: string;
+          ends_at: string;
+          headline: string;
+          locales: string[];
+          placements: Database["public"]["Enums"]["ad_placement"][];
+          release_ref: string;
+          starts_at: string;
+          url: string;
+          weight: number;
+        };
+        Returns: string;
+      };
       admin_schema_version: { Args: Record<PropertyKey, never>; Returns: string };
+      admin_set_ad_campaign_active: {
+        Args: { active: boolean; campaign: string };
+        Returns: undefined;
+      };
       admin_set_feature_flag: { Args: { enabled: boolean; flag: string }; Returns: undefined };
       admin_set_promo_campaign_active: {
         Args: { active: boolean; campaign: string };
@@ -2648,6 +2812,7 @@ export type Database = {
           id: string;
           kind: Database["public"]["Enums"]["image_kind"];
           object_key: string;
+          playlist_id: string | null;
           processed_at: string | null;
           profile_id: string | null;
           rejection_code: string | null;
@@ -2774,6 +2939,7 @@ export type Database = {
           id: string;
           kind: Database["public"]["Enums"]["image_kind"];
           object_key: string;
+          playlist_id: string | null;
           processed_at: string | null;
           profile_id: string | null;
           rejection_code: string | null;
@@ -3227,6 +3393,14 @@ export type Database = {
         Args: { clip: string };
         Returns: Database["public"]["Enums"]["share_clip_status"];
       };
+      record_ad_event: {
+        Args: {
+          campaign: string;
+          kind: string;
+          placement: Database["public"]["Enums"]["ad_placement"];
+        };
+        Returns: undefined;
+      };
       record_events: { Args: { events: Json }; Returns: number };
       record_listen: {
         Args: {
@@ -3290,6 +3464,8 @@ export type Database = {
         }[];
       };
       remove_artist_member: { Args: { artist: string; member: string }; Returns: undefined };
+      remove_banner: { Args: { owner: string }; Returns: undefined };
+      remove_playlist_cover: { Args: { playlist: string }; Returns: undefined };
       remove_profile_image: { Args: Record<PropertyKey, never>; Returns: undefined };
       report_error: {
         Args: { detail?: string; message: string; path?: string; source: string };
@@ -3479,6 +3655,7 @@ export type Database = {
       };
     };
     Enums: {
+      ad_placement: "library" | "charts" | "browse" | "scene";
       ai_content: "human" | "ai_assisted" | "ai_generated" | "unknown";
       app_role: "moderator" | "admin";
       artist_member_role: "owner" | "manager" | "member";
@@ -3497,7 +3674,8 @@ export type Database = {
         | "other";
       entitlement_source: "promo" | "beta" | "admin" | "referral" | "subscription";
       event_status: "pending" | "published" | "rejected" | "cancelled";
-      image_kind: "release_artwork" | "artist_image" | "profile_image";
+      image_kind:
+        "release_artwork" | "artist_image" | "profile_image" | "playlist_cover" | "banner";
       playlist_visibility: "public" | "unlisted" | "private";
       promo_benefit:
         | "premium_days"
@@ -3645,6 +3823,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      ad_placement: ["library", "charts", "browse", "scene"],
       ai_content: ["human", "ai_assisted", "ai_generated", "unknown"],
       app_role: ["moderator", "admin"],
       artist_member_role: ["owner", "manager", "member"],
@@ -3663,7 +3842,7 @@ export const Constants = {
       ],
       entitlement_source: ["promo", "beta", "admin", "referral", "subscription"],
       event_status: ["pending", "published", "rejected", "cancelled"],
-      image_kind: ["release_artwork", "artist_image", "profile_image"],
+      image_kind: ["release_artwork", "artist_image", "profile_image", "playlist_cover", "banner"],
       playlist_visibility: ["public", "unlisted", "private"],
       promo_benefit: [
         "premium_days",

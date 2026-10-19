@@ -1,12 +1,12 @@
-// Tunewick wordmark — master artwork (refinement of concept B "Split", 2026-10-08).
+// Tunewick wordmark - master artwork (refinement of concept B "Split", 2026-10-08).
 // Run: node design/logo/build-wordmark-master.mjs
 // Outputs 1024 × 1024 transparent SVGs (outlined paths, no fonts) in design/logo/.
 //
 // Refinements over the header wordmark (build-logo.mjs):
-// - weight 760 / width 82 / opsz 96: a touch lighter and narrower — calmer, more premium;
+// - weight 760 / width 82 / opsz 96: a touch lighter and narrower - calmer, more premium;
 // - spacing fitted by eye per letter pair (outline to outline), even rhythm at every size;
 // - the i's square spark exactly as wide as the stem, floating half its size above the
-//   x-height — the mark's signature detail, now in proportion with the letters.
+//   x-height - the mark's signature detail, now in proportion with the letters.
 
 import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -25,7 +25,7 @@ const font = baseFont.getVariation({ opsz: 96, wght: 760, wdth: 82 });
 const upm = font.unitsPerEm;
 
 const TEXT = "tunewıck"; // dotless i: the spark is drawn separately
-// Fitting: the space between neighbouring outlines (em), set by eye per pair — straight to
+// Fitting: the space between neighbouring outlines (em), set by eye per pair - straight to
 // straight widest, round and diagonal sides closer, so every gap looks the same.
 const gaps = { tu: 0.05, un: 0.07, ne: 0.06, ew: 0.035, wı: 0.04, ıc: 0.06, ck: 0.05 };
 

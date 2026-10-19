@@ -15,7 +15,7 @@
 3. **Diversity by design:** caps on repetition of the same artist/genre per surface.
 4. **Novelty with familiarity:** mix known-adjacent and genuinely new.
 5. **Anti-payola:** paid promotion never enters recommendation ranking; promoted placements (future) are separate slots labeled "Promoted".
-6. **No fake data:** empty states are honest ("Not enough listening yet — start with your city's scene"), never filled with invented items.
+6. **No fake data:** empty states are honest ("Not enough listening yet - start with your city's scene"), never filled with invented items.
 
 ## 2. Signals (MVP)
 
@@ -81,5 +81,5 @@ optimized for raw time-on-app.
 ## 8. Later
 
 Collaborative filtering and embeddings (audio similarity), natural-language discovery
-("nowi artyści z Twojego miasta podobni do X"), AI-assisted playlists — all must output a reason and
+("nowi artyści z Twojego miasta podobni do X"), AI-assisted playlists - all must output a reason and
 respect the same diversity and anti-payola rules.

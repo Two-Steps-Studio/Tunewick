@@ -198,7 +198,7 @@ password_requirements = ""
 [auth.rate_limit]
 # Number of emails that can be sent per hour. Requires auth.email.smtp to be enabled.
 # Local/CI only: the E2E suite signs up, confirms and signs in dozens of users in parallel from
-# one IP. These high limits never reach production — production limits are set in the Supabase
+# one IP. These high limits never reach production - production limits are set in the Supabase
 # dashboard (docs/deployment.md §1).
 email_sent = 1000
 # Number of SMS messages that can be sent per hour. Requires auth.sms to be enabled.
@@ -395,8 +395,8 @@ allow_dynamic_registration = false
 [edge_runtime]
 enabled = true
 # Supported request policies: `oneshot`, `per_worker`.
-# `per_worker` (default) — enables hot reload during local development.
-# `oneshot` — fallback mode if hot reload causes issues (e.g. in large repos or with symlinks).
+# `per_worker` (default) - enables hot reload during local development.
+# `oneshot` - fallback mode if hot reload causes issues (e.g. in large repos or with symlinks).
 policy = "per_worker"
 # Port to attach the Chrome inspector for debugging edge functions.
 inspector_port = 8083

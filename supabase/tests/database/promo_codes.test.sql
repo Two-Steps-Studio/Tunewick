@@ -30,7 +30,7 @@ update promo_campaigns set starts_at = now() + interval '1 day' where name = 'Te
 -- Codes are generated well and never stored in plaintext.
 select matches((select code from codes where name = 'single'), '^[A-HJKMNP-Z2-9]{4}(-[A-HJKMNP-Z2-9]{4}){3}$',
   'generated codes: 16 characters without look-alikes, grouped');
-select hasnt_column('private', 'promo_codes', 'code', 'no plaintext column — only the hash and a 4-character hint');
+select hasnt_column('private', 'promo_codes', 'code', 'no plaintext column - only the hash and a 4-character hint');
 select isnt((select code_hash from private.promo_codes limit 1), digest('x', 'sha256'), 'hashes are HMACs');
 select throws_ok($$select system_create_promo_codes('Test festival', 'premium_days', 14, shared_code => 'KATOFONIA26')$$,
   '23505', null, 'the same code cannot be created twice (normalized)');

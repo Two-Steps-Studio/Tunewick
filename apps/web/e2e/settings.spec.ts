@@ -35,7 +35,7 @@ test.describe("account settings and public profile", () => {
 
     await page.getByLabel("Nazwa profilu (adres)").fill("Zła Nazwa");
     await page.getByRole("button", { name: "Zapisz zmiany" }).click();
-    await expect(page.getByText("Użyj 2–40 znaków")).toBeVisible();
+    await expect(page.getByText("Użyj 2-40 znaków")).toBeVisible();
 
     const handle = uniqueHandle("basista");
     await page.getByLabel("Nazwa profilu (adres)").fill(handle);

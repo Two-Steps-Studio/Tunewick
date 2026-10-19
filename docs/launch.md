@@ -10,7 +10,7 @@ is what people have to decide or set up before Tunewick is promoted worldwide. O
    from all of Poland", Polish law). A lawyer should review them for users outside Poland/EU
    (consumer law, age of consent for data, DMCA-style takedowns in the US, etc.), and the operator
    details must be filled in (`modules/legal/operator.ts`). Only then translate them.
-2. **Email that scales.** Supabase's built-in email sends only a few messages per hour — sign-up
+2. **Email that scales.** Supabase's built-in email sends only a few messages per hour - sign-up
    confirmations and password resets would stop after the first handful of people. Set up a real
    SMTP provider (e.g. Resend, Postmark, Amazon SES) in Supabase → Authentication → Emails → SMTP,
    with a sending domain (SPF, DKIM, DMARC). Paste `supabase/templates/confirmation.html` and

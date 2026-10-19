@@ -2,6 +2,8 @@
 
 export const RELEASE_TYPES = ["single", "ep", "album", "compilation", "live"] as const;
 export const AI_CONTENT = ["unknown", "human", "ai_assisted", "ai_generated"] as const;
+/** What an artist may choose: music made by people, with or without AI tools (docs/product.md). */
+export const AI_CHOICES = ["unknown", "human", "ai_assisted"] as const;
 export const TERRITORIES = ["WORLD", "EU", "PL"] as const;
 export const CREDIT_ROLES = [
   "producer",

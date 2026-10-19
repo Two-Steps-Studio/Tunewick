@@ -9,6 +9,7 @@ import { getSoundchecks, listenerEntitlement } from "@/modules/audio";
 import { getDiscover, parseCountry, parseRegion } from "@/modules/discover";
 import { SoundcheckButton } from "@/modules/player";
 import { Artwork, getImageSourcesMany } from "@/modules/images";
+import { AdCard, getAd } from "@/modules/ads";
 
 const NEW_FOR_DAYS = 14;
 
@@ -33,6 +34,7 @@ export default async function BrowsePage({ params, searchParams }: PageProps<"/[
   const tReleases = await getTranslations("Releases");
   const format = await getFormatter();
   const query = await searchParams;
+  const adPromise = getAd("browse", locale);
   const country = parseCountry(query.country) ?? (parseRegion(query.woj) ? "PL" : null);
   const region = country === "PL" ? parseRegion(query.woj) : null;
   // Independent lookups side by side: every sequential step is a round trip to the database.
@@ -71,6 +73,8 @@ export default async function BrowsePage({ params, searchParams }: PageProps<"/[
     if (isDebut) return t("reason.debut", { when });
     return fresh ? t("reason.new", { when }) : t("reason.released", { when });
   };
+
+  const ad = await adPromise;
 
   return (
     <section className="discover">
@@ -186,6 +190,8 @@ export default async function BrowsePage({ params, searchParams }: PageProps<"/[
           </ul>
         </section>
       ) : null}
+
+      {ad ? <AdCard ad={ad} /> : null}
 
       {artists.length ? (
         <section aria-labelledby="new-artists" className="discover__section">

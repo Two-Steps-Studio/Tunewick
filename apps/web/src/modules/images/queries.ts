@@ -60,18 +60,22 @@ export async function getLatestImageUpload(
   ownerId: string,
 ): Promise<ImageUploadState | null> {
   const supabase = await createSupabaseServerClient();
-  const { data } = await supabase
-    .from("images")
-    .select("id, status, rejection_code")
-    .eq("kind", kind)
-    .eq(
-      kind === "release_artwork"
-        ? "release_id"
-        : kind === "profile_image"
-          ? "profile_id"
-          : "artist_id",
-      ownerId,
-    )
+  const column =
+    kind === "release_artwork"
+      ? "release_id"
+      : kind === "profile_image"
+        ? "profile_id"
+        : kind === "playlist_cover"
+          ? "playlist_id"
+          : "artist_id";
+  if (!/^[0-9a-f-]{36}$/i.test(ownerId)) return null;
+  const query = supabase.from("images").select("id, status, rejection_code").eq("kind", kind);
+  // A banner belongs to an artist or to your own profile; the owner id tells which.
+  const { data } = await (
+    kind === "banner"
+      ? query.or(`artist_id.eq.${ownerId},profile_id.eq.${ownerId}`)
+      : query.eq(column, ownerId)
+  )
     .order("created_at", { ascending: false })
     .limit(1)
     .maybeSingle();

@@ -105,10 +105,11 @@ export function RightsForm({
         name="aiContent"
         label={t("rights.aiContent")}
         defaultValue={v?.aiContent ?? (defaultAi === "unknown" ? "" : defaultAi)}
+        hint={t("aiHint")}
         error={err(state.fieldErrors?.aiContent)}
         options={[
           { value: "", label: t("ai.unknown") },
-          ...(["human", "ai_assisted", "ai_generated"] as const).map((value) => ({
+          ...(["human", "ai_assisted"] as const).map((value) => ({
             value,
             label: t(`ai.${value}`),
           })),

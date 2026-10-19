@@ -1,5 +1,5 @@
 // Creates promo codes server-side (secret key) until the admin panel exists (M9.3). The campaign
-// is created when missing. Plaintext codes are printed ONCE — only hashes are stored.
+// is created when missing. Plaintext codes are printed ONCE - only hashes are stored.
 //
 // Unique single-use codes:  node scripts/create-promo-codes.mjs --local --campaign "Beta 2026" --count 50 --days 90
 // Shared poster code:       node scripts/create-promo-codes.mjs --local --campaign "Katofonia" --code KATOFONIA26 --max-uses 200 --days 30

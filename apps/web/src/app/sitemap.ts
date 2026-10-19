@@ -15,6 +15,7 @@ type Href = Parameters<typeof getPathname>[0]["href"];
 
 const STATIC: Href[] = [
   "/",
+  "/discover",
   "/today",
   "/charts",
   "/atlas",

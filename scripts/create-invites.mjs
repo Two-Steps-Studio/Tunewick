@@ -20,7 +20,7 @@ const expiresDays = arg("expires-days", null);
 const label = arg("label", null);
 
 if (!Number.isInteger(count) || count < 1 || count > 1000)
-  throw new Error("--count must be 1–1000");
+  throw new Error("--count must be 1-1000");
 if (!Number.isInteger(maxUses) || maxUses < 1) throw new Error("--max-uses must be >= 1");
 
 let url = process.env.SUPABASE_URL;

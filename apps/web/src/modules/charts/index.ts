@@ -14,3 +14,4 @@ export {
   type TrackChart,
 } from "./queries";
 export { ChartPlay } from "./ui/chart-play";
+export { PlayTracks } from "./ui/play-tracks";

@@ -33,7 +33,7 @@ export interface TrackAudio {
   tiers: string[];
   /** Suggested preview start from the analysis (reports v2+). */
   bestMomentMs: number | null;
-  /** 200 peaks, 0–100 (reports v2+). */
+  /** 200 peaks, 0-100 (reports v2+). */
   waveform: number[];
 }
 

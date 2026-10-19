@@ -13,6 +13,7 @@
     "loading": "Loading…"
   },
   "Nav": {
+    "listen": "Listen",
     "discover": "Discover",
     "scene": "Scene",
     "search": "Search",
@@ -244,7 +245,7 @@
       "visibility": "Who sees your activity"
     },
     "hints": {
-      "handle": "Lowercase letters, digits and hyphens, 2–40 characters. Profile address: tunewick.com/en/profile/name",
+      "handle": "Lowercase letters, digits and hyphens, 2-40 characters. Profile address: tunewick.com/en/profile/name",
       "bio": "Up to 500 characters.",
       "visibility": "Who sees gigs you marked (\"I was there\") and your public playlists on your profile. It also decides who can compare their discoveries with yours."
     },
@@ -258,7 +259,7 @@
     "viewProfile": "View public profile",
     "noHandle": "Set a profile name to get a public address.",
     "errors": {
-      "handleInvalid": "Use 2–40 characters: lowercase letters, digits and hyphens.",
+      "handleInvalid": "Use 2-40 characters: lowercase letters, digits and hyphens.",
       "handleReserved": "This name is reserved. Choose another one.",
       "handleTaken": "This name is already taken.",
       "displayNameTooLong": "The name can have at most 80 characters.",
@@ -269,6 +270,9 @@
       "title": "Profile picture",
       "remove": "Remove picture",
       "alt": "Your profile picture"
+    },
+    "banner": {
+      "title": "Profile banner"
     }
   },
   "Profile": {
@@ -407,12 +411,13 @@
       "noName": "Account without a profile name",
       "photo": "Artist photo",
       "verificationRejected": "Verification request rejected: {reason} You can send a new one with other evidence.",
-      "reach": "Where you're from and what you make"
+      "reach": "Where you're from and what you make",
+      "banner": "Banner"
     },
     "errors": {
       "nameRequired": "Enter the artist name.",
       "nameTooLong": "The name can have at most 120 characters.",
-      "slugInvalid": "Use 2–60 characters: lowercase letters, digits and hyphens.",
+      "slugInvalid": "Use 2-60 characters: lowercase letters, digits and hyphens.",
       "slugTaken": "This address is already taken.",
       "slugReserved": "This address is reserved.",
       "bioTooLong": "The description can have at most 2000 characters.",
@@ -575,7 +580,7 @@
     "errors": {
       "titleRequired": "Enter a title.",
       "titleTooLong": "The title can have at most 200 characters.",
-      "slugInvalid": "Use 1–80 characters: lowercase letters, digits and hyphens.",
+      "slugInvalid": "Use 1-80 characters: lowercase letters, digits and hyphens.",
       "slugTaken": "This artist already has a release with this address.",
       "dateInvalid": "Enter a valid date.",
       "upcInvalid": "UPC/EAN has 12 or 13 digits.",
@@ -662,7 +667,8 @@
         "not_allowed": "You can't submit this release.",
         "failed": "Something went wrong. Please try again."
       }
-    }
+    },
+    "aiHint": "Tunewick takes music made by people. AI as a tool (mixing, mastering) - choose \"With AI assistance\". We do not accept AI-generated music."
   },
   "Audio": {
     "none": "No master file yet.",
@@ -705,7 +711,7 @@
       "unsupported_codec": "The file contains lossy audio - please upload the original lossless master.",
       "audio_streams": "The file must contain exactly one audio stream.",
       "bit_depth": "Bit depth must be 16, 24 or 32 bits.",
-      "sample_rate": "The sample rate must be standard: 44.1–192 kHz.",
+      "sample_rate": "The sample rate must be standard: 44.1-192 kHz.",
       "channels": "Only mono and stereo recordings are accepted for now.",
       "duration": "A track must be between 10 seconds and 4 hours long.",
       "decode_error": "The file is damaged and doesn’t play to the end. Please export the master again.",
@@ -818,7 +824,7 @@
       "animated": "Animated images are not accepted.",
       "unreadable": "The file could not be read as an image.",
       "not_square": "The cover must be square.",
-      "too_small": "The image is too small (cover: at least 1400 × 1400 px, photo: at least 400 px).",
+      "too_small": "The image is too small (cover: at least 1400 × 1400 px, photo: 400 px, playlist cover: 600 px, banner: 1200 × 400 px).",
       "processing_failed": "The image could not be processed. Please try again."
     },
     "error": {
@@ -839,6 +845,24 @@
       "rejected": "The picture was rejected.",
       "failed": "The picture upload failed - please try again.",
       "hint": "At least 200 × 200 px, JPEG, PNG or WebP up to 25 MB. We crop it to a square from the centre and remove metadata."
+    },
+    "playlistCover": {
+      "choose": "Add your own cover",
+      "replace": "Change cover",
+      "processing": "Preparing the cover…",
+      "rejected": "The cover was rejected.",
+      "failed": "The cover upload failed - try again.",
+      "hint": "Your own art instead of the cover mosaic: at least 600 × 600 px, JPEG, PNG or WebP up to 25 MB. We crop it square from the centre and strip metadata.",
+      "remove": "Back to the cover mosaic"
+    },
+    "banner": {
+      "choose": "Add a banner",
+      "replace": "Change banner",
+      "processing": "Preparing the banner…",
+      "rejected": "The banner was rejected.",
+      "failed": "The banner upload failed - try again.",
+      "hint": "A wide image across the top of the page, 3:1 - ideally 2400 × 800 px (at least 1200 × 400), JPEG, PNG or WebP up to 25 MB. We crop it from the centre and strip metadata.",
+      "remove": "Remove banner"
     }
   },
   "Places": {
@@ -868,7 +892,7 @@
     "free": "Free - you listen in High quality.",
     "until": "{plan} until {date}",
     "lifetime": "{plan} for life",
-    "freeQuality": "The whole catalog, no ads and no skip limits. Lossless and Hi-Res are in Premium - during the beta through promo codes.",
+    "freeQuality": "The whole catalog with no skip limits; now and then a quiet sponsor card (never while you listen). Lossless, Hi-Res and no ads are in Premium - during the beta through promo codes.",
     "premiumQuality": "The player picks Lossless or Hi-Res when a track has it and your device can play it.",
     "source": {
       "promo": "From code: {ref}",
@@ -951,7 +975,7 @@
       "endsOn": "Campaign ends (optional)",
       "maxTotal": "Use limit for the whole campaign",
       "maxTotalHint": "Empty = no limit.",
-      "count": "Number of codes (1–5000)",
+      "count": "Number of codes (1-5000)",
       "benefit": "What the code gives",
       "benefits": {
         "premium_days": "Premium for days",
@@ -964,7 +988,7 @@
       "newAccountsDays": "Only accounts younger than (days)",
       "newAccountsDaysHint": "Empty = any account.",
       "code": "Code",
-      "codeHint": "6–32 characters: letters, digits, dashes. Case does not matter.",
+      "codeHint": "6-32 characters: letters, digits, dashes. Case does not matter.",
       "maxUses": "Use limit",
       "reason": "Reason (kept in the audit log)"
     },
@@ -1032,7 +1056,8 @@
     "share": "Share",
     "shareCopied": "Link copied.",
     "shareFailed": "Could not copy the link.",
-    "sharePrivate": "This playlist is private. To share it, change “Who can see it” below."
+    "sharePrivate": "This playlist is private. To share it, change “Who can see it” below.",
+    "cover": "Cover"
   },
   "Reports": {
     "link": "Report a problem",
@@ -1063,7 +1088,7 @@
       "goodFaith": "I state in good faith that this information is accurate and that I am authorised to act for the rights holder."
     },
     "hints": {
-      "details": "What is wrong and where (e.g. which track). 10–2000 characters."
+      "details": "What is wrong and where (e.g. which track). 10-2000 characters."
     },
     "copyright": {
       "title": "Copyright notice",
@@ -1072,7 +1097,7 @@
     "submit": "Send report",
     "sent": "Thank you. Your report has been sent to the moderators.",
     "errors": {
-      "details": "Describe the problem (10–2000 characters).",
+      "details": "Describe the problem (10-2000 characters).",
       "copyright": "For copyright, give a name, a valid email and tick the statement.",
       "duplicate": "You already reported this - it is waiting for a decision.",
       "limit": "Too many reports today. Try again tomorrow.",
@@ -1129,10 +1154,10 @@
       },
       "appealDecided": "Appeal decision: {note}",
       "appeal": "Appeal",
-      "appealHint": "Explain why the decision is wrong (e.g. you hold a licence). A different moderator decides. 10–4000 characters.",
+      "appealHint": "Explain why the decision is wrong (e.g. you hold a licence). A different moderator decides. 10-4000 characters.",
       "sendAppeal": "Send appeal",
       "errors": {
-        "text": "Describe your appeal (10–4000 characters).",
+        "text": "Describe your appeal (10-4000 characters).",
         "already": "This decision was already appealed or the period has ended.",
         "not_allowed": "Only the profile owner or a manager can appeal.",
         "failed": "Could not send the appeal. Please try again."
@@ -1249,7 +1274,8 @@
         "engaged": "Like, save or follow",
         "returned": "Came back another day"
       }
-    }
+    },
+    "toAds": "Ads"
   },
   "Events": {
     "badge": "Gig",
@@ -1287,7 +1313,7 @@
       "submit": "Add gig",
       "saved": "Added. The gig is waiting for a moderator.",
       "errors": {
-        "title": "Enter the event name (2–160 characters).",
+        "title": "Enter the event name (2-160 characters).",
         "date": "Enter a date and time - from today up to two years ahead.",
         "venue": "Enter the venue name, city and voivodeship.",
         "ticket": "The ticket link must start with https://",
@@ -2032,7 +2058,7 @@
     },
     "empty": "No listening in this period yet. Play something and your statistics start here.",
     "startListening": "Start listening",
-    "hourName": "{hour}:00–{hour}:59",
+    "hourName": "{hour}:00-{hour}:59",
     "playsCount": "{count, plural, one {# play} other {# plays}}",
     "labels": {
       "listening": "Listening time",
@@ -2069,7 +2095,7 @@
       "topHour": "You listen most around {hour}:00.",
       "session": "Longest session: {time}.",
       "streak": "Longest discovery streak: {count, plural, one {# day} other {# days}} in a row.",
-      "night": "{share} of your plays were at night (22:00–05:00)."
+      "night": "{share} of your plays were at night (22:00-05:00)."
     },
     "tops": {
       "artists": "Top artists",
@@ -2417,8 +2443,8 @@
     "legend": {
       "none": "No music yet",
       "one": "1 artist",
-      "few": "2–4",
-      "many": "5–19",
+      "few": "2-4",
+      "many": "5-19",
       "most": "20+",
       "mine": "You have heard music from here"
     },
@@ -2541,5 +2567,79 @@
   },
   "Embed": {
     "listenOn": "Listen on Tunewick"
+  },
+  "Ads": {
+    "sponsored": "Sponsored",
+    "label": "Ad: {advertiser}"
+  },
+  "AdsAdmin": {
+    "title": "Ads",
+    "lead": "Sponsor cards for listeners on the Free plan. No ad networks and no tracking: a card is picked by placement and language, and the statistics are anonymous daily counts. Premium never sees ads.",
+    "link": "Ads",
+    "campaigns": "Campaigns",
+    "empty": "No campaigns yet.",
+    "new": "New campaign",
+    "edit": "Edit",
+    "stats": "{impressions} impressions · {clicks} clicks (30 days)",
+    "active": "running",
+    "paused": "paused",
+    "start": "Start",
+    "pause": "Pause",
+    "save": "Save",
+    "create": "Create (paused)",
+    "saved": "Saved.",
+    "placements": {
+      "library": "Library",
+      "charts": "Charts",
+      "browse": "Browse",
+      "scene": "Scene"
+    },
+    "fields": {
+      "advertiser": "Advertiser",
+      "headline": "Headline",
+      "body": "Text (optional)",
+      "cta": "Button",
+      "url": "Website (https)",
+      "release": "Or a release on Tunewick",
+      "placements": "Where it appears",
+      "locales": "Languages",
+      "weight": "Weight",
+      "startsOn": "From",
+      "endsOn": "Until"
+    },
+    "hints": {
+      "cta": "Short, e.g. \"See more\" or \"Listen\".",
+      "url": "Opens in a new tab. Fill this or a release, not both.",
+      "release": "As artist/release - the card shows the cover and opens the release page.",
+      "releaseCurrent": "Now: {title}. As artist/release.",
+      "placements": "Never in the player, Discover, or artist, release or playlist pages.",
+      "locales": "None selected = every language.",
+      "weight": "1-10: how often this campaign is drawn compared with others."
+    },
+    "errors": {
+      "invalid": "Check the fields: exactly one destination (https or a release) and at least one placement.",
+      "release_not_found": "No such release (or campaign).",
+      "mfa_required": "Confirm your sign-in with a second factor.",
+      "not_allowed": "Admins only.",
+      "failed": "Could not save. Try again."
+    }
+  },
+  "Home": {
+    "title": "Listen",
+    "description": "Music by independent artists - listen right away, then discover something new.",
+    "leadYours": "Your music right away: what you have been playing and what you liked.",
+    "leadPopular": "Music by people, right away: what is being played on Tunewick this week.",
+    "playYours": "Play your music",
+    "playPopular": "Play what is popular",
+    "discover": "Discover something new",
+    "recent": "Recently played",
+    "fresh": "New from artists you follow",
+    "popular": "Popular this week",
+    "playFrom": "Play from: {title} - {artist}",
+    "nextTitle": "Ready for something new?",
+    "nextLead": "Discover: one song at a time, each with the reason you hear it.",
+    "newest": "Newest releases",
+    "leadNewest": "Music by people, right away: the newest releases on Tunewick.",
+    "playNewest": "Play the newest"
   }
 }

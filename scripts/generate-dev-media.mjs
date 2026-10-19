@@ -1,6 +1,6 @@
 // Dev/test album for the player (M4.1): one continuous sine sweep cut into three 10 s masters at
 // exact sample boundaries (24/96 FLAC), each processed by the real audio worker in Docker. Any gap
-// or click at a track boundary is audible and measurable. Synthetic signal — no copyrighted audio.
+// or click at a track boundary is audible and measurable. Synthetic signal - no copyrighted audio.
 // Output: apps/web/public/dev-media/album/<n>/ (git-ignored). Run: pnpm dev:media
 import { execFileSync } from "node:child_process";
 import { mkdirSync, rmSync } from "node:fs";

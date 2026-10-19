@@ -7,7 +7,13 @@ import { MyArtists } from "@/modules/artists";
 import { PlanSummary } from "@/modules/plans";
 import { DecisionList } from "@/modules/reports";
 import { BlockedUsers } from "@/modules/social";
-import { getImageSources, getLatestImageUpload, ImageUpload } from "@/modules/images";
+import {
+  Banner,
+  getImageSources,
+  getLatestImageUpload,
+  ImageUpload,
+  RemoveImageButton,
+} from "@/modules/images";
 import {
   Avatar,
   DiscoveryPrivacyForm,
@@ -37,9 +43,11 @@ export default async function SettingsPage({ params }: PageProps<"/[locale]/sett
   const user = await requireUser(signIn);
   const { profile, settings } = await getMyAccount(user.id);
   const t = await getTranslations("Settings");
-  const [picture, pictureUpload] = await Promise.all([
+  const [picture, pictureUpload, banner, bannerUpload] = await Promise.all([
     getImageSources(profile.image_id, 320),
     getLatestImageUpload("profile_image", user.id),
+    getImageSources(profile.banner_image_id, 1280),
+    getLatestImageUpload("banner", user.id),
   ]);
   const tSecurity = await getTranslations("Security");
 
@@ -78,6 +86,19 @@ export default async function SettingsPage({ params }: PageProps<"/[locale]/sett
             />
           </div>
           {picture ? <RemoveProfileImageButton /> : null}
+        </section>
+        <section className="settings-form__group" aria-labelledby="banner">
+          <h2 id="banner" className="section-title">
+            {t("banner.title")}
+          </h2>
+          <Banner image={banner} alt="" />
+          <ImageUpload
+            kind="banner"
+            ownerId={user.id}
+            hasImage={Boolean(banner)}
+            latest={bannerUpload}
+          />
+          {banner ? <RemoveImageButton kind="banner" ownerId={user.id} /> : null}
         </section>
         <SettingsForm
           values={{

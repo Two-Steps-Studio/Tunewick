@@ -28,7 +28,7 @@ see `apps/web/src/proxy.ts`) instead of a bare 500.
    - Redirect URLs: `https://<production-domain>/**` and, for previews,
      `https://*-<vercel-team-slug>.vercel.app/**`.
 5. **Authentication → Emails → Templates** (the app relies on `token_hash` links, docs/security.md
-   §2 — the default templates will not work):
+   §2 - the default templates will not work):
    - *Confirm signup*: subject and body from `supabase/templates/confirmation.html`
      (subject in `supabase/config.toml`).
    - *Reset password*: from `supabase/templates/recovery.html`.
@@ -48,10 +48,10 @@ pnpm exec supabase db push
 ```
 
 `link` asks for the database password from §1. `db push` lists the migrations before applying
-them. Never edit production schema in the dashboard — write a migration instead.
+them. Never edit production schema in the dashboard - write a migration instead.
 
 Without a terminal: GitHub → Actions → **Database migrations** → Run workflow (from `main`).
-First with `apply` off — it lists applied and pending migrations and does a dry run — then with
+First with `apply` off - it lists applied and pending migrations and does a dry run - then with
 `apply` on. It needs repository (or `production` environment) secrets `SUPABASE_ACCESS_TOKEN`
 (supabase.com → Account → Access Tokens), `SUPABASE_DB_PASSWORD` (§1) and `SUPABASE_PROJECT_REF`
 (the id in `https://<ref>.supabase.co`). Add required reviewers to the `production` environment to
@@ -92,7 +92,7 @@ Without it the Vercel production domain is used. After the domain is live, submi
 
 ## 3a. Cloudflare R2 (audio masters)
 
-Until these variables exist the editor says "audio upload is coming soon" — nothing breaks.
+Until these variables exist the editor says "audio upload is coming soon" - nothing breaks.
 
 1. Cloudflare → R2 → create bucket **`tunewick-ingest`** (location hint: Eastern Europe / EU
    jurisdiction). It holds the masters artists upload; never public.
@@ -140,7 +140,7 @@ Until these variables exist the editor says "audio upload is coming soon" — no
    | Name | Value |
    | --- | --- |
    | `TUNEWICK_SUPABASE_URL` | Supabase project URL |
-   | `TUNEWICK_SUPABASE_SECRET_KEY` | Supabase **secret** key (`sb_secret_…`) — server only |
+   | `TUNEWICK_SUPABASE_SECRET_KEY` | Supabase **secret** key (`sb_secret_…`) - server only |
    | `MEDIA_S3_ENDPOINT`, `MEDIA_S3_REGION`, `MEDIA_S3_ACCESS_KEY_ID`, `MEDIA_S3_SECRET_ACCESS_KEY` | as in §3a |
    | `MEDIA_INGEST_BUCKET` / `MEDIA_BUCKET` | `tunewick-ingest` / `tunewick-media` |
 
@@ -202,7 +202,7 @@ then run `node scripts/create-invites.mjs ...` in the same window.
    ```bash
    SUPABASE_URL=... SUPABASE_SECRET_KEY=... node scripts/grant-plan.mjs --email <tester> --days 90 --source beta --note "beta 2026"
    ```
-5. Promo codes (until the admin panel exists). Codes are printed once — use `--csv` and keep the
+5. Promo codes (until the admin panel exists). Codes are printed once - use `--csv` and keep the
    file in the password manager / hand it to the partner; only hashes stay in the database:
 
    ```bash
@@ -226,12 +226,12 @@ then run `node scripts/create-invites.mjs ...` in the same window.
   Check: `select jobname, schedule from cron.job;`
 - Share cards and Open Graph images are rendered by the web app (`next/og`); covers are converted
   from WebP with `sharp` (an explicit dependency of `apps/web`).
-- The audio worker also renders share videos (`share_clips` queue): no new settings — it uses the
+- The audio worker also renders share videos (`share_clips` queue): no new settings - it uses the
   same Supabase key and buckets; the app writes cards into the ingest bucket with its own S3 keys.
 - The worker also empties the storage sweep (`private.storage_deletions`): its S3 key needs
-  DeleteObject on both buckets. Entries failing five times stay in the table — check
+  DeleteObject on both buckets. Entries failing five times stay in the table - check
   `select * from private.storage_deletions where attempts >= 5;` now and then.
-- Point values and caps: edit `discovery_point_rules` (admin) — no deploy needed. Weekly
+- Point values and caps: edit `discovery_point_rules` (admin) - no deploy needed. Weekly
   challenges: `discovery_challenges` (enable/disable or change targets between weeks; the running
   week's three are picked from the enabled ones).
 

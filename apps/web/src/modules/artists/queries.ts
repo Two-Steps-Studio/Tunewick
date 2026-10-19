@@ -9,7 +9,7 @@ export const getArtistBySlug = cache(async (slug: string) => {
   const { data, error } = await supabase
     .from("artists")
     .select(
-      "id, slug, name, bio, formed_year, verification_status, status, image_id, voivodeship, city, country_code, region, languages",
+      "id, slug, name, bio, formed_year, verification_status, status, image_id, banner_image_id, voivodeship, city, country_code, region, languages",
     )
     .eq("slug", slug.toLowerCase())
     .maybeSingle();

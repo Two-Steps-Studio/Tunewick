@@ -1,6 +1,7 @@
 /** Client/server checks for images (the database and the worker check again, by decoding). */
 
-export type ImageKind = "release_artwork" | "artist_image" | "profile_image";
+export type ImageKind =
+  "release_artwork" | "artist_image" | "profile_image" | "playlist_cover" | "banner";
 
 export const IMAGE_EXTENSIONS = ["jpg", "jpeg", "png", "webp"];
 export const IMAGE_ACCEPT = "image/jpeg,image/png,image/webp";

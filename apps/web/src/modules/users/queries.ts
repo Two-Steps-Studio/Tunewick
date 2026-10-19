@@ -10,7 +10,7 @@ export async function getMyAccount(userId: string) {
   const [profile, settings] = await Promise.all([
     supabase
       .from("profiles")
-      .select("handle, display_name, bio, image_id")
+      .select("handle, display_name, bio, image_id, banner_image_id")
       .eq("id", userId)
       .single(),
     supabase
@@ -31,7 +31,7 @@ export async function getPublicProfile(handle: string) {
   const supabase = await createSupabaseServerClient();
   const { data, error } = await supabase
     .from("profiles")
-    .select("id, handle, display_name, bio, created_at, image_id")
+    .select("id, handle, display_name, bio, created_at, image_id, banner_image_id")
     .eq("handle", handle.toLowerCase())
     .maybeSingle();
   if (error) throw error;

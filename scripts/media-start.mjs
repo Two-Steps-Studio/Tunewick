@@ -1,6 +1,6 @@
 // Starts local S3-compatible storage (docker/media) and creates the buckets, then rewrites
 // apps/web/.env.local (pnpm db:env) so the app picks up the local storage settings.
-// Local-only credentials from docker/media/s3.json — never used anywhere else.
+// Local-only credentials from docker/media/s3.json - never used anywhere else.
 import { execFileSync } from "node:child_process";
 import { join } from "node:path";
 import { AwsClient } from "aws4fetch";

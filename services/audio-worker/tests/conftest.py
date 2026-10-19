@@ -1,4 +1,4 @@
-"""Synthetic fixtures — generated with ffmpeg on the fly, no copyrighted audio."""
+"""Synthetic fixtures - generated with ffmpeg on the fly, no copyrighted audio."""
 
 from __future__ import annotations
 

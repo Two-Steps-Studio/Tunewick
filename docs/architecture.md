@@ -9,7 +9,7 @@
 
 | Concern | Decision | Main alternative considered |
 | --- | --- | --- |
-| Shape | **Modular monolith** (one Next.js app with strict module boundaries) + two small services (audio worker, media edge) | Microservices — rejected: team size, operational cost |
+| Shape | **Modular monolith** (one Next.js app with strict module boundaries) + two small services (audio worker, media edge) | Microservices - rejected: team size, operational cost |
 | Web app | **Next.js (App Router) + TypeScript (strict) + React** | Remix/React Router, SvelteKit |
 | Styling | **Tailwind CSS v4** fed by `design/tokens.css` (CSS variables) | CSS Modules only |
 | Database / Auth | **Supabase**: Postgres (+RLS), Auth, Queues (pgmq), Cron | Self-hosted Postgres + Auth.js/Lucia |
@@ -25,7 +25,7 @@
 | Errors | **Sentry** (EU data region) | self-hosted GlitchTip |
 | Product analytics | **First-party events table** in Postgres for product metrics; consent-gated | PostHog EU (later if needed) |
 | Feature flags | **Flags table in Postgres** + server-side evaluation | PostHog/LaunchDarkly |
-| Payments | Not in MVP (decision D3). Entitlements are provider-agnostic; Stripe evaluated in Phase 14 | — |
+| Payments | Not in MVP (decision D3). Entitlements are provider-agnostic; Stripe evaluated in Phase 14 | - |
 
 Data residency: all primary data in the EU (Supabase `eu-central-1`, Vercel `fra1`, R2 EU
 jurisdiction bucket, Sentry EU).
@@ -132,7 +132,7 @@ Every variant is generated **directly from the master** (no lossy → lossy chai
 
 | Tier | Codec / container | Source requirement | Notes |
 | --- | --- | --- | --- |
-| Data Saver | AAC-LC ~96–128 kbps, fMP4/M4A | any | universal playback incl. Safari |
+| Data Saver | AAC-LC ~96-128 kbps, fMP4/M4A | any | universal playback incl. Safari |
 | High | AAC-LC ~256 kbps, fMP4/M4A | any | universal; Opus considered but Safari does not play Opus in MP4 |
 | Lossless | FLAC 16-bit / 44.1 or 48 kHz | lossless master | if master is 24-bit: dithered to 16 only for this tier |
 | Hi-Res Lossless | FLAC at the master's native bit depth and sample rate (≤ 24-bit / 192 kHz) | lossless master with >16-bit or >48 kHz that passes authenticity analysis | never upsampled; never labelled Hi-Res if analysis flags it |
@@ -153,7 +153,7 @@ The player has a **delivery strategy abstraction** chosen per device by capabili
 
 | Tier | Packaging | Playback |
 | --- | --- | --- |
-| Data Saver, High | AAC-LC in fMP4 + stored priming/padding | MSE with append-window trimming (required for gapless — untrimmed AAC drops out at boundaries) |
+| Data Saver, High | AAC-LC in fMP4 + stored priming/padding | MSE with append-window trimming (required for gapless - untrimmed AAC drops out at boundaries) |
 | Lossless (≤ 48 kHz) | FLAC in fMP4 **and** plain `.flac` | MSE (measured gapless in Chromium/Firefox); `.flac` for the native strategy |
 | Hi-Res (> 48 kHz) | plain `.flac` only | native `<audio>` (FLAC-in-fMP4 > 48 kHz fails in Firefox); gapless best-effort |
 
@@ -170,12 +170,12 @@ decode a short sample, not trust `canPlayType`.
 
 | # | Compromise | Why | Better solution / follow-up |
 | --- | --- | --- | --- |
-| C1 | **Browsers are not bit-perfect.** All browsers mix through the OS and resample to the output device rate (AudioContext/output rate, often 48 kHz). | Platform limitation; no exclusive mode in the web platform. | UI shows "output resampled by system" when track rate ≠ output rate. Native desktop app (e.g. Tauri + WASAPI exclusive / CoreAudio) for bit-perfect — future roadmap item. |
+| C1 | **Browsers are not bit-perfect.** All browsers mix through the OS and resample to the output device rate (AudioContext/output rate, often 48 kHz). | Platform limitation; no exclusive mode in the web platform. | UI shows "output resampled by system" when track rate ≠ output rate. Native desktop app (e.g. Tauri + WASAPI exclusive / CoreAudio) for bit-perfect - future roadmap item. |
 | C2 | Gapless is best-effort for Hi-Res in Firefox (FLAC-in-fMP4 > 48 kHz unsupported, measured) and for Safari until measured on real devices. | Browser codec support. | Native strategy with next-track preload; UI says "gapless unavailable on this browser" only where true. Re-test each browser release. |
 | C3 | Lossless tier for 24-bit masters is dithered to 16-bit. | Bandwidth/compatibility for the Lossless tier. | Hi-Res tier delivers the native 24-bit; users can choose it. |
 | C4 | Lossy tiers use AAC, not Opus. | Safari does not play Opus in MP4; one universal lossy codec simplifies gapless and storage. | Re-evaluate Opus when Safari supports it in MP4/MSE. |
 | C5 | No adaptive bitrate within a lossless track. | Mid-track switching would make the quality label untrue or need constant UI changes. | Step-down only on stall; indicator updates immediately. |
-| C6 | Loudness normalization applied at playback via gain metadata, not baked into files. | Preserves source. | — (this is the intended design, listed for clarity). |
+| C6 | Loudness normalization applied at playback via gain metadata, not baked into files. | Preserves source. | - (this is the intended design, listed for clarity). |
 
 ### 6.6 Normalization
 Integrated loudness (EBU R128 / ITU-R BS.1770) and true peak are measured at ingest per track
@@ -200,14 +200,14 @@ preserves relative levels inside a release.
 - Migrations: `supabase/migrations`, applied by CI to staging on merge to `work`, and to production as a gated step on merge to `main`.
 - Secrets: Vercel/Supabase/Cloudflare/Fly secret stores; `.env.example` lists names only.
 
-## 9. CI (GitHub Actions) — required checks on `main`
+## 9. CI (GitHub Actions) - required checks on `main`
 
-1. `lint` — ESLint (incl. module boundaries), Prettier check, ruff (worker)
-2. `typecheck` — `tsc --noEmit` across workspaces
-3. `test` — Vitest; pytest (worker); pgTAP (RLS) against Supabase CLI
-4. `build` — Next.js build, worker Docker build
-5. `e2e` — Playwright smoke tests against preview (required once E2E exists)
-6. `migrations` — migrations apply cleanly from zero
+1. `lint` - ESLint (incl. module boundaries), Prettier check, ruff (worker)
+2. `typecheck` - `tsc --noEmit` across workspaces
+3. `test` - Vitest; pytest (worker); pgTAP (RLS) against Supabase CLI
+4. `build` - Next.js build, worker Docker build
+5. `e2e` - Playwright smoke tests against preview (required once E2E exists)
+6. `migrations` - migrations apply cleanly from zero
 
 ## 10. Observability
 
@@ -224,7 +224,7 @@ preserves relative levels inside a release.
 - Postgres: indexes defined with each migration; query plans reviewed for discovery/search queries.
 - Budgets: home LCP < 2.5 s on mid-range mobile 4G; time-to-first-audio < 1 s for cached High tier.
 - Measured (M11): signed-in players report time to first audio (loading → playing) and player
-  errors to `private.playback_metrics` — day, tier, strategy, browser family only, no user id;
+  errors to `private.playback_metrics` - day, tier, strategy, browser family only, no user id;
   rate-limited per account by a separate hourly counter. `/admin` shows starts, median and p90
   per tier for the last 7 days and flags a median over 1 s.
 - Query review (M11.5): `scripts/db/query-review.sql` fills the local database with ~10x the
@@ -237,7 +237,7 @@ preserves relative levels inside a release.
   | `search_catalog` (typo, worst case: synthetic titles share trigrams) | 7 191 ms | 99 ms |
   | `discover_releases` (all of Poland) | 891 ms | 13 ms |
   | `discover_artists` | 993 ms | 5 ms |
-  | `related_artists`, `upcoming_events`, artist releases and gigs | 1–8 ms | unchanged |
+  | `related_artists`, `upcoming_events`, artist releases and gigs | 1-8 ms | unchanged |
   | `refresh_artist_graph` (full recompute) | 13 ms | 10 ms |
 
   Cause: security-invoker functions read every catalog row through RLS, where the release and
@@ -245,7 +245,7 @@ preserves relative levels inside a release.
   index serves. Catalog-wide read functions are now security definer with explicit public filters
   (published, `publish_at <= now()`, artist active), and search filters each source by its
   trigram-indexed expression. Foreign keys read by hot paths or cascades got indexes; audit-only
-  columns (`created_by`, `reviewed_by`, …) stay unindexed on purpose — they are only touched when
+  columns (`created_by`, `reviewed_by`, …) stay unindexed on purpose - they are only touched when
   an account is deleted.
 - Page budget (M11.6): `pnpm --filter @tunewick/web perf:budget` loads key pages from a running
   production build in Chromium emulating a mid-range phone on 4G (Pixel 7 viewport, 4x CPU
@@ -265,7 +265,7 @@ preserves relative levels inside a release.
 
 ## 12. Cost estimate (order of magnitude, closed beta)
 
-Assumptions: 50 artists, ~2,000 tracks, average 4 min; masters mostly 24/48–24/96; 1,000 beta
+Assumptions: 50 artists, ~2,000 tracks, average 4 min; masters mostly 24/48-24/96; 1,000 beta
 listeners, 1 h/day.
 
 | Item | Estimate |
@@ -276,7 +276,7 @@ listeners, 1 h/day.
 | Egress (R2 → internet) | $0 (R2 has no egress fees); Workers requests within paid plan ~$5/month |
 | Supabase Pro | ~$25 / month (+ compute add-on if needed) |
 | Vercel Pro | ~$20 / user / month |
-| Fly.io worker (on-demand machine) | ~$5–20 / month |
+| Fly.io worker (on-demand machine) | ~$5-20 / month |
 | Sentry | free → Team tier |
 
 Lossless egress is the main reason media does **not** go through Vercel or Supabase Storage:
@@ -295,7 +295,7 @@ dollars per month on per-GB egress pricing and is $0 on R2.
 
 | Item | Task |
 | --- | --- |
-| Playback spike: device/browser matrix for FLAC (16/24-bit, 44.1–192 kHz), fMP4/MSE, gapless, Safari/iOS | Phase 7 spike task |
+| Playback spike: device/browser matrix for FLAC (16/24-bit, 44.1-192 kHz), fMP4/MSE, gapless, Safari/iOS | Phase 7 spike task |
 | AAC encoder choice and patent/licensing check | Phase 7 |
 | Monorepo scaffold + CI + Vercel/Supabase/Cloudflare projects | Phase 3 follow-up "Scaffold & CI" |
 | Account setup: Vercel, Supabase (EU), Cloudflare (R2 EU), Fly.io, Sentry (EU) | owner |

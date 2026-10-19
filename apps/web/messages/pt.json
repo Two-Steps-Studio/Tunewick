@@ -13,6 +13,7 @@
     "loading": "Carregando…"
   },
   "Nav": {
+    "listen": "Ouvir",
     "discover": "Descobrir",
     "scene": "Cena",
     "search": "Buscar",
@@ -269,6 +270,9 @@
       "title": "Foto de perfil",
       "remove": "Remover foto",
       "alt": "Sua foto de perfil"
+    },
+    "banner": {
+      "title": "Banner do perfil"
     }
   },
   "Profile": {
@@ -407,7 +411,8 @@
       "noName": "Conta sem nome de perfil",
       "photo": "Foto do artista",
       "verificationRejected": "Pedido de verificação recusado: {reason} Você pode enviar um novo com outras provas.",
-      "reach": "De onde você é e o que você faz"
+      "reach": "De onde você é e o que você faz",
+      "banner": "Banner"
     },
     "errors": {
       "nameRequired": "Digite o nome artístico.",
@@ -662,7 +667,8 @@
         "not_allowed": "Você não pode enviar este lançamento.",
         "failed": "Algo deu errado. Tente novamente."
       }
-    }
+    },
+    "aiHint": "O Tunewick aceita música feita por pessoas. IA como ferramenta (mixagem, masterização): escolha “Com ajuda de IA”. Não aceitamos música gerada por IA."
   },
   "Audio": {
     "none": "Ainda não há arquivo master.",
@@ -705,7 +711,7 @@
       "unsupported_codec": "O arquivo contém áudio com perdas - envie o master original lossless.",
       "audio_streams": "O arquivo precisa conter exatamente um stream de áudio.",
       "bit_depth": "A profundidade de bits precisa ser de 16, 24 ou 32 bits.",
-      "sample_rate": "A taxa de amostragem precisa ser padrão: 44,1–192 kHz.",
+      "sample_rate": "A taxa de amostragem precisa ser padrão: 44,1-192 kHz.",
       "channels": "Por enquanto, só aceitamos gravações mono e estéreo.",
       "duration": "Uma faixa precisa ter entre 10 segundos e 4 horas.",
       "decode_error": "O arquivo está corrompido e não toca até o fim. Exporte o master de novo.",
@@ -818,7 +824,7 @@
       "animated": "Imagens animadas não são aceitas.",
       "unreadable": "Não foi possível ler o arquivo como imagem.",
       "not_square": "A capa precisa ser quadrada.",
-      "too_small": "A imagem é pequena demais (capa: no mínimo 1400 × 1400 px; foto: no mínimo 400 px).",
+      "too_small": "A imagem é pequena demais (capa: mín. 1400 × 1400 px, foto: 400 px, capa de playlist: 600 px, banner: 1200 × 400 px).",
       "processing_failed": "Não foi possível processar a imagem. Tente novamente."
     },
     "error": {
@@ -839,6 +845,24 @@
       "rejected": "A foto foi recusada.",
       "failed": "Não foi possível enviar a foto. Tente de novo.",
       "hint": "Pelo menos 200 × 200 px, JPEG, PNG ou WebP até 25 MB. Cortamos em quadrado a partir do centro e removemos os metadados."
+    },
+    "playlistCover": {
+      "choose": "Adicionar capa própria",
+      "replace": "Mudar capa",
+      "processing": "Preparando a capa…",
+      "rejected": "A capa foi recusada.",
+      "failed": "O envio da capa falhou - tente de novo.",
+      "hint": "Sua própria imagem no lugar do mosaico: pelo menos 600 × 600 px, JPEG, PNG ou WebP até 25 MB. Cortamos em quadrado a partir do centro e removemos os metadados.",
+      "remove": "Voltar ao mosaico de capas"
+    },
+    "banner": {
+      "choose": "Adicionar banner",
+      "replace": "Mudar banner",
+      "processing": "Preparando o banner…",
+      "rejected": "O banner foi recusado.",
+      "failed": "O envio do banner falhou - tente de novo.",
+      "hint": "Uma imagem larga no topo da página, 3:1 - de preferência 2400 × 800 px (pelo menos 1200 × 400), JPEG, PNG ou WebP até 25 MB. Cortamos a partir do centro e removemos os metadados.",
+      "remove": "Remover banner"
     }
   },
   "Places": {
@@ -868,7 +892,7 @@
     "free": "Grátis - você ouve em qualidade Alta.",
     "until": "{plan} até {date}",
     "lifetime": "{plan} vitalício",
-    "freeQuality": "O catálogo inteiro, sem anúncios e sem limite de pulos. Lossless e Hi-Res estão no Premium - durante o beta, por meio de códigos promocionais.",
+    "freeQuality": "O catálogo inteiro sem limite de pulos; de vez em quando, um cartão discreto de patrocinador (nunca enquanto você ouve). Lossless, Hi-Res e sem anúncios estão no Premium - durante o beta, por meio de códigos promocionais.",
     "premiumQuality": "O player escolhe Lossless ou Hi-Res quando a faixa tem essa versão e seu dispositivo consegue reproduzi-la.",
     "source": {
       "promo": "Pelo código: {ref}",
@@ -951,7 +975,7 @@
       "endsOn": "Fim da campanha (opcional)",
       "maxTotal": "Limite de usos da campanha inteira",
       "maxTotalHint": "Vazio = sem limite.",
-      "count": "Número de códigos (1–5000)",
+      "count": "Número de códigos (1-5000)",
       "benefit": "O que o código dá",
       "benefits": {
         "premium_days": "Premium por dias",
@@ -964,7 +988,7 @@
       "newAccountsDays": "Só contas com menos de (dias)",
       "newAccountsDaysHint": "Vazio = qualquer conta.",
       "code": "Código",
-      "codeHint": "6–32 caracteres: letras, dígitos, hifens. Maiúsculas e minúsculas não importam.",
+      "codeHint": "6-32 caracteres: letras, dígitos, hifens. Maiúsculas e minúsculas não importam.",
       "maxUses": "Limite de usos",
       "reason": "Motivo (fica no log de auditoria)"
     },
@@ -1032,7 +1056,8 @@
     "share": "Compartilhar",
     "shareCopied": "Link copiado.",
     "shareFailed": "Não foi possível copiar o link.",
-    "sharePrivate": "A playlist é privada. Para compartilhá-la, mude “Quem pode ver” abaixo."
+    "sharePrivate": "A playlist é privada. Para compartilhá-la, mude “Quem pode ver” abaixo.",
+    "cover": "Capa"
   },
   "Reports": {
     "link": "Denunciar um problema",
@@ -1249,7 +1274,8 @@
         "engaged": "Curtida, salvamento ou seguir",
         "returned": "Voltou outro dia"
       }
-    }
+    },
+    "toAds": "Anúncios"
   },
   "Events": {
     "badge": "Show",
@@ -1287,7 +1313,7 @@
       "submit": "Adicionar show",
       "saved": "Adicionado. O show está aguardando um moderador.",
       "errors": {
-        "title": "Digite o nome do evento (2–160 caracteres).",
+        "title": "Digite o nome do evento (2-160 caracteres).",
         "date": "Digite data e hora - de hoje até dois anos à frente.",
         "venue": "Digite o nome da casa de show, a cidade e a voivodia.",
         "ticket": "O link dos ingressos precisa começar com https://",
@@ -2032,7 +2058,7 @@
     },
     "empty": "Ainda não há audição neste período. Toque algo e suas estatísticas começam aqui.",
     "startListening": "Começar a ouvir",
-    "hourName": "{hour}:00–{hour}:59",
+    "hourName": "{hour}:00-{hour}:59",
     "playsCount": "{count, plural, one {# reprodução} other {# reproduções}}",
     "labels": {
       "listening": "Tempo de audição",
@@ -2069,7 +2095,7 @@
       "topHour": "Você ouve mais por volta das {hour}:00.",
       "session": "Sessão mais longa: {time}.",
       "streak": "Maior sequência de descobertas: {count, plural, one {# dia} other {# dias}} seguidos.",
-      "night": "{share} das suas reproduções foram à noite (22:00–05:00)."
+      "night": "{share} das suas reproduções foram à noite (22:00-05:00)."
     },
     "tops": {
       "artists": "Top artistas",
@@ -2417,8 +2443,8 @@
     "legend": {
       "none": "Ainda sem música",
       "one": "1 artista",
-      "few": "2–4",
-      "many": "5–19",
+      "few": "2-4",
+      "many": "5-19",
       "most": "20+",
       "mine": "Você já ouviu música daqui"
     },
@@ -2541,5 +2567,79 @@
   },
   "Embed": {
     "listenOn": "Ouça no Tunewick"
+  },
+  "Ads": {
+    "sponsored": "Patrocinado",
+    "label": "Anúncio: {advertiser}"
+  },
+  "AdsAdmin": {
+    "title": "Anúncios",
+    "lead": "Cartões de patrocinadores para ouvintes do plano Free. Sem redes de anúncios e sem rastreamento: o cartão é escolhido por posição e idioma, e as estatísticas são contagens diárias anônimas. O Premium nunca vê anúncios.",
+    "link": "Anúncios",
+    "campaigns": "Campanhas",
+    "empty": "Ainda não há campanhas.",
+    "new": "Nova campanha",
+    "edit": "Editar",
+    "stats": "{impressions} exibições · {clicks} cliques (30 dias)",
+    "active": "ativa",
+    "paused": "pausada",
+    "start": "Iniciar",
+    "pause": "Pausar",
+    "save": "Salvar",
+    "create": "Criar (pausada)",
+    "saved": "Salvo.",
+    "placements": {
+      "library": "Biblioteca",
+      "charts": "Paradas",
+      "browse": "Explorar",
+      "scene": "Cena"
+    },
+    "fields": {
+      "advertiser": "Anunciante",
+      "headline": "Título",
+      "body": "Texto (opcional)",
+      "cta": "Botão",
+      "url": "Site (https)",
+      "release": "Ou um lançamento no Tunewick",
+      "placements": "Onde aparece",
+      "locales": "Idiomas",
+      "weight": "Peso",
+      "startsOn": "De",
+      "endsOn": "Até"
+    },
+    "hints": {
+      "cta": "Curto, p. ex. “Ver” ou “Ouvir”.",
+      "url": "Abre numa nova aba. Preencha isto ou um lançamento, não ambos.",
+      "release": "Como artista/lancamento - o cartão mostra a capa e abre a página.",
+      "releaseCurrent": "Agora: {title}. Como artista/lancamento.",
+      "placements": "Nunca no player, no Descobrir nem em páginas de artistas, lançamentos ou playlists.",
+      "locales": "Nada marcado = todos os idiomas.",
+      "weight": "1-10: com que frequência esta campanha é sorteada em relação às outras."
+    },
+    "errors": {
+      "invalid": "Verifique os campos: exatamente um destino (https ou lançamento) e pelo menos uma posição.",
+      "release_not_found": "Esse lançamento (ou campanha) não existe.",
+      "mfa_required": "Confirme o login com um segundo fator.",
+      "not_allowed": "Só administradores.",
+      "failed": "Não foi possível salvar. Tente de novo."
+    }
+  },
+  "Home": {
+    "title": "Ouvir",
+    "description": "Música de artistas independentes - ouça na hora, depois descubra algo novo.",
+    "leadYours": "Sua música na hora: o que você ouviu recentemente e o que curtiu.",
+    "leadPopular": "Música feita por pessoas, na hora: o que se ouve nesta semana no Tunewick.",
+    "playYours": "Tocar sua música",
+    "playPopular": "Tocar o que está popular",
+    "discover": "Descobrir algo novo",
+    "recent": "Ouvidas recentemente",
+    "fresh": "Novidades de quem você segue",
+    "popular": "Popular nesta semana",
+    "playFrom": "Tocar a partir de: {title} - {artist}",
+    "nextTitle": "Pronto para algo novo?",
+    "nextLead": "Descubra: uma música por vez, cada uma com o motivo de você estar ouvindo.",
+    "newest": "Lançamentos mais recentes",
+    "leadNewest": "Música feita por pessoas, na hora: os lançamentos mais recentes no Tunewick.",
+    "playNewest": "Tocar o mais novo"
   }
 }

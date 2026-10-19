@@ -27,7 +27,7 @@ test("an admin creates a campaign and codes, a listener redeems one, the admin r
   const generate = page.locator("form", {
     has: page.getByRole("button", { name: "Wygeneruj kody" }),
   });
-  await generate.getByLabel("Liczba kodów (1–5000)").fill("2");
+  await generate.getByLabel("Liczba kodów (1-5000)").fill("2");
   await generate.getByLabel("Ile dni lub miesięcy").fill("30");
   await generate.getByRole("button", { name: "Wygeneruj kody" }).click();
   await expect(page.getByText(/^Wygenerowano 2 kody\. Zapisz je teraz/)).toBeVisible();

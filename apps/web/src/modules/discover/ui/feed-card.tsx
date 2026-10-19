@@ -330,13 +330,13 @@ export function FeedCard({
               <div className="feed-menu__panel">
                 <Link
                   className="feed-menu__item"
-                  href={{ pathname: "/", query: { similar: item.code } }}
+                  href={{ pathname: "/discover", query: { similar: item.code } }}
                 >
                   {t("similar")}
                 </Link>
                 <Link
                   className="feed-menu__item"
-                  href={{ pathname: "/", query: { artist: item.artist.slug } }}
+                  href={{ pathname: "/discover", query: { artist: item.artist.slug } }}
                 >
                   {t("discoverArtist", { artist: item.artist.name })}
                 </Link>

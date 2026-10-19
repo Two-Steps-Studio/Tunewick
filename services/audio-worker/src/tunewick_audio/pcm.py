@@ -1,4 +1,4 @@
-"""Single streaming pass over the fully decoded master (docs/audio.md §2.2–§2.3).
+"""Single streaming pass over the fully decoded master (docs/audio.md §2.2-§2.3).
 
 The decode itself is the integrity check: any ffmpeg error rejects the upload. The same pass
 computes hashes, the effective bit depth, level statistics and the averaged power spectrum used
@@ -23,7 +23,7 @@ CLIP_RUN = 3  # consecutive full-scale samples that count as one clipping event
 
 
 def fft_size(sample_rate: int) -> int:
-    """≈ 5.4–5.9 Hz resolution at every supported rate."""
+    """≈ 5.4-5.9 Hz resolution at every supported rate."""
     return 8192 * max(1, 2 ** int(np.log2(sample_rate // 44100)))
 
 
@@ -164,7 +164,7 @@ def analyse(path: str, *, sample_format: str, sample_rate: int, channels: int, b
 
 
 def decode_digest(path: str, sample_rate: int, channels: int) -> tuple[str, int]:
-    """SHA-256 of the decoded PCM (s32le) and the per-channel sample count — for verification."""
+    """SHA-256 of the decoded PCM (s32le) and the per-channel sample count - for verification."""
     sha = hashlib.sha256()
     samples = 0
     for data, flat in iter_pcm(path, "int", sample_rate, channels):

@@ -1,7 +1,7 @@
 name: Audio worker image
 
 # Builds services/audio-worker and publishes it to GitHub Container Registry
-# (ghcr.io/two-steps-studio/tunewick-audio), for running on any Docker host — e.g. TrueNAS
+# (ghcr.io/two-steps-studio/tunewick-audio), for running on any Docker host - e.g. TrueNAS
 # (services/audio-worker/truenas.yaml, docs/deployment.md §3b).
 
 on:

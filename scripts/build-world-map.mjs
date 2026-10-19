@@ -2,7 +2,7 @@
 /**
  * Builds apps/web/src/modules/atlas/world-paths.json: one SVG path per country (ISO alpha-2), Equal
  * Earth projection, from Natural Earth 1:110m (world-atlas). Done once here so the app ships plain
- * path strings — no map library, no tiles, no projection at request time.
+ * path strings - no map library, no tiles, no projection at request time.
  *
  *   node scripts/build-world-map.mjs
  */

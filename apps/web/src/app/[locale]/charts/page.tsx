@@ -27,6 +27,7 @@ import {
   parseCountry,
 } from "@/modules/discover";
 import { Artwork, getImageSourcesMany } from "@/modules/images";
+import { AdCard, getAd } from "@/modules/ads";
 
 export async function generateMetadata({
   params,
@@ -53,6 +54,7 @@ export default async function ChartsPage({ params, searchParams }: PageProps<"/[
   const t = await getTranslations("Charts");
   const format = await getFormatter();
   const query = await searchParams;
+  const adPromise = getAd("charts", locale);
 
   const tab = pick(query.c, TABS, "top");
   const scope = pick(
@@ -148,6 +150,8 @@ export default async function ChartsPage({ params, searchParams }: PageProps<"/[
     params: { artist: artistSlug, song: songSegment(title, code, slugify) },
   });
   const n = (value: number) => format.number(value);
+
+  const ad = await adPromise;
 
   return (
     <section className="charts">
@@ -407,6 +411,8 @@ export default async function ChartsPage({ params, searchParams }: PageProps<"/[
         </section>
       ) : null}
 
+      {ad ? <AdCard ad={ad} /> : null}
+
       {tab === "artists" ? (
         <section aria-labelledby="artist-chart-heading" className="charts__section">
           <h2 id="artist-chart-heading" className="charts__heading">
@@ -447,7 +453,7 @@ export default async function ChartsPage({ params, searchParams }: PageProps<"/[
                     ) : null}
                   </span>
                   <Link
-                    href={{ pathname: "/", query: { artist: a.slug } }}
+                    href={{ pathname: "/discover", query: { artist: a.slug } }}
                     className="chart-row__play"
                     aria-label={t("discoverArtist", { name: a.name })}
                   >
@@ -558,7 +564,7 @@ function EmptyChart({ text, cta }: { text: string; cta: string }) {
   return (
     <div className="charts__empty" role="status">
       <p>{text}</p>
-      <Link href="/" className="button button--primary">
+      <Link href="/discover" className="button button--primary">
         {cta}
       </Link>
     </div>

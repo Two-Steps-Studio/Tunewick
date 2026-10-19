@@ -1,7 +1,7 @@
 """Storage sweep: delete objects the database no longer refers to (private.storage_deletions).
 
 The database queues an object when it forgets it (e.g. an expired share clip); the worker deletes
-it from the bucket — a missing object counts as deleted — and then clears the queue entry. Entries
+it from the bucket - a missing object counts as deleted - and then clears the queue entry. Entries
 that keep failing stay queued (five tries) for someone to look at.
 """
 

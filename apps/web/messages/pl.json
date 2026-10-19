@@ -13,6 +13,7 @@
     "loading": "Wczytuję…"
   },
   "Nav": {
+    "listen": "Słuchaj",
     "discover": "Odkrywaj",
     "scene": "Scena",
     "search": "Szukaj",
@@ -244,7 +245,7 @@
       "visibility": "Kto widzi Twoją aktywność"
     },
     "hints": {
-      "handle": "Małe litery, cyfry i myślniki, 2–40 znaków. Adres profilu: tunewick.com/profil/nazwa",
+      "handle": "Małe litery, cyfry i myślniki, 2-40 znaków. Adres profilu: tunewick.com/profil/nazwa",
       "bio": "Do 500 znaków.",
       "visibility": "Kto widzi na Twoim profilu oznaczone koncerty („Byłem przy tym”) i publiczne playlisty. Decyduje też, kto może porównywać swoje odkrycia z Twoimi."
     },
@@ -258,7 +259,7 @@
     "viewProfile": "Zobacz profil publiczny",
     "noHandle": "Ustaw nazwę profilu, aby mieć publiczny adres.",
     "errors": {
-      "handleInvalid": "Użyj 2–40 znaków: małe litery, cyfry i myślniki.",
+      "handleInvalid": "Użyj 2-40 znaków: małe litery, cyfry i myślniki.",
       "handleReserved": "Ta nazwa jest zarezerwowana. Wybierz inną.",
       "handleTaken": "Ta nazwa jest już zajęta.",
       "displayNameTooLong": "Nazwa może mieć najwyżej 80 znaków.",
@@ -269,6 +270,9 @@
       "title": "Zdjęcie profilowe",
       "remove": "Usuń zdjęcie",
       "alt": "Twoje zdjęcie profilowe"
+    },
+    "banner": {
+      "title": "Baner na profilu"
     }
   },
   "Profile": {
@@ -407,12 +411,13 @@
       "noName": "Konto bez nazwy profilu",
       "photo": "Zdjęcie artysty",
       "verificationRejected": "Wniosek o weryfikację odrzucony: {reason} Możesz złożyć nowy z innymi dowodami.",
-      "reach": "Skąd jesteś i co tworzysz"
+      "reach": "Skąd jesteś i co tworzysz",
+      "banner": "Baner"
     },
     "errors": {
       "nameRequired": "Podaj nazwę artysty.",
       "nameTooLong": "Nazwa może mieć najwyżej 120 znaków.",
-      "slugInvalid": "Użyj 2–60 znaków: małe litery, cyfry i myślniki.",
+      "slugInvalid": "Użyj 2-60 znaków: małe litery, cyfry i myślniki.",
       "slugTaken": "Ten adres jest już zajęty.",
       "slugReserved": "Ten adres jest zarezerwowany.",
       "bioTooLong": "Opis może mieć najwyżej 2000 znaków.",
@@ -575,7 +580,7 @@
     "errors": {
       "titleRequired": "Podaj tytuł.",
       "titleTooLong": "Tytuł może mieć najwyżej 200 znaków.",
-      "slugInvalid": "Użyj 1–80 znaków: małe litery, cyfry i myślniki.",
+      "slugInvalid": "Użyj 1-80 znaków: małe litery, cyfry i myślniki.",
       "slugTaken": "To wydawnictwo artysty ma już taki adres.",
       "dateInvalid": "Podaj poprawną datę.",
       "upcInvalid": "Kod UPC/EAN ma 12 lub 13 cyfr.",
@@ -662,7 +667,8 @@
         "not_allowed": "Nie możesz wysłać tego wydawnictwa.",
         "failed": "Coś poszło nie tak. Spróbuj ponownie."
       }
-    }
+    },
+    "aiHint": "Tunewick przyjmuje muzykę tworzoną przez ludzi. AI jako narzędzie (np. przy miksie czy masteringu) - wybierz „Z pomocą AI”. Muzyki wygenerowanej przez AI nie przyjmujemy."
   },
   "Audio": {
     "none": "Brak pliku master.",
@@ -705,7 +711,7 @@
       "unsupported_codec": "Plik zawiera nagranie stratne - prześlij oryginalny, bezstratny master.",
       "audio_streams": "Plik musi zawierać dokładnie jedną ścieżkę audio.",
       "bit_depth": "Głębia bitowa musi wynosić 16, 24 lub 32 bity.",
-      "sample_rate": "Częstotliwość próbkowania musi być standardowa: 44,1–192 kHz.",
+      "sample_rate": "Częstotliwość próbkowania musi być standardowa: 44,1-192 kHz.",
       "channels": "Na razie przyjmujemy nagrania mono i stereo.",
       "duration": "Utwór musi trwać od 10 sekund do 4 godzin.",
       "decode_error": "Plik jest uszkodzony i nie da się go odtworzyć do końca. Wyeksportuj master ponownie.",
@@ -818,7 +824,7 @@
       "animated": "Animowane obrazy nie są akceptowane.",
       "unreadable": "Nie udało się odczytać pliku jako obrazu.",
       "not_square": "Okładka musi być kwadratowa.",
-      "too_small": "Obraz jest za mały (okładka: min. 1400 × 1400 px, zdjęcie: min. 400 px).",
+      "too_small": "Obraz jest za mały (okładka: min. 1400 × 1400 px, zdjęcie: min. 400 px, okładka playlisty: 600 px, baner: 1200 × 400 px).",
       "processing_failed": "Nie udało się przetworzyć obrazu. Spróbuj ponownie."
     },
     "error": {
@@ -839,6 +845,24 @@
       "rejected": "Zdjęcie zostało odrzucone.",
       "failed": "Przesyłanie zdjęcia nie powiodło się - spróbuj ponownie.",
       "hint": "Co najmniej 200 × 200 px, JPEG, PNG lub WebP do 25 MB. Przytniemy je do kwadratu od środka i usuniemy metadane."
+    },
+    "playlistCover": {
+      "choose": "Dodaj własną okładkę",
+      "replace": "Zmień okładkę",
+      "processing": "Przygotowujemy okładkę…",
+      "rejected": "Okładka została odrzucona.",
+      "failed": "Przesyłanie okładki nie powiodło się - spróbuj ponownie.",
+      "hint": "Twoja grafika zamiast mozaiki okładek: co najmniej 600 × 600 px, JPEG, PNG lub WebP do 25 MB. Przytniemy ją do kwadratu od środka i usuniemy metadane.",
+      "remove": "Wróć do mozaiki okładek"
+    },
+    "banner": {
+      "choose": "Dodaj baner",
+      "replace": "Zmień baner",
+      "processing": "Przygotowujemy baner…",
+      "rejected": "Baner został odrzucony.",
+      "failed": "Przesyłanie banera nie powiodło się - spróbuj ponownie.",
+      "hint": "Szeroka grafika na górze strony, proporcje 3:1 - najlepiej 2400 × 800 px (co najmniej 1200 × 400), JPEG, PNG lub WebP do 25 MB. Przytniemy ją od środka i usuniemy metadane.",
+      "remove": "Usuń baner"
     }
   },
   "Places": {
@@ -868,7 +892,7 @@
     "free": "Free - słuchasz w jakości High.",
     "until": "{plan} do {date}",
     "lifetime": "{plan} na zawsze",
-    "freeQuality": "Cały katalog, bez reklam i bez limitów pomijania. Lossless i Hi-Res są w Premium - w becie dostępne z kodów promocyjnych.",
+    "freeQuality": "Cały katalog, bez limitów pomijania; czasem dyskretna karta sponsora (nigdy w trakcie słuchania). Lossless, Hi-Res i brak reklam są w Premium - w becie dostępne z kodów promocyjnych.",
     "premiumQuality": "Odtwarzacz wybiera Lossless lub Hi-Res, jeśli utwór ma taką wersję i Twoje urządzenie ją obsłuży.",
     "source": {
       "promo": "Z kodu: {ref}",
@@ -951,7 +975,7 @@
       "endsOn": "Koniec kampanii (opcjonalnie)",
       "maxTotal": "Limit użyć w całej kampanii",
       "maxTotalHint": "Puste = bez limitu.",
-      "count": "Liczba kodów (1–5000)",
+      "count": "Liczba kodów (1-5000)",
       "benefit": "Co daje kod",
       "benefits": {
         "premium_days": "Premium na dni",
@@ -964,7 +988,7 @@
       "newAccountsDays": "Tylko konta młodsze niż (dni)",
       "newAccountsDaysHint": "Puste = dla każdego konta.",
       "code": "Kod",
-      "codeHint": "6–32 znaki: litery, cyfry, myślniki. Wielkość liter nie ma znaczenia.",
+      "codeHint": "6-32 znaki: litery, cyfry, myślniki. Wielkość liter nie ma znaczenia.",
       "maxUses": "Limit użyć",
       "reason": "Powód (widoczny w dzienniku zmian)"
     },
@@ -1032,7 +1056,8 @@
     "share": "Udostępnij",
     "shareCopied": "Link skopiowany.",
     "shareFailed": "Nie udało się skopiować linku.",
-    "sharePrivate": "Playlista jest prywatna. Aby ją udostępnić, zmień „Kto ją widzi” poniżej."
+    "sharePrivate": "Playlista jest prywatna. Aby ją udostępnić, zmień „Kto ją widzi” poniżej.",
+    "cover": "Okładka"
   },
   "Reports": {
     "link": "Zgłoś naruszenie",
@@ -1063,7 +1088,7 @@
       "goodFaith": "Oświadczam w dobrej wierze, że podane informacje są prawdziwe i że mam prawo działać w imieniu właściciela praw."
     },
     "hints": {
-      "details": "Co jest nie tak i gdzie (np. który utwór). 10–2000 znaków."
+      "details": "Co jest nie tak i gdzie (np. który utwór). 10-2000 znaków."
     },
     "copyright": {
       "title": "Zgłoszenie naruszenia praw autorskich",
@@ -1072,7 +1097,7 @@
     "submit": "Wyślij zgłoszenie",
     "sent": "Dziękujemy. Zgłoszenie trafiło do moderatorów.",
     "errors": {
-      "details": "Opisz problem (10–2000 znaków).",
+      "details": "Opisz problem (10-2000 znaków).",
       "copyright": "Przy naruszeniu praw autorskich podaj imię i nazwisko, poprawny e-mail i zaznacz oświadczenie.",
       "duplicate": "Twoje zgłoszenie tej treści już czeka na decyzję.",
       "limit": "Wysłano dziś zbyt wiele zgłoszeń. Spróbuj jutro.",
@@ -1129,10 +1154,10 @@
       },
       "appealDecided": "Rozstrzygnięcie odwołania: {note}",
       "appeal": "Odwołanie",
-      "appealHint": "Wyjaśnij, dlaczego decyzja jest błędna (np. masz licencję). Odwołanie rozpatrzy inny moderator. 10–4000 znaków.",
+      "appealHint": "Wyjaśnij, dlaczego decyzja jest błędna (np. masz licencję). Odwołanie rozpatrzy inny moderator. 10-4000 znaków.",
       "sendAppeal": "Wyślij odwołanie",
       "errors": {
-        "text": "Opisz odwołanie (10–4000 znaków).",
+        "text": "Opisz odwołanie (10-4000 znaków).",
         "already": "Od tej decyzji już się odwołano albo minął termin.",
         "not_allowed": "Odwołać się może właściciel lub menedżer profilu.",
         "failed": "Nie udało się wysłać odwołania. Spróbuj ponownie."
@@ -1249,7 +1274,8 @@
         "engaged": "Polubienie, zapis lub obserwacja",
         "returned": "Powrót innego dnia"
       }
-    }
+    },
+    "toAds": "Reklamy"
   },
   "Events": {
     "badge": "Koncert",
@@ -1287,7 +1313,7 @@
       "submit": "Dodaj koncert",
       "saved": "Dodano. Koncert czeka na sprawdzenie przez moderatora.",
       "errors": {
-        "title": "Podaj nazwę wydarzenia (2–160 znaków).",
+        "title": "Podaj nazwę wydarzenia (2-160 znaków).",
         "date": "Podaj datę i godzinę - od dziś do dwóch lat naprzód.",
         "venue": "Podaj nazwę miejsca, miasto i województwo.",
         "ticket": "Link do biletów musi zaczynać się od https://",
@@ -2032,7 +2058,7 @@
     },
     "empty": "W tym okresie jeszcze nic nie słuchano. Włącz coś, a Twoje statystyki zaczną się tutaj.",
     "startListening": "Zacznij słuchać",
-    "hourName": "{hour}:00–{hour}:59",
+    "hourName": "{hour}:00-{hour}:59",
     "playsCount": "{count, plural, one {# odtworzenie} few {# odtworzenia} many {# odtworzeń} other {# odtworzenia}}",
     "labels": {
       "listening": "Czas słuchania",
@@ -2069,7 +2095,7 @@
       "topHour": "Najwięcej słuchasz około {hour}:00.",
       "session": "Najdłuższa sesja: {time}.",
       "streak": "Najdłuższa seria odkryć: {count, plural, one {# dzień} other {# dni}} z rzędu.",
-      "night": "{share} Twoich odtworzeń było nocą (22:00–05:00)."
+      "night": "{share} Twoich odtworzeń było nocą (22:00-05:00)."
     },
     "tops": {
       "artists": "Top artyści",
@@ -2417,8 +2443,8 @@
     "legend": {
       "none": "Jeszcze bez muzyki",
       "one": "1 artysta",
-      "few": "2–4",
-      "many": "5–19",
+      "few": "2-4",
+      "many": "5-19",
       "most": "20+",
       "mine": "Słuchasz muzyki stąd"
     },
@@ -2541,5 +2567,79 @@
   },
   "Embed": {
     "listenOn": "Słuchaj na Tunewick"
+  },
+  "Ads": {
+    "sponsored": "Sponsorowane",
+    "label": "Reklama: {advertiser}"
+  },
+  "AdsAdmin": {
+    "title": "Reklamy",
+    "lead": "Karty sponsorów dla słuchaczy w planie Free. Bez sieci reklamowych i bez śledzenia: kartę wybiera się po miejscu i języku, a statystyki to anonimowe liczby dzienne. Premium nie widzi reklam.",
+    "link": "Reklamy",
+    "campaigns": "Kampanie",
+    "empty": "Nie ma jeszcze kampanii.",
+    "new": "Nowa kampania",
+    "edit": "Edytuj",
+    "stats": "{impressions} wyświetleń · {clicks} kliknięć (30 dni)",
+    "active": "działa",
+    "paused": "wstrzymana",
+    "start": "Uruchom",
+    "pause": "Wstrzymaj",
+    "save": "Zapisz",
+    "create": "Utwórz (wstrzymaną)",
+    "saved": "Zapisano.",
+    "placements": {
+      "library": "Biblioteka",
+      "charts": "Listy",
+      "browse": "Przeglądaj",
+      "scene": "Scena"
+    },
+    "fields": {
+      "advertiser": "Reklamodawca",
+      "headline": "Nagłówek",
+      "body": "Opis (opcjonalnie)",
+      "cta": "Przycisk",
+      "url": "Adres strony (https)",
+      "release": "Albo wydawnictwo na Tunewick",
+      "placements": "Gdzie się pokazuje",
+      "locales": "Języki",
+      "weight": "Waga",
+      "startsOn": "Od dnia",
+      "endsOn": "Do dnia"
+    },
+    "hints": {
+      "cta": "Krótko, np. „Zobacz” albo „Posłuchaj”.",
+      "url": "Otwiera się w nowej karcie. Wypełnij to albo wydawnictwo, nie oba.",
+      "release": "Adres w formie artysta/wydawnictwo - karta pokaże okładkę i otworzy stronę wydawnictwa.",
+      "releaseCurrent": "Teraz: {title}. Adres w formie artysta/wydawnictwo.",
+      "placements": "Nigdy w odtwarzaczu, w Odkrywaj, na stronach artystów, wydawnictw ani playlist.",
+      "locales": "Nic nie zaznaczone = wszystkie języki.",
+      "weight": "1-10: jak często ta kampania wypada w losowaniu względem innych."
+    },
+    "errors": {
+      "invalid": "Sprawdź pola: potrzebny jest dokładnie jeden cel (https albo wydawnictwo) i co najmniej jedno miejsce.",
+      "release_not_found": "Nie ma takiego wydawnictwa (albo kampanii).",
+      "mfa_required": "Potwierdź logowanie drugim składnikiem.",
+      "not_allowed": "Tylko administratorzy.",
+      "failed": "Nie udało się zapisać. Spróbuj ponownie."
+    }
+  },
+  "Home": {
+    "title": "Słuchaj",
+    "description": "Muzyka niezależnych artystów - posłuchaj od razu, potem odkrywaj nowe.",
+    "leadYours": "Twoja muzyka od razu: to, czego słuchasz ostatnio i co polubiłeś.",
+    "leadPopular": "Muzyka od ludzi, od razu: to, czego słucha się w tym tygodniu na Tunewick.",
+    "playYours": "Odtwórz swoją muzykę",
+    "playPopular": "Odtwórz popularne",
+    "discover": "Odkrywaj nowe",
+    "recent": "Słuchane ostatnio",
+    "fresh": "Nowości od obserwowanych",
+    "popular": "Popularne w tym tygodniu",
+    "playFrom": "Odtwórz od: {title} - {artist}",
+    "nextTitle": "Gotowy na coś nowego?",
+    "nextLead": "Odkrywaj: utwór po utworze, każdy z powodem, dla którego go słyszysz.",
+    "newest": "Najnowsze wydawnictwa",
+    "leadNewest": "Muzyka od ludzi, od razu: najnowsze wydawnictwa na Tunewick.",
+    "playNewest": "Odtwórz najnowsze"
   }
 }

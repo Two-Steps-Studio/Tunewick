@@ -1,4 +1,4 @@
-// Grants a platform role server-side (secret key) — used to bootstrap the first admin.
+// Grants a platform role server-side (secret key) - used to bootstrap the first admin.
 // The grant is written to the audit log as a "system" action. Afterwards admins grant roles in
 // the app (public.admin_grant_role requires admin + MFA).
 //

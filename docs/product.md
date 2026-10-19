@@ -1,18 +1,18 @@
 # Product Definition
 
-> Status: **approved direction; legal questions L1–L6 open** (Phase 1, Guidon: "Phase 1: Product audit & definition").
+> Status: **approved direction; legal questions L1-L6 open** (Phase 1, Guidon: "Phase 1: Product audit & definition").
 > Last updated: 2026-10-05. Market facts are as of this date and must be re-checked before launch.
 
 ## 1. Vision
 
-**Tunewick — discover more, listen better, connect deeper.**
+**Tunewick - discover more, listen better, connect deeper.**
 
 Tunewick is a music platform where independent artists, local scenes and live events are the
 center of the product, not a side shelf. Listeners come to find music they would never meet in
 an algorithmic mainstream feed, hear it in the quality the artist actually mastered it in, and
 follow it out of the app into real venues.
 
-One sentence: **Tunewick is where a scene lives online — its records, its gigs and the people
+One sentence: **Tunewick is where a scene lives online - its records, its gigs and the people
 who were there.**
 
 ## 2. The honest answer: "Why Tunewick instead of Spotify?"
@@ -60,7 +60,7 @@ labels and the people who were there.
 Each differentiator states how it differs from the competitor equivalent (anti-clone rule).
 
 ### 4.1 Scene-first discovery
-- **What:** Discovery organized around scenes (city/region + genre + venues + collectives) across all of Poland — small, independent artists from any city or town, not one region (decision D6).
+- **What:** Discovery organized around scenes (city/region + genre + venues + collectives) across all of Poland - small, independent artists from any city or town, not one region (decision D6).
 - **Differs from Spotify:** Spotify's location signals are about where *listeners* are ("Top 50 Poland"). Tunewick models where *music comes from* and where it is *played live*.
 
 ### 4.2 Transparent discovery
@@ -95,23 +95,23 @@ Each differentiator states how it differs from the competitor equivalent (anti-c
 
 ## 5. Personas
 
-### P1 — "Scena" listener (primary)
-Kasia, 27, Katowice. Pays for a mainstream service. Goes to 2–4 gigs a month (Katofonia, club nights, small festivals). Frustrated that her mainstream app keeps recommending the same artists, and that she finds local bands only through Instagram posters.
+### P1 - "Scena" listener (primary)
+Kasia, 27, Katowice. Pays for a mainstream service. Goes to 2-4 gigs a month (Katofonia, club nights, small festivals). Frustrated that her mainstream app keeps recommending the same artists, and that she finds local bands only through Instagram posters.
 **Needs:** discover local/independent artists with context, know what's on this weekend, keep a history of gigs.
 
-### P2 — Audiophile
+### P2 - Audiophile
 Marek, 41, owns a DAC and good headphones. Uses Qobuz/Tidal. Distrusts "Hi-Res" labels.
 **Needs:** know exactly what he's hearing (codec, bit depth, sample rate, source vs delivered), gapless albums, no hidden resampling where avoidable.
 
-### P3 — Independent artist (supply side, critical for MVP)
+### P3 - Independent artist (supply side, critical for MVP)
 Zespół from Gliwice, self-releases via a distributor, plays local clubs, has studio masters in 24-bit WAV/FLAC.
 **Needs:** upload in original quality, a profile that connects music with gigs, reach listeners in their region, understand who listens, keep rights and control.
 
-### P4 — Venue / organizer / collective
-A club or promoter in a Polish city running 10–20 events a month.
+### P4 - Venue / organizer / collective
+A club or promoter in a Polish city running 10-20 events a month.
 **Needs:** publish events with lineups, reach people who like those artists, show the venue's musical identity over time.
 
-### P5 — Admin / moderator (internal)
+### P5 - Admin / moderator (internal)
 **Needs:** verify artists, review uploads and rights declarations, handle takedowns, manage promo codes, audit actions.
 
 ## 6. MVP scope
@@ -198,14 +198,14 @@ What this involves:
 | D2 | **User-centric payouts** once paid plans exist: a subscriber's payment goes to the artists that subscriber listens to. Data model must record per-user listening attributable to artists from day one. |
 | D3 | **No card payments in MVP.** Premium is granted via promo codes and beta access. Payment provider integration is Phase 14; entitlements stay provider-agnostic. |
 | D4 | **Free = full catalog in High (lossy) quality. Premium = Lossless and Hi-Res** (where source allows). No artificial listening restrictions on Free. |
-| D5 | **Closed beta first:** ~30–50 invited artists and 5–10 venues, invite codes, then public beta. (Originally GZM-only; widened by D6.) |
-| D6 | **All of Poland, small independent artists** (owner, 2026-10-06): no regional limit — artists from any city or town in Poland; scenes are a way to explore, not a gate. Small/independent first: no label catalog (see MVP content decision). |
+| D5 | **Closed beta first:** ~30-50 invited artists and 5-10 venues, invite codes, then public beta. (Originally GZM-only; widened by D6.) |
+| D6 | **All of Poland, small independent artists** (owner, 2026-10-06): no regional limit - artists from any city or town in Poland; scenes are a way to explore, not a gate. Small/independent first: no label catalog (see MVP content decision). |
 
 ## 10. Key risks
 
 | Risk | Impact | Mitigation |
 | --- | --- | --- |
-| **Cold start** — few artists, empty catalog | Product feels empty; no listeners | Invite small independent artists from across Poland before public beta (several cities/scenes, not one); artist invite codes; venue partnerships. |
+| **Cold start** - few artists, empty catalog | Product feels empty; no listeners | Invite small independent artists from across Poland before public beta (several cities/scenes, not one); artist invite codes; venue partnerships. |
 | Listeners won't use a second app | Low retention | Narrow, sharp value: "what's on + what it sounds like + I was there". Events and soundchecks give reasons to return. |
 | Collective-licensing cost/complexity | Legal exposure or blocked launch | Resolve L1 before public launch; ask membership on upload. |
 | False rights declarations / infringing uploads | Legal exposure | Moderation queue, artist verification, duplicate/fingerprint checks, takedown process, indemnity in terms. |
@@ -231,3 +231,12 @@ Avoid vanity metrics. Track:
 3. Artists and scenes first; promotion is always labeled.
 4. Community serves discovery, not engagement metrics.
 5. Every feature answers "what makes the Tunewick version different?"
+
+## People first
+
+- **Music by people.** Tunewick publishes music made by people. AI as a tool (mixing, mastering,
+  a plug-in) is fine and labelled "AI-assisted"; AI-generated music is not accepted - the database
+  refuses it on releases, tracks and rights declarations, and such a release cannot be submitted.
+- **Room for people's art.** The interface stays minimal so the art people make carries it: large
+  release covers, wide banners (3:1) on artist and listener pages, and listeners' own playlist
+  covers. No stock pictures or filler gradients where art is missing.

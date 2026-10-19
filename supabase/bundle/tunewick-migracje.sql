@@ -12429,4 +12429,631 @@ $tw_20261019090000$;
   end if;
 end $run$;
 
+-- 20261020090000_ads.sql
+do $run$ begin
+  if not exists (select 1 from supabase_migrations.schema_migrations where version = '20261020090000') then
+    execute $tw_20261020090000$-- Ads: first-party, contextual sponsor cards for listeners on the Free plan.
+--
+-- No ad network, no tracking: a card is chosen from active campaigns by placement and language
+-- only, never by who is looking, and the statistics are anonymous daily counts. Premium never sees
+-- ads. A campaign either promotes a release on Tunewick (its artwork, links to its page) or links
+-- to an external https address. Where cards may appear is decided in the app (docs/ads.md): never
+-- in the player, the Discover feed, artist, release or playlist pages, or embeds.
+
+create type public.ad_placement as enum ('library', 'charts', 'browse', 'scene');
+
+create table public.ad_campaigns (
+  id uuid primary key default gen_random_uuid(),
+  advertiser text not null constraint ad_campaigns_advertiser check (char_length(advertiser) between 1 and 80),
+  headline text not null constraint ad_campaigns_headline check (char_length(headline) between 1 and 80),
+  body text constraint ad_campaigns_body check (char_length(body) <= 160),
+  cta text not null constraint ad_campaigns_cta check (char_length(cta) between 1 and 24),
+  url text constraint ad_campaigns_url check (url ~ '^https://[^\s/$.?#][^\s]*$' and char_length(url) <= 500),
+  release_id uuid references public.releases (id) on delete cascade,
+  placements public.ad_placement[] not null constraint ad_campaigns_placements check (cardinality(placements) between 1 and 4),
+  -- Interface languages the card is written for; empty = every language.
+  locales text[] not null default '{}' constraint ad_campaigns_locales check (
+    cardinality(locales) <= 6 and locales <@ array['pl', 'en', 'de', 'es', 'fr', 'pt']),
+  weight smallint not null default 1 constraint ad_campaigns_weight check (weight between 1 and 10),
+  starts_at timestamptz,
+  ends_at timestamptz,
+  active boolean not null default false,
+  created_by uuid references auth.users (id) on delete set null,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  constraint ad_campaigns_target check ((url is null) <> (release_id is null)),
+  constraint ad_campaigns_window check (ends_at is null or starts_at is null or ends_at > starts_at)
+);
+
+alter table public.ad_campaigns enable row level security;
+revoke all on public.ad_campaigns from anon, authenticated;
+-- No policies: campaigns are read through public.ad_for and the admin functions only.
+
+create trigger ad_campaigns_updated_at before update on public.ad_campaigns
+  for each row execute function private.set_updated_at();
+
+/** Anonymous daily counts per campaign and placement. */
+create table private.ad_stats (
+  campaign_id uuid not null references public.ad_campaigns (id) on delete cascade,
+  day date not null default (now() at time zone 'Europe/Warsaw')::date,
+  placement public.ad_placement not null,
+  impressions integer not null default 0,
+  clicks integer not null default 0,
+  primary key (campaign_id, day, placement)
+);
+
+/** Whether the caller sees ads: visitors and listeners on the Free plan. */
+create function private.sees_ads()
+returns boolean
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select (select auth.uid()) is null
+    or coalesce((select e.plan_code = 'free' from private.effective_plan((select auth.uid())) e limit 1), true);
+$$;
+
+revoke execute on function private.sees_ads() from public, anon, authenticated;
+
+/**
+ * One sponsor card for `placement` in `locale`, or nothing (Premium, no campaign). Weighted random
+ * among the campaigns running now; a promoted release must still be public.
+ */
+create function public.ad_for(placement public.ad_placement, locale text)
+returns table (
+  id uuid, advertiser text, headline text, body text, cta text, url text,
+  release_id uuid, release_slug text, artist_slug text, artwork_image_id uuid
+)
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select c.id, c.advertiser, c.headline, c.body, c.cta, c.url,
+    r.id, r.slug::text, a.slug::text, r.artwork_image_id
+  from public.ad_campaigns c
+  left join public.releases r on r.id = c.release_id
+  left join public.artists a on a.id = r.artist_id
+  where private.sees_ads()
+    and c.active
+    and ad_for.placement = any (c.placements)
+    and (cardinality(c.locales) = 0 or ad_for.locale = any (c.locales))
+    and (c.starts_at is null or c.starts_at <= now())
+    and (c.ends_at is null or c.ends_at > now())
+    and (c.release_id is null or public.release_is_public(c.release_id))
+  order by -ln(1.0 - random()) / c.weight
+  limit 1;
+$$;
+
+revoke execute on function public.ad_for(public.ad_placement, text) from public;
+grant execute on function public.ad_for(public.ad_placement, text) to anon, authenticated;
+
+/** Counts an impression or a click (anonymous; only for a campaign that is running). */
+create function public.record_ad_event(campaign uuid, placement public.ad_placement, kind text)
+returns void
+language plpgsql
+security definer
+set search_path = ''
+as $$
+begin
+  if kind not in ('impression', 'click') then
+    raise exception 'unknown ad event' using errcode = '22023';
+  end if;
+  if not exists (
+    select 1 from public.ad_campaigns c
+    where c.id = record_ad_event.campaign and c.active
+      and record_ad_event.placement = any (c.placements)
+      and (c.starts_at is null or c.starts_at <= now())
+      and (c.ends_at is null or c.ends_at > now())
+  ) then
+    return;
+  end if;
+  insert into private.ad_stats as s (campaign_id, placement, impressions, clicks)
+  values (campaign, placement, (kind = 'impression')::integer, (kind = 'click')::integer)
+  on conflict on constraint ad_stats_pkey do update
+    set impressions = s.impressions + excluded.impressions, clicks = s.clicks + excluded.clicks;
+end;
+$$;
+
+revoke execute on function public.record_ad_event(uuid, public.ad_placement, text) from public;
+grant execute on function public.record_ad_event(uuid, public.ad_placement, text) to anon, authenticated;
+
+-- Admin ------------------------------------------------------------------------------------------
+
+/** Every campaign with its totals for the last 30 days. */
+create function public.admin_ad_campaigns()
+returns table (
+  id uuid, advertiser text, headline text, body text, cta text, url text, release_id uuid,
+  release_title text, release_ref text, placements public.ad_placement[], locales text[], weight smallint,
+  starts_at timestamptz, ends_at timestamptz, active boolean, impressions bigint, clicks bigint
+)
+language plpgsql
+stable
+security definer
+set search_path = ''
+as $$
+begin
+  perform public.require_staff('admin');
+  return query
+  select c.id, c.advertiser, c.headline, c.body, c.cta, c.url, c.release_id, r.title,
+    a.slug::text || '/' || r.slug::text, c.placements, c.locales, c.weight, c.starts_at, c.ends_at, c.active,
+    coalesce(sum(s.impressions), 0)::bigint, coalesce(sum(s.clicks), 0)::bigint
+  from public.ad_campaigns c
+  left join public.releases r on r.id = c.release_id
+  left join public.artists a on a.id = r.artist_id
+  left join private.ad_stats s on s.campaign_id = c.id and s.day > current_date - 30
+  group by c.id, r.title, a.slug, r.slug
+  order by c.active desc, c.created_at desc;
+end;
+$$;
+
+/**
+ * Creates (`campaign` null) or updates a campaign. `release_slug` as "artist/release" promotes a
+ * release; otherwise `url` is the destination. New campaigns start paused.
+ */
+create function public.admin_save_ad_campaign(
+  campaign uuid,
+  advertiser text,
+  headline text,
+  body text,
+  cta text,
+  url text,
+  release_ref text,
+  placements public.ad_placement[],
+  locales text[],
+  weight smallint,
+  starts_at timestamptz,
+  ends_at timestamptz
+)
+returns uuid
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare
+  target_release uuid;
+  saved uuid;
+begin
+  perform public.require_staff('admin');
+  if nullif(trim(release_ref), '') is not null then
+    select r.id into target_release
+    from public.releases r join public.artists a on a.id = r.artist_id
+    where a.slug = split_part(trim(release_ref), '/', 1) and r.slug = split_part(trim(release_ref), '/', 2);
+    if target_release is null then
+      raise exception 'release not found' using errcode = 'P0002';
+    end if;
+  end if;
+
+  if campaign is null then
+    insert into public.ad_campaigns (advertiser, headline, body, cta, url, release_id, placements,
+      locales, weight, starts_at, ends_at, created_by)
+    values (trim(advertiser), trim(headline), nullif(trim(body), ''), trim(cta),
+      case when target_release is null then nullif(trim(url), '') end, target_release, placements,
+      coalesce(locales, '{}'), coalesce(weight, 1), starts_at, ends_at, (select auth.uid()))
+    returning id into saved;
+    perform private.write_audit('ads.campaign_created', 'ad_campaign', saved::text, null,
+      jsonb_build_object('advertiser', trim(advertiser), 'headline', trim(headline)));
+  else
+    update public.ad_campaigns c set
+      advertiser = trim(admin_save_ad_campaign.advertiser),
+      headline = trim(admin_save_ad_campaign.headline),
+      body = nullif(trim(admin_save_ad_campaign.body), ''),
+      cta = trim(admin_save_ad_campaign.cta),
+      url = case when target_release is null then nullif(trim(admin_save_ad_campaign.url), '') end,
+      release_id = target_release,
+      placements = admin_save_ad_campaign.placements,
+      locales = coalesce(admin_save_ad_campaign.locales, '{}'),
+      weight = coalesce(admin_save_ad_campaign.weight, 1),
+      starts_at = admin_save_ad_campaign.starts_at,
+      ends_at = admin_save_ad_campaign.ends_at
+    where c.id = campaign
+    returning c.id into saved;
+    if saved is null then
+      raise exception 'campaign not found' using errcode = 'P0002';
+    end if;
+    perform private.write_audit('ads.campaign_updated', 'ad_campaign', saved::text, null,
+      jsonb_build_object('advertiser', trim(advertiser), 'headline', trim(headline)));
+  end if;
+  return saved;
+end;
+$$;
+
+/** Starts or pauses a campaign. */
+create function public.admin_set_ad_campaign_active(campaign uuid, active boolean)
+returns void
+language plpgsql
+security definer
+set search_path = ''
+as $$
+begin
+  perform public.require_staff('admin');
+  update public.ad_campaigns c set active = admin_set_ad_campaign_active.active where c.id = campaign;
+  if not found then
+    raise exception 'campaign not found' using errcode = 'P0002';
+  end if;
+  perform private.write_audit(case when active then 'ads.campaign_started' else 'ads.campaign_paused' end,
+    'ad_campaign', campaign::text);
+end;
+$$;
+
+revoke execute on function public.admin_ad_campaigns() from public, anon;
+revoke execute on function public.admin_save_ad_campaign(uuid, text, text, text, text, text, text,
+  public.ad_placement[], text[], smallint, timestamptz, timestamptz) from public, anon;
+revoke execute on function public.admin_set_ad_campaign_active(uuid, boolean) from public, anon;
+grant execute on function public.admin_ad_campaigns() to authenticated;
+grant execute on function public.admin_save_ad_campaign(uuid, text, text, text, text, text, text,
+  public.ad_placement[], text[], smallint, timestamptz, timestamptz) to authenticated;
+grant execute on function public.admin_set_ad_campaign_active(uuid, boolean) to authenticated;
+
+-- Statistics older than two years are of no use to anyone.
+select cron.schedule('ad-stats-retention', '17 4 * * *',
+  $$delete from private.ad_stats where day < current_date - 730$$);
+$tw_20261020090000$;
+    insert into supabase_migrations.schema_migrations (version, name) values ('20261020090000', 'ads');
+    raise notice 'applied 20261020090000_ads.sql';
+  end if;
+end $run$;
+
+-- 20261021090000_people_first.sql
+do $run$ begin
+  if not exists (select 1 from supabase_migrations.schema_migrations where version = '20261021090000') then
+    execute $tw_20261021090000$-- People first (Guidon: "Stawiamy na ludzi"): music only by people, and more room for art people make.
+--
+-- 1. AI-generated music is no longer accepted. AI as a tool (mixing, mastering, a plug-in) stays
+--    allowed as "ai_assisted"; a release whose music is generated by AI cannot be declared,
+--    saved as such, or submitted for review.
+-- 2. Listeners give their playlists their own cover (kind playlist_cover).
+-- 3. Artists and listeners add a wide banner (3:1) across the top of their page (kind banner).
+-- Same pipeline as covers and profile pictures: presigned upload, the worker re-encodes to WebP
+-- (it needs the matching worker release: images.py RULES), the result is attached to its owner.
+-- Comparisons use kind::text so the new enum values are never cast inside this transaction.
+
+-- 1. Music by people ------------------------------------------------------------------------------
+
+create function private.refuse_ai_generated()
+returns trigger
+language plpgsql
+set search_path = ''
+as $$
+begin
+  if new.ai_content::text = 'ai_generated'
+     and (tg_op = 'INSERT' or old.ai_content is distinct from new.ai_content) then
+    raise exception 'Tunewick accepts music made by people; AI-generated music is not accepted'
+      using errcode = '23514', hint = 'ai_generated';
+  end if;
+  return new;
+end;
+$$;
+
+create trigger releases_refuse_ai_generated
+  before insert or update of ai_content on public.releases
+  for each row execute function private.refuse_ai_generated();
+
+create trigger rights_declarations_refuse_ai_generated
+  before insert on public.rights_declarations
+  for each row execute function private.refuse_ai_generated();
+
+/** As before; "ai" is ready only for music made by people (with or without AI tools). */
+create or replace function public.release_readiness(release uuid)
+returns jsonb
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select case when not public.can_view_release(release) then null else jsonb_build_object(
+    'tracks', exists (select 1 from public.tracks t where t.release_id = release),
+    'ai', coalesce((select r.ai_content in ('human', 'ai_assisted') from public.releases r where r.id = release), false),
+    'rights', exists (select 1 from public.rights_declarations d where d.release_id = release),
+    'artwork', exists (
+      select 1 from public.releases r join public.images i on i.id = r.artwork_image_id
+      where r.id = release and i.status = 'accepted'
+    ),
+    'audio', exists (select 1 from public.tracks t where t.release_id = release)
+      and not exists (
+        select 1 from public.tracks t
+        where t.release_id = release
+          and coalesce(
+            (select u.status from public.track_audio_uploads u
+             where u.track_id = t.id order by u.created_at desc limit 1),
+            'pending'
+          ) <> 'accepted'
+      )
+  ) end;
+$$;
+
+-- 2 and 3. Art by people --------------------------------------------------------------------------
+
+alter type public.image_kind add value if not exists 'playlist_cover';
+alter type public.image_kind add value if not exists 'banner';
+
+alter table public.images
+  add column playlist_id uuid references public.playlists (id) on delete cascade;
+alter table public.images drop constraint images_owner;
+alter table public.images add constraint images_owner check (
+  (kind::text = 'release_artwork' and release_id is not null and artist_id is null and profile_id is null and playlist_id is null)
+  or (kind::text = 'artist_image' and artist_id is not null and release_id is null and profile_id is null and playlist_id is null)
+  or (kind::text = 'profile_image' and profile_id is not null and release_id is null and artist_id is null and playlist_id is null)
+  or (kind::text = 'playlist_cover' and playlist_id is not null and release_id is null and artist_id is null and profile_id is null)
+  or (kind::text = 'banner' and release_id is null and playlist_id is null
+      and (artist_id is null) <> (profile_id is null))
+);
+create index images_playlist_idx on public.images (playlist_id, created_at desc) where playlist_id is not null;
+
+alter table public.playlists
+  add column cover_image_id uuid references public.images (id) on delete set null;
+alter table public.artists
+  add column banner_image_id uuid references public.images (id) on delete set null;
+alter table public.profiles
+  add column banner_image_id uuid references public.images (id) on delete set null;
+
+/** As before, plus playlist covers and banners: your own, or attached to something visible. */
+create or replace function public.can_view_image(image uuid)
+returns boolean
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select exists (
+    select 1 from public.images i
+    left join public.releases r on r.id = i.release_id
+    left join public.artists a on a.id = coalesce(i.artist_id, r.artist_id)
+    left join public.profiles p on p.id = i.profile_id
+    left join public.playlists pl on pl.id = i.playlist_id
+    where i.id = image
+      and (
+        (i.profile_id is not null and i.profile_id = (select auth.uid()))
+        or (pl.id is not null and pl.owner_id = (select auth.uid()))
+        or public.is_staff()
+        or (a.id is not null and public.is_artist_member(a.id))
+        or (i.status = 'accepted' and (
+          (i.kind::text = 'release_artwork' and r.artwork_image_id = i.id and public.release_is_public(r.id))
+          or (i.kind::text = 'artist_image' and a.image_id = i.id and a.status = 'active')
+          or (i.kind::text = 'profile_image' and p.image_id = i.id and p.deleted_at is null)
+          -- An unlisted playlist's cover is as reachable as the playlist: whoever has the link.
+          or (i.kind::text = 'playlist_cover' and pl.cover_image_id = i.id and pl.visibility in ('public', 'unlisted'))
+          or (i.kind::text = 'banner' and (
+            (a.banner_image_id = i.id and a.status = 'active')
+            or (p.banner_image_id = i.id and p.deleted_at is null)))
+        ))
+      )
+  );
+$$;
+
+/**
+ * Starts an upload. Owners: a release you edit (cover), an artist you manage (photo, banner), your
+ * own profile (picture, banner: owner = your id), your own playlist (cover).
+ */
+create or replace function public.begin_image_upload(
+  kind public.image_kind, owner uuid, extension text, size_bytes bigint
+)
+returns public.images
+language plpgsql
+volatile
+security definer
+set search_path = ''
+as $$
+declare
+  ext text := lower(btrim(begin_image_upload.extension, '. '));
+  new_id uuid := gen_random_uuid();
+  for_profile boolean := false;
+  result public.images;
+begin
+  if begin_image_upload.kind::text = 'release_artwork' then
+    if not public.can_edit_release(begin_image_upload.owner) then
+      raise exception 'not allowed to change this release' using errcode = '42501';
+    end if;
+  elsif begin_image_upload.kind::text = 'profile_image' then
+    if begin_image_upload.owner is distinct from (select auth.uid()) then
+      raise exception 'only your own profile picture' using errcode = '42501';
+    end if;
+  elsif begin_image_upload.kind::text = 'playlist_cover' then
+    if not exists (
+      select 1 from public.playlists pl
+      where pl.id = begin_image_upload.owner and pl.owner_id = (select auth.uid())
+    ) then
+      raise exception 'only your own playlists' using errcode = '42501';
+    end if;
+  elsif begin_image_upload.kind::text = 'banner' and begin_image_upload.owner = (select auth.uid()) then
+    for_profile := true;
+  elsif not public.is_artist_member(begin_image_upload.owner, array['owner', 'manager']::public.artist_member_role[]) then
+    raise exception 'not allowed to change this artist' using errcode = '42501';
+  end if;
+
+  if ext not in ('jpg', 'jpeg', 'png', 'webp') then
+    raise exception 'only JPEG, PNG and WebP images are accepted' using errcode = '22023';
+  end if;
+
+  if (
+    select count(*) from public.images i
+    where coalesce(i.release_id, i.artist_id, i.profile_id, i.playlist_id) = begin_image_upload.owner
+      and i.created_at > now() - interval '1 hour'
+  ) >= 10 then
+    raise exception 'too many uploads, try again later' using errcode = '54000';
+  end if;
+
+  insert into public.images (id, kind, release_id, artist_id, profile_id, playlist_id, uploaded_by,
+    object_key, size_bytes)
+  values (
+    new_id,
+    begin_image_upload.kind,
+    case when begin_image_upload.kind::text = 'release_artwork' then begin_image_upload.owner end,
+    case when begin_image_upload.kind::text = 'artist_image'
+      or (begin_image_upload.kind::text = 'banner' and not for_profile) then begin_image_upload.owner end,
+    case when begin_image_upload.kind::text = 'profile_image'
+      or (begin_image_upload.kind::text = 'banner' and for_profile) then begin_image_upload.owner end,
+    case when begin_image_upload.kind::text = 'playlist_cover' then begin_image_upload.owner end,
+    (select auth.uid()),
+    format('images/%s/%s.%s', begin_image_upload.kind, new_id, ext),
+    begin_image_upload.size_bytes
+  )
+  returning * into result;
+  return result;
+end;
+$$;
+
+create or replace function public.finish_image_upload(image uuid, result jsonb)
+returns public.audio_upload_status
+language plpgsql
+volatile
+security definer
+set search_path = ''
+as $$
+declare
+  current public.images;
+begin
+  select * into current from public.images i
+  where i.id = finish_image_upload.image and i.status = 'processing'
+  for update;
+  if current.id is null then
+    raise exception 'image is not being processed' using errcode = '55000';
+  end if;
+
+  if finish_image_upload.result ->> 'status' = 'accepted' then
+    update public.images i
+    set status = 'accepted',
+        processed_at = now(),
+        rejection_code = null,
+        width = (finish_image_upload.result ->> 'width')::integer,
+        height = (finish_image_upload.result ->> 'height')::integer,
+        dominant_color = finish_image_upload.result ->> 'dominant_color',
+        variants = finish_image_upload.result -> 'variants'
+    where i.id = current.id;
+
+    if current.kind::text = 'release_artwork' then
+      update public.releases r set artwork_image_id = current.id
+      where r.id = current.release_id and r.status in ('draft', 'rejected');
+    elsif current.kind::text = 'profile_image' then
+      update public.profiles p set image_id = current.id where p.id = current.profile_id;
+    elsif current.kind::text = 'playlist_cover' then
+      update public.playlists pl set cover_image_id = current.id where pl.id = current.playlist_id;
+    elsif current.kind::text = 'banner' and current.profile_id is not null then
+      update public.profiles p set banner_image_id = current.id where p.id = current.profile_id;
+    elsif current.kind::text = 'banner' then
+      update public.artists a set banner_image_id = current.id where a.id = current.artist_id;
+    else
+      update public.artists a set image_id = current.id where a.id = current.artist_id;
+    end if;
+    return 'accepted'::public.audio_upload_status;
+  end if;
+
+  update public.images i
+  set status = 'rejected',
+      processed_at = now(),
+      rejection_code = left(finish_image_upload.result -> 'rejection' ->> 'code', 64)
+  where i.id = current.id;
+  return 'rejected'::public.audio_upload_status;
+end;
+$$;
+
+/** Removes your playlist's own cover; the playlist goes back to the mosaic of its releases. */
+create function public.remove_playlist_cover(playlist uuid)
+returns void
+language plpgsql
+volatile
+security definer
+set search_path = ''
+as $$
+begin
+  if not exists (
+    select 1 from public.playlists pl where pl.id = playlist and pl.owner_id = (select auth.uid())
+  ) then
+    raise exception 'only your own playlists' using errcode = '42501';
+  end if;
+  delete from public.images i where i.playlist_id = playlist and i.kind::text = 'playlist_cover';
+end;
+$$;
+
+/** Removes a banner: your own (owner = your id) or an artist's you manage. */
+create function public.remove_banner(owner uuid)
+returns void
+language plpgsql
+volatile
+security definer
+set search_path = ''
+as $$
+begin
+  if owner = (select auth.uid()) then
+    delete from public.images i where i.profile_id = owner and i.kind::text = 'banner';
+  elsif public.is_artist_member(owner, array['owner', 'manager']::public.artist_member_role[]) then
+    delete from public.images i where i.artist_id = owner and i.kind::text = 'banner';
+  else
+    raise exception 'not allowed to change this banner' using errcode = '42501';
+  end if;
+end;
+$$;
+
+revoke execute on function public.remove_playlist_cover(uuid) from public, anon;
+revoke execute on function public.remove_banner(uuid) from public, anon;
+grant execute on function public.remove_playlist_cover(uuid) to authenticated;
+grant execute on function public.remove_banner(uuid) to authenticated;
+
+-- The playlist cover mosaic prefers the playlist's own cover when there is one.
+create or replace function public.playlist_covers(ids uuid[])
+returns table (playlist_id uuid, artwork_ids uuid[])
+language sql
+stable
+security invoker
+set search_path = ''
+as $$
+  select l.id, coalesce(
+    (select array[pl.cover_image_id] from public.playlists pl where pl.id = l.id and pl.cover_image_id is not null),
+    c.artwork_ids, '{}')
+  from unnest(ids[1:200]) as l (id)
+  left join lateral (
+    select array_agg(x.artwork_image_id order by x.first_position) as artwork_ids
+    from (
+      select r.artwork_image_id, min(pt.position) as first_position
+      from public.playlist_tracks pt
+      join public.tracks t on t.id = pt.track_id
+      join public.releases r on r.id = t.release_id
+      where pt.playlist_id = l.id
+        and r.artwork_image_id is not null
+        and public.release_is_public(r.id)
+      group by r.artwork_image_id
+      order by first_position
+      limit 4
+    ) x
+  ) c on true;
+$$;
+
+create trigger tracks_refuse_ai_generated
+  before insert or update of ai_content on public.tracks
+  for each row execute function private.refuse_ai_generated();
+
+/** As before, with the playlist's own cover. */
+create or replace function public.open_playlist(playlist uuid)
+returns jsonb
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select jsonb_build_object(
+    'id', p.id,
+    'owner_id', p.owner_id,
+    'title', p.title,
+    'description', p.description,
+    'visibility', p.visibility,
+    'updated_at', p.updated_at,
+    'cover_image_id', p.cover_image_id,
+    'items', coalesce((
+      select jsonb_agg(jsonb_build_object(
+        'id', t.id, 'position', t.position, 'added_at', t.added_at, 'track_id', t.track_id)
+        order by t.position, t.added_at)
+      from public.playlist_tracks t where t.playlist_id = p.id), '[]'::jsonb))
+  from public.playlists p
+  where p.id = open_playlist.playlist
+    and (p.owner_id = (select auth.uid())
+      or (p.visibility in ('public', 'unlisted')
+        and not ((select auth.uid()) is not null and private.is_blocked_between((select auth.uid()), p.owner_id))));
+$$;
+$tw_20261021090000$;
+    insert into supabase_migrations.schema_migrations (version, name) values ('20261021090000', 'people_first');
+    raise notice 'applied 20261021090000_people_first.sql';
+  end if;
+end $run$;
+
 select version, name from supabase_migrations.schema_migrations order by version desc limit 5;

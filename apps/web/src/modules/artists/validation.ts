@@ -151,7 +151,7 @@ export const inviteSchema = z.object({
   role: z.enum(["owner", "manager", "member"]),
 });
 
-/** One https link per line, 1–5 links. */
+/** One https link per line, 1-5 links. */
 export const verificationSchema = z.object({
   evidence: z
     .string()

@@ -4,8 +4,8 @@ Python ingest pipeline for Tunewick masters: validate → analyse → loudness �
 transcode → package → verify, producing a JSON report. Specification:
 [docs/audio.md](../../docs/audio.md).
 
-`python -m tunewick_audio worker` polls three Supabase queues — masters, images and share
-videos (`clips.py`: story card + preview → MP4) — with files in S3/R2 (`pnpm worker:start`
+`python -m tunewick_audio worker` polls three Supabase queues - masters, images and share
+videos (`clips.py`: story card + preview → MP4) - with files in S3/R2 (`pnpm worker:start`
 locally). Fingerprinting is not wired yet.
 
 ```bash
@@ -15,4 +15,4 @@ docker run --rm -v "$PWD/in:/in" -v "$PWD/out:/out" tunewick-audio-worker proces
 ```
 
 Exit code 0 = accepted, 2 = rejected (reason in `rejection.code` / `rejection.message`).
-ffmpeg builds without libsoxr cannot run the pipeline — use the image.
+ffmpeg builds without libsoxr cannot run the pipeline - use the image.
