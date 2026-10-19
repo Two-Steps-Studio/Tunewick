@@ -1,5 +1,5 @@
 /*
- * Tunewick design tokens — source of truth: docs/design-system.md
+ * Tunewick design tokens - source of truth: docs/design-system.md
  * Layer 1: primitives. Layer 2: semantic (theme). Components consume semantic tokens only.
  * Contrast ratios (WCAG 2.x) are listed next to text pairings.
  */
@@ -84,8 +84,8 @@
   --text-muted: var(--tk-n-400); /* 5.94 */
   --accent: var(--tk-lime); /* 15.84 */
   --on-accent: var(--tk-graphite);
-  --signal: var(--tk-coral); /* 6.01 — live, now, alerts */
-  --scene: var(--tk-purple-light); /* 5.90 — events, scenes, graph */
+  --signal: var(--tk-coral); /* 6.01 - live, now, alerts */
+  --scene: var(--tk-purple-light); /* 5.90 - events, scenes, graph */
   --focus: var(--tk-lime);
 }
 

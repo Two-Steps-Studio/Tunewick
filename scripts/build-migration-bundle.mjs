@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Builds one SQL script that applies every migration in supabase/migrations that the target
- * database has not recorded yet — for pasting into the Supabase SQL Editor when the CLI
+ * database has not recorded yet - for pasting into the Supabase SQL Editor when the CLI
  * (`supabase db push`, the "Database migrations" workflow) is not an option.
  *
  * Each migration runs only if its version is missing from supabase_migrations.schema_migrations and

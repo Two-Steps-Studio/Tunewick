@@ -705,7 +705,7 @@
       "unsupported_codec": "O arquivo contém áudio com perdas - envie o master original lossless.",
       "audio_streams": "O arquivo precisa conter exatamente um stream de áudio.",
       "bit_depth": "A profundidade de bits precisa ser de 16, 24 ou 32 bits.",
-      "sample_rate": "A taxa de amostragem precisa ser padrão: 44,1–192 kHz.",
+      "sample_rate": "A taxa de amostragem precisa ser padrão: 44,1-192 kHz.",
       "channels": "Por enquanto, só aceitamos gravações mono e estéreo.",
       "duration": "Uma faixa precisa ter entre 10 segundos e 4 horas.",
       "decode_error": "O arquivo está corrompido e não toca até o fim. Exporte o master de novo.",
@@ -951,7 +951,7 @@
       "endsOn": "Fim da campanha (opcional)",
       "maxTotal": "Limite de usos da campanha inteira",
       "maxTotalHint": "Vazio = sem limite.",
-      "count": "Número de códigos (1–5000)",
+      "count": "Número de códigos (1-5000)",
       "benefit": "O que o código dá",
       "benefits": {
         "premium_days": "Premium por dias",
@@ -964,7 +964,7 @@
       "newAccountsDays": "Só contas com menos de (dias)",
       "newAccountsDaysHint": "Vazio = qualquer conta.",
       "code": "Código",
-      "codeHint": "6–32 caracteres: letras, dígitos, hifens. Maiúsculas e minúsculas não importam.",
+      "codeHint": "6-32 caracteres: letras, dígitos, hifens. Maiúsculas e minúsculas não importam.",
       "maxUses": "Limite de usos",
       "reason": "Motivo (fica no log de auditoria)"
     },
@@ -1287,7 +1287,7 @@
       "submit": "Adicionar show",
       "saved": "Adicionado. O show está aguardando um moderador.",
       "errors": {
-        "title": "Digite o nome do evento (2–160 caracteres).",
+        "title": "Digite o nome do evento (2-160 caracteres).",
         "date": "Digite data e hora - de hoje até dois anos à frente.",
         "venue": "Digite o nome da casa de show, a cidade e a voivodia.",
         "ticket": "O link dos ingressos precisa começar com https://",
@@ -2032,7 +2032,7 @@
     },
     "empty": "Ainda não há audição neste período. Toque algo e suas estatísticas começam aqui.",
     "startListening": "Começar a ouvir",
-    "hourName": "{hour}:00–{hour}:59",
+    "hourName": "{hour}:00-{hour}:59",
     "playsCount": "{count, plural, one {# reprodução} other {# reproduções}}",
     "labels": {
       "listening": "Tempo de audição",
@@ -2069,7 +2069,7 @@
       "topHour": "Você ouve mais por volta das {hour}:00.",
       "session": "Sessão mais longa: {time}.",
       "streak": "Maior sequência de descobertas: {count, plural, one {# dia} other {# dias}} seguidos.",
-      "night": "{share} das suas reproduções foram à noite (22:00–05:00)."
+      "night": "{share} das suas reproduções foram à noite (22:00-05:00)."
     },
     "tops": {
       "artists": "Top artistas",
@@ -2417,8 +2417,8 @@
     "legend": {
       "none": "Ainda sem música",
       "one": "1 artista",
-      "few": "2–4",
-      "many": "5–19",
+      "few": "2-4",
+      "many": "5-19",
       "most": "20+",
       "mine": "Você já ouviu música daqui"
     },

@@ -40,7 +40,7 @@ describe("updateArtistSchema", () => {
 });
 
 describe("verificationSchema", () => {
-  it("accepts 1–5 https links, one per line", () => {
+  it("accepts 1-5 https links, one per line", () => {
     const parsed = verificationSchema.parse({
       evidence: "https://zespol.example\n\n https://bandcamp.example/zespol ",
       note: "",

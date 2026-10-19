@@ -1,6 +1,6 @@
 """Backfill: best moment and waveform for uploads processed before report v2 (docs/audio.md §2.6).
 
-Lowest priority — the worker runs it only after masters, images, clips and the sweep had their
+Lowest priority - the worker runs it only after masters, images, clips and the sweep had their
 turn. Works from the delivery variant (lossless FLAC, else AAC), since masters may be gone.
 """
 

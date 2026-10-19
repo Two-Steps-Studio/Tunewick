@@ -4,7 +4,7 @@ Computed in the same streaming pass as the integrity checks (pcm.analyse), one s
 the loudness of each second and its spectral shape in log-spaced bands. A good preview is loud
 relative to the rest of the track (the chorus or drop, not the intro or a breakdown) and starts
 where something new begins (a section boundary: the spectral shape and energy change). It is a
-suggestion — the artist's own choice (tracks.soundcheck_start_ms) always wins.
+suggestion - the artist's own choice (tracks.soundcheck_start_ms) always wins.
 """
 
 from __future__ import annotations
@@ -67,7 +67,7 @@ class MomentTracker:
         self.bands_db.append(10 * np.log10(bands + 1e-12))
 
     def waveform(self) -> list[int]:
-        """WAVEFORM_POINTS peaks scaled to 0–100 (relative to the loudest moment)."""
+        """WAVEFORM_POINTS peaks scaled to 0-100 (relative to the loudest moment)."""
         peaks = np.asarray(self.peaks)
         if not peaks.size or peaks.max() <= 0:
             return [0] * WAVEFORM_POINTS

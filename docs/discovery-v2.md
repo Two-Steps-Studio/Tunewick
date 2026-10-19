@@ -1,12 +1,12 @@
-# TuneWick Discovery v2 — gamification, social, statistics, global discovery, Replay (M14)
+# TuneWick Discovery v2 - gamification, social, statistics, global discovery, Replay (M14)
 
 > Status: plan + implementation in milestones (2026-10-08). Builds on M13
-> ([discovery-expansion.md](discovery-expansion.md)) — nothing is rewritten, nothing removed.
+> ([discovery-expansion.md](discovery-expansion.md)) - nothing is rewritten, nothing removed.
 > Guidon: no access from the implementation session; the milestones below are the task list to
 > mirror there.
 
 The product metric is **discovery**, not listening time: every feature below gives a reason to
-find one more artist, song or genre — and never rewards replaying the same thing.
+find one more artist, song or genre - and never rewards replaying the same thing.
 
 ## 1. What already exists (audit)
 
@@ -29,12 +29,12 @@ find one more artist, song or genre — and never rewards replaying the same thi
 | --- | --- | --- |
 | V1 | **XP** = everything in the ledger (discoveries, completions, missions, streak/day bonuses). **Discovery Score** = only discovery kinds (new song/artist/genre/country, underground, finished discoveries) × genre diversity. Levels follow XP. Point rules ×10 so XP reads naturally ("+30 XP new artist", missions +100…+300 XP) | Two numbers with two meanings: effort/engagement vs. how widely you discover; both anti-farm because both come from the same ledger |
 | V2 | Heavy numbers are **precomputed**: per-listener daily aggregates (pg_cron, incremental), chart materialized views (refreshed every 15 min), recaps cached in `user_recaps` once per finished period | No page computes a year of history on render |
-| V3 | Charts count **listeners**, not plays (≥ 30 s, no soundchecks), over 7 days; country/region charts use the listener's country, **city charts mean the local scene** (artists from the city) — listener cities are free text, sparse and too identifying | Fair, hard to game with loops, privacy-safe |
+| V3 | Charts count **listeners**, not plays (≥ 30 s, no soundchecks), over 7 days; country/region charts use the listener's country, **city charts mean the local scene** (artists from the city) - listener cities are free text, sparse and too identifying | Fair, hard to game with loops, privacy-safe |
 | V4 | Any aggregate that shows a place shows it only with **≥ 3 listeners** (k-anonymity) | No inference about single people |
 | V5 | Daily Discovery and Weekly Drop are **materialized per listener per period** on first open (stable list, completable), from the same candidates/ranking as the feed, new music only | Stable "today's set" that can be finished; cheap |
 | V6 | "Why this song?" explains the **real signal** behind the reason code in plain words, with numbers when they are real ("8,000 listeners"). No "AI" wording | Honest |
-| V7 | Missions generalize weekly challenges: cadence daily/weekly/monthly/event, XP per mission, rotation per period, events with a time window — definitions are data | New missions without deploys |
-| V8 | Badges stay data-driven (`achievements`); new metrics are computed in one function — adding a badge of an existing metric is an insert | Extensible |
+| V7 | Missions generalize weekly challenges: cadence daily/weekly/monthly/event, XP per mission, rotation per period, events with a time window - definitions are data | New missions without deploys |
+| V8 | Badges stay data-driven (`achievements`); new metrics are computed in one function - adding a badge of an existing metric is an insert | Extensible |
 | V9 | Privacy: `profile_settings` gains `profile_public`, `show_stats`, `show_score`, `show_badges`, `show_replay` (defaults: public profile, the rest visible to followers); rankings keep `show_in_rankings` (opt-out) | Each public surface has its own switch |
 | V10 | Replay is generated once the year ends (from 1 December a "so far" preview), cached; the story UI is client-side CSS animation with `prefers-reduced-motion` respected | Fast, shareable, no layout jank |
 
@@ -58,13 +58,13 @@ states, mobile and desktop layouts, EN/PL, tests, and its line in §4.
 
 ## 4. Status
 
-- **M14.1 done** — `20261009100000_xp_foundations`: point rules ×10 (XP), `underground` kind
+- **M14.1 done** - `20261009100000_xp_foundations`: point rules ×10 (XP), `underground` kind
   (+40 XP, artist < 10,000 listeners in 30 days), `my_progress.discovery_points_total` (Score input),
   `listening_daily` + `private.refresh_listening_daily()` every 10 min (incremental watermark, local
   days, hours histogram, previews excluded, 25-month retention), privacy switches on
   `profile_settings` + `private.can_view(owner, level)`. UI: XP wording, level from XP, Score
   explained. Export includes `listening_by_day`. pgTAP `m14_foundations.test.sql`.
-- **M14.2 done** — `20261009110000_charts`: MVs `private.track_charts`, `private.track_chart_places`
+- **M14.2 done** - `20261009110000_charts`: MVs `private.track_charts`, `private.track_chart_places`
   (≥ 3 listeners per place), `private.artist_charts`, refreshed every 15 min; `music_chart`
   (top/rising/underground/discovered/saved/shared × global/country/region/city scene/genre),
   `artist_chart` (rising/underground/new listeners/discovered), `fresh_releases` (24 h/7 d/30 d),
@@ -72,8 +72,8 @@ states, mobile and desktop layouts, EN/PL, tests, and its line in §4.
   listener's country, city scenes, play-from-here queues (audio presigned only on tap), Discover the
   world; loading/error states (`components/feedback/segment-error.tsx`), links from the feed and
   Browse. pgTAP `charts.test.sql`, E2E smoke.
-- **M14.3 done** — `20261009120000_discovery_sets`: `discovery_sets` (per listener and local
-  day / ISO week, stored on first open — stable, completable), `save_discovery_set` /
+- **M14.3 done** - `20261009120000_discovery_sets`: `discovery_sets` (per listener and local
+  day / ISO week, stored on first open - stable, completable), `save_discovery_set` /
   `my_discovery_set`, completion trigger on the ledger (5 daily / 10 weekly discoveries →
   `daily_complete` +100 XP, `weekly_complete` +250 XP, once per period). `@tunewick/shared`:
   journeys (Surprise me, Something new, Outside my taste, Underground, Global, Similar to me) as
@@ -83,16 +83,16 @@ states, mobile and desktop layouts, EN/PL, tests, and its line in §4.
   to this" from the card menu: genres + artist graph), `?set=daily|weekly`; reason chip opens the
   Why panel. Page `/today` (`/dzis`) with loading/error states; "Today" chip leads the feed bar.
   pgTAP `discovery_sets.test.sql`, unit tests, E2E `today.spec.ts`.
-- **M14.4 done** — `20261009130000_missions`: `discovery_challenges` gains cadence (daily /
+- **M14.4 done** - `20261009130000_missions`: `discovery_challenges` gains cadence (daily /
   weekly / monthly / event with a window) and XP; stable shared rotation per UTC period (3 / 3 / 2,
   all running events); metrics include artists from different countries, underground finds and
   completing Daily Discovery; `private.award_points` pays a mission's own XP once per period;
   `my_missions()` replaces `my_challenges()`. New badges: Globetrotter (10 countries), Underground
-  Hunter (50), Night Listener (≥ 40 % of ≥ 100 plays at 22:00–05:00, from `listening_daily`),
+  Hunter (50), Night Listener (≥ 40 % of ≥ 100 plays at 22:00-05:00, from `listening_daily`),
   Discovery Machine (150 songs in a week), Year Explorer (20,000 discovery XP in a year). Mission
   names come from metric + target (a new mission is a row, no translation). UI: missions on You
   (all cadences) and Today (today's + events), completion notices. pgTAP `missions.test.sql`.
-- **M14.5 done** — `20261009140000_listening_stats`: `private.listening_stats(listener, starts,
+- **M14.5 done** - `20261009140000_listening_stats`: `private.listening_stats(listener, starts,
   ends)` (local days, ≤ 400) returns one JSON: totals and day/hour/weekday shapes from
   `listening_daily`, tops (artists, songs, releases, genres, countries), longest session (30-minute
   gap), longest discovery streak, night share, discoveries and XP from the ledger, biggest discovery,
@@ -102,7 +102,7 @@ states, mobile and desktop layouts, EN/PL, tests, and its line in §4.
   7/30/90 days and this year, server-rendered SVG bar charts (one validated hue `#7657ff`, hover
   titles, table view), personality card, tops, discoveries, empty/loading/error states.
   pgTAP `listening_stats.test.sql`, unit tests, e2e `stats.spec.ts`.
-- **M14.6 done** — `20261012110000_monthly_recaps`: `my_month_recap(month)` returns the local
+- **M14.6 done** - `20261012110000_monthly_recaps`: `my_month_recap(month)` returns the local
   month's `listening_stats`; a finished month is stored in `listening_recaps` (own-row RLS, in the
   data export, deleted with the account) from its second day, so pages and cards read one row; the
   running month is live and never stored; no recap before joining or in the future. Page
@@ -111,7 +111,7 @@ states, mobile and desktop layouts, EN/PL, tests, and its line in §4.
   `/api/cards/recap?month&kind=summary|artist|song|discovery|score&format=story|square` (private,
   signed-in only, 404 when the month has nothing for that kind). pgTAP `monthly_recaps.test.sql`,
   e2e `recap.spec.ts`.
-- **M14.7 done** — `20261012120000_replay`: `my_replay(year)` = the year's `listening_stats`,
+- **M14.7 done** - `20261012120000_replay`: `my_replay(year)` = the year's `listening_stats`,
   listening per month, the first song of the year and the same stretch of the year before (for a
   running year, 1 Jan → today vs the same dates a year earlier); finished years stored in
   `listening_replays` (own-row RLS, export, account deletion) from 2 January. `replayStory()` in
@@ -120,32 +120,32 @@ states, mobile and desktop layouts, EN/PL, tests, and its line in §4.
   story player (progress bars, tap/←/→/space, hold to pause, pauses in hidden tabs, no autoplay
   with reduced motion), year vs year, Replay card `/api/cards/replay` (9:16 / square, private).
   Unit tests, pgTAP `replay.test.sql`, e2e `replay.spec.ts`.
-- **M14.8 done** — `20261012130000_social_discovery`, all behind `private.can_view` and the owner's
+- **M14.8 done** - `20261012130000_social_discovery`, all behind `private.can_view` and the owner's
   switches (blocks hide everything both ways, a private profile hides all of it):
   `friends_leaderboard(period)` (you + people you follow whose score you may see),
-  `friends_activity()` (new artists — stats switch; badges — badges switch; last 30 days),
+  `friends_activity()` (new artists - stats switch; badges - badges switch; last 30 days),
   `common_ground(handle)` (shared artists/genres of the last 90 days and how many of your artists
-  match — stats switch), `profile_overview(handle)` (score/level, badges, last 30 days, latest
-  finished Replay — each by its switch; visitors get public parts only). UI: `/you/friends`
+  match - stats switch), `profile_overview(handle)` (score/level, badges, last 30 days, latest
+  finished Replay - each by its switch; visitors get public parts only). UI: `/you/friends`
   (`/ty/znajomi`) ranking + activity; the profile's discovery section with common ground; the
   "Discovery privacy" form in Settings (public profile + who sees statistics, score, badges,
   Replay). pgTAP `social_discovery.test.sql` (15), e2e `friends.spec.ts`.
-- **M14.9 done** — `20261012140000_artist_discovery`, aggregates only (counts under 3 are null,
+- **M14.9 done** - `20261012140000_artist_discovery`, aggregates only (counts under 3 are null,
   places need 3+ listeners): `artist_discovery(artist)` (public: listeners 7/30 days and growth,
   discovered by, the XP those discoveries earned = the artist's 30-day Discovery Score, place in
   Rising, countries and cities of listeners from their own preferences), `artist_discovery_weeks`
   (team only: new listeners, discoveries and listeners per week, 12 weeks),
   `why_artist_for_me(artist)` (the caller's own genres and related artists they play, followed
-  people who discovered the artist — behind their stats switch). Artist page: "Discovery" section
+  people who discovered the artist - behind their stats switch). Artist page: "Discovery" section
   with a Rising badge and "Why you might like…"; small artists get one honest sentence instead of
   empty numbers. Manage page: weekly bar charts and places. pgTAP `artist_discovery.test.sql`.
-- **M14.10 done** — `20261012150000_atlas`, public catalogue facts only (active artists with a
+- **M14.10 done** - `20261012150000_atlas`, public catalogue facts only (active artists with a
   published release, their country and city, genres of published releases, published events at
   venues; listener sums only from artists with 3+ weekly listeners): `atlas_countries()` (+ for the
   signed-in listener, the countries they have heard), `atlas_country(code)` (cities, genres, most
   listened artists), `atlas_city(code, city)` (artists, genres, and in Poland venues and the next
   90 days of events). `/atlas` → `/atlas/[country]` → `/atlas/[country]/[city]`: a server-rendered
   SVG world map (Natural Earth 1:110m, Equal Earth, prebuilt once by `scripts/build-world-map.mjs`
-  into `modules/atlas/world-paths.json` — no map library or tiles at runtime), one hue in four
+  into `modules/atlas/world-paths.json` - no map library or tiles at runtime), one hue in four
   steps with a legend, your countries outlined, every country also a plain link in the list below.
   pgTAP `atlas.test.sql`, e2e `atlas.spec.ts`.

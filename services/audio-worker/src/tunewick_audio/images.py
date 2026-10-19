@@ -2,7 +2,7 @@
 
 Uploaded images are never served as they are. Each one is decoded with Pillow (in the same
 isolated worker container as ffmpeg), checked, converted to sRGB, and re-encoded from raw pixels
-to WebP at fixed sizes — which drops EXIF (including GPS), ICC profiles, comments and anything
+to WebP at fixed sizes - which drops EXIF (including GPS), ICC profiles, comments and anything
 hidden after the image data, and neutralizes malformed files.
 """
 

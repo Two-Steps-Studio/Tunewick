@@ -1,7 +1,7 @@
 # Playback spike (M3.0)
 
 Measures what browsers really do with FLAC (16/44.1 … 24/192), FLAC/AAC in fragmented MP4 (MSE)
-and gapless playback. Synthetic test signal only — no copyrighted audio.
+and gapless playback. Synthetic test signal only - no copyrighted audio.
 
 ```bash
 node tools/playback-spike/generate.mjs        # test media → tools/playback-spike/media (git-ignored)

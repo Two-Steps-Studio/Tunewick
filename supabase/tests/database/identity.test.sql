@@ -14,7 +14,7 @@ values
   ('00000000-0000-0000-0000-00000000000b', 'b@test.local',
    '{"locale": "xx"}', '{"beta_bypass": "true"}', 'authenticated', 'authenticated');
 
--- 1–4: signup trigger
+-- 1-4: signup trigger
 select is(
   (select display_name from profiles where id = '00000000-0000-0000-0000-00000000000a'),
   'Ala', 'signup creates profile with display name');
@@ -33,7 +33,7 @@ select ok(
 select is(
   (select count(*)::int from user_roles where user_id in ('00000000-0000-0000-0000-00000000000a', '00000000-0000-0000-0000-00000000000b')), 0, 'signup metadata never grants platform roles');
 
--- 6–7: anonymous access
+-- 6-7: anonymous access
 set local role anon;
 select is((select count(*)::int from profiles where id in ('00000000-0000-0000-0000-00000000000a', '00000000-0000-0000-0000-00000000000b')), 2, 'anon can read active profiles');
 select throws_ok(
@@ -44,13 +44,13 @@ reset role;
 set local role authenticated;
 set local request.jwt.claims = '{"sub": "00000000-0000-0000-0000-00000000000a", "role": "authenticated"}';
 
--- 8–9: settings isolation
+-- 8-9: settings isolation
 select is((select count(*)::int from profile_settings), 1, 'user sees only own settings');
 select is(
   (select user_id from profile_settings), '00000000-0000-0000-0000-00000000000a'::uuid,
   'the visible settings row is the user''s own');
 
--- 10–11: profile updates
+-- 10-11: profile updates
 update profiles set display_name = 'Ala K' where id = '00000000-0000-0000-0000-00000000000a';
 update profiles set display_name = 'hacked' where id = '00000000-0000-0000-0000-00000000000b';
 select is(

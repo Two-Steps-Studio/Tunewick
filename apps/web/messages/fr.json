@@ -705,7 +705,7 @@
       "unsupported_codec": "Le fichier contient de l’audio avec perte - envoie le master original sans perte.",
       "audio_streams": "Le fichier doit contenir exactement un flux audio.",
       "bit_depth": "La profondeur doit être de 16, 24 ou 32 bits.",
-      "sample_rate": "La fréquence d’échantillonnage doit être standard : 44,1–192 kHz.",
+      "sample_rate": "La fréquence d’échantillonnage doit être standard : 44,1-192 kHz.",
       "channels": "Seuls les enregistrements mono et stéréo sont acceptés pour l’instant.",
       "duration": "Un titre doit durer entre 10 secondes et 4 heures.",
       "decode_error": "Le fichier est endommagé et ne se lit pas jusqu’au bout. Exporte à nouveau le master.",
@@ -951,7 +951,7 @@
       "endsOn": "Fin de la campagne (facultatif)",
       "maxTotal": "Limite d’utilisation pour toute la campagne",
       "maxTotalHint": "Vide = sans limite.",
-      "count": "Nombre de codes (1–5000)",
+      "count": "Nombre de codes (1-5000)",
       "benefit": "Ce que le code offre",
       "benefits": {
         "premium_days": "Premium en jours",
@@ -2032,7 +2032,7 @@
     },
     "empty": "Aucune écoute sur cette période pour l’instant. Lance quelque chose et tes statistiques commencent ici.",
     "startListening": "Commencer l’écoute",
-    "hourName": "{hour}:00–{hour}:59",
+    "hourName": "{hour}:00-{hour}:59",
     "playsCount": "{count, plural, one {# écoute} other {# écoutes}}",
     "labels": {
       "listening": "Temps d’écoute",
@@ -2069,7 +2069,7 @@
       "topHour": "Tu écoutes le plus vers {hour}:00.",
       "session": "Plus longue session : {time}.",
       "streak": "Plus longue série de découvertes : {count, plural, one {# jour} other {# jours}} d’affilée.",
-      "night": "{share} de tes écoutes ont eu lieu la nuit (22:00–05:00)."
+      "night": "{share} de tes écoutes ont eu lieu la nuit (22:00-05:00)."
     },
     "tops": {
       "artists": "Top artistes",
@@ -2417,8 +2417,8 @@
     "legend": {
       "none": "Pas encore de musique",
       "one": "1 artiste",
-      "few": "2–4",
-      "many": "5–19",
+      "few": "2-4",
+      "many": "5-19",
       "most": "20+",
       "mine": "Tu as écouté de la musique d’ici"
     },

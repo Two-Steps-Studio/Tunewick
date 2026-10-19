@@ -7,7 +7,7 @@ drop that stays down is the signal.
 What sits above the cliff tells the cases apart: a lossy encoder leaves nothing there, so a decode
 shows only the quantization floor of its bit depth (or, at 24 bits, a drop of 60 dB and more). A
 genuine master with band-limited content still has real noise above it (room, tape, dither at a
-higher level), which is not a lossy origin. This is a heuristic — results are flags, and a
+higher level), which is not a lossy origin. This is a heuristic - results are flags, and a
 moderator can override them (with an audit-log entry).
 """
 

@@ -440,7 +440,7 @@ export const pl: LegalContent = {
           id: "kontakt",
           title: "6. Punkt kontaktowy",
           blocks: [
-            "Punkt kontaktowy dla użytkowników oraz organów państw członkowskich UE i Komisji Europejskiej (art. 11–12 DSA): {email}. Piszemy po polsku i angielsku.",
+            "Punkt kontaktowy dla użytkowników oraz organów państw członkowskich UE i Komisji Europejskiej (art. 11-12 DSA): {email}. Piszemy po polsku i angielsku.",
           ],
         },
       ],

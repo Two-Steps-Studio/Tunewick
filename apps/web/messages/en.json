@@ -244,7 +244,7 @@
       "visibility": "Who sees your activity"
     },
     "hints": {
-      "handle": "Lowercase letters, digits and hyphens, 2–40 characters. Profile address: tunewick.com/en/profile/name",
+      "handle": "Lowercase letters, digits and hyphens, 2-40 characters. Profile address: tunewick.com/en/profile/name",
       "bio": "Up to 500 characters.",
       "visibility": "Who sees gigs you marked (\"I was there\") and your public playlists on your profile. It also decides who can compare their discoveries with yours."
     },
@@ -258,7 +258,7 @@
     "viewProfile": "View public profile",
     "noHandle": "Set a profile name to get a public address.",
     "errors": {
-      "handleInvalid": "Use 2–40 characters: lowercase letters, digits and hyphens.",
+      "handleInvalid": "Use 2-40 characters: lowercase letters, digits and hyphens.",
       "handleReserved": "This name is reserved. Choose another one.",
       "handleTaken": "This name is already taken.",
       "displayNameTooLong": "The name can have at most 80 characters.",
@@ -412,7 +412,7 @@
     "errors": {
       "nameRequired": "Enter the artist name.",
       "nameTooLong": "The name can have at most 120 characters.",
-      "slugInvalid": "Use 2–60 characters: lowercase letters, digits and hyphens.",
+      "slugInvalid": "Use 2-60 characters: lowercase letters, digits and hyphens.",
       "slugTaken": "This address is already taken.",
       "slugReserved": "This address is reserved.",
       "bioTooLong": "The description can have at most 2000 characters.",
@@ -575,7 +575,7 @@
     "errors": {
       "titleRequired": "Enter a title.",
       "titleTooLong": "The title can have at most 200 characters.",
-      "slugInvalid": "Use 1–80 characters: lowercase letters, digits and hyphens.",
+      "slugInvalid": "Use 1-80 characters: lowercase letters, digits and hyphens.",
       "slugTaken": "This artist already has a release with this address.",
       "dateInvalid": "Enter a valid date.",
       "upcInvalid": "UPC/EAN has 12 or 13 digits.",
@@ -705,7 +705,7 @@
       "unsupported_codec": "The file contains lossy audio - please upload the original lossless master.",
       "audio_streams": "The file must contain exactly one audio stream.",
       "bit_depth": "Bit depth must be 16, 24 or 32 bits.",
-      "sample_rate": "The sample rate must be standard: 44.1–192 kHz.",
+      "sample_rate": "The sample rate must be standard: 44.1-192 kHz.",
       "channels": "Only mono and stereo recordings are accepted for now.",
       "duration": "A track must be between 10 seconds and 4 hours long.",
       "decode_error": "The file is damaged and doesn’t play to the end. Please export the master again.",
@@ -951,7 +951,7 @@
       "endsOn": "Campaign ends (optional)",
       "maxTotal": "Use limit for the whole campaign",
       "maxTotalHint": "Empty = no limit.",
-      "count": "Number of codes (1–5000)",
+      "count": "Number of codes (1-5000)",
       "benefit": "What the code gives",
       "benefits": {
         "premium_days": "Premium for days",
@@ -964,7 +964,7 @@
       "newAccountsDays": "Only accounts younger than (days)",
       "newAccountsDaysHint": "Empty = any account.",
       "code": "Code",
-      "codeHint": "6–32 characters: letters, digits, dashes. Case does not matter.",
+      "codeHint": "6-32 characters: letters, digits, dashes. Case does not matter.",
       "maxUses": "Use limit",
       "reason": "Reason (kept in the audit log)"
     },
@@ -1063,7 +1063,7 @@
       "goodFaith": "I state in good faith that this information is accurate and that I am authorised to act for the rights holder."
     },
     "hints": {
-      "details": "What is wrong and where (e.g. which track). 10–2000 characters."
+      "details": "What is wrong and where (e.g. which track). 10-2000 characters."
     },
     "copyright": {
       "title": "Copyright notice",
@@ -1072,7 +1072,7 @@
     "submit": "Send report",
     "sent": "Thank you. Your report has been sent to the moderators.",
     "errors": {
-      "details": "Describe the problem (10–2000 characters).",
+      "details": "Describe the problem (10-2000 characters).",
       "copyright": "For copyright, give a name, a valid email and tick the statement.",
       "duplicate": "You already reported this - it is waiting for a decision.",
       "limit": "Too many reports today. Try again tomorrow.",
@@ -1129,10 +1129,10 @@
       },
       "appealDecided": "Appeal decision: {note}",
       "appeal": "Appeal",
-      "appealHint": "Explain why the decision is wrong (e.g. you hold a licence). A different moderator decides. 10–4000 characters.",
+      "appealHint": "Explain why the decision is wrong (e.g. you hold a licence). A different moderator decides. 10-4000 characters.",
       "sendAppeal": "Send appeal",
       "errors": {
-        "text": "Describe your appeal (10–4000 characters).",
+        "text": "Describe your appeal (10-4000 characters).",
         "already": "This decision was already appealed or the period has ended.",
         "not_allowed": "Only the profile owner or a manager can appeal.",
         "failed": "Could not send the appeal. Please try again."
@@ -1287,7 +1287,7 @@
       "submit": "Add gig",
       "saved": "Added. The gig is waiting for a moderator.",
       "errors": {
-        "title": "Enter the event name (2–160 characters).",
+        "title": "Enter the event name (2-160 characters).",
         "date": "Enter a date and time - from today up to two years ahead.",
         "venue": "Enter the venue name, city and voivodeship.",
         "ticket": "The ticket link must start with https://",
@@ -2032,7 +2032,7 @@
     },
     "empty": "No listening in this period yet. Play something and your statistics start here.",
     "startListening": "Start listening",
-    "hourName": "{hour}:00–{hour}:59",
+    "hourName": "{hour}:00-{hour}:59",
     "playsCount": "{count, plural, one {# play} other {# plays}}",
     "labels": {
       "listening": "Listening time",
@@ -2069,7 +2069,7 @@
       "topHour": "You listen most around {hour}:00.",
       "session": "Longest session: {time}.",
       "streak": "Longest discovery streak: {count, plural, one {# day} other {# days}} in a row.",
-      "night": "{share} of your plays were at night (22:00–05:00)."
+      "night": "{share} of your plays were at night (22:00-05:00)."
     },
     "tops": {
       "artists": "Top artists",
@@ -2417,8 +2417,8 @@
     "legend": {
       "none": "No music yet",
       "one": "1 artist",
-      "few": "2–4",
-      "many": "5–19",
+      "few": "2-4",
+      "many": "5-19",
       "most": "20+",
       "mine": "You have heard music from here"
     },

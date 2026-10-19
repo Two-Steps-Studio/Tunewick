@@ -705,7 +705,7 @@
       "unsupported_codec": "El archivo contiene audio con pérdida: sube el máster original sin pérdida.",
       "audio_streams": "El archivo debe contener exactamente una pista de audio.",
       "bit_depth": "La profundidad de bits debe ser de 16, 24 o 32 bits.",
-      "sample_rate": "La frecuencia de muestreo debe ser estándar: 44.1–192 kHz.",
+      "sample_rate": "La frecuencia de muestreo debe ser estándar: 44.1-192 kHz.",
       "channels": "Por ahora solo se aceptan grabaciones mono y estéreo.",
       "duration": "Una canción debe durar entre 10 segundos y 4 horas.",
       "decode_error": "El archivo está dañado y no se reproduce hasta el final. Vuelve a exportar el máster.",
@@ -951,7 +951,7 @@
       "endsOn": "Fin de la campaña (opcional)",
       "maxTotal": "Límite de usos de toda la campaña",
       "maxTotalHint": "Vacío = sin límite.",
-      "count": "Número de códigos (1–5000)",
+      "count": "Número de códigos (1-5000)",
       "benefit": "Qué da el código",
       "benefits": {
         "premium_days": "Premium por días",
@@ -2032,7 +2032,7 @@
     },
     "empty": "Aún no hay escuchas en este periodo. Reproduce algo y tus estadísticas empezarán aquí.",
     "startListening": "Empezar a escuchar",
-    "hourName": "{hour}:00–{hour}:59",
+    "hourName": "{hour}:00-{hour}:59",
     "playsCount": "{count, plural, one {# reproducción} other {# reproducciones}}",
     "labels": {
       "listening": "Tiempo de escucha",
@@ -2069,7 +2069,7 @@
       "topHour": "Escuchas más alrededor de las {hour}:00.",
       "session": "Sesión más larga: {time}.",
       "streak": "Racha de descubrimiento más larga: {count, plural, one {# día} other {# días}} seguidos.",
-      "night": "El {share} de tus reproducciones fueron de noche (22:00–05:00)."
+      "night": "El {share} de tus reproducciones fueron de noche (22:00-05:00)."
     },
     "tops": {
       "artists": "Artistas principales",
@@ -2417,8 +2417,8 @@
     "legend": {
       "none": "Aún sin música",
       "one": "1 artista",
-      "few": "2–4",
-      "many": "5–19",
+      "few": "2-4",
+      "many": "5-19",
       "most": "20+",
       "mine": "Has escuchado música de aquí"
     },

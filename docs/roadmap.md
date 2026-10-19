@@ -9,11 +9,11 @@
 | # | Phase | Status |
 | - | ----- | ------ |
 | 0 | Repository & workflow setup | done except `main` branch protection (owner) |
-| 1 | Product audit & definition — [product.md](product.md) | direction approved; legal review open |
-| 2 | Brand & design system — [design-system.md](design-system.md) | v0.1 — logo B "Split" final assets done |
-| 3 | Technical architecture — [architecture.md](architecture.md) | v0.1 — review |
-| 4 | Database & security — [database.md](database.md), [security.md](security.md) | v0.1 — review |
-| – | Licensing, audio, promotions, recommendations, API — [licensing.md](licensing.md), [audio.md](audio.md), [promotions.md](promotions.md), [recommendations.md](recommendations.md), [api.md](api.md) | v0.1 — review |
+| 1 | Product audit & definition - [product.md](product.md) | direction approved; legal review open |
+| 2 | Brand & design system - [design-system.md](design-system.md) | v0.1 - logo B "Split" final assets done |
+| 3 | Technical architecture - [architecture.md](architecture.md) | v0.1 - review |
+| 4 | Database & security - [database.md](database.md), [security.md](security.md) | v0.1 - review |
+| - | Licensing, audio, promotions, recommendations, API - [licensing.md](licensing.md), [audio.md](audio.md), [promotions.md](promotions.md), [recommendations.md](recommendations.md), [api.md](api.md) | v0.1 - review |
 
 ## Implementation milestones (MVP → closed beta)
 
@@ -25,13 +25,13 @@
 | **M3 Audio pipeline & streaming** | 7 | Playback spike → worker ingest (validate/analyse/loudness/fingerprint/transcode/package), R2 buckets, media edge, playback tokens | M2 |
 | **M4 Player & queue** | 8 | Player engine (MSE/native strategies), queue, shuffle/repeat, volume, quality selection + indicator, gapless, normalization, crossfade, persistence | M3 |
 | **M5 Library & playlists** | 9 | Likes, history, playlists CRUD/reorder/play | M4 |
-| **M6 Search & discovery** | 10–11 | Search (FTS + trigram, PL unaccent), home surfaces with reasons, related artists/tracks, smart shuffle | M5 |
+| **M6 Search & discovery** | 10-11 | Search (FTS + trigram, PL unaccent), home surfaces with reasons, related artists/tracks, smart shuffle | M5 |
 | **M7 Artists & Music Graph** | 12 | Artist pages/discography/follow, credits graph, `graph_edges` derivation | M2, M6 |
 | **M8 Community & events** | 13 | Cities/venues/events/lineups, "Byłem przy tym", follows, activity, privacy settings | M7 |
 | **M9 Entitlements & promotions** | 15 | Plans/entitlements, Premium gating of tiers, promo redemption, admin campaigns/codes/batches | M1 (can run parallel to M4+) |
 | **M10 Admin & moderation** | 16 | Moderation queues, reports, takedowns, verification review, audit viewer, flags | M2 |
 | **M11 Performance & observability** | 17 | Sentry, telemetry, budgets, query review, caching | ongoing |
-| **M13 Discovery expansion** | – | International data model, Discover feed with previews, recommendation scoring, onboarding, sharing + cards, stats, Discovery Score/Points/levels, goals, streaks, records, achievements, rankings, seasons, weekly challenges, per-listener weight tuning — [discovery-expansion.md](discovery-expansion.md) | M5, M6 |
+| **M13 Discovery expansion** | - | International data model, Discover feed with previews, recommendation scoring, onboarding, sharing + cards, stats, Discovery Score/Points/levels, goals, streaks, records, achievements, rankings, seasons, weekly challenges, per-listener weight tuning - [discovery-expansion.md](discovery-expansion.md) | M5, M6 |
 | **M12 Closed beta readiness** | 18 | Security review/pentest, legal items closed, GDPR flows, seeding small independent artists and venues from across Poland, launch checklist | all |
 
 Payments & subscriptions (Phase 14) are **after** the closed beta (decision D3).
@@ -46,8 +46,8 @@ Payments & subscriptions (Phase 14) are **after** the closed beta (decision D3).
 | 2026-10-05 | Free = full catalog in High; Premium = Lossless/Hi-Res. No listening restrictions on Free. |
 | 2026-10-05 | No card payments in MVP; Premium via promo codes/beta. |
 | 2026-10-05 | Artist payouts (future): user-centric. |
-| 2026-10-05 | Launch: closed beta (~30–50 artists, 5–10 venues), then public beta. |
-| 2026-10-06 | Scope: small independent artists from **all of Poland** — not limited to GZM/Silesia (product.md D6). |
+| 2026-10-05 | Launch: closed beta (~30-50 artists, 5-10 venues), then public beta. |
+| 2026-10-06 | Scope: small independent artists from **all of Poland** - not limited to GZM/Silesia (product.md D6). |
 | 2026-10-05 | Uploads: lossless masters only (WAV/AIFF/FLAC/ALAC); MP3/AAC/other lossy rejected (audio.md §2.1). |
 | 2026-10-05 | Logo: concept B "Split" (first A "Wick", changed by owner the same day; design-system.md §5). Logo accent coral; lime stays the UI action color. |
 | 2026-10-05 | Branch protection on `main` and service accounts (Vercel, Supabase EU, Cloudflare R2, Fly.io, Sentry EU) approved; set up by owner. |

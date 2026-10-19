@@ -36,7 +36,7 @@
 | `POST /api/v1/promo/redeem` | Calls `redeem_promo_code`; rate limited. |
 | `POST /api/v1/webhooks/*` | Future payment provider webhooks (signature-verified). |
 
-Media itself is served by `media.tunewick.com` (Cloudflare Worker) — see architecture.md §6.4.
+Media itself is served by `media.tunewick.com` (Cloudflare Worker) - see architecture.md §6.4.
 
 ## 4. Implemented endpoints (Discover, M13)
 

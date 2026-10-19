@@ -435,7 +435,7 @@ export const en: LegalContent = {
           id: "contact",
           title: "6. Point of contact",
           blocks: [
-            "Point of contact for users and for authorities of EU member states and the European Commission (Art. 11–12 DSA): {email}. We write in Polish and English.",
+            "Point of contact for users and for authorities of EU member states and the European Commission (Art. 11-12 DSA): {email}. We write in Polish and English.",
           ],
         },
       ],

@@ -244,7 +244,7 @@
       "visibility": "Kto widzi Twoją aktywność"
     },
     "hints": {
-      "handle": "Małe litery, cyfry i myślniki, 2–40 znaków. Adres profilu: tunewick.com/profil/nazwa",
+      "handle": "Małe litery, cyfry i myślniki, 2-40 znaków. Adres profilu: tunewick.com/profil/nazwa",
       "bio": "Do 500 znaków.",
       "visibility": "Kto widzi na Twoim profilu oznaczone koncerty („Byłem przy tym”) i publiczne playlisty. Decyduje też, kto może porównywać swoje odkrycia z Twoimi."
     },
@@ -258,7 +258,7 @@
     "viewProfile": "Zobacz profil publiczny",
     "noHandle": "Ustaw nazwę profilu, aby mieć publiczny adres.",
     "errors": {
-      "handleInvalid": "Użyj 2–40 znaków: małe litery, cyfry i myślniki.",
+      "handleInvalid": "Użyj 2-40 znaków: małe litery, cyfry i myślniki.",
       "handleReserved": "Ta nazwa jest zarezerwowana. Wybierz inną.",
       "handleTaken": "Ta nazwa jest już zajęta.",
       "displayNameTooLong": "Nazwa może mieć najwyżej 80 znaków.",
@@ -412,7 +412,7 @@
     "errors": {
       "nameRequired": "Podaj nazwę artysty.",
       "nameTooLong": "Nazwa może mieć najwyżej 120 znaków.",
-      "slugInvalid": "Użyj 2–60 znaków: małe litery, cyfry i myślniki.",
+      "slugInvalid": "Użyj 2-60 znaków: małe litery, cyfry i myślniki.",
       "slugTaken": "Ten adres jest już zajęty.",
       "slugReserved": "Ten adres jest zarezerwowany.",
       "bioTooLong": "Opis może mieć najwyżej 2000 znaków.",
@@ -575,7 +575,7 @@
     "errors": {
       "titleRequired": "Podaj tytuł.",
       "titleTooLong": "Tytuł może mieć najwyżej 200 znaków.",
-      "slugInvalid": "Użyj 1–80 znaków: małe litery, cyfry i myślniki.",
+      "slugInvalid": "Użyj 1-80 znaków: małe litery, cyfry i myślniki.",
       "slugTaken": "To wydawnictwo artysty ma już taki adres.",
       "dateInvalid": "Podaj poprawną datę.",
       "upcInvalid": "Kod UPC/EAN ma 12 lub 13 cyfr.",
@@ -705,7 +705,7 @@
       "unsupported_codec": "Plik zawiera nagranie stratne - prześlij oryginalny, bezstratny master.",
       "audio_streams": "Plik musi zawierać dokładnie jedną ścieżkę audio.",
       "bit_depth": "Głębia bitowa musi wynosić 16, 24 lub 32 bity.",
-      "sample_rate": "Częstotliwość próbkowania musi być standardowa: 44,1–192 kHz.",
+      "sample_rate": "Częstotliwość próbkowania musi być standardowa: 44,1-192 kHz.",
       "channels": "Na razie przyjmujemy nagrania mono i stereo.",
       "duration": "Utwór musi trwać od 10 sekund do 4 godzin.",
       "decode_error": "Plik jest uszkodzony i nie da się go odtworzyć do końca. Wyeksportuj master ponownie.",
@@ -951,7 +951,7 @@
       "endsOn": "Koniec kampanii (opcjonalnie)",
       "maxTotal": "Limit użyć w całej kampanii",
       "maxTotalHint": "Puste = bez limitu.",
-      "count": "Liczba kodów (1–5000)",
+      "count": "Liczba kodów (1-5000)",
       "benefit": "Co daje kod",
       "benefits": {
         "premium_days": "Premium na dni",
@@ -964,7 +964,7 @@
       "newAccountsDays": "Tylko konta młodsze niż (dni)",
       "newAccountsDaysHint": "Puste = dla każdego konta.",
       "code": "Kod",
-      "codeHint": "6–32 znaki: litery, cyfry, myślniki. Wielkość liter nie ma znaczenia.",
+      "codeHint": "6-32 znaki: litery, cyfry, myślniki. Wielkość liter nie ma znaczenia.",
       "maxUses": "Limit użyć",
       "reason": "Powód (widoczny w dzienniku zmian)"
     },
@@ -1063,7 +1063,7 @@
       "goodFaith": "Oświadczam w dobrej wierze, że podane informacje są prawdziwe i że mam prawo działać w imieniu właściciela praw."
     },
     "hints": {
-      "details": "Co jest nie tak i gdzie (np. który utwór). 10–2000 znaków."
+      "details": "Co jest nie tak i gdzie (np. który utwór). 10-2000 znaków."
     },
     "copyright": {
       "title": "Zgłoszenie naruszenia praw autorskich",
@@ -1072,7 +1072,7 @@
     "submit": "Wyślij zgłoszenie",
     "sent": "Dziękujemy. Zgłoszenie trafiło do moderatorów.",
     "errors": {
-      "details": "Opisz problem (10–2000 znaków).",
+      "details": "Opisz problem (10-2000 znaków).",
       "copyright": "Przy naruszeniu praw autorskich podaj imię i nazwisko, poprawny e-mail i zaznacz oświadczenie.",
       "duplicate": "Twoje zgłoszenie tej treści już czeka na decyzję.",
       "limit": "Wysłano dziś zbyt wiele zgłoszeń. Spróbuj jutro.",
@@ -1129,10 +1129,10 @@
       },
       "appealDecided": "Rozstrzygnięcie odwołania: {note}",
       "appeal": "Odwołanie",
-      "appealHint": "Wyjaśnij, dlaczego decyzja jest błędna (np. masz licencję). Odwołanie rozpatrzy inny moderator. 10–4000 znaków.",
+      "appealHint": "Wyjaśnij, dlaczego decyzja jest błędna (np. masz licencję). Odwołanie rozpatrzy inny moderator. 10-4000 znaków.",
       "sendAppeal": "Wyślij odwołanie",
       "errors": {
-        "text": "Opisz odwołanie (10–4000 znaków).",
+        "text": "Opisz odwołanie (10-4000 znaków).",
         "already": "Od tej decyzji już się odwołano albo minął termin.",
         "not_allowed": "Odwołać się może właściciel lub menedżer profilu.",
         "failed": "Nie udało się wysłać odwołania. Spróbuj ponownie."
@@ -1287,7 +1287,7 @@
       "submit": "Dodaj koncert",
       "saved": "Dodano. Koncert czeka na sprawdzenie przez moderatora.",
       "errors": {
-        "title": "Podaj nazwę wydarzenia (2–160 znaków).",
+        "title": "Podaj nazwę wydarzenia (2-160 znaków).",
         "date": "Podaj datę i godzinę - od dziś do dwóch lat naprzód.",
         "venue": "Podaj nazwę miejsca, miasto i województwo.",
         "ticket": "Link do biletów musi zaczynać się od https://",
@@ -2032,7 +2032,7 @@
     },
     "empty": "W tym okresie jeszcze nic nie słuchano. Włącz coś, a Twoje statystyki zaczną się tutaj.",
     "startListening": "Zacznij słuchać",
-    "hourName": "{hour}:00–{hour}:59",
+    "hourName": "{hour}:00-{hour}:59",
     "playsCount": "{count, plural, one {# odtworzenie} few {# odtworzenia} many {# odtworzeń} other {# odtworzenia}}",
     "labels": {
       "listening": "Czas słuchania",
@@ -2069,7 +2069,7 @@
       "topHour": "Najwięcej słuchasz około {hour}:00.",
       "session": "Najdłuższa sesja: {time}.",
       "streak": "Najdłuższa seria odkryć: {count, plural, one {# dzień} other {# dni}} z rzędu.",
-      "night": "{share} Twoich odtworzeń było nocą (22:00–05:00)."
+      "night": "{share} Twoich odtworzeń było nocą (22:00-05:00)."
     },
     "tops": {
       "artists": "Top artyści",
@@ -2417,8 +2417,8 @@
     "legend": {
       "none": "Jeszcze bez muzyki",
       "one": "1 artysta",
-      "few": "2–4",
-      "many": "5–19",
+      "few": "2-4",
+      "many": "5-19",
       "most": "20+",
       "mine": "Słuchasz muzyki stąd"
     },

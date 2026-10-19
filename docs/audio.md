@@ -24,14 +24,14 @@ Upload (ingest bucket) → Validate → Analyse → Loudness → Fingerprint/dup
 ```
 
 ### 2.1 Accepted uploads
-- Lossless only for full tracks: **WAV/BWF (PCM), AIFF, FLAC, ALAC**. 16/24/32-bit (32-bit float accepted and converted only for variants), 44.1–192 kHz, mono or stereo (multichannel later).
-- Lossy uploads (MP3/AAC/Ogg) are **rejected** for releases in MVP — Tunewick's quality promise depends on lossless masters. **Decided by owner 2026-10-05.** If this is ever relaxed (e.g. archival material), such tracks may only be offered as "High", never "Lossless".
+- Lossless only for full tracks: **WAV/BWF (PCM), AIFF, FLAC, ALAC**. 16/24/32-bit (32-bit float accepted and converted only for variants), 44.1-192 kHz, mono or stereo (multichannel later).
+- Lossy uploads (MP3/AAC/Ogg) are **rejected** for releases in MVP - Tunewick's quality promise depends on lossless masters. **Decided by owner 2026-10-05.** If this is ever relaxed (e.g. archival material), such tracks may only be offered as "High", never "Lossless".
 - Artwork: JPEG/PNG ≥ 3000×3000 recommended, ≥ 1400×1400 required.
 
 ### 2.2 Validation (reject with a clear reason)
 - Decodes fully without errors (ffmpeg full decode, not just probe).
-- Duration 10 s – 4 h; matches across channels; no zero-length.
-- Sample rate in the allowed set; bit depth valid; channels 1–2.
+- Duration 10 s - 4 h; matches across channels; no zero-length.
+- Sample rate in the allowed set; bit depth valid; channels 1-2.
 - File integrity: SHA-256 recorded; FLAC MD5 verified when present.
 - Metadata sanity: embedded tags are read but **the form metadata wins**; mismatches flagged.
 
@@ -59,11 +59,11 @@ Debian ffmpeg with libsoxr), CI job `worker`.
 
 | Step | How it is implemented |
 | --- | --- |
-| Allow-list | ffprobe: containers wav (incl. BWF/RF64), aiff, flac, mov/m4a (ALAC only); codecs PCM s16/s24/s32/f32/f64, FLAC, ALAC; 8-bit and lossy codecs rejected; standard rates 44.1–192 kHz; 1–2 channels; exactly one audio stream |
+| Allow-list | ffprobe: containers wav (incl. BWF/RF64), aiff, flac, mov/m4a (ALAC only); codecs PCM s16/s24/s32/f32/f64, FLAC, ALAC; 8-bit and lossy codecs rejected; standard rates 44.1-192 kHz; 1-2 channels; exactly one audio stream |
 | Integrity | Full decode in one streaming pass; any ffmpeg error → `decode_error`. FLAC STREAMINFO MD5 compared with the MD5 of the decoded samples → `integrity` |
-| Hashes | File SHA-256; PCM SHA-256 of the decode (s32le for integer, f32le for float masters) — the duplicate key of §6 |
+| Hashes | File SHA-256; PCM SHA-256 of the decode (s32le for integer, f32le for float masters) - the duplicate key of §6 |
 | Effective bit depth | OR of all samples → lowest bit ever used; float masters checked for exact 16/24-bit integer values |
-| Spectral cliff | Averaged power spectrum (Hann, ≈ 5.5 Hz bins, all channels), smoothed over 100 Hz; the strongest drop between the median level 0.2–1.5 kHz below a frequency and the 95th percentile of everything above it up to Nyquist. Drop ≥ 25 dB = cliff. It counts as evidence only when the band above it is empty: within 15 dB of the quantization floor of the effective bit depth, or a drop ≥ 60 dB (quiet 16-bit MP3s drop only ~30–40 dB, while band-limited music over real noise also drops ~45 dB — the floor test separates them). Cliff at 10–19.5 kHz → `suspected_lossy_origin`; in a > 48 kHz file within −2.5/+1.5 kHz of a lower standard rate's Nyquist → `suspected_upsampled` (either rate family) |
+| Spectral cliff | Averaged power spectrum (Hann, ≈ 5.5 Hz bins, all channels), smoothed over 100 Hz; the strongest drop between the median level 0.2-1.5 kHz below a frequency and the 95th percentile of everything above it up to Nyquist. Drop ≥ 25 dB = cliff. It counts as evidence only when the band above it is empty: within 15 dB of the quantization floor of the effective bit depth, or a drop ≥ 60 dB (quiet 16-bit MP3s drop only ~30-40 dB, while band-limited music over real noise also drops ~45 dB - the floor test separates them). Cliff at 10-19.5 kHz → `suspected_lossy_origin`; in a > 48 kHz file within −2.5/+1.5 kHz of a lower standard rate's Nyquist → `suspected_upsampled` (either rate family) |
 | Levels | Peak, clipping events (≥ 3 consecutive samples at ≥ −0.001 dBFS), DC offset (> −40 dBFS flagged), L/R correlation (< −0.3 flagged), digital silence |
 | Loudness | ffmpeg `ebur128` (integrated LUFS, LRA, true peak dBTP); true peak > 0 dBTP also flags `clipping` |
 | Variants | AAC-LC 96/256 kbps fMP4 (2 s fragments) at 44.1/48 kHz; FLAC 16-bit Lossless; FLAC Hi-Res at effective depth (24 if > 16) and rate. Resampling `soxr` precision 28; TPDF dither only when reducing to 16 bits loses information (resampling or effective depth > 16). 24-bit targets are truncated from 32-bit intermediates (error ≈ −144 dBFS). Tags stripped (metadata comes from the catalog) |
@@ -72,8 +72,8 @@ Debian ffmpeg with libsoxr), CI job `worker`.
 
 Known limitations (advisory flags; moderator override with audit entry per §2.3):
 - High-bitrate MP3/AAC with a low-pass ≥ 19.5 kHz (e.g. LAME 320 kbps at ~20 kHz) is not caught
-  by the cliff detector — indistinguishable from converter filters by this method alone.
-- A deliberate steep low-pass on a genuine master (10–19.5 kHz) is a false positive.
+  by the cliff detector - indistinguishable from converter filters by this method alone.
+- A deliberate steep low-pass on a genuine master (10-19.5 kHz) is a false positive.
 - AAC encoder is ffmpeg's native encoder as an interim choice; the final encoder follows the ABX
   and licensing check (§3).
 
@@ -91,9 +91,9 @@ and lets the team listen to the processed versions through the player. Locally:
 ### 2.6 Best moment and waveform (report v2, `moments.py`)
 
 The same decoding pass keeps, per second of the downmixed track, its RMS level and its spectral
-shape in 16 log-spaced bands (60 Hz–16 kHz), and a 10 Hz peak envelope.
+shape in 16 log-spaced bands (60 Hz-16 kHz), and a 10 Hz peak envelope.
 
-- **Novelty** at second *t*: the change between the 4 s before and the 4 s after — the band shape
+- **Novelty** at second *t*: the change between the 4 s before and the 4 s after - the band shape
   (each side centred, so loudness alone does not count) plus any rise in level. Peaks mark
   section boundaries: a chorus or a drop coming in.
 - **Best moment**: the start of the 30 s window with the highest mean loudness (normalized between
@@ -101,14 +101,14 @@ shape in 16 log-spaced bands (60 Hz–16 kHz), and a 10 Hz peak envelope.
   (< −50 dBFS); windows starting in the first 10 % or after 75 % of the track lose 0.3; the window
   never touches the last 3 s. If no strong boundary is at the chosen start, it moves to one within
   3 s. Tracks under 35 s preview from the start. Whole seconds; `method: energy_novelty_v1`.
-- **Waveform**: 200 peaks, 0–100 relative to the loudest moment (short tracks repeat points).
+- **Waveform**: 200 peaks, 0-100 relative to the loudest moment (short tracks repeat points).
 
 Stored in the report as `analysis.best_moment` and `analysis.waveform`;
 `track_audio_uploads.best_moment_ms` is generated from it. The artist's soundcheck start always
 wins; otherwise Discover previews and release soundchecks start at the best moment (before v2
 reports: a third in, or 0:00 for soundchecks). The editor draws the waveform with the suggested
 30 s highlighted. Uploads processed before report v2 are backfilled by the worker when it is
-otherwise idle, newest first: it decodes the delivery variant (lossless FLAC, else AAC — masters
+otherwise idle, newest first: it decodes the delivery variant (lossless FLAC, else AAC - masters
 may already be gone from ingest), computes the same two fields and merges them into the stored
 report (`claim/finish_audio_reanalysis`, three tries). Known limits: no beat or key analysis, so a long build-up that is loud but has
 no change can win over a quieter hook; a learned model (P2) would replace this, same report field.
@@ -157,7 +157,7 @@ Auto selects a tier at track start from: user setting/cap, plan entitlement, net
 
 ### 4.2 Gapless and crossfade
 - Gapless is the default for consecutive tracks of the same release and for `segue_into_next` tracks.
-- Crossfade: user setting (off by default, 1–12 s). **Disabled automatically** between tracks of the same release when `segue_into_next` is true or when the user's "album continuity" setting is on.
+- Crossfade: user setting (off by default, 1-12 s). **Disabled automatically** between tracks of the same release when `segue_into_next` is true or when the user's "album continuity" setting is on.
 - Implementation via Web Audio gain automation on the MSE pipeline; Native strategy: crossfade best-effort.
 
 ### 4.3 Normalization
@@ -175,7 +175,7 @@ The player shows **Source → Delivered** and, where detectable, **Output**:
 | Browser/device output differs | `… → Delivered FLAC 24/96 · Output 48 kHz (system)` |
 | Lossless tier of a 24/96 master | `Source FLAC 24/96 → Delivered FLAC 16/48 · Lossless` |
 | Lossy tier | `Source FLAC 16/44.1 → Delivered AAC 256 kbps · High` |
-| Plan limits tier | `… → Delivered AAC 256 · High — Lossless with Premium` (plain text, no dark pattern) |
+| Plan limits tier | `… → Delivered AAC 256 · High - Lossless with Premium` (plain text, no dark pattern) |
 | Suspected lossy origin | Source shown as `WAV 16/44.1 (lossy origin suspected)`; no Lossless label anywhere |
 
 Words used: "Lossless" only for FLAC delivered from a verified lossless master; "Hi-Res" only for
@@ -216,7 +216,7 @@ Goal: replace 🔬 assumptions with measured facts.
 
 Deliverable: a support matrix in this document and decisions on packaging and Safari strategy.
 
-### 9.1 Results — automated engines (2026-10-06)
+### 9.1 Results - automated engines (2026-10-06)
 
 Tool: `tools/playback-spike/` (generator + test page + Playwright runner; raw results in
 `tools/playback-spike/results-*.json`). Signal: synthetic stereo sweep at −12 dBFS; playback is
@@ -230,14 +230,14 @@ failure mode is "plays without error but outputs silence". Engines: Playwright b
 | FLAC in fMP4 ≤ 48 kHz (progressive and MSE) | ✅ | ✅ | ❌ no MSE |
 | FLAC in fMP4 96 / 192 kHz | ✅ (MSE too) | ❌ fails both progressive and MSE | ❌ |
 | AAC 256 in fMP4 (MSE) | ✅ | ✅ | progressive time advances (signal not measurable) |
-| `MediaSource.isTypeSupported('audio/flac')` (bare FLAC in MSE) | false | false | — |
-| Gapless FLAC fMP4, 3 tracks in one SourceBuffer (sequence mode) | ✅ continuous buffer, no dropout (min level 0.176) | ✅ same | — |
-| Gapless AAC fMP4 without priming trim | ❌ dropout at boundary (min level 0.001), buffer 12.064 s instead of 12 s | ❌ same | — |
+| `MediaSource.isTypeSupported('audio/flac')` (bare FLAC in MSE) | false | false | - |
+| Gapless FLAC fMP4, 3 tracks in one SourceBuffer (sequence mode) | ✅ continuous buffer, no dropout (min level 0.176) | ✅ same | - |
+| Gapless AAC fMP4 without priming trim | ❌ dropout at boundary (min level 0.001), buffer 12.064 s instead of 12 s | ❌ same | - |
 | Output sample rate (`AudioContext.sampleRate`) | 48 000 Hz | 48 000 Hz | no Web Audio |
 | `setSinkId` (output device choice) | yes | yes | no |
 
 **Not yet tested (manual, real devices):** Safari macOS, Safari iOS (ManagedMediaSource),
-Chrome Android incl. 24/192 CPU/memory. The Windows WebKit port is **not** Safari — its failures do
+Chrome Android incl. 24/192 CPU/memory. The Windows WebKit port is **not** Safari - its failures do
 not predict Safari, which plays FLAC natively.
 
 ### 9.2 Conclusions
@@ -251,6 +251,6 @@ not predict Safari, which plays FLAC natively.
    therefore best-effort (native strategy).
 4. **AAC gapless needs explicit trimming** of encoder priming/padding (`appendWindowStart/End` from
    stored `encoder_delay_samples`/`padding_samples`), otherwise every boundary has a dropout.
-5. **Both browsers output 48 kHz** — 44.1/96/192 kHz material is resampled by the platform
+5. **Both browsers output 48 kHz** - 44.1/96/192 kHz material is resampled by the platform
    (compromise C1 confirmed). The quality indicator must show "Output 48 kHz (system)" when the
    delivered rate differs.

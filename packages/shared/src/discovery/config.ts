@@ -1,5 +1,5 @@
 /**
- * Discovery configuration (docs/discovery-expansion.md §4–§5). Every number that shapes the feed
+ * Discovery configuration (docs/discovery-expansion.md §4-§5). Every number that shapes the feed
  * or the progress system lives here, so tuning is one reviewed change - and a learned model can
  * later replace `rankFeed` without touching callers.
  */

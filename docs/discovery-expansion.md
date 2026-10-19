@@ -1,25 +1,25 @@
-# Discovery expansion — international, feed-first, discovery progress
+# Discovery expansion - international, feed-first, discovery progress
 
-> Status: **v1 plan + P0 implementation** (2026-10-07). Owner brief: "TuneWick — International
+> Status: **v1 plan + P0 implementation** (2026-10-07). Owner brief: "TuneWick - International
 > Music Discovery, TikTok-Style Discovery & Engagement Expansion". This file is the plan; the
-> tasks below mirror the Guidon tasks (Guidon stays the source of truth — the tasks must be
+> tasks below mirror the Guidon tasks (Guidon stays the source of truth - the tasks must be
 > created there under milestone **M13 Discovery expansion** before review).
 
 One sentence: **"I wasn't looking for this song. Tunewick showed it to me."** Everything below
 serves _discover more good music_, not _spend more time in the app_.
 
-## 1. Audit — what exists and is reused
+## 1. Audit - what exists and is reused
 
-| Area | Exists (M0–M9) | Reused for |
+| Area | Exists (M0-M9) | Reused for |
 | --- | --- | --- |
 | Catalog | `artists`, `releases`, `tracks`, `genres`, `release_genres`, rights declarations, release review, `taken_down` status | Feed candidates, genres for diversity, rights model unchanged (§9) |
-| Soundcheck | `tracks.soundcheck_start_ms` / `soundcheck_duration_ms` (5–30 s, chosen by the artist) | **The preview window.** Fallback when unset: a window from ~⅓ into the track |
+| Soundcheck | `tracks.soundcheck_start_ms` / `soundcheck_duration_ms` (5-30 s, chosen by the artist) | **The preview window.** Fallback when unset: a window from ~⅓ into the track |
 | Audio | Worker variants (AAC 96/256 fMP4, FLAC), presigned GETs, `release_playback` | Previews use one AAC variant (Data Saver on slow/save-data networks), native `<audio>`, no MSE |
 | Player | `PlayerEngine` (gapless MSE, quality tiers), `ListeningTracker` → `record_listen` | Full plays from the feed hand over to it; the feed pauses it while previewing |
 | Library | `track_likes`, `release_likes`, `artist_follows`, `LibraryButton` | Like / Follow in the feed |
 | Listening | `listening_events` (partitioned, private, clearable) | Stats, streaks, discoveries; previews are recorded there too (`context = 'preview'`) |
 | Discover home | `discover_releases` / `discover_artists` grid with Polish voivodeship filter | Kept as **Browse** (`/browse`); generalized to countries |
-| i18n | next-intl, `pl` + `en`, localized pathnames, all UI text in `messages/*.json` | All new UI. Country and language names come from `Intl.DisplayNames` — no lists of names to translate, every future locale works |
+| i18n | next-intl, `pl` + `en`, localized pathnames, all UI text in `messages/*.json` | All new UI. Country and language names come from `Intl.DisplayNames` - no lists of names to translate, every future locale works |
 | Moderation | release review queue, staff roles, audit log | Reports land in the same staff area |
 
 What made the product Poland-only: `artists.voivodeship` as the only location, the discover
@@ -37,7 +37,7 @@ genre name columns. None of it is removed; it is generalized.
 | X5 | Recommendation = SQL **candidate generation + features**, TypeScript **scoring/mixing** (`@tunewick/shared/discovery`) with weights in one config object | Easy to test, explain (reason codes) and replace with a learned model later |
 | X6 | Discovery progress is a **ledger** (`discovery_points`) with an idempotency key per award; every derived number (score, streak, goals, records, rankings) is computed from it | One source of truth, anti-abuse by construction, recomputable |
 | X7 | Points are awarded only by the database (`record_listen`, `save`, `share`) after server checks; the client only displays what came back | Rankings cannot be forged from the browser |
-| X8 | Rankings rank **discovery points** (new songs/artists/genres/countries, saves, full listens of new music) — never listening time | Brief §20 |
+| X8 | Rankings rank **discovery points** (new songs/artists/genres/countries, saves, full listens of new music) - never listening time | Brief §20 |
 | X9 | Rankings show only listeners who chose a public handle and did not opt out (`listener_preferences.show_in_rankings`) | Privacy over growth |
 | X10 | Anonymous visitors get the feed and previews (cold start from a cookie with country/genres); nothing they do is stored server-side | No account before preview; no tracking without an account |
 | X11 | Share URL: `/song/{artist-slug}/{title-slug}-{code}` with a random `tracks.public_code`; the title part is cosmetic and redirects to canonical | Stable, readable, no guessable ids |
@@ -45,7 +45,7 @@ genre name columns. None of it is removed; it is generalized.
 
 ## 3. Work breakdown
 
-### P0 — core experience (this change)
+### P0 - core experience (this change)
 
 | Task | Content |
 | --- | --- |
@@ -53,7 +53,7 @@ genre name columns. None of it is removed; it is generalized.
 | X-DB2 Discovery ledger | `listening_events.context`, `record_listen` → returns awards; `discovery_points` + `discovery_point_rules` (configurable values and daily caps); `track_saves`; `record_share`; anti-abuse rules (§5) |
 | X-DB3 Stats & progress | `my_discovery_stats`, `my_discovery_days` (streaks), `my_records`, goals progress, weekly/monthly/all-time leaderboard (global, country, macro-region) |
 | X-DB4 Feed | `discover_candidates` (features per track: genres, artist, country, languages, freshness, popularity, completion/skip/save rates, rising growth, co-follow affinity), `my_taste` (affinities from likes/saves/follows/listens/skips + preferences), `track_previews` (preview window + AAC variant keys) |
-| X-REC Scoring | `rankFeed()` — weighted score, 75/25 personalization/exploration (configurable), diversity re-rank (no artist twice in 4, ≤ 40 % one genre), reason codes, mode presets (For You, Global, Nearby, New, Rising) |
+| X-REC Scoring | `rankFeed()` - weighted score, 75/25 personalization/exploration (configurable), diversity re-rank (no artist twice in 4, ≤ 40 % one genre), reason codes, mode presets (For You, Global, Nearby, New, Rising) |
 | X-FEED Discover feed UI | Full-screen vertical snap feed, autoplay preview after the first tap, preload next / unload previous, keyboard + swipe, cover, title, artist, country, genre, reason, Play/Pause, Like, Save, Follow, Share, artist link, "Play full track" |
 | X-ONB Onboarding | One screen: language, country, genres, a few artists (follow), what to discover; under a minute; skippable |
 | X-SHARE Sharing | Public song page (artwork, artist, preview, CTA) with Open Graph image; Web Share API / copy link; share award |
@@ -62,7 +62,7 @@ genre name columns. None of it is removed; it is generalized.
 | X-I18N | All new text in `en` + `pl`; nothing Poland-specific in new code paths |
 | X-NAV | Navigation: Discover · Browse · Search · Library · You |
 
-### P1 — engagement (partly in this change, marked ✅)
+### P1 - engagement (partly in this change, marked ✅)
 
 - ✅ Achievements (definitions in one table, evaluated in the database), ✅ Discovery Levels,
   ✅ regional/global rankings, ✅ Weekly Recap with percentile, ✅ shareable stats card (vertical
@@ -73,14 +73,14 @@ genre name columns. None of it is removed; it is generalized.
 - QR code on share cards, artist-chosen preview editing UI in the release editor (the column
   exists), upcoming events on artist pages (needs M8 events).
 
-### P2 — advanced
+### P2 - advanced
 
 ~~Friends comparison~~ (done), learned recommendation model and audio embeddings, ~~automatic
 "best moment" detection in the worker (energy/novelty curve) and waveform~~ (done 2026-10-08,
 docs/audio.md §2.6), ~~seasonal rankings and
 challenges~~ (done 2026-10-08), creator tools, ~~promotional clips (video render of
 the share card + preview audio)~~ (done 2026-10-08), bot detection beyond rate rules (timing entropy, device
-fingerprints — only with legal review), personalized discovery campaigns.
+fingerprints - only with legal review), personalized discovery campaigns.
 
 ## 4. Recommendation (X5)
 
@@ -93,14 +93,14 @@ score = w.genre·genreAffinity + w.artist·artistAffinity + w.user·coFollowAffi
 
 All inputs are normalized to 0..1 in SQL or `features()`. Weights per mode live in
 `DISCOVERY_MODES` (`packages/shared/src/discovery/config.ts`). The feed is filled slot by slot:
-with probability `explorationShare` (default 0.25, user-adjustable 0.1–0.4) a slot takes the
+with probability `explorationShare` (default 0.25, user-adjustable 0.1-0.4) a slot takes the
 best **exploration** candidate (genre/country the listener has not heard, low popularity
 preferred), otherwise the best **personalized** one; diversity rules apply to both. Each item
 keeps the reason code of its strongest signal ("Because you follow X", "Rising in Germany", "New
 genre for you"). Cold start (no history): preferences + global/regional popularity + freshness +
 seeded random exploration.
 
-## 5. Points, score and anti-abuse (X6–X8)
+## 5. Points, score and anti-abuse (X6-X8)
 
 | Award | Points | Key (once per) | Daily cap |
 | --- | --- | --- | --- |
@@ -120,7 +120,7 @@ listening time is capped by real time (`record_listen` already refuses more ms t
 **Discovery Score** = 10 × lifetime points × (0.8 + 0.2 × diversity), where diversity is the
 normalized entropy of genres across the listener's discoveries in the last 90 days. **Level** is a
 step function of the score (8 named levels, then numbered). **Streak** = consecutive local days
-(listener's time zone) with at least one new-song discovery — opening the app is not enough.
+(listener's time zone) with at least one new-song discovery - opening the app is not enough.
 
 ## 6. Privacy
 
@@ -153,22 +153,22 @@ Known gaps / next:
 - Guidon tasks for M13 must be created from §3 (no Guidon access from the implementation session).
 - Previews start at the artist's soundcheck, else the analysed best moment (audio.md §2.6).
 - Previews use AAC only (as the delivery tiers do); a browser without AAC shows "can't play the
-  preview" — a FLAC/Opus preview variant would need a worker change.
-- ~~Per-listener weight tuning~~ — done 2026-10-08, see below.
+  preview" - a FLAC/Opus preview variant would need a worker change.
+- ~~Per-listener weight tuning~~ - done 2026-10-08, see below.
 - Done 2026-10-08: feed aggregates are materialized views refreshed every 5 minutes by pg_cron
   (`private.track_stats`, `private.track_country_listeners`).
 
 ### Update 2026-10-08
 
-Added: artists choose the Discover preview in the release editor (`set_track_preview`, 15–30 s,
+Added: artists choose the Discover preview in the release editor (`set_track_preview`, 15-30 s,
 also after publishing); similar-listener signal from shared listening (`my_taste().co_listened`);
 "+2" notice for saves; QR codes on story/square/weekly cards; following people (`user_follows`,
-public counts, private lists) and **You vs friend** (`compare_with`) — allowed only by the
+public counts, private lists) and **You vs friend** (`compare_with`) - allowed only by the
 compared person's `activity_visibility`: everyone, only people they follow, or nobody.
 
 ### Integration with `work` (2026-10-08)
 
-`work` built M7–M11 in parallel (soundchecks, artist graph, events, DSA reports, people follows and
+`work` built M7-M11 in parallel (soundchecks, artist graph, events, DSA reports, people follows and
 blocks, payouts base, retention, legal). Where both did the same thing, `work`'s implementation is
 kept and Discover uses it: previews are **soundcheck** listens (`record_listen(..., soundcheck)`),
 reports go through the DSA form (`/report`), follows/blocks/visibility come from M8.2 (compare uses
@@ -186,15 +186,15 @@ not count. `tuneWeights()` (`packages/shared/src/discovery/tune.ts`, constants i
 each reason to the feature it stands for, compares its success rate (kept + ½ finished, per song
 shown) with the listener's overall rate, shrinks it toward that rate with 20 pseudo-songs,
 square-roots the lift and clamps it to ×0.75…×1.33. Nothing changes below 40 songs shown or with no
-success at all. Applied in For You and Global only — Nearby/New/Rising are lenses the listener
-chose — and never to the exploration share, which stays the listener's setting.
+success at all. Applied in For You and Global only - Nearby/New/Rising are lenses the listener
+chose - and never to the exploration share, which stays the listener's setting.
 
 ### Seasons and weekly challenges (2026-10-08)
 
-- **Seasons** are calendar quarters (UTC) — the same for every region, nothing to maintain. Rankings
+- **Seasons** are calendar quarters (UTC) - the same for every region, nothing to maintain. Rankings
   gain "Season" and "Last season"; a daily pg_cron job closes the previous quarter into
   `season_results`: every participant's final global place, points and percentile (counting also
-  listeners hidden from public rankings — the row is visible only to its owner, on You). A top-10 %
+  listeners hidden from public rankings - the row is visible only to its owner, on You). A top-10 %
   finish among at least 10 participants unlocks **Season Star**.
 - **Weekly challenges**: three per UTC week, the same for everyone (a shared topic is what makes
   them social), picked deterministically from `discovery_challenges` (10 to start: new songs,
@@ -209,7 +209,7 @@ chose — and never to the exploration share, which stays the listener's setting
 ### Video clips for stories (2026-10-08)
 
 The share menu offers **Video for stories (MP4)**: the 9:16 story card with the song's preview
-(the artist's soundcheck, else the best moment) and a lime progress bar — what Stories, Reels,
+(the artist's soundcheck, else the best moment) and a lime progress bar - what Stories, Reels,
 TikTok and Shorts take. One clip per track, window, language and card design (`CLIP_DESIGN` in
 `modules/discover/clips.ts`), shared by everyone; only signed-in listeners can start a new one
 (10 an hour). The app renders the card into the ingest bucket (`clips/<id>/card.png`), the worker

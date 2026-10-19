@@ -1,6 +1,6 @@
 """Job loop: take uploaded masters from the queue, process them, store variants, report back.
 
-Queue and results live in Supabase (claim/finish/fail RPCs, service role only — see
+Queue and results live in Supabase (claim/finish/fail RPCs, service role only - see
 supabase/migrations/20261006100000_audio_processing.sql). Masters are read from the ingest bucket
 and variants written to the media bucket (S3 API: Cloudflare R2 in production, SeaweedFS locally).
 """
@@ -151,7 +151,7 @@ def run_forever(
 ) -> None:
     """Audio, images, share clips, the storage sweep, then backfills; sleeps when all are idle.
 
-    With `idle_exit`, returns after that many seconds without any work — on Fly.io the machine then
+    With `idle_exit`, returns after that many seconds without any work - on Fly.io the machine then
     stops and costs nothing until the database wakes it (supabase/migrations/*_worker_wake.sql).
     """
     if steps is None or backfill is None:

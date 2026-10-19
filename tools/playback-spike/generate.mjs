@@ -117,7 +117,7 @@ for (let i = 0; i < 3; i++) {
 const manifest = {
   generated: new Date().toISOString(),
   ffmpeg: execFileSync(ffmpeg, ["-version"], { encoding: "utf8" }).split("\n")[0],
-  signal: `stereo linear sweep ${F0}–${F1} Hz, -12 dBFS, ${DURATION} s`,
+  signal: `stereo linear sweep ${F0}-${F1} Hz, -12 dBFS, ${DURATION} s`,
   files: files.map((f) => ({ ...f, bytes: statSync(join(out, f.file)).size })),
   album,
 };

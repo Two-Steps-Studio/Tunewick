@@ -1,7 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 
 // Runs the playback spike page in the three engines Playwright ships. These are engine builds,
-// not branded browsers (e.g. Playwright WebKit on Windows is not Safari) — results are indicative;
+// not branded browsers (e.g. Playwright WebKit on Windows is not Safari) - results are indicative;
 // real Safari/iOS/Android are tested manually with the same page.
 export default defineConfig({
   testDir: ".",

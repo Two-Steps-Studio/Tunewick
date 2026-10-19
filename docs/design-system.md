@@ -1,6 +1,6 @@
 # Design System
 
-> Status: **v0.1 — logo concept B "Split" chosen by owner (2026-10-05)** (Guidon: "Phase 2: Brand & design system").
+> Status: **v0.1 - logo concept B "Split" chosen by owner (2026-10-05)** (Guidon: "Phase 2: Brand & design system").
 > Tokens: [`design/tokens.css`](../design/tokens.css) · Visual board: [`design/brand-board.html`](../design/brand-board.html)
 > (run `npx serve design` and open `/brand-board.html`).
 
@@ -86,8 +86,8 @@ fills on ivory are kept for large brand moments only).
 
 | Role | Typeface | License | Why |
 | --- | --- | --- | --- |
-| Display | **Bricolage Grotesque** (variable: opsz, wdth 75–100, wght 200–800) | SIL OFL | Contemporary grotesk with character at large sizes, condensed widths for poster-like headlines; not Inter/Helvetica. |
-| Text / UI | **Instrument Sans** (variable: wdth 75–100, wght 400–700) | SIL OFL | Clean, slightly narrow, excellent at small sizes; width axis keeps dense lists compact. |
+| Display | **Bricolage Grotesque** (variable: opsz, wdth 75-100, wght 200-800) | SIL OFL | Contemporary grotesk with character at large sizes, condensed widths for poster-like headlines; not Inter/Helvetica. |
+| Text / UI | **Instrument Sans** (variable: wdth 75-100, wght 400-700) | SIL OFL | Clean, slightly narrow, excellent at small sizes; width axis keeps dense lists compact. |
 | Data | **Martian Mono** (variable: wdth, wght) | SIL OFL | Technical readouts: codec, bit depth, sample rate, durations, dates. Gives audio data its own voice. |
 
 All three cover Polish diacritics (verified in the board: "Zażółć gęślą jaźń"). OFL allows web
@@ -95,25 +95,25 @@ embedding and app bundling. **Self-host** in production (no Google Fonts request
 performance); the board uses Google Fonts only as a preview.
 
 ### Scale (tokens)
-`xs 12 · sm 14 · base 16 · lg 18 · xl 20–24 · 2xl 24–36 · 3xl 32–56 · display 44–96` (fluid via `clamp`).
+`xs 12 · sm 14 · base 16 · lg 18 · xl 20-24 · 2xl 24-36 · 3xl 32-56 · display 44-96` (fluid via `clamp`).
 
 ### Rules
-- Headlines: Bricolage 750–800, `wdth 75`, tracking −0.02 to −0.045em, line-height 0.85–0.95.
+- Headlines: Bricolage 750-800, `wdth 75`, tracking −0.02 to −0.045em, line-height 0.85-0.95.
 - Body: Instrument Sans 400, line-height 1.5, max 62ch.
 - Numbers in data contexts use Martian Mono; never fake precision (e.g. no "96 kHz" unless true).
 - Minimum UI text 12px; muted text only on tokens that pass 4.5:1.
 
 ## 5. Logo
 
-Direction from the Master Prompt: abstract geometric TW, 2–4 elements, asymmetry, one broken
+Direction from the Master Prompt: abstract geometric TW, 2-4 elements, asymmetry, one broken
 element, strong at small sizes, no notes/headphones/waveforms/equalizers/play buttons.
 
 **Decision (2026-10-05): concept B "Split".** The owner first picked A "Wick", then switched to B
 after seeing A in the app. A remains on the brand board for reference only.
 
-### Symbol — B "Split"
-- T crossbar and stem separated by a gap — the broken element.
-- W as a single zigzag stroke set apart from the stem, its last arm rising above the crossbar line — the asymmetry.
+### Symbol - B "Split"
+- T crossbar and stem separated by a gap - the broken element.
+- W as a single zigzag stroke set apart from the stem, its last arm rising above the crossbar line - the asymmetry.
 - 3 elements. Reads as "TW" even at 16 px (verified).
 
 ### Wordmark
@@ -147,9 +147,9 @@ The symbol stays legible at 16 px (verified). Custom-drawn **k** and **w** remai
 ## 6. Layout
 
 - **Editorial grid:** 12 columns desktop, 4 mobile, 16px mobile gutter. Content is placed asymmetrically (e.g. 2fr / 1fr, 1.4fr / 1fr / 1fr), not evenly split card rows.
-- **Hierarchy through type and space, not boxes.** Sections are separated by hairlines (`--line`) and large spacing (64–96px), not by containers.
+- **Hierarchy through type and space, not boxes.** Sections are separated by hairlines (`--line`) and large spacing (64-96px), not by containers.
 - **Artwork leads.** Release and artist pages open with large artwork and display type; metadata sits in a narrow column.
-- **Square geometry.** Radius 0 by default, 2px for inputs/chips. The only round elements: the play control and toggles — round = "plays/turns".
+- **Square geometry.** Radius 0 by default, 2px for inputs/chips. The only round elements: the play control and toggles - round = "plays/turns".
 - **Scene rule:** event, venue and city items carry a 3px purple top rule instead of a card frame.
 - Mobile first: bottom player bar + bottom nav; no horizontal page scroll; safe-area insets.
 
@@ -168,7 +168,7 @@ Motion is subtle, quick and has a reason. Values from `design/tokens.css`:
 | `--tk-dur-sheet` | 380ms | full-screen player sheet |
 
 Rules (from `emil-design-eng`, adapted):
-1. **Frequency decides.** Things used hundreds of times (play/pause, next, keyboard shortcuts, queue reorder by keyboard) get no decorative animation — only instant state change and press feedback.
+1. **Frequency decides.** Things used hundreds of times (play/pause, next, keyboard shortcuts, queue reorder by keyboard) get no decorative animation - only instant state change and press feedback.
 2. Never `ease-in` for UI; never animate from `scale(0)` (start ≥0.95 + opacity).
 3. Only `transform` and `opacity` (and `clip-path` where needed). No layout-property animation.
 4. CSS transitions over keyframes for interruptible UI; springs only for gestures (player sheet drag, swipe to dismiss) with bounce ≤0.2.
@@ -187,9 +187,9 @@ the identity above (flat color fields, no frosted glass), so chrome stays solid.
 
 **Musical motion (Tunewick-specific, used sparingly):** the spark may pulse once on play start
 (single 240ms scale 1→1.15→1, not looping). No beat-synced visualizers, no constant motion
-in the UI chrome — the music is the moving part.
+in the UI chrome - the music is the moving part.
 
-## 8. Components — language (initial set)
+## 8. Components - language (initial set)
 
 | Component | Tunewick treatment |
 | --- | --- |
@@ -199,7 +199,7 @@ in the UI chrome — the music is the moving part.
 | Event item | Purple 3px top rule, oversized condensed date, title, venue · city. No card box. |
 | Artist / release tile | Square artwork with `--tk-radius-2` corners, title below in display type; hover reveals nothing essential. |
 | Soundcheck | Artwork + 30s progress as a straight line under it (not a waveform), artist name, "full track" and "next gig" links. |
-| "Byłem przy tym" | A stamp-like mark (square, date in mono) in the user's history — a memory, not a counter. |
+| "Byłem przy tym" | A stamp-like mark (square, date in mono) in the user's history - a memory, not a counter. |
 | Recommendation reason | One line of muted text under the item: "Played at … · Same producer as …". |
 | Promotion label | Explicit "Promoted" text label, never color-only (anti-payola). |
 
@@ -223,7 +223,7 @@ Full component specs come with the UI implementation tasks.
 
 ## 11. Internationalization
 
-Polish and English from day one. Condensed display type must handle longer Polish words — test
+Polish and English from day one. Condensed display type must handle longer Polish words - test
 headlines with real Polish strings ("Wydarzenia w ten weekend", "Byłem przy tym").
 
 ## 12. Open items

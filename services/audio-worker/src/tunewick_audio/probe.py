@@ -1,4 +1,4 @@
-"""Container/codec probing and the upload allow-list (docs/audio.md §2.1–§2.2)."""
+"""Container/codec probing and the upload allow-list (docs/audio.md §2.1-§2.2)."""
 
 from __future__ import annotations
 
@@ -100,7 +100,7 @@ def probe(path: str) -> Probe:
     if sample_rate not in SAMPLE_RATES:
         raise Rejected(
             "sample_rate",
-            f"Sample rate {sample_rate} Hz is not supported (44.1–192 kHz, standard rates only).",
+            f"Sample rate {sample_rate} Hz is not supported (44.1-192 kHz, standard rates only).",
         )
     channels = int(stream.get("channels") or 0)
     if channels not in (1, 2):

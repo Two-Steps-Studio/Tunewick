@@ -32,7 +32,7 @@ insert into ids values ('c', add_track((select id from ids where name = 'r_de'),
 set local role postgres;
 update releases set status = 'published', publish_at = now() - interval '2 hours' where id = (select id from ids where name = 'r_pl');
 update releases set status = 'published', publish_at = now() - interval '10 days' where id = (select id from ids where name = 'r_de');
--- Listeners c02–c04 in Poland, c05 in Germany, c06 without a country.
+-- Listeners c02-c04 in Poland, c05 in Germany, c06 without a country.
 insert into listener_preferences (user_id, country_code)
 select ('00000000-0000-0000-0000-00000000c0' || lpad(n::text, 2, '0'))::uuid, case when n <= 4 then 'PL' when n = 5 then 'DE' end
 from generate_series(2, 6) n;
@@ -43,7 +43,7 @@ language sql as $$
   select ('00000000-0000-0000-0000-00000000c0' || lpad(listener::text, 2, '0'))::uuid, t.id, t.release_id, r.artist_id, now() - ago, ms
   from tracks t join releases r on r.id = t.release_id where t.id = (select id from ids where name = track);
 $$;
--- Track a: 5 listeners this week (one plays it ten times — still one listener).
+-- Track a: 5 listeners this week (one plays it ten times - still one listener).
 select pg_temp.listen(n, 'a', interval '1 day') from generate_series(2, 6) n;
 select pg_temp.listen(2, 'a', interval '2 hours') from generate_series(1, 9);
 -- Track b: 1 listener; one skip (10 s) does not count.

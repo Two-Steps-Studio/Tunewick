@@ -1,4 +1,4 @@
--- M14.10: the atlas — countries, cities, scenes from public catalogue facts.
+-- M14.10: the atlas - countries, cities, scenes from public catalogue facts.
 begin;
 create extension if not exists pgtap with schema extensions;
 set search_path = public, extensions;

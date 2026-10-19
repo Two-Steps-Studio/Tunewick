@@ -1,6 +1,6 @@
 # Licensing & Rights
 
-> Status: **v0.1 working model — NOT legal advice.** Every item marked ⚖️ requires validation
+> Status: **v0.1 working model - NOT legal advice.** Every item marked ⚖️ requires validation
 > by a lawyer specialised in Polish/EU copyright and platform law (Guidon: "Legal review").
 > The product must not launch publicly until those items are resolved.
 
@@ -26,8 +26,8 @@ content, no covers without clearance, no DJ mixes of other people's tracks in MV
 Every release submission requires a declaration stored immutably in `rights_declarations`:
 
 1. "I own or control the master recording rights for all tracks" (yes/no).
-2. "I own or control the composition rights, or I declare the CMO memberships below" — per release: list of authors' CMO memberships (ZAiKS, other, none, unknown).
-3. Samples and interpolations: none / cleared (with description) — uncleared samples are rejected.
+2. "I own or control the composition rights, or I declare the CMO memberships below" - per release: list of authors' CMO memberships (ZAiKS, other, none, unknown).
+3. Samples and interpolations: none / cleared (with description) - uncleared samples are rejected.
 4. AI content: human / AI-assisted / AI-generated (see §6).
 5. Territories (default: worldwide, artist may restrict).
 6. Acceptance of the Artist Terms version.
@@ -35,11 +35,11 @@ Every release submission requires a declaration stored immutably in `rights_decl
 The declaration is evidence, not proof. Moderation and duplicate/fingerprint checks run anyway.
 
 **Implemented (M2.4):** form on the release editor; stored insert-only with terms version
-`draft-2026-10` (draft until the lawyer approves the Artist Terms — the UI says so). Database rules:
+`draft-2026-10` (draft until the lawyer approves the Artist Terms - the UI says so). Database rules:
 cleared samples must be described; the collective-management question must be answered ("none" is
 exclusive, "unknown" is allowed and flagged for review); AI involvement must be declared and the
 declaration sets the release's AI value. A new declaration supersedes the previous one; history is
-kept. Submitting a release for review is not available until audio upload exists (M3) — the
+kept. Submitting a release for review is not available until audio upload exists (M3) - the
 editor shows an honest readiness checklist instead.
 
 ## 4. Artist Terms (outline for the lawyer) ⚖️
@@ -48,7 +48,7 @@ editor shows an honest readiness checklist instead.
 - Artist keeps ownership; can withdraw a release (takes effect within a defined period; already-accrued payouts unaffected).
 - Warranties: rights ownership, no infringement, accuracy of CMO declarations and AI declaration.
 - Indemnity for false declarations.
-- Payout terms when paid plans exist: user-centric model (D2); until then, no payouts and no revenue (beta, free) — stated plainly.
+- Payout terms when paid plans exist: user-centric model (D2); until then, no payouts and no revenue (beta, free) - stated plainly.
 - Promotional use: soundcheck excerpts, artwork in Tunewick marketing, opt-out available.
 - No DRM commitment; streaming-only (no downloads) in MVP.
 - Quality: Tunewick stores the master unaltered and never markets it beyond its verified properties.

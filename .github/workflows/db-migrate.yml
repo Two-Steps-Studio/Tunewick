@@ -1,7 +1,7 @@
 name: Database migrations
 
 # Applies supabase/migrations to the production database (docs/deployment.md §2). Manual only:
-# run it first with apply = false — it lists what would be applied — then again with apply = true.
+# run it first with apply = false - it lists what would be applied - then again with apply = true.
 # Needs repository secrets SUPABASE_ACCESS_TOKEN (supabase.com → Account → Access Tokens),
 # SUPABASE_DB_PASSWORD and SUPABASE_PROJECT_REF (the id in https://<ref>.supabase.co).
 

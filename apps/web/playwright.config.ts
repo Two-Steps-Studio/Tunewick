@@ -19,7 +19,7 @@ export default defineConfig({
   projects: [
     { name: "desktop-chromium", use: { ...devices["Desktop Chrome"] } },
     { name: "mobile-chromium", use: { ...devices["Pixel 7"] } },
-    // The player engine also runs in Gecko (MSE FLAC ≤ 48 kHz, native Hi-Res — spike M3.0).
+    // The player engine also runs in Gecko (MSE FLAC ≤ 48 kHz, native Hi-Res - spike M3.0).
     {
       name: "desktop-firefox",
       use: { ...devices["Desktop Firefox"] },

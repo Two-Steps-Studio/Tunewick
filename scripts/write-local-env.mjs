@@ -18,7 +18,7 @@ if (!env.API_URL || !env.PUBLISHABLE_KEY) {
   process.exit(1);
 }
 
-// Local S3 (pnpm media:start) — server-only settings, included only while it runs.
+// Local S3 (pnpm media:start) - server-only settings, included only while it runs.
 let mediaRunning = false;
 try {
   mediaRunning = execSync("docker ps --filter name=tunewick-media --format {{.Names}}", {

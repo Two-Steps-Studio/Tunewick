@@ -159,7 +159,7 @@ set local role authenticated;
 set local request.jwt.claims = '{"sub": "00000000-0000-0000-0000-0000000000a2", "role": "authenticated"}';
 select is((select (c ->> 'n')::int from jsonb_array_elements(my_taste() -> 'co_listened') c
   where (c ->> 'artist')::uuid = (select id from ids where name = 'de')), 2,
-  'taste: two listeners who play the same artist also play Entdeckung — a similar-listener signal');
+  'taste: two listeners who play the same artist also play Entdeckung - a similar-listener signal');
 select is(jsonb_array_length(my_taste() -> 'heard'), 3, 'taste: discovered tracks are known, so the feed does not repeat them');
 select is((my_records() -> 'most_songs_day' ->> 'value')::int, 3, 'records: most songs discovered in a day');
 
