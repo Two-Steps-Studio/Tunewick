@@ -18,6 +18,7 @@ export const routing = defineRouting({
   localePrefix: "as-needed",
   pathnames: {
     "/": "/",
+    "/discover": paths("/odkrywaj", "/discover"),
     "/browse": paths("/przegladaj", "/browse"),
     "/welcome": paths("/witaj", "/welcome"),
     "/you": paths("/ty", "/you"),

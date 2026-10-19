@@ -13,6 +13,7 @@
     "loading": "Chargement…"
   },
   "Nav": {
+    "listen": "Écouter",
     "discover": "Découvrir",
     "scene": "Scène",
     "search": "Recherche",
@@ -2622,5 +2623,23 @@
       "not_allowed": "Réservé aux admins.",
       "failed": "Échec de l’enregistrement. Réessaie."
     }
+  },
+  "Home": {
+    "title": "Écouter",
+    "description": "La musique d’artistes indépendants - écoute tout de suite, puis découvre du nouveau.",
+    "leadYours": "Ta musique tout de suite : ce que tu as écouté récemment et ce que tu as aimé.",
+    "leadPopular": "De la musique faite par des personnes, tout de suite : ce qu’on écoute cette semaine sur Tunewick.",
+    "playYours": "Écouter ta musique",
+    "playPopular": "Écouter les titres populaires",
+    "discover": "Découvrir du nouveau",
+    "recent": "Écouté récemment",
+    "fresh": "Nouveautés des artistes suivis",
+    "popular": "Populaire cette semaine",
+    "playFrom": "Écouter à partir de : {title} - {artist}",
+    "nextTitle": "Prêt pour du nouveau ?",
+    "nextLead": "Découvrir : un titre à la fois, chacun avec la raison pour laquelle tu l’entends.",
+    "newest": "Sorties les plus récentes",
+    "leadNewest": "De la musique faite par des personnes, tout de suite : les dernières sorties sur Tunewick.",
+    "playNewest": "Écouter les nouveautés"
   }
 }

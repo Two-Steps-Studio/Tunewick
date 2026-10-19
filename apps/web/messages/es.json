@@ -13,6 +13,7 @@
     "loading": "Cargando…"
   },
   "Nav": {
+    "listen": "Escuchar",
     "discover": "Descubrir",
     "scene": "Escena",
     "search": "Buscar",
@@ -2622,5 +2623,23 @@
       "not_allowed": "Solo administradores.",
       "failed": "No se pudo guardar. Inténtalo de nuevo."
     }
+  },
+  "Home": {
+    "title": "Escuchar",
+    "description": "Música de artistas independientes: escucha al momento y después descubre algo nuevo.",
+    "leadYours": "Tu música al momento: lo que has escuchado últimamente y lo que te gusta.",
+    "leadPopular": "Música de personas, al momento: lo que se escucha esta semana en Tunewick.",
+    "playYours": "Reproducir tu música",
+    "playPopular": "Reproducir lo popular",
+    "discover": "Descubrir algo nuevo",
+    "recent": "Escuchado recientemente",
+    "fresh": "Novedades de artistas que sigues",
+    "popular": "Popular esta semana",
+    "playFrom": "Reproducir desde: {title} - {artist}",
+    "nextTitle": "¿Listo para algo nuevo?",
+    "nextLead": "Descubre: canción a canción, cada una con el motivo por el que la escuchas.",
+    "newest": "Lanzamientos más recientes",
+    "leadNewest": "Música de personas, al momento: los lanzamientos más recientes en Tunewick.",
+    "playNewest": "Reproducir lo más nuevo"
   }
 }

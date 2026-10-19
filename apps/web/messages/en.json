@@ -13,6 +13,7 @@
     "loading": "Loading…"
   },
   "Nav": {
+    "listen": "Listen",
     "discover": "Discover",
     "scene": "Scene",
     "search": "Search",
@@ -2622,5 +2623,23 @@
       "not_allowed": "Admins only.",
       "failed": "Could not save. Try again."
     }
+  },
+  "Home": {
+    "title": "Listen",
+    "description": "Music by independent artists - listen right away, then discover something new.",
+    "leadYours": "Your music right away: what you have been playing and what you liked.",
+    "leadPopular": "Music by people, right away: what is being played on Tunewick this week.",
+    "playYours": "Play your music",
+    "playPopular": "Play what is popular",
+    "discover": "Discover something new",
+    "recent": "Recently played",
+    "fresh": "New from artists you follow",
+    "popular": "Popular this week",
+    "playFrom": "Play from: {title} - {artist}",
+    "nextTitle": "Ready for something new?",
+    "nextLead": "Discover: one song at a time, each with the reason you hear it.",
+    "newest": "Newest releases",
+    "leadNewest": "Music by people, right away: the newest releases on Tunewick.",
+    "playNewest": "Play the newest"
   }
 }

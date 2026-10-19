@@ -5,9 +5,10 @@ import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import type { AppPathname } from "@/i18n/routing";
 
-// Discover is the center: one tap from anywhere to new music.
+// Listening first (music that is already here), discovering next - one tap from anywhere.
 const items = [
-  { href: "/", key: "discover" },
+  { href: "/", key: "listen" },
+  { href: "/discover", key: "discover" },
   { href: "/scene", key: "scene" },
   { href: "/search", key: "search" },
   { href: "/library", key: "library" },

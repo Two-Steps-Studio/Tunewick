@@ -55,7 +55,7 @@ export default async function TodayPage({ params }: PageProps<"/[locale]/today">
           set={daily}
           locale={locale}
           t={t}
-          href={{ pathname: "/", query: { set: "daily" } }}
+          href={{ pathname: "/discover", query: { set: "daily" } }}
         />
       ) : sets ? (
         <p className="today__empty" role="status">
@@ -84,7 +84,7 @@ export default async function TodayPage({ params }: PageProps<"/[locale]/today">
           {JOURNEYS.map((journey) => (
             <li key={journey}>
               <Link
-                href={{ pathname: "/", query: { journey } }}
+                href={{ pathname: "/discover", query: { journey } }}
                 className="journey"
                 data-journey={journey}
               >
@@ -101,7 +101,7 @@ export default async function TodayPage({ params }: PageProps<"/[locale]/today">
           set={weekly}
           locale={locale}
           t={t}
-          href={{ pathname: "/", query: { set: "weekly" } }}
+          href={{ pathname: "/discover", query: { set: "weekly" } }}
         />
       ) : null}
 
@@ -130,7 +130,7 @@ function SetCard({
   set: DiscoverySetView;
   locale: string;
   t: T;
-  href: { pathname: "/"; query: { set: string } };
+  href: { pathname: "/discover"; query: { set: string } };
 }) {
   const sections =
     set.kind === "weekly"

@@ -122,7 +122,7 @@ export async function getRecentlyPlayed() {
   const { data: tracks, error: tracksError } = await supabase
     .from("tracks")
     .select(
-      "id, title, duration_ms, release:releases(id, slug, title, status, publish_at, artist:artists!releases_artist_id_fkey(slug, name))",
+      "id, title, duration_ms, release:releases(id, slug, title, status, publish_at, artwork_image_id, artist:artists!releases_artist_id_fkey(slug, name))",
     )
     .in(
       "id",

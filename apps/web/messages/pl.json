@@ -13,6 +13,7 @@
     "loading": "Wczytuję…"
   },
   "Nav": {
+    "listen": "Słuchaj",
     "discover": "Odkrywaj",
     "scene": "Scena",
     "search": "Szukaj",
@@ -2622,5 +2623,23 @@
       "not_allowed": "Tylko administratorzy.",
       "failed": "Nie udało się zapisać. Spróbuj ponownie."
     }
+  },
+  "Home": {
+    "title": "Słuchaj",
+    "description": "Muzyka niezależnych artystów - posłuchaj od razu, potem odkrywaj nowe.",
+    "leadYours": "Twoja muzyka od razu: to, czego słuchasz ostatnio i co polubiłeś.",
+    "leadPopular": "Muzyka od ludzi, od razu: to, czego słucha się w tym tygodniu na Tunewick.",
+    "playYours": "Odtwórz swoją muzykę",
+    "playPopular": "Odtwórz popularne",
+    "discover": "Odkrywaj nowe",
+    "recent": "Słuchane ostatnio",
+    "fresh": "Nowości od obserwowanych",
+    "popular": "Popularne w tym tygodniu",
+    "playFrom": "Odtwórz od: {title} - {artist}",
+    "nextTitle": "Gotowy na coś nowego?",
+    "nextLead": "Odkrywaj: utwór po utworze, każdy z powodem, dla którego go słyszysz.",
+    "newest": "Najnowsze wydawnictwa",
+    "leadNewest": "Muzyka od ludzi, od razu: najnowsze wydawnictwa na Tunewick.",
+    "playNewest": "Odtwórz najnowsze"
   }
 }

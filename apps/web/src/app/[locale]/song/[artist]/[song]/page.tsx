@@ -153,7 +153,7 @@ export default async function SongPage({ params }: PageProps<"/[locale]/song/[ar
         />
         <div className="song-page__actions">
           <Link
-            href={{ pathname: "/", query: { start: data.track.code } }}
+            href={{ pathname: "/discover", query: { start: data.track.code } }}
             className="button button--primary"
           >
             {t("discoverMore")}

@@ -13,6 +13,7 @@
     "loading": "Wird geladen…"
   },
   "Nav": {
+    "listen": "Hören",
     "discover": "Entdecken",
     "scene": "Szene",
     "search": "Suche",
@@ -2622,5 +2623,23 @@
       "not_allowed": "Nur für Admins.",
       "failed": "Speichern fehlgeschlagen. Versuche es erneut."
     }
+  },
+  "Home": {
+    "title": "Hören",
+    "description": "Musik unabhängiger Künstler*innen - sofort hören, dann Neues entdecken.",
+    "leadYours": "Deine Musik sofort: was du zuletzt gehört und was du gelikt hast.",
+    "leadPopular": "Musik von Menschen, sofort: was diese Woche auf Tunewick gehört wird.",
+    "playYours": "Deine Musik abspielen",
+    "playPopular": "Beliebtes abspielen",
+    "discover": "Neues entdecken",
+    "recent": "Zuletzt gehört",
+    "fresh": "Neu von Künstler*innen, denen du folgst",
+    "popular": "Beliebt diese Woche",
+    "playFrom": "Abspielen ab: {title} - {artist}",
+    "nextTitle": "Bereit für etwas Neues?",
+    "nextLead": "Entdecken: Song für Song, jeder mit dem Grund, warum du ihn hörst.",
+    "newest": "Neueste Veröffentlichungen",
+    "leadNewest": "Musik von Menschen, sofort: die neuesten Veröffentlichungen auf Tunewick.",
+    "playNewest": "Neueste abspielen"
   }
 }

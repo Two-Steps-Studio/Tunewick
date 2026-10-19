@@ -99,7 +99,7 @@ export function Onboarding({
       const nextLocale = (routing.locales as readonly string[]).includes(language)
         ? (language as (typeof routing.locales)[number])
         : undefined;
-      router.replace("/", nextLocale ? { locale: nextLocale } : undefined);
+      router.replace("/discover", nextLocale ? { locale: nextLocale } : undefined);
     });
 
   return (

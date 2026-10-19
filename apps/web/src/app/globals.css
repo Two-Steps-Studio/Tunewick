@@ -5723,3 +5723,52 @@ summary,
     padding-top: var(--tk-space-6);
   }
 }
+
+/* -------------------------------------------------------------------------- */
+/* Listen (home): music first, discovering next                               */
+/* -------------------------------------------------------------------------- */
+@layer components {
+  .listen__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--tk-space-3);
+    margin-top: var(--tk-space-4);
+  }
+
+  .listen__play {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--tk-space-2);
+  }
+
+  /* A play button on the cover's corner, like a record you can pick up. */
+  .listen__track {
+    position: relative;
+  }
+
+  .listen__track .chart-row__play {
+    /* Not the chart row's grid area: placed against the card, on the cover's corner. */
+    grid-area: auto;
+    position: absolute;
+    top: var(--tk-space-2);
+    right: var(--tk-space-2);
+  }
+
+  .listen__next {
+    display: grid;
+    justify-items: start;
+    gap: var(--tk-space-3);
+    margin-block: var(--tk-space-12) var(--tk-space-6);
+    padding: var(--tk-space-6);
+    border: 1px solid var(--line);
+    border-radius: var(--tk-radius-3);
+  }
+
+  /* Six destinations in the bottom bar: a little tighter on small phones. */
+  @media (max-width: 420px) {
+    .main-nav--bottom .main-nav__link {
+      font-size: 0.6875rem;
+      letter-spacing: -0.01em;
+    }
+  }
+}

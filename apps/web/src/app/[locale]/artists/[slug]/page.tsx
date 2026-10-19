@@ -190,7 +190,7 @@ export default async function ArtistPage({ params }: PageProps<"/[locale]/artist
       {published.length ? (
         <p className="profile__discover">
           <Link
-            href={{ pathname: "/", query: { artist: artist.slug } }}
+            href={{ pathname: "/discover", query: { artist: artist.slug } }}
             className="button button--primary"
           >
             {t("profile.discover")}

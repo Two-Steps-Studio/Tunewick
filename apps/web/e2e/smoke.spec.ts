@@ -1,7 +1,8 @@
 import { expect, test } from "@playwright/test";
 
 const pages = [
-  { path: "/", heading: "Odkrywaj", lang: "pl" },
+  { path: "/", heading: "Słuchaj", lang: "pl" },
+  { path: "/odkrywaj", heading: "Odkrywaj", lang: "pl" },
   { path: "/przegladaj", heading: "Przeglądaj", lang: "pl" },
   { path: "/ty", heading: "Ty", lang: "pl" },
   { path: "/rankingi", heading: "Rankingi", lang: "pl" },
@@ -9,7 +10,8 @@ const pages = [
   { path: "/scena", heading: "Scena", lang: "pl" },
   { path: "/szukaj", heading: "Szukaj", lang: "pl" },
   { path: "/biblioteka", heading: "Biblioteka", lang: "pl" },
-  { path: "/en", heading: "Discover", lang: "en" },
+  { path: "/en", heading: "Listen", lang: "en" },
+  { path: "/en/discover", heading: "Discover", lang: "en" },
   { path: "/en/browse", heading: "Browse", lang: "en" },
   { path: "/en/you", heading: "You", lang: "en" },
   { path: "/en/rankings", heading: "Rankings", lang: "en" },
@@ -69,7 +71,7 @@ test.describe("locale detection", () => {
   test("English browsers are redirected from / to /en", async ({ page }) => {
     await page.goto("/");
     await expect(page).toHaveURL(/\/en$/);
-    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Discover");
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Listen");
   });
 });
 
@@ -102,8 +104,19 @@ test("browse narrows Poland to a voivodeship and says when it has nothing yet", 
   ).toBeVisible();
 });
 
-test("a first visit asks what to discover; skipping opens the feed", async ({ page }) => {
+test("home plays music first; Discover is one tap away and old feed links still work", async ({
+  page,
+}) => {
   await page.goto("/");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Słuchaj");
+  await page.getByRole("link", { name: "Odkrywaj nowe" }).first().click();
+  await expect(page).toHaveURL(/\/odkrywaj$/);
+  await page.goto("/?journey=surprise");
+  await expect(page).toHaveURL(/\/odkrywaj\?journey=surprise$/);
+});
+
+test("a first visit asks what to discover; skipping opens the feed", async ({ page }) => {
+  await page.goto("/odkrywaj");
   await expect(page.getByRole("heading", { name: "Co chcesz odkrywać?" })).toBeVisible();
   await page.getByText("Rock", { exact: true }).click();
   await page.getByRole("button", { name: "Zacznij odkrywać" }).click();
@@ -113,7 +126,7 @@ test("a first visit asks what to discover; skipping opens the feed", async ({ pa
     "true",
   );
   // The choice is remembered (a cookie for visitors): the next visit goes straight to the feed.
-  await page.goto("/");
+  await page.goto("/odkrywaj");
   await expect(page.getByRole("navigation", { name: "Co odkrywać" })).toBeVisible();
 });
 

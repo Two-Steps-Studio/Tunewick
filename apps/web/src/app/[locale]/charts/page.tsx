@@ -453,7 +453,7 @@ export default async function ChartsPage({ params, searchParams }: PageProps<"/[
                     ) : null}
                   </span>
                   <Link
-                    href={{ pathname: "/", query: { artist: a.slug } }}
+                    href={{ pathname: "/discover", query: { artist: a.slug } }}
                     className="chart-row__play"
                     aria-label={t("discoverArtist", { name: a.name })}
                   >
@@ -564,7 +564,7 @@ function EmptyChart({ text, cta }: { text: string; cta: string }) {
   return (
     <div className="charts__empty" role="status">
       <p>{text}</p>
-      <Link href="/" className="button button--primary">
+      <Link href="/discover" className="button button--primary">
         {cta}
       </Link>
     </div>
