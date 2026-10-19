@@ -269,6 +269,9 @@
       "title": "Foto de perfil",
       "remove": "Quitar foto",
       "alt": "Tu foto de perfil"
+    },
+    "banner": {
+      "title": "Banner del perfil"
     }
   },
   "Profile": {
@@ -407,7 +410,8 @@
       "noName": "Cuenta sin nombre de perfil",
       "photo": "Foto del artista",
       "verificationRejected": "Solicitud de verificación rechazada: {reason} Puedes enviar una nueva con otras pruebas.",
-      "reach": "De dónde eres y qué haces"
+      "reach": "De dónde eres y qué haces",
+      "banner": "Banner"
     },
     "errors": {
       "nameRequired": "Introduce el nombre del artista.",
@@ -662,7 +666,8 @@
         "not_allowed": "No puedes enviar este lanzamiento.",
         "failed": "Algo salió mal. Inténtalo de nuevo."
       }
-    }
+    },
+    "aiHint": "Tunewick acepta música hecha por personas. La IA como herramienta (mezcla, máster): elige «Con ayuda de IA». No aceptamos música generada por IA."
   },
   "Audio": {
     "none": "Aún no hay archivo máster.",
@@ -818,7 +823,7 @@
       "animated": "No se aceptan imágenes animadas.",
       "unreadable": "No se pudo leer el archivo como imagen.",
       "not_square": "La portada debe ser cuadrada.",
-      "too_small": "La imagen es demasiado pequeña (portada: al menos 1400 × 1400 px; foto: al menos 400 px).",
+      "too_small": "La imagen es demasiado pequeña (portada: mín. 1400 × 1400 px, foto: 400 px, portada de lista: 600 px, banner: 1200 × 400 px).",
       "processing_failed": "No se pudo procesar la imagen. Inténtalo de nuevo."
     },
     "error": {
@@ -839,6 +844,24 @@
       "rejected": "La foto fue rechazada.",
       "failed": "No se pudo subir la foto. Inténtalo de nuevo.",
       "hint": "Al menos 200 × 200 px, JPEG, PNG o WebP de hasta 25 MB. La recortamos en cuadrado desde el centro y eliminamos los metadatos."
+    },
+    "playlistCover": {
+      "choose": "Añadir portada propia",
+      "replace": "Cambiar portada",
+      "processing": "Preparando la portada…",
+      "rejected": "La portada fue rechazada.",
+      "failed": "La subida de la portada falló; inténtalo de nuevo.",
+      "hint": "Tu propia imagen en lugar del mosaico: al menos 600 × 600 px, JPEG, PNG o WebP de hasta 25 MB. La recortamos en cuadrado desde el centro y quitamos los metadatos.",
+      "remove": "Volver al mosaico de portadas"
+    },
+    "banner": {
+      "choose": "Añadir banner",
+      "replace": "Cambiar banner",
+      "processing": "Preparando el banner…",
+      "rejected": "El banner fue rechazado.",
+      "failed": "La subida del banner falló; inténtalo de nuevo.",
+      "hint": "Una imagen ancha en la parte superior de la página, 3:1; idealmente 2400 × 800 px (mínimo 1200 × 400), JPEG, PNG o WebP de hasta 25 MB. La recortamos desde el centro y quitamos los metadatos.",
+      "remove": "Quitar banner"
     }
   },
   "Places": {
@@ -1032,7 +1055,8 @@
     "share": "Compartir",
     "shareCopied": "Enlace copiado.",
     "shareFailed": "No se pudo copiar el enlace.",
-    "sharePrivate": "La playlist es privada. Para compartirla, cambia «Quién puede verla» más abajo."
+    "sharePrivate": "La playlist es privada. Para compartirla, cambia «Quién puede verla» más abajo.",
+    "cover": "Portada"
   },
   "Reports": {
     "link": "Reportar un problema",

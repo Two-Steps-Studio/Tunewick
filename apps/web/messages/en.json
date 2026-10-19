@@ -269,6 +269,9 @@
       "title": "Profile picture",
       "remove": "Remove picture",
       "alt": "Your profile picture"
+    },
+    "banner": {
+      "title": "Profile banner"
     }
   },
   "Profile": {
@@ -407,7 +410,8 @@
       "noName": "Account without a profile name",
       "photo": "Artist photo",
       "verificationRejected": "Verification request rejected: {reason} You can send a new one with other evidence.",
-      "reach": "Where you're from and what you make"
+      "reach": "Where you're from and what you make",
+      "banner": "Banner"
     },
     "errors": {
       "nameRequired": "Enter the artist name.",
@@ -662,7 +666,8 @@
         "not_allowed": "You can't submit this release.",
         "failed": "Something went wrong. Please try again."
       }
-    }
+    },
+    "aiHint": "Tunewick takes music made by people. AI as a tool (mixing, mastering) - choose \"With AI assistance\". We do not accept AI-generated music."
   },
   "Audio": {
     "none": "No master file yet.",
@@ -818,7 +823,7 @@
       "animated": "Animated images are not accepted.",
       "unreadable": "The file could not be read as an image.",
       "not_square": "The cover must be square.",
-      "too_small": "The image is too small (cover: at least 1400 × 1400 px, photo: at least 400 px).",
+      "too_small": "The image is too small (cover: at least 1400 × 1400 px, photo: 400 px, playlist cover: 600 px, banner: 1200 × 400 px).",
       "processing_failed": "The image could not be processed. Please try again."
     },
     "error": {
@@ -839,6 +844,24 @@
       "rejected": "The picture was rejected.",
       "failed": "The picture upload failed - please try again.",
       "hint": "At least 200 × 200 px, JPEG, PNG or WebP up to 25 MB. We crop it to a square from the centre and remove metadata."
+    },
+    "playlistCover": {
+      "choose": "Add your own cover",
+      "replace": "Change cover",
+      "processing": "Preparing the cover…",
+      "rejected": "The cover was rejected.",
+      "failed": "The cover upload failed - try again.",
+      "hint": "Your own art instead of the cover mosaic: at least 600 × 600 px, JPEG, PNG or WebP up to 25 MB. We crop it square from the centre and strip metadata.",
+      "remove": "Back to the cover mosaic"
+    },
+    "banner": {
+      "choose": "Add a banner",
+      "replace": "Change banner",
+      "processing": "Preparing the banner…",
+      "rejected": "The banner was rejected.",
+      "failed": "The banner upload failed - try again.",
+      "hint": "A wide image across the top of the page, 3:1 - ideally 2400 × 800 px (at least 1200 × 400), JPEG, PNG or WebP up to 25 MB. We crop it from the centre and strip metadata.",
+      "remove": "Remove banner"
     }
   },
   "Places": {
@@ -1032,7 +1055,8 @@
     "share": "Share",
     "shareCopied": "Link copied.",
     "shareFailed": "Could not copy the link.",
-    "sharePrivate": "This playlist is private. To share it, change “Who can see it” below."
+    "sharePrivate": "This playlist is private. To share it, change “Who can see it” below.",
+    "cover": "Cover"
   },
   "Reports": {
     "link": "Report a problem",

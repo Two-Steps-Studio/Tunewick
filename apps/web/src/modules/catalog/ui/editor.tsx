@@ -23,6 +23,7 @@ import {
   updateTrack,
 } from "../actions";
 import {
+  AI_CHOICES,
   AI_CONTENT,
   CREDIT_ROLES,
   formatSoundcheckStart,
@@ -142,7 +143,8 @@ export function ReleaseDetailsForm({
         name="aiContent"
         label={t("fields.aiContent")}
         defaultValue={v?.aiContent ?? release.ai_content}
-        options={AI_CONTENT.map((v) => ({ value: v, label: t(`ai.${v}`) }))}
+        hint={t("aiHint")}
+        options={AI_CHOICES.map((v) => ({ value: v, label: t(`ai.${v}`) }))}
       />
       <CheckboxField
         name="explicit"
@@ -348,7 +350,8 @@ export function TrackItem({
               name="aiContent"
               label={t("fields.aiContent")}
               defaultValue={state.values?.aiContent ?? track.ai_content}
-              options={AI_CONTENT.map((v) => ({ value: v, label: t(`ai.${v}`) }))}
+              hint={t("aiHint")}
+              options={AI_CHOICES.map((v) => ({ value: v, label: t(`ai.${v}`) }))}
             />
             <CheckboxField
               name="explicit"

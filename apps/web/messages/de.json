@@ -269,6 +269,9 @@
       "title": "Profilbild",
       "remove": "Bild entfernen",
       "alt": "Dein Profilbild"
+    },
+    "banner": {
+      "title": "Profilbanner"
     }
   },
   "Profile": {
@@ -407,7 +410,8 @@
       "noName": "Konto ohne Profilnamen",
       "photo": "Artist-Foto",
       "verificationRejected": "Verifizierungsantrag abgelehnt: {reason} Du kannst einen neuen mit anderen Nachweisen senden.",
-      "reach": "Woher du kommst und was du machst"
+      "reach": "Woher du kommst und was du machst",
+      "banner": "Banner"
     },
     "errors": {
       "nameRequired": "Gib den Artist-Namen ein.",
@@ -662,7 +666,8 @@
         "not_allowed": "Du kannst dieses Release nicht einreichen.",
         "failed": "Etwas ist schiefgelaufen. Bitte versuch es noch einmal."
       }
-    }
+    },
+    "aiHint": "Tunewick nimmt Musik von Menschen. KI als Werkzeug (Mix, Mastering) - wähle „Mit KI-Unterstützung“. KI-generierte Musik nehmen wir nicht an."
   },
   "Audio": {
     "none": "Noch keine Masterdatei.",
@@ -818,7 +823,7 @@
       "animated": "Animierte Bilder werden nicht akzeptiert.",
       "unreadable": "Die Datei konnte nicht als Bild gelesen werden.",
       "not_square": "Das Cover muss quadratisch sein.",
-      "too_small": "Das Bild ist zu klein (Cover: mindestens 1400 × 1400 px, Foto: mindestens 400 px).",
+      "too_small": "Das Bild ist zu klein (Cover: mind. 1400 × 1400 px, Foto: 400 px, Playlist-Cover: 600 px, Banner: 1200 × 400 px).",
       "processing_failed": "Das Bild konnte nicht verarbeitet werden. Bitte versuch es noch einmal."
     },
     "error": {
@@ -839,6 +844,24 @@
       "rejected": "Das Bild wurde abgelehnt.",
       "failed": "Das Hochladen ist fehlgeschlagen - bitte versuch es noch einmal.",
       "hint": "Mindestens 200 × 200 px, JPEG, PNG oder WebP bis 25 MB. Wir schneiden es mittig quadratisch zu und entfernen Metadaten."
+    },
+    "playlistCover": {
+      "choose": "Eigenes Cover hinzufügen",
+      "replace": "Cover ändern",
+      "processing": "Cover wird vorbereitet…",
+      "rejected": "Das Cover wurde abgelehnt.",
+      "failed": "Upload des Covers fehlgeschlagen - versuche es erneut.",
+      "hint": "Dein eigenes Bild statt des Cover-Mosaiks: mindestens 600 × 600 px, JPEG, PNG oder WebP bis 25 MB. Wir schneiden es mittig quadratisch zu und entfernen Metadaten.",
+      "remove": "Zurück zum Cover-Mosaik"
+    },
+    "banner": {
+      "choose": "Banner hinzufügen",
+      "replace": "Banner ändern",
+      "processing": "Banner wird vorbereitet…",
+      "rejected": "Das Banner wurde abgelehnt.",
+      "failed": "Upload des Banners fehlgeschlagen - versuche es erneut.",
+      "hint": "Ein breites Bild oben auf der Seite, 3:1 - am besten 2400 × 800 px (mindestens 1200 × 400), JPEG, PNG oder WebP bis 25 MB. Wir schneiden es mittig zu und entfernen Metadaten.",
+      "remove": "Banner entfernen"
     }
   },
   "Places": {
@@ -1032,7 +1055,8 @@
     "share": "Teilen",
     "shareCopied": "Link kopiert.",
     "shareFailed": "Der Link konnte nicht kopiert werden.",
-    "sharePrivate": "Die Playlist ist privat. Um sie zu teilen, ändere unten „Wer sie sehen kann“."
+    "sharePrivate": "Die Playlist ist privat. Um sie zu teilen, ändere unten „Wer sie sehen kann“.",
+    "cover": "Cover"
   },
   "Reports": {
     "link": "Problem melden",

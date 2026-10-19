@@ -28,6 +28,9 @@ class ImageRules:
     require_square: bool  # covers must already be square; artist photos are centre-cropped
     sizes: tuple[int, ...]
     max_side: int
+    # Width / height of the stored image; banners are wide, everything else is square. For a
+    # wide image min_side, sizes and max_side are widths.
+    aspect: float = 1.0
 
 
 RULES = {
@@ -36,6 +39,10 @@ RULES = {
     "artist_image": ImageRules(400, False, (160, 320, 640), 1280),
     # Profile pictures: shown small (top bar, lists, profile header); centre-cropped like photos.
     "profile_image": ImageRules(200, False, (96, 160, 320), 640),
+    # Playlist covers made by listeners: square, centre-cropped, shown up to cover size.
+    "playlist_cover": ImageRules(600, False, (160, 320, 640, 1280), 1600),
+    # Banners across the top of artist and profile pages: 3:1, centre-cropped.
+    "banner": ImageRules(1200, False, (640, 1280, 1920), 2400, aspect=3.0),
 }
 
 
@@ -122,20 +129,32 @@ def process_image(path: str, kind: str, out_dir: str) -> dict:
         report["input"].update(format=image.format, width=image.width, height=image.height)
         image = _to_srgb(image)
         width, height = image.size
-        side = min(width, height)
-        if side < rules.min_side:
-            raise ImageRejected(
-                "too_small", f"The image must be at least {rules.min_side} × {rules.min_side} px."
-            )
-        if rules.require_square and abs(width - height) > SQUARE_TOLERANCE * max(width, height):
-            raise ImageRejected("not_square", "Artwork must be square.")
-        image = ImageOps.fit(image, (side, side), Image.Resampling.LANCZOS)
+        if rules.aspect == 1.0:
+            box_w = box_h = min(width, height)
+            if box_w < rules.min_side:
+                raise ImageRejected(
+                    "too_small",
+                    f"The image must be at least {rules.min_side} × {rules.min_side} px.",
+                )
+            if rules.require_square and abs(width - height) > SQUARE_TOLERANCE * max(width, height):
+                raise ImageRejected("not_square", "Artwork must be square.")
+        else:
+            box_w = min(width, round(height * rules.aspect))
+            box_h = round(box_w / rules.aspect)
+            if box_w < rules.min_side:
+                raise ImageRejected(
+                    "too_small",
+                    f"The image must be at least {rules.min_side} × "
+                    f"{round(rules.min_side / rules.aspect)} px.",
+                )
+        image = ImageOps.fit(image, (box_w, box_h), Image.Resampling.LANCZOS)
 
         os.makedirs(out_dir, exist_ok=True)
-        largest = min(side, rules.max_side)
+        largest = min(box_w, rules.max_side)
         for size in sorted({s for s in rules.sizes if s < largest} | {largest}):
+            size_h = round(size / rules.aspect)
             resized = (
-                image if size == side else image.resize((size, size), Image.Resampling.LANCZOS)
+                image if size == box_w else image.resize((size, size_h), Image.Resampling.LANCZOS)
             )
             buffer = io.BytesIO()
             # Fresh pixels only: no exif=, no icc_profile= → nothing from the upload survives.
@@ -148,7 +167,10 @@ def process_image(path: str, kind: str, out_dir: str) -> dict:
                 {"width": size, "path": file_path, "bytes": len(data), "sha256": _sha256(data)}
             )
         report.update(
-            status="accepted", width=largest, height=largest, dominant_color=_dominant_color(image)
+            status="accepted",
+            width=largest,
+            height=round(largest / rules.aspect),
+            dominant_color=_dominant_color(image),
         )
     except ImageRejected as rejection:
         report["rejection"] = {"code": rejection.code, "message": rejection.message}

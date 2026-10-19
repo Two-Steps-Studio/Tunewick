@@ -231,3 +231,12 @@ Avoid vanity metrics. Track:
 3. Artists and scenes first; promotion is always labeled.
 4. Community serves discovery, not engagement metrics.
 5. Every feature answers "what makes the Tunewick version different?"
+
+## People first
+
+- **Music by people.** Tunewick publishes music made by people. AI as a tool (mixing, mastering,
+  a plug-in) is fine and labelled "AI-assisted"; AI-generated music is not accepted - the database
+  refuses it on releases, tracks and rights declarations, and such a release cannot be submitted.
+- **Room for people's art.** The interface stays minimal so the art people make carries it: large
+  release covers, wide banners (3:1) on artist and listener pages, and listeners' own playlist
+  covers. No stock pictures or filler gradients where art is missing.

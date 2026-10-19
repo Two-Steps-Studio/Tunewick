@@ -269,6 +269,9 @@
       "title": "Photo de profil",
       "remove": "Retirer la photo",
       "alt": "Ta photo de profil"
+    },
+    "banner": {
+      "title": "Bannière du profil"
     }
   },
   "Profile": {
@@ -407,7 +410,8 @@
       "noName": "Compte sans nom de profil",
       "photo": "Photo de l’artiste",
       "verificationRejected": "Demande de vérification refusée : {reason} Tu peux en envoyer une nouvelle avec d’autres preuves.",
-      "reach": "D’où tu viens et ce que tu crées"
+      "reach": "D’où tu viens et ce que tu crées",
+      "banner": "Bannière"
     },
     "errors": {
       "nameRequired": "Saisis le nom de l’artiste.",
@@ -662,7 +666,8 @@
         "not_allowed": "Tu ne peux pas soumettre cette sortie.",
         "failed": "Une erreur s’est produite. Réessaie."
       }
-    }
+    },
+    "aiHint": "Tunewick accueille la musique faite par des personnes. L’IA comme outil (mixage, mastering) : choisis « Avec l’aide de l’IA ». Nous n’acceptons pas la musique générée par IA."
   },
   "Audio": {
     "none": "Pas encore de fichier master.",
@@ -818,7 +823,7 @@
       "animated": "Les images animées ne sont pas acceptées.",
       "unreadable": "Le fichier n’a pas pu être lu comme une image.",
       "not_square": "La pochette doit être carrée.",
-      "too_small": "L’image est trop petite (pochette : au moins 1400 × 1400 px, photo : au moins 400 px).",
+      "too_small": "L’image est trop petite (pochette : 1400 × 1400 px min., photo : 400 px, pochette de playlist : 600 px, bannière : 1200 × 400 px).",
       "processing_failed": "L’image n’a pas pu être traitée. Réessaie."
     },
     "error": {
@@ -839,6 +844,24 @@
       "rejected": "La photo a été refusée.",
       "failed": "L’envoi de la photo a échoué - réessaie.",
       "hint": "Au moins 200 × 200 px, JPEG, PNG ou WebP jusqu’à 25 Mo. Nous la recadrons en carré depuis le centre et supprimons les métadonnées."
+    },
+    "playlistCover": {
+      "choose": "Ajouter ta propre pochette",
+      "replace": "Changer la pochette",
+      "processing": "Préparation de la pochette…",
+      "rejected": "La pochette a été refusée.",
+      "failed": "L’envoi de la pochette a échoué - réessaie.",
+      "hint": "Ton image à la place de la mosaïque : au moins 600 × 600 px, JPEG, PNG ou WebP jusqu’à 25 Mo. Nous la recadrons en carré depuis le centre et supprimons les métadonnées.",
+      "remove": "Revenir à la mosaïque"
+    },
+    "banner": {
+      "choose": "Ajouter une bannière",
+      "replace": "Changer la bannière",
+      "processing": "Préparation de la bannière…",
+      "rejected": "La bannière a été refusée.",
+      "failed": "L’envoi de la bannière a échoué - réessaie.",
+      "hint": "Une image large en haut de la page, 3:1 - idéalement 2400 × 800 px (au moins 1200 × 400), JPEG, PNG ou WebP jusqu’à 25 Mo. Nous la recadrons depuis le centre et supprimons les métadonnées.",
+      "remove": "Supprimer la bannière"
     }
   },
   "Places": {
@@ -1032,7 +1055,8 @@
     "share": "Partager",
     "shareCopied": "Lien copié.",
     "shareFailed": "Impossible de copier le lien.",
-    "sharePrivate": "La playlist est privée. Pour la partager, change « Qui peut la voir » plus bas."
+    "sharePrivate": "La playlist est privée. Pour la partager, change « Qui peut la voir » plus bas.",
+    "cover": "Pochette"
   },
   "Reports": {
     "link": "Signaler un problème",

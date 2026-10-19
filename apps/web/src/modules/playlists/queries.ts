@@ -48,6 +48,8 @@ type OpenedPlaylist = {
   description: string | null;
   visibility: PlaylistVisibility;
   updated_at: string;
+  /** The owner's own cover; null = a mosaic of the releases in it. */
+  cover_image_id: string | null;
   items: { id: string; position: number; added_at: string; track_id: string }[];
 };
 
@@ -103,9 +105,9 @@ export const getPlaylist = cache(async (id: string) => {
       ? [{ id: item.id, track: { ...item.track, release: { ...release, artist: release.artist } } }]
       : [];
   });
-  // The mosaic: first four different covers, in playlist order.
-  const covers: string[] = [];
-  for (const item of visible) {
+  // The owner's own cover, otherwise a mosaic: first four different covers, in playlist order.
+  const covers: string[] = playlist.cover_image_id ? [playlist.cover_image_id] : [];
+  for (const item of playlist.cover_image_id ? [] : visible) {
     const cover = item.track.release.artwork_image_id;
     if (cover && !covers.includes(cover)) covers.push(cover);
     if (covers.length === 4) break;

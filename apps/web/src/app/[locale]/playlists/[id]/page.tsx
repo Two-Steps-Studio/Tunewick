@@ -6,7 +6,12 @@ import type { Locale } from "@/i18n/routing";
 import { absoluteUrl } from "@/lib/site";
 import { getPlayableQueue, listenerEntitlement } from "@/modules/audio";
 import { getOptionalUser } from "@/modules/auth";
-import { getImageSourcesMany } from "@/modules/images";
+import {
+  getImageSourcesMany,
+  getLatestImageUpload,
+  ImageUpload,
+  RemoveImageButton,
+} from "@/modules/images";
 import {
   DeletePlaylistButton,
   deletePlaylist,
@@ -88,7 +93,10 @@ export default async function PlaylistPage({ params }: PageProps<"/[locale]/play
   let next = 0;
   const queueIndex = playable.map((track) => (track ? next++ : null));
   const ownerName = owner?.display_name ?? (owner?.handle ? `@${owner.handle}` : null);
-  const coverImages = await getImageSourcesMany(covers, 640);
+  const [coverImages, coverUpload] = await Promise.all([
+    getImageSourcesMany(covers, 640),
+    mine ? getLatestImageUpload("playlist_cover", playlist.id) : null,
+  ]);
   const shareUrl = absoluteUrl(
     { pathname: "/playlists/[id]", params: { id: playlist.id } },
     locale as Locale,
@@ -273,6 +281,18 @@ export default async function PlaylistPage({ params }: PageProps<"/[locale]/play
               visibility: playlist.visibility,
             }}
           />
+          <div className="field">
+            <p className="field__label">{t("cover")}</p>
+            <ImageUpload
+              kind="playlist_cover"
+              ownerId={playlist.id}
+              hasImage={Boolean(playlist.cover_image_id)}
+              latest={coverUpload}
+            />
+            {playlist.cover_image_id ? (
+              <RemoveImageButton kind="playlist_cover" ownerId={playlist.id} />
+            ) : null}
+          </div>
           <div className="playlist-delete">
             <p className="field__hint">{t("deleteHint")}</p>
             <DeletePlaylistButton action={deletePlaylist.bind(null, playlist.id)} />

@@ -77,3 +77,17 @@ export async function abandonImageUpload(imageId: string) {
   await supabase.rpc("abandon_image_upload", { image: imageId });
   revalidatePath("/", "layout");
 }
+
+/** Back to the mosaic of the releases in it. */
+export async function removePlaylistCover(playlistId: string) {
+  const supabase = await createSupabaseServerClient();
+  await supabase.rpc("remove_playlist_cover", { playlist: playlistId });
+  revalidatePath("/", "layout");
+}
+
+/** Removes a banner: your own (your id) or an artist's you manage. */
+export async function removeBanner(ownerId: string) {
+  const supabase = await createSupabaseServerClient();
+  await supabase.rpc("remove_banner", { owner: ownerId });
+  revalidatePath("/", "layout");
+}

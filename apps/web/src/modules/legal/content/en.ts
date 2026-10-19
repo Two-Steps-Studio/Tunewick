@@ -187,7 +187,7 @@ export const en: LegalContent = {
                 "you own the recordings (masters) or have their owners' permission;",
                 "you own the works (music and lyrics) or have the authors' permission - and you state whether any author belongs to a collective management organisation (e.g. ZAiKS);",
                 "samples and interpolations are cleared (with a description) or there are none;",
-                "you truthfully label AI involvement: human, AI-assisted or AI-generated;",
+                "Tunewick takes music made by people: you truthfully label AI involvement (human, or made with AI as a tool); we do not publish AI-generated music;",
                 "you may use the artwork and photos.",
               ],
             },

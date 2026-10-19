@@ -1,6 +1,6 @@
 import { z } from "zod";
 import {
-  AI_CONTENT,
+  AI_CHOICES,
   ARTIST_TERMS_VERSION,
   CMO_OPTIONS,
   CREDIT_ROLES,
@@ -11,7 +11,7 @@ import {
 
 // Plain option lists live in ./options so client components can use them without bundling zod.
 export {
-  AI_CONTENT,
+  AI_CHOICES,
   ARTIST_TERMS_VERSION,
   CMO_OPTIONS,
   CREDIT_ROLES,
@@ -85,7 +85,7 @@ export const releaseDetailsSchema = z.object({
     .literal("on")
     .optional()
     .transform((v) => v === "on"),
-  aiContent: z.enum(AI_CONTENT),
+  aiContent: z.enum(AI_CHOICES),
   territory: z.enum(TERRITORIES),
   upc: optional(z.string().regex(/^[0-9]{12,13}$/, { error: "upcInvalid" })),
   pLine: optional(z.string().max(200, { error: "lineTooLong" })),
@@ -104,7 +104,7 @@ export const trackSchema = z.object({
     .literal("on")
     .optional()
     .transform((v) => v === "on"),
-  aiContent: z.enum(AI_CONTENT),
+  aiContent: z.enum(AI_CHOICES),
   /** Where the 30 s soundcheck starts, "m:ss" (empty: from the beginning). */
   soundcheckStart: z
     .string()
@@ -151,7 +151,7 @@ export const rightsSchema = z
       .refine((a) => !a.includes("none") || a.length === 1, { error: "cmoNoneExclusive" }),
     samples: z.enum(["none", "cleared"]),
     samplesDescription: z.string().trim().max(2000),
-    aiContent: z.enum(["human", "ai_assisted", "ai_generated"], { error: "aiRequired" }),
+    aiContent: z.enum(["human", "ai_assisted"], { error: "aiRequired" }),
     acceptTerms: z.literal("on", { error: "termsRequired" }),
   })
   .refine((v) => v.samples === "none" || v.samplesDescription.length > 0, {

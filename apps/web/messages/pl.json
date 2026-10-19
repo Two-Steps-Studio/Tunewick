@@ -269,6 +269,9 @@
       "title": "Zdjęcie profilowe",
       "remove": "Usuń zdjęcie",
       "alt": "Twoje zdjęcie profilowe"
+    },
+    "banner": {
+      "title": "Baner na profilu"
     }
   },
   "Profile": {
@@ -407,7 +410,8 @@
       "noName": "Konto bez nazwy profilu",
       "photo": "Zdjęcie artysty",
       "verificationRejected": "Wniosek o weryfikację odrzucony: {reason} Możesz złożyć nowy z innymi dowodami.",
-      "reach": "Skąd jesteś i co tworzysz"
+      "reach": "Skąd jesteś i co tworzysz",
+      "banner": "Baner"
     },
     "errors": {
       "nameRequired": "Podaj nazwę artysty.",
@@ -662,7 +666,8 @@
         "not_allowed": "Nie możesz wysłać tego wydawnictwa.",
         "failed": "Coś poszło nie tak. Spróbuj ponownie."
       }
-    }
+    },
+    "aiHint": "Tunewick przyjmuje muzykę tworzoną przez ludzi. AI jako narzędzie (np. przy miksie czy masteringu) - wybierz „Z pomocą AI”. Muzyki wygenerowanej przez AI nie przyjmujemy."
   },
   "Audio": {
     "none": "Brak pliku master.",
@@ -818,7 +823,7 @@
       "animated": "Animowane obrazy nie są akceptowane.",
       "unreadable": "Nie udało się odczytać pliku jako obrazu.",
       "not_square": "Okładka musi być kwadratowa.",
-      "too_small": "Obraz jest za mały (okładka: min. 1400 × 1400 px, zdjęcie: min. 400 px).",
+      "too_small": "Obraz jest za mały (okładka: min. 1400 × 1400 px, zdjęcie: min. 400 px, okładka playlisty: 600 px, baner: 1200 × 400 px).",
       "processing_failed": "Nie udało się przetworzyć obrazu. Spróbuj ponownie."
     },
     "error": {
@@ -839,6 +844,24 @@
       "rejected": "Zdjęcie zostało odrzucone.",
       "failed": "Przesyłanie zdjęcia nie powiodło się - spróbuj ponownie.",
       "hint": "Co najmniej 200 × 200 px, JPEG, PNG lub WebP do 25 MB. Przytniemy je do kwadratu od środka i usuniemy metadane."
+    },
+    "playlistCover": {
+      "choose": "Dodaj własną okładkę",
+      "replace": "Zmień okładkę",
+      "processing": "Przygotowujemy okładkę…",
+      "rejected": "Okładka została odrzucona.",
+      "failed": "Przesyłanie okładki nie powiodło się - spróbuj ponownie.",
+      "hint": "Twoja grafika zamiast mozaiki okładek: co najmniej 600 × 600 px, JPEG, PNG lub WebP do 25 MB. Przytniemy ją do kwadratu od środka i usuniemy metadane.",
+      "remove": "Wróć do mozaiki okładek"
+    },
+    "banner": {
+      "choose": "Dodaj baner",
+      "replace": "Zmień baner",
+      "processing": "Przygotowujemy baner…",
+      "rejected": "Baner został odrzucony.",
+      "failed": "Przesyłanie banera nie powiodło się - spróbuj ponownie.",
+      "hint": "Szeroka grafika na górze strony, proporcje 3:1 - najlepiej 2400 × 800 px (co najmniej 1200 × 400), JPEG, PNG lub WebP do 25 MB. Przytniemy ją od środka i usuniemy metadane.",
+      "remove": "Usuń baner"
     }
   },
   "Places": {
@@ -1032,7 +1055,8 @@
     "share": "Udostępnij",
     "shareCopied": "Link skopiowany.",
     "shareFailed": "Nie udało się skopiować linku.",
-    "sharePrivate": "Playlista jest prywatna. Aby ją udostępnić, zmień „Kto ją widzi” poniżej."
+    "sharePrivate": "Playlista jest prywatna. Aby ją udostępnić, zmień „Kto ją widzi” poniżej.",
+    "cover": "Okładka"
   },
   "Reports": {
     "link": "Zgłoś naruszenie",

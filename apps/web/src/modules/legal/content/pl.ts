@@ -192,7 +192,7 @@ export const pl: LegalContent = {
                 "masz prawa do nagrań (masterów) albo zgodę ich właścicieli;",
                 "masz prawa do utworów (muzyki i tekstów) albo zgodę autorów - i podajesz, czy któryś z autorów należy do organizacji zbiorowego zarządzania (np. ZAiKS);",
                 "sample i interpolacje są oczyszczone z praw (z opisem) albo ich nie ma;",
-                "zgodnie z prawdą oznaczasz udział AI: utwór ludzki, wspomagany AI lub wygenerowany przez AI;",
+                "Tunewick przyjmuje muzykę tworzoną przez ludzi: zgodnie z prawdą oznaczasz udział AI (utwór ludzki albo tworzony z pomocą AI jako narzędzia); muzyki wygenerowanej przez AI nie publikujemy;",
                 "okładki i zdjęcia możesz wykorzystać.",
               ],
             },

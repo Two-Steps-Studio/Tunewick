@@ -19,7 +19,7 @@ import {
 } from "@/modules/artists";
 import { getOptionalUser } from "@/modules/auth";
 import { getPublishedReleases } from "@/modules/catalog";
-import { Artwork, getImageSources, getImageSourcesMany } from "@/modules/images";
+import { Artwork, Banner, getImageSources, getImageSourcesMany } from "@/modules/images";
 import { EventList, getArtistEvents } from "@/modules/events";
 import { getArtistUpcoming } from "@/modules/premieres";
 import { getArtistFollow, LibraryButton } from "@/modules/library";
@@ -64,10 +64,11 @@ export default async function ArtistPage({ params }: PageProps<"/[locale]/artist
   const tReleases = await getTranslations("Releases");
   const tReports = await getTranslations("Reports");
   const tPlaces = await getTranslations("Places");
-  const [published, photo, follow, related, reach, discovery, gigs, member, upcoming] =
+  const [published, photo, banner, follow, related, reach, discovery, gigs, member, upcoming] =
     await Promise.all([
       getPublishedReleases(artist.id),
       getImageSources(artist.image_id),
+      getImageSources(artist.banner_image_id, 1280),
       getArtistFollow(artist.id),
       getRelatedArtists(artist.id),
       getArtistReach(artist.id),
@@ -140,6 +141,7 @@ export default async function ArtistPage({ params }: PageProps<"/[locale]/artist
           })),
         }}
       />
+      <Banner image={banner} alt="" />
       <p className={`artist-badge artist-badge--${artist.verification_status}`}>
         {t(`verification.${artist.verification_status}`)}
       </p>

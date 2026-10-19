@@ -269,6 +269,9 @@
       "title": "Foto de perfil",
       "remove": "Remover foto",
       "alt": "Sua foto de perfil"
+    },
+    "banner": {
+      "title": "Banner do perfil"
     }
   },
   "Profile": {
@@ -407,7 +410,8 @@
       "noName": "Conta sem nome de perfil",
       "photo": "Foto do artista",
       "verificationRejected": "Pedido de verificação recusado: {reason} Você pode enviar um novo com outras provas.",
-      "reach": "De onde você é e o que você faz"
+      "reach": "De onde você é e o que você faz",
+      "banner": "Banner"
     },
     "errors": {
       "nameRequired": "Digite o nome artístico.",
@@ -662,7 +666,8 @@
         "not_allowed": "Você não pode enviar este lançamento.",
         "failed": "Algo deu errado. Tente novamente."
       }
-    }
+    },
+    "aiHint": "O Tunewick aceita música feita por pessoas. IA como ferramenta (mixagem, masterização): escolha “Com ajuda de IA”. Não aceitamos música gerada por IA."
   },
   "Audio": {
     "none": "Ainda não há arquivo master.",
@@ -818,7 +823,7 @@
       "animated": "Imagens animadas não são aceitas.",
       "unreadable": "Não foi possível ler o arquivo como imagem.",
       "not_square": "A capa precisa ser quadrada.",
-      "too_small": "A imagem é pequena demais (capa: no mínimo 1400 × 1400 px; foto: no mínimo 400 px).",
+      "too_small": "A imagem é pequena demais (capa: mín. 1400 × 1400 px, foto: 400 px, capa de playlist: 600 px, banner: 1200 × 400 px).",
       "processing_failed": "Não foi possível processar a imagem. Tente novamente."
     },
     "error": {
@@ -839,6 +844,24 @@
       "rejected": "A foto foi recusada.",
       "failed": "Não foi possível enviar a foto. Tente de novo.",
       "hint": "Pelo menos 200 × 200 px, JPEG, PNG ou WebP até 25 MB. Cortamos em quadrado a partir do centro e removemos os metadados."
+    },
+    "playlistCover": {
+      "choose": "Adicionar capa própria",
+      "replace": "Mudar capa",
+      "processing": "Preparando a capa…",
+      "rejected": "A capa foi recusada.",
+      "failed": "O envio da capa falhou - tente de novo.",
+      "hint": "Sua própria imagem no lugar do mosaico: pelo menos 600 × 600 px, JPEG, PNG ou WebP até 25 MB. Cortamos em quadrado a partir do centro e removemos os metadados.",
+      "remove": "Voltar ao mosaico de capas"
+    },
+    "banner": {
+      "choose": "Adicionar banner",
+      "replace": "Mudar banner",
+      "processing": "Preparando o banner…",
+      "rejected": "O banner foi recusado.",
+      "failed": "O envio do banner falhou - tente de novo.",
+      "hint": "Uma imagem larga no topo da página, 3:1 - de preferência 2400 × 800 px (pelo menos 1200 × 400), JPEG, PNG ou WebP até 25 MB. Cortamos a partir do centro e removemos os metadados.",
+      "remove": "Remover banner"
     }
   },
   "Places": {
@@ -1032,7 +1055,8 @@
     "share": "Compartilhar",
     "shareCopied": "Link copiado.",
     "shareFailed": "Não foi possível copiar o link.",
-    "sharePrivate": "A playlist é privada. Para compartilhá-la, mude “Quem pode ver” abaixo."
+    "sharePrivate": "A playlist é privada. Para compartilhá-la, mude “Quem pode ver” abaixo.",
+    "cover": "Capa"
   },
   "Reports": {
     "link": "Denunciar um problema",

@@ -92,6 +92,28 @@ def test_profile_picture_is_small_and_square(tmp_path):
     )
 
 
+def test_playlist_cover_is_square(tmp_path):
+    source = save(photo((800, 700)), tmp_path / "mix.png", "PNG")
+    report = process_image(source, "playlist_cover", str(tmp_path / "out"))
+    assert report["status"] == "accepted"
+    assert [v["width"] for v in report["variants"]] == [160, 320, 640, 700]
+    assert report["height"] == 700
+
+
+def test_banner_is_wide(tmp_path):
+    source = save(photo((2000, 1000)), tmp_path / "banner.jpg", "JPEG")
+    report = process_image(source, "banner", str(tmp_path / "out"))
+    assert report["status"] == "accepted"
+    assert [v["width"] for v in report["variants"]] == [640, 1280, 1920, 2000]
+    assert (report["width"], report["height"]) == (2000, 667)
+    with Image.open(report["variants"][0]["path"]) as small:
+        assert small.size == (640, 213)
+    assert (
+        rejection(tmp_path, save(photo((1100, 900)), tmp_path / "narrow.jpg", "JPEG"), "banner")
+        == "too_small"
+    )
+
+
 def rejection(tmp_path, source: str, kind: str = "release_artwork") -> str:
     report = process_image(source, kind, str(tmp_path / "out"))
     assert report["status"] == "rejected"

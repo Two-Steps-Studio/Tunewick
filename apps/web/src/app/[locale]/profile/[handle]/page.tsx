@@ -11,7 +11,7 @@ import {
   ProfileActivity,
   ProfileDiscovery,
 } from "@/modules/social";
-import { getImageSources } from "@/modules/images";
+import { Banner, getImageSources } from "@/modules/images";
 import { Avatar, getPublicProfile } from "@/modules/users";
 
 export async function generateMetadata({
@@ -30,10 +30,11 @@ export default async function ProfilePage({ params }: PageProps<"/[locale]/profi
   const profile = await getPublicProfile(decodeURIComponent(handle));
   if (!profile) notFound();
 
-  const [user, relationship, picture] = await Promise.all([
+  const [user, relationship, picture, banner] = await Promise.all([
     getOptionalUser(),
     getRelationship(profile.id),
     getImageSources(profile.image_id, 320),
+    getImageSources(profile.banner_image_id, 1280),
   ]);
   if (!relationship) notFound();
   const own = user?.id === profile.id;
@@ -47,6 +48,7 @@ export default async function ProfilePage({ params }: PageProps<"/[locale]/profi
 
   return (
     <section className="profile">
+      <Banner image={banner} alt="" />
       <Avatar image={picture} name={name} size="5rem" />
       <p className="profile__handle">@{profile.handle}</p>
       <h1 className="profile__name">{name}</h1>
